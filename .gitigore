@@ -106,6 +106,12 @@ dist
 # .idea
 .idea
 .idea/*.xml
+*.iws
+*.iml
+*.ipr
+out/
+!/src/main//out/
+!/src/test//out/
 
 #.Ds_Store
 .DS_Store
