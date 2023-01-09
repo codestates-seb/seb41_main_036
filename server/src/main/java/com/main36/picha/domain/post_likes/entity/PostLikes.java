@@ -1,8 +1,8 @@
-package com.main36.picha.domain.comment.entity;
+package com.main36.picha.domain.post_likes.entity;
+
 
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.post.entity.Post;
-import com.main36.picha.global.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,26 +12,24 @@ import javax.persistence.*;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Comment extends Auditable {
+public class PostLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentId;
+    private long postLikesId;
 
-    @Column(name = "comment_content", nullable = false)
-    private String commentContent;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+
+
 
 }
