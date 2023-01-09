@@ -24,7 +24,7 @@ function Main () {
   return(
     <>
     <Header>header헤더</Header>
-    <Body>body</Body>
+    <Body>body바디</Body>
     <Footer>footer</Footer>
     </>
   )
