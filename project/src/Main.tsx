@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import KakaoMap from './components/KakaoMap';
 
 
 const Header = styled.div`
@@ -24,7 +25,9 @@ function Main () {
   return(
     <>
     <Header>header헤더</Header>
-    <Body>body</Body>
+    <Body>
+
+    </Body>
     <Footer>footer</Footer>
     </>
   )
