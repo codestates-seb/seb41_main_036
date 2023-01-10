@@ -57,6 +57,9 @@ const DetailPlace = () => {
             <FilterButton>리뷰순</FilterButton>
           </div>
         </PlaceFilterContainer>
+        <div>
+            <div></div>
+        </div>
       </PlaceWrraper>
     </DetailPlaceWrraper>
   );
