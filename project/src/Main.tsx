@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import KakaoMap from "./components/KakaoMap";
+// import KakaoMap from "./components/KakaoMap";
 import DetailPlace from "./pages/DetailPlace";
 
 const Header = styled.div`
