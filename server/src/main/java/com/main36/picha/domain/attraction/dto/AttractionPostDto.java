@@ -10,7 +10,7 @@ public class AttractionPostDto {
     private String attractionName;
     private String attractionDescription;
     private String attractionAddress;
-//    private MultipartFile attractionImage;
+    private MultipartFile attractionImage;
     private String province;
 
 }

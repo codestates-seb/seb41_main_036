@@ -13,26 +13,40 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AttractionMapper {
 
-    @Mapping(target = "attractionImage", constant = "abc")
-//    @Mapping(target = "attractionId", ignore = true)
+    @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
-
-//    default Attraction attractionPostDtoToAttraction(AttractionPostDto postDto){
-//        return Attraction.builder()
-//                .attractionId(1L)
-//                .attractionAddress(postDto.getAttractionAddress())
-//                .attractionDescription(postDto.getAttractionDescription())
-//                .attractionName(postDto.getAttractionName())
-//                .province(postDto.getProvince())
-//                .build();
-//    }
     @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
 
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
 
-
-
-
+    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
 }
+
+/*public class AttractionMapper {
+
+    public Attraction attractionPostDtoToAttraction(AttractionPostDto postDto){
+        return Attraction.builder()
+                .attractionId(1L)
+                .attractionAddress(postDto.getAttractionAddress())
+                .attractionDescription(postDto.getAttractionDescription())
+                .attractionName(postDto.getAttractionName())
+                .province(postDto.getProvince())
+                .build();
+    }
+    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto){
+        return Attraction.builder()
+                .attractionName(patchDto.getAttractionName())
+                .attractionDescription(patchDto.getAttractionDescription())
+                .attractionAddress(patchDto.getAttractionAddress())
+                .province(patchDto.getProvince())
+                .build();
+    }
+    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions) {
+        return null;
+    }
+
+    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction){
+        return null;
+    }
+}*/

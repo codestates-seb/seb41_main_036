@@ -9,9 +9,11 @@ import com.main36.picha.domain.attraction.mapper.AttractionMapper;
 import com.main36.picha.domain.attraction.service.AttractionService;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +29,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/attractions")
+@RequiredArgsConstructor
+@Validated
 public class AttractionController {
 
     private AttractionService attractionService;
@@ -34,15 +38,7 @@ public class AttractionController {
 
     @PostMapping
     public ResponseEntity postAttraction(@RequestBody AttractionPostDto attractionPostDto) {
-        System.out.println(attractionPostDto.getAttractionDescription());
-        System.out.println(attractionPostDto.getAttractionName());
-        System.out.println(attractionPostDto.getAttractionAddress());
-        System.out.println(attractionPostDto.getProvince());
-        Attraction attraction = new Attraction();
-        attraction.setAttractionName(attractionPostDto.getAttractionName());
-        attraction.setAttractionDescription(attraction.getAttractionDescription());
-        attraction.setAttractionAddress(attraction.getAttractionAddress());
-        attraction.setProvince(attraction.getProvince());
+        Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.createAttraction(attraction));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
