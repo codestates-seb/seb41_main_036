@@ -33,8 +33,10 @@ import java.util.UUID;
 @Validated
 public class AttractionController {
 
-    private AttractionService attractionService;
-    private AttractionMapper mapper;
+    private final AttractionService attractionService;
+    private final AttractionMapper mapper;
+
+
 
     @PostMapping
     public ResponseEntity postAttraction(@RequestBody AttractionPostDto attractionPostDto) {

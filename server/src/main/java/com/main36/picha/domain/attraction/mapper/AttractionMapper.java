@@ -7,34 +7,35 @@ import com.main36.picha.domain.attraction.entity.Attraction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface AttractionMapper {
+//@Mapper(componentModel = "spring")
+//public interface AttractionMapper {
+//    @Mapping(target = "attractionImage", ignore = true)
+//    Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
+//    @Mapping(target = "attractionImage", ignore = true)
+//    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
+//
+//    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
+//
+//    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
+//}
 
-    @Mapping(target = "attractionImage", ignore = true)
-    Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
-    @Mapping(target = "attractionImage", ignore = true)
-    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-
-    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
-
-    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
-}
-
-/*public class AttractionMapper {
+@Component
+public class AttractionMapper {
 
     public Attraction attractionPostDtoToAttraction(AttractionPostDto postDto){
         return Attraction.builder()
-                .attractionId(1L)
                 .attractionAddress(postDto.getAttractionAddress())
                 .attractionDescription(postDto.getAttractionDescription())
                 .attractionName(postDto.getAttractionName())
                 .province(postDto.getProvince())
                 .build();
     }
-    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto){
+    public Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto){
         return Attraction.builder()
                 .attractionName(patchDto.getAttractionName())
                 .attractionDescription(patchDto.getAttractionDescription())
@@ -42,11 +43,24 @@ public interface AttractionMapper {
                 .province(patchDto.getProvince())
                 .build();
     }
-    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions) {
-        return null;
+    public List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions) {
+        return attractions.stream()
+                .map(attraction -> AttractionResponseDto
+                        .builder()
+                        .attractionId(attraction.getAttractionId())
+                        .attractionName(attraction.getAttractionName())
+                        .attractionDescription(attraction.getAttractionDescription())
+                                .province(attraction.getProvince()).build())
+                .collect(Collectors.toList());
     }
 
-    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction){
-        return null;
+    public AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction){
+        return AttractionResponseDto
+                .builder()
+                .attractionId(attraction.getAttractionId())
+                .attractionName(attraction.getAttractionName())
+                .attractionDescription(attraction.getAttractionDescription())
+                .province(attraction.getProvince())
+                .build();
     }
-}*/
+}
