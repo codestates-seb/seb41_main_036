@@ -27,14 +27,19 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 
 
-	// security
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	 security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-//
-//	// jwt
-//	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.hamcrest:hamcrest:2.2'
+
+
+
+//	 jwt
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -46,9 +51,7 @@ dependencies {
 	// mapstruct
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-	//test
-//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testImplementation 'org.springframework.security:spring-security-test'
+	// test
 //	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 //	testCompileOnly 'org.projectlombok:lombok'
 //	testAnnotationProcessor 'org.projectlombok:lombok'
