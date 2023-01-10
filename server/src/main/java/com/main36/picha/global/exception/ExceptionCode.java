@@ -7,8 +7,8 @@ public enum ExceptionCode {
     MEMBER_NOT_ALLOW(405, "That Member doesn't have authority"),
     MEMBER_EXISTS(409, "Member exists"),
 
-    LOCATION_NOT_FOUND(404, "Location not found"),
-    LOCATION_EXISTS(409, "Location exists"),
+    ATTRACTION_NOT_FOUND(404, "Attraction not found"),
+    ATTRACTION_EXISTS(409, "Attraction exists"),
 
     COMMENT_NOT_FOUND(404, "Comment not found"),
     COMMENT_EXISTS(409, "Comment exists"),
