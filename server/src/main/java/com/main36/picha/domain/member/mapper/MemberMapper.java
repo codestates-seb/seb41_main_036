@@ -12,7 +12,7 @@ import org.springframework.data.domain.Auditable;
 import org.springframework.stereotype.Component;
 
 
-@Component
+
 @Mapper(componentModel = "spring")
 public interface MemberMapper  {
 
@@ -22,7 +22,6 @@ public interface MemberMapper  {
     @Mapping(target = "picture", constant = "")
     Member memberPostDtoToMember(MemberPostDto memberPostDto);
 
-    //TODO:
     Member memberPatchDtoToMember(MemberPatchDto memberPatchDto);
 
     SignUpResponseDto memberToSignUpResponseDto(Member member);

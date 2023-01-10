@@ -47,20 +47,12 @@ public class MemberService {
         return memberRepository.save(findMember);
     }
 
-
-
-
-
-
     // 멤버 조회(프로필)
     public Member findMember(Long memberId, String email) {
         Optional<Member> byMemberIdAndEmail = memberRepository.findByMemberIdAndEmail(memberId, email);
         return byMemberIdAndEmail.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
-
-
-
 
     // 멤버 삭제
     public void deleteMember(long memberId) {
@@ -79,12 +71,7 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findById(memberId);
         return findMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
     }
 
-//    public Member updateMember(MemberPatchDto memberPatchDto) {
-//
-//
-//    }
 }
 

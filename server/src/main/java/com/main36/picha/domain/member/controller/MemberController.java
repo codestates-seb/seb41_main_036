@@ -38,17 +38,6 @@ public class MemberController {
                 HttpStatus.CREATED);
     }
 
-
-    // 멤버 프로필 조회(홈)
-    @GetMapping("/{member-id}/{email}")
-    public ResponseEntity<DataResponseDto> getMemberProfile(@Positive @PathVariable("member-id") long memberId,
-                                                            @PathVariable("email") String email) {
-        //TODO: verifyLoginMember
-        Member member = memberService.findMember(memberId, email);
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),
-                HttpStatus.OK);
-    }
-
     @PatchMapping("/edit/{member-id}")
     public ResponseEntity<DataResponseDto> patchMember(@PathVariable("member-id") @Positive long memberId,
                                                        @Valid @RequestBody MemberPatchDto memberPatchDto) {
@@ -61,6 +50,16 @@ public class MemberController {
         );
     }
 
+    // 멤버 프로필 조회(홈)
+    @GetMapping("/{member-id}/{email}")
+    public ResponseEntity<DataResponseDto> getMemberProfile(@Positive @PathVariable("member-id") long memberId,
+                                                            @PathVariable("email") String email) {
+        //TODO: verifyLoginMember
+        Member member = memberService.findMember(memberId, email);
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),
+                HttpStatus.OK);
+    }
+
     // 멤버 삭제
     @DeleteMapping("/delete/{member-id}/confirm")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId) {
@@ -68,6 +67,5 @@ public class MemberController {
         memberService.deleteMember(memberId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
 
 }
