@@ -31,9 +31,4 @@ public class MemberPatchDto {
 ////    @Pattern(message = "'숫자', '문자' 무조건 1개 이상, '최소 8자에서 최대 20자' 허용, !@#$%^&* 특수문자만 허용",
 ////            regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$")
 //    private String password;
-
-
-
-
-
 }
