@@ -1,10 +1,6 @@
 import styled from 'styled-components';
-<<<<<<< HEAD:project/src/Main.js
-import Login from './Login';
-
-=======
+import Login from './components/Login';
 import KakaoMap from './components/KakaoMap';
->>>>>>> cbaf6d28420ae207b39a6c6c877af04f2b5d253b:project/src/Main.tsx
 
 
 const Header = styled.div`
