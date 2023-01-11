@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Mapper(componentModel = "spring")
-//public interface AttractionMapper {
-//    @Mapping(target = "attractionImage", ignore = true)
-//    Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
-//    @Mapping(target = "attractionImage", ignore = true)
-//    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-//
-//    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
-//
-//    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
-//}
+@Mapper(componentModel = "spring")
+public interface AttractionMapper {
+    @Mapping(target = "attractionImage", ignore = true)
+    Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
+    @Mapping(target = "attractionImage", ignore = true)
+    Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
 
-@Component
+    AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
+
+    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
+}
+
+/*@Component
 public class AttractionMapper {
 
     public Attraction attractionPostDtoToAttraction(AttractionPostDto postDto){
@@ -63,4 +63,4 @@ public class AttractionMapper {
                 .province(attraction.getProvince())
                 .build();
     }
-}
+}*/

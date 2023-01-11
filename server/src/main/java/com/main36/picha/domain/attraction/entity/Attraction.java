@@ -21,7 +21,8 @@ public class Attraction extends Auditable {
     @Column(name = "attraction_name", nullable = false)
     private String attractionName;
 
-    @Column(name = "attraction_description", nullable = false)
+    @Lob
+    @Column( name = "attraction_description", nullable = false)
     private String attractionDescription;
 
     @Column(name = "attraction_address", nullable = false)

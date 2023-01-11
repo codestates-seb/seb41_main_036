@@ -36,8 +36,6 @@ public class AttractionController {
     private final AttractionService attractionService;
     private final AttractionMapper mapper;
 
-
-
     @PostMapping
     public ResponseEntity postAttraction(@RequestBody AttractionPostDto attractionPostDto) {
         Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
@@ -71,8 +69,8 @@ public class AttractionController {
     }
 
     @GetMapping
-    public ResponseEntity getAttractions(@Positive @RequestParam int page,
-                                         @Positive @RequestParam int size){
+    public ResponseEntity getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                         @Positive @RequestParam(required = false, defaultValue = "9") int size){
         Page<Attraction> attractionPage = attractionService.findAttractions(page-1, size);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity(new MultiResponseDto<>(
