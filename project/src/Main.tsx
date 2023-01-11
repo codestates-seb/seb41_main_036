@@ -27,9 +27,7 @@ function Main () {
     <>
     <Header>header헤더</Header>
     <Body>
-      <Login>
-
-      </Login>
+      <Login/>
     </Body>
     <Footer>footer</Footer>
     </>
