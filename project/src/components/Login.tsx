@@ -164,13 +164,6 @@ const LogoLogo = styled.div`
     color: black;
     font-size: 50px;
 `
-const FormForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-`
 
 const Login  =  () => {
     const [overlays, setOverlays] = useState(false)
