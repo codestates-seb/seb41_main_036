@@ -249,7 +249,7 @@ const Login  =  () => {
             {loginemailErr ? (
                 <TextStyle color="black" fontSize='18px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</TextStyle>
                 ): <></>}
-            <InputStyle placeholder='비밀번호' onChange={handleLoginPasswordChange}></InputStyle>
+            <InputStyle placeholder='비밀번호' onChange={handleLoginPasswordChange} type="password"></InputStyle>
             {loginpasswordErr ?(
                 <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</TextStyle>
             ): <></>}
@@ -267,11 +267,11 @@ const Login  =  () => {
             {signemailErr ? (
                 <TextStyle color="black" fontSize='18px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</TextStyle>
                 ): <></>}
-            <InputStyle placeholder='비밀번호' onChange={handleSignPasswordChange}></InputStyle>
+            <InputStyle placeholder='비밀번호' onChange={handleSignPasswordChange} type="password"></InputStyle>
             {signpasswordErr ?(
                 <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</TextStyle>
             ): <></>}
-            <InputStyle placeholder='비밀번호확인' onChange={handlePasswordConfirm}></InputStyle>
+            <InputStyle placeholder='비밀번호확인' onChange={handlePasswordConfirm} type="password"></InputStyle>
             {passwordConfirm === signpassword ? <></> :(
                 <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호가 다릅니다.</TextStyle>
             )}
