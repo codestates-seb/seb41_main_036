@@ -21,13 +21,11 @@ const Wraoper = styled.section`
     justify-content: center;
     align-items: center;
     border-radius: 30px;
-    border: 1px solid black;
 `
 const Logincontainer  =styled.div<OverlayProps>`
     width: 40%;
     height: 100%;
-    border: 1px solid red;
-    border-radius: 30px 0px 0px 30px;
+    border-radius: ${(props) => props.overlay ? '30px 0px 0px 30px': '0px 30px 30px 0px'};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,8 +39,7 @@ const Logincontainer  =styled.div<OverlayProps>`
 const Signincontainer = styled.div<OverlayProps>`
     width: 40%;
     height: 100%;
-    border: 1px solid red;
-    border-radius: 0px 30px 30px 0px;
+    border-radius: ${(props) => props.overlay ? '30px 0px 0px 30px': '0px 30px 30px 0px'};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -56,9 +53,7 @@ const Signincontainer = styled.div<OverlayProps>`
 const Leftoverlay = styled.div<OverlayProps>`
     width: 40%;
     height: 100%;
-    border: 1px solid red;
-    opacity: 1;
-    border-radius: 0px 30px 30px 0px;
+    border-radius: ${(props) => props.overlay ? '0px 30px 30px 0px': '30px 0px 0px 30px'};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,10 +67,9 @@ const Leftoverlay = styled.div<OverlayProps>`
     transform: ${(props) => props.overlay ? 'translateX(50%)': 'translateX(-50%)'};
 `
 const Rightoverlay = styled.div<OverlayProps>`
-        width: 40%;
+    width: 40%;
     height: 100%;
-    border: 1px solid red;
-    border-radius: 0px 30px 30px 0px;
+    border-radius: ${(props) => props.overlay ? '0px 30px 30px 0px': '30px 0px 0px 30px'};
     display: flex;
     flex-direction: column;
     justify-content: center;
