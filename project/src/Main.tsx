@@ -1,8 +1,9 @@
-import styled from "styled-components";
-import KakaoMap from "./components/KakaoMap";
-import Place from "./pages/Place";
-import PlaceDetail from "./pages/PlaceDetail";
+import styled from 'styled-components';
+import Login from './components/Login';
+import KakaoMap from './components/KakaoMap';
 
+import Place from "./pages/Place";
+import Post from "./pages/Post";
 
 const Header = styled.div`
   width: 100%;
@@ -22,16 +23,13 @@ const Footer = styled.div`
   height: 157px;
 `;
 
-function Main(props:any) {
+function Main() {
   return (
     <>
-      <Header>header헤더</Header>
-      {/* <Body>
-        <Place />
-      </Body> */}
-        <PlaceDetail></PlaceDetail>
-
-      <Footer>footer</Footer>
+    <Header>header헤더</Header>
+    <Body> 바디
+        </Body>
+    <Footer>footer</Footer>
     </>
   );
 }
