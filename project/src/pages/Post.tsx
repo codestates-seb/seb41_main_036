@@ -6,8 +6,7 @@ import {
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
 import dummy from "../dummyData.json";
-import { AiFillHeart } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
+import { AiFillHeart, AiFillEye } from "react-icons/ai";
 
 const DetailPostWrraper = styled.div`
   display: flex;
@@ -96,7 +95,7 @@ const PostInfo = styled.div`
     justify-content: space-between;
   }
 
-  .info-bookmark-recommend {
+  .info-view-recommend {
     display: flex;
     align-items: center;
     padding-bottom: 10px;
@@ -104,8 +103,9 @@ const PostInfo = styled.div`
     font-weight: var(--fw-midium);
   }
 
-  .bookmark {
+  .view {
     color: var(--black-800);
+    font-size: var(--font-base);
   }
 
   .recommend {
@@ -186,8 +186,8 @@ const DetailPost = () => {
                       <span className="createdAt">{el.createdAt}</span>
                     </div>
                   </div>
-                  <div className="info-bookmark-recommend">
-                    <BsFillBookmarkFill className="bookmark" />
+                  <div className="info-view-recommend">
+                    <AiFillEye className="view" />
                     &nbsp;
                     {el.viewCount}
                     <AiFillHeart className="recommend" />
