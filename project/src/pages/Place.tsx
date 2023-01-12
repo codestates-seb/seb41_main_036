@@ -18,7 +18,7 @@ const LocationWrraper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PlaceWrraper = styled.div`
+const PlaceWrapper = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -122,11 +122,11 @@ const DetailPlace = () => {
   };
 
   return (
-    <DetailPlaceWrraper>
-      <LocationWrraper>
+    <DetailPlaceWrapper>
+      <LocationWrapper>
         <LocationFilter />
-      </LocationWrraper>
-      <PlaceWrraper>
+      </LocationWrapper>
+      <PlaceWrapper>
         <PlaceFilterContainer>
           <span>총 {dummy.place.length}개의 명소</span>
           <div>
@@ -161,87 +161,9 @@ const DetailPlace = () => {
             </div>
           ))}
         </PlaceContainer>
-      </PlaceWrraper>
-    </DetailPlaceWrraper>
+      </PlaceWrapper>
+    </DetailPlaceWrapper>
   );
 };
 
-const SelectContainer = styled.div`
-  width: 100%;
-  border-bottom: 2px solid var(--black-500);
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  background-color: #ffffff;
-
-  > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    color: var(--black-800);
-    font-weight: var(--fw-bold);
-  }
-
-  > div > button {
-    font-weight: var(--fw-bold);
-    font-size: var(--font-xs);
-    color: var(--purple-300);
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-  }
-`;
-
-const SelectBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  overflow-y: scroll;
-  background-color: white;
-
-  > div {
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  > div > span {
-    color: var(--black-800);
-    font-weight: var(--fw-bold);
-  }
-  > div > button {
-    background-color: transparent;
-    border: none;
-    font-size: var(--font-xl);
-    cursor: pointer;
-  }
-  > form {
-    padding: 5px 30px;
-  }
-
-  form > input {
-    margin-right: 10px;
-    accent-color: var(--purple-300);
-  }
-`;
-
-const SelectPlace = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  > li {
-    display: flex;
-  }
-
-  > li > button {
-    border: none;
-    background-color: transparent;
-    margin-right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    color: var(--black-600);
-  }
-`;
 export default DetailPlace;
