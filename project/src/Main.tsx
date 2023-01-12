@@ -1,5 +1,7 @@
-import styled from "styled-components";
-// import KakaoMap from "./components/KakaoMap";
+import styled from 'styled-components';
+import Login from './components/Login';
+import KakaoMap from './components/KakaoMap';
+
 import Place from "./pages/Place";
 import Post from "./pages/Post";
 
@@ -24,9 +26,10 @@ const Footer = styled.div`
 function Main() {
   return (
     <>
-      <Header>header헤더</Header>
-      <Body>{/* */}</Body>
-      <Footer>footer</Footer>
+    <Header>header헤더</Header>
+    <Body> 바디
+        </Body>
+    <Footer>footer</Footer>
     </>
   );
 }
