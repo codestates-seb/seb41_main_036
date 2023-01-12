@@ -12,11 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,15 +41,26 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String name = String.valueOf(oAuth2User.getAttributes().get("name"));
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         String picture = String.valueOf(oAuth2User.getAttributes().get("picture"));
-        savedMember(name, email, picture);
+        List<String> authorities = authorityUtils.createRoles(email);
 
+        savedMember(name, email, picture);
+        log.info("request : {}", request);
+        log.info("response : {}", response);
+        log.info("email : {}", email);
+        log.info("authorities : {}", authorities);
+
+        redirect(request, response, email, authorities);
+        log.info("request : {}", request);
+        log.info("response : {}", response);
+        log.info("email : {}", email);
+        log.info("authorities : {}", authorities);
 
     }
 
     private void savedMember(String name, String email, String picture) {
         OauthMemberDto oauthMemberDto = new OauthMemberDto(name, email, picture);
         Member member = mapper.oauthMemberDtoToMember(oauthMemberDto);
-        memberService.createMember(member);
+        memberService.createOauth2Member(member);
     }
 
     private void redirect(HttpServletRequest request,
@@ -53,10 +68,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                           String username,
                           List<String> authorities) throws IOException {
 
-        delegateAccessToken(username, authorities);
-        delegateRefreshToken(username);
-        createURI(accessToken, refreshToken).toString();
-
+        String accessToken = delegateAccessToken(username, authorities);
+        String refreshToken = delegateRefreshToken(username);
+        log.info("accessToken : {}", accessToken);
+        log.info("refreshToken : {}", refreshToken);
+        String uri = createURI(accessToken, refreshToken).toString();
+        log.info("uri : {}", uri);
+        getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     private String delegateAccessToken(String username, List<String> authorities) {
@@ -76,10 +94,31 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private String delegateRefreshToken(String username) {
         String subject = username;
-        Date expiration = jwtTokenizer.get
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        return refreshToken;
     }
 
+    private URI createURI(String accessToken, String refreshToken) {
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("access_token", accessToken);
+        queryParams.add("refresh_token", refreshToken);
+
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
+                .host("localhost")
+//                .port(8080)
+//                .port(80)
+                .path("/receive-token.html")
+//                .path("/token")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
 
 
-
+    }
 }

@@ -1,13 +1,12 @@
 package com.main36.picha.global.config;
 
 
+import com.main36.picha.domain.member.mapper.MemberMapper;
+import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.auth.filter.JwtAuthenticationFilter;
 
 import com.main36.picha.global.auth.filter.JwtVerificationFilter;
-import com.main36.picha.global.auth.handler.MemberAccessDeniedHandler;
-import com.main36.picha.global.auth.handler.MemberAuthenticationEntryPoint;
-import com.main36.picha.global.auth.handler.MemberAuthenticationFailureHandler;
-import com.main36.picha.global.auth.handler.MemberAuthenticationSuccessHandler;
+import com.main36.picha.global.auth.handler.*;
 import com.main36.picha.global.auth.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -33,6 +33,8 @@ import java.util.Arrays;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final MemberService memberService;
+    private final MemberMapper mapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,18 +61,11 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/users/delete/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
-                .oauth2Login(Customizer.withDefaults());
-
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, mapper))
+                );
 
         return http.build();
-    }
-
-    @Configuration
-    public class PasswordEncoderConfig {
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        }
     }
 
     @Bean
@@ -99,9 +94,8 @@ public class SecurityConfiguration {
 
             builder
                     .addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
-
-
 }
+
