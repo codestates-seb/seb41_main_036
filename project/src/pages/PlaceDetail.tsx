@@ -7,9 +7,7 @@ import { AiFillHeart, AiFillFacebook, AiOutlineTwitter, AiOutlineInstagram } fro
 import { IoMdShareAlt } from 'react-icons/io';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 // import PaginationComponent from "../components/PaginationComponent";
-
 import "../index.css"
-
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -106,9 +104,7 @@ const NavBar = styled.div`
       margin-right: 130px;
     }
   }
-
 `
-
 
 const Post = styled.div`
 background: #F8F9FA;
@@ -147,7 +143,6 @@ const PostHeader = styled.div`
     }
   }
 `
-
 
 const PostBox = styled.div`
   width: 85%;
@@ -192,9 +187,6 @@ const FixBoxVertical = styled.div<{inverted:boolean}>`
 const MarkerCount = styled.p`
   color:grey;
   font-size: 13px;
-  /* margin-top: 1px;
-  margin-bottom: 10px;
-  margin-left: 13px; */
   margin: 2px auto;
 `
 
@@ -230,8 +222,6 @@ const PlaceDetail = ():JSX.Element => {
       scrollRefContent?.current?.scrollIntoView({  behavior: 'smooth', block: 'start' });
     }
   }
-
-  
 
   return(
     <>
