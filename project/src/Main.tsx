@@ -1,6 +1,7 @@
 import styled from "styled-components";
-// import KakaoMap from "./components/KakaoMap";
+import KakaoMap from "./components/KakaoMap";
 import Place from "./pages/Place";
+import PlaceDetail from "./pages/PlaceDetail";
 
 
 const Header = styled.div`
@@ -21,13 +22,15 @@ const Footer = styled.div`
   height: 157px;
 `;
 
-function Main() {
+function Main(props:any) {
   return (
     <>
       <Header>header헤더</Header>
-      <Body>
+      {/* <Body>
         <Place />
-      </Body>
+      </Body> */}
+        <PlaceDetail></PlaceDetail>
+
       <Footer>footer</Footer>
     </>
   );
