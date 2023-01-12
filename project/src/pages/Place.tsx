@@ -132,7 +132,7 @@ const DetailPlace = () => {
       </LocationWrraper>
       <PlaceWrraper>
         <PlaceFilterContainer>
-          <span>총 {dummy.data.length}개의 명소</span>
+          <span>총 {dummy.place.length}개의 명소</span>
           <div>
             {filter.map((filter, idx) => (
               <FilterButton
@@ -146,7 +146,7 @@ const DetailPlace = () => {
           </div>
         </PlaceFilterContainer>
         <PlaceContainer>
-          {dummy.data.map((el) => (
+          {dummy.place.map((el) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img}></img>
               <PlaceInfo>
