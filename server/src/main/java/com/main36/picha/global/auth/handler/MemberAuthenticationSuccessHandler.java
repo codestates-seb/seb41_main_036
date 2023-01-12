@@ -38,10 +38,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", member.getEmail());
+        claims.put("username", member.getUsername());
         claims.put("roles", member.getRoles());
 
-        String subject = member.getEmail();
+        String subject = member.getUsername();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
