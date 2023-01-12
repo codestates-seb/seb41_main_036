@@ -6,11 +6,11 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { MdModeComment } from "react-icons/md";
 
-const DetailPlaceWrraper = styled.div`
+const PlaceWrapper = styled.div`
   display: flex;
 `;
 
-const LocationWrraper = styled.nav`
+const LocationWrapper = styled.nav`
   width: 20%;
   height: 90vh;
   border-radius: var(--br-m);
@@ -18,7 +18,7 @@ const LocationWrraper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PlaceWrraper = styled.div`
+const PlaceContainer = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -54,7 +54,7 @@ const FilterButton = styled.button`
   }
 `;
 
-const PlaceContainer = styled.div`
+const PlaceBox = styled.div`
   width: 100%;
   height: 90%;
   display: flex;
@@ -114,7 +114,7 @@ const PlaceInfo = styled.div`
     color: var(--black-600);
   }
 `;
-const DetailPlace = () => {
+const Place = () => {
   let filter: string[] = ["최신순", "추천순", "리뷰순"];
   const [onFilter, setOnFliter] = useState(0);
   const filtering = (idx: number) => {
@@ -122,11 +122,11 @@ const DetailPlace = () => {
   };
 
   return (
-    <DetailPlaceWrraper>
-      <LocationWrraper>
+    <PlaceWrapper>
+      <LocationWrapper>
         <LocationFilter />
-      </LocationWrraper>
-      <PlaceWrraper>
+      </LocationWrapper>
+      <PlaceContainer>
         <PlaceFilterContainer>
           <span>총 {dummy.place.length}개의 명소</span>
           <div>
@@ -141,7 +141,7 @@ const DetailPlace = () => {
             ))}
           </div>
         </PlaceFilterContainer>
-        <PlaceContainer>
+        <PlaceBox>
           {dummy.place.map((el) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img}></img>
@@ -160,88 +160,10 @@ const DetailPlace = () => {
               </PlaceInfo>
             </div>
           ))}
-        </PlaceContainer>
-      </PlaceWrraper>
-    </DetailPlaceWrraper>
+        </PlaceBox>
+      </PlaceContainer>
+    </PlaceWrapper>
   );
 };
 
-const SelectContainer = styled.div`
-  width: 100%;
-  border-bottom: 2px solid var(--black-500);
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  background-color: #ffffff;
-
-  > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    color: var(--black-800);
-    font-weight: var(--fw-bold);
-  }
-
-  > div > button {
-    font-weight: var(--fw-bold);
-    font-size: var(--font-xs);
-    color: var(--purple-300);
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-  }
-`;
-
-const SelectBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  overflow-y: scroll;
-  background-color: white;
-
-  > div {
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  > div > span {
-    color: var(--black-800);
-    font-weight: var(--fw-bold);
-  }
-  > div > button {
-    background-color: transparent;
-    border: none;
-    font-size: var(--font-xl);
-    cursor: pointer;
-  }
-  > form {
-    padding: 5px 30px;
-  }
-
-  form > input {
-    margin-right: 10px;
-    accent-color: var(--purple-300);
-  }
-`;
-
-const SelectPlace = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  > li {
-    display: flex;
-  }
-
-  > li > button {
-    border: none;
-    background-color: transparent;
-    margin-right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    color: var(--black-600);
-  }
-`;
-export default DetailPlace;
+export default Place;
