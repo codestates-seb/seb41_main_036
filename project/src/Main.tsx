@@ -1,6 +1,7 @@
 import styled from "styled-components";
 // import KakaoMap from "./components/KakaoMap";
-import DetailPlace from "./pages/DetailPlace";
+import Place from "./pages/Place";
+
 
 const Header = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ function Main() {
     <>
       <Header>header헤더</Header>
       <Body>
-        <DetailPlace />
+        <Place />
       </Body>
       <Footer>footer</Footer>
     </>
