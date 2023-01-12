@@ -3,7 +3,7 @@ package com.main36.picha.global.auth.userdetails;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.global.exception.BusinessLogicException;
-import com.main36.picha.global.exception.ExceptionCode;
+
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.common.reflection.XMember;

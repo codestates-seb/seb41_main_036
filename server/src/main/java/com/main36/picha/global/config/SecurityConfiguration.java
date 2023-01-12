@@ -58,7 +58,9 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("USER", "ADMIN")
                         .antMatchers(HttpMethod.DELETE, "/users/delete/**").hasRole("USER")
                         .anyRequest().permitAll()
-                );
+                )
+                .oauth2Login(Customizer.withDefaults());
+
 
         return http.build();
     }
