@@ -1,11 +1,15 @@
 package com.main36.picha.global.response;
 
+import com.google.gson.Gson;
 import com.main36.picha.global.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +51,8 @@ public class ErrorResponse {
     public static ErrorResponse of(HttpStatus httpStatus, String message) {
         return new ErrorResponse(httpStatus.value(), message);
     }
+
+
 
     @Getter
     public static class FieldError {
