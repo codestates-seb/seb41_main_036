@@ -26,8 +26,7 @@ function Main () {
   return(
     <>
     <Header>header헤더</Header>
-    <Body>
-    </Body>
+    <Body>    </Body>
     <Footer>footer</Footer>
     </>
   )

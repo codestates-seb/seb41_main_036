@@ -14,7 +14,7 @@ interface OverlayProps {
     overlay: boolean;
 }
 
-const Wraoper = styled.section`
+const Wrapper = styled.section`
     width: 100%;
     height: 100%;
     display: flex;
@@ -120,15 +120,6 @@ const GButton = styled.button`
         background-color: var(--purple-400);
     }
 `
-// const InputPadding = styled.label`
-//     width: 30px;
-//     height: 45px;
-//     padding-bottom: 15px;
-//     padding-left: 15px;
-//     border-bottom: 1px solid var(--black-400);
-//     color: var(--black-500);
-    
-// `
 const InputStyle = styled.input`
     width: 62%;
     height: 45px;   
@@ -136,6 +127,7 @@ const InputStyle = styled.input`
     border-bottom: 1px solid var(--black-400);
     padding-top: 10px;
     padding-left: 10px;
+    font-size: 20px;
     &:focus {
         outline: none;
         border-bottom: 1px solid var(--black-600);
@@ -146,7 +138,17 @@ const TextStyle = styled.div<TextProps>`
     color: ${(props)=>props.color};
     font-weight: ${(props)=>props.fontweight};
     padding-top: 10px;
+    /* transform: translateX(-50%); */
 `
+const ErrMsg = styled.div<TextProps>`
+    font-size: ${(props) => props.fontSize};
+    color: ${(props)=>props.color};
+    font-weight: ${(props)=>props.fontweight};
+    padding-top: 10px;
+    align-self: flex-start;
+    padding-left: 20%;
+`
+
 const CustomPadding = styled.div<PaddingProps>`
     padding: ${(props)=>props.padding};
 `
@@ -234,7 +236,7 @@ const Login  =  () => {
 
 
     return (
-        <Wraoper>
+        <Wrapper>
             {/* <div>
             <InputPadding>이메일</InputPadding>
             <InputStyle placeholder='이메일'></InputStyle>
@@ -246,13 +248,14 @@ const Login  =  () => {
             <TextStyle color="#6154F8" fontSize='22px' fontweight='bold'>SNS 계정으로 로그인</TextStyle>
             <CustomPadding padding='30px 0px 0px 0px'></CustomPadding>
             <InputStyle placeholder='이메일' onChange={handleLoginEmailChange}></InputStyle>
+
             {loginemailErr ? (
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</TextStyle>
-                ): <></>}
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</ErrMsg>
+                ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <InputStyle placeholder='비밀번호' onChange={handleLoginPasswordChange} type="password"></InputStyle>
             {loginpasswordErr ?(
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</TextStyle>
-            ): <></>}
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</ErrMsg>
+                ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <CustomPadding padding='50px 0px 0px 0px'></CustomPadding>
             <LoginButton2>로그인</LoginButton2>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
@@ -265,23 +268,25 @@ const Login  =  () => {
             <TextStyle color="#6154F8" fontSize='22px' fontweight='bold'>SNS 계정으로 가입하기</TextStyle>
             <InputStyle placeholder='이메일' onChange={handleSignEmailChange}></InputStyle>
             {signemailErr ? (
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</TextStyle>
-                ): <></>}
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</ErrMsg>
+                ):  <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <InputStyle placeholder='비밀번호' onChange={handleSignPasswordChange} type="password"></InputStyle>
             {signpasswordErr ?(
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</TextStyle>
-            ): <></>}
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</ErrMsg>
+            ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <InputStyle placeholder='비밀번호확인' onChange={handlePasswordConfirm} type="password"></InputStyle>
-            {passwordConfirm === signpassword ? <></> :(
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>비밀번호가 다릅니다.</TextStyle>
+            {passwordConfirm === signpassword ?  <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle> :(
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>비밀번호가 다릅니다.</ErrMsg>
             )}
             <InputStyle placeholder='전화번호(-를 포함해서 입력해주세요)' onChange={handlePhoneChange}></InputStyle>
             {phonenumberErr ? (
-                <TextStyle color="black" fontSize='18px' fontweight='normal'>올바른 전화번호 형식이 아닙니다.<div className=""></div></TextStyle>
-            ):<></>}
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 전화번호 형식이 아닙니다.<div className=""></div></ErrMsg>
+            ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <InputStyle placeholder='주소'></InputStyle>
+            <TextStyle color="white" fontSize='18px' fontweight='normal'>|</TextStyle>
             {/* <TextStyle color="black" fontSize='18px' fontweight='normal'>서울시 OO구 형식이 아닙니다.</TextStyle> */}
             <InputStyle placeholder='닉네임'></InputStyle>
+            <TextStyle color="white" fontSize='18px' fontweight='normal'>|</TextStyle>
             {/* <TextStyle color="black" fontSize='18px' fontweight='normal'>3글자 이상 입력해주세요.<div className=""></div></TextStyle> */}
             <CustomPadding padding='50px 0px 0px 0px'></CustomPadding>
             <LoginButton2>회원가입</LoginButton2>
@@ -314,7 +319,7 @@ const Login  =  () => {
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
             <LoginButton onClick={onClickBtn}>회원가입</LoginButton>
         </Rightoverlay>
-    </Wraoper>
+    </Wrapper>
     );
 }
 
