@@ -4,11 +4,11 @@ import LocationFilter from "../components/LocationFilter";
 import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye } from "react-icons/ai";
 
-const DetailPostWrraper = styled.div`
+const DetailPostWrapper = styled.div`
   display: flex;
 `;
 
-const LocationWrraper = styled.nav`
+const LocationWrapper = styled.nav`
   width: 17%;
   height: 90vh;
   border-radius: var(--br-m);
@@ -16,7 +16,7 @@ const LocationWrraper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PostWrraper = styled.div`
+const PostWrapper = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -150,11 +150,11 @@ const Post = () => {
   };
 
   return (
-    <DetailPostWrraper>
-      <LocationWrraper>
+    <DetailPostWrapper>
+      <LocationWrapper>
         <LocationFilter />
-      </LocationWrraper>
-      <PostWrraper>
+      </LocationWrapper>
+      <PostWrapper>
         <PostFilterContainer>
           <span>총 {dummy.post.length}개의 방문 리뷰</span>
           <div>
@@ -196,8 +196,8 @@ const Post = () => {
             </div>
           ))}
         </PostContainer>
-      </PostWrraper>
-    </DetailPostWrraper>
+      </PostWrapper>
+    </DetailPostWrapper>
   );
 };
 
