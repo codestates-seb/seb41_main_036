@@ -33,6 +33,13 @@ spring:
             scope:
               - email
               - profile
+server:
+  servlet:
+    encoding:
+      force-response: true
+mail:
+  address:
+    admin: admin@gmail.com
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
