@@ -6,11 +6,11 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { MdModeComment } from "react-icons/md";
 
-const DetailPlaceWrraper = styled.div`
+const PlaceWrapper = styled.div`
   display: flex;
 `;
 
-const LocationWrraper = styled.nav`
+const LocationWrapper = styled.nav`
   width: 20%;
   height: 90vh;
   border-radius: var(--br-m);
@@ -18,7 +18,7 @@ const LocationWrraper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PlaceWrapper = styled.div`
+const PlaceContainer = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -54,7 +54,7 @@ const FilterButton = styled.button`
   }
 `;
 
-const PlaceContainer = styled.div`
+const PlaceBox = styled.div`
   width: 100%;
   height: 90%;
   display: flex;
@@ -114,7 +114,7 @@ const PlaceInfo = styled.div`
     color: var(--black-600);
   }
 `;
-const DetailPlace = () => {
+const Place = () => {
   let filter: string[] = ["최신순", "추천순", "리뷰순"];
   const [onFilter, setOnFliter] = useState(0);
   const filtering = (idx: number) => {
@@ -122,11 +122,11 @@ const DetailPlace = () => {
   };
 
   return (
-    <DetailPlaceWrapper>
+    <PlaceWrapper>
       <LocationWrapper>
         <LocationFilter />
       </LocationWrapper>
-      <PlaceWrapper>
+      <PlaceContainer>
         <PlaceFilterContainer>
           <span>총 {dummy.place.length}개의 명소</span>
           <div>
@@ -141,7 +141,7 @@ const DetailPlace = () => {
             ))}
           </div>
         </PlaceFilterContainer>
-        <PlaceContainer>
+        <PlaceBox>
           {dummy.place.map((el) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img}></img>
@@ -160,10 +160,10 @@ const DetailPlace = () => {
               </PlaceInfo>
             </div>
           ))}
-        </PlaceContainer>
-      </PlaceWrapper>
-    </DetailPlaceWrapper>
+        </PlaceBox>
+      </PlaceContainer>
+    </PlaceWrapper>
   );
 };
 
-export default DetailPlace;
+export default Place;
