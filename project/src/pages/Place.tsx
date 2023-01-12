@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-  MdModeComment,
-} from "react-icons/md";
-import { RiCloseLine } from "react-icons/ri";
+import { useState } from "react";
 import dummy from "../dummyData.json";
 import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import styled from "styled-components";
+import LocationFilter from "../components/LocationFilter";
+import { MdModeComment } from "react-icons/md";
 
 const DetailPlaceWrraper = styled.div`
   display: flex;
@@ -132,7 +128,7 @@ const DetailPlace = () => {
       </LocationWrraper>
       <PlaceWrraper>
         <PlaceFilterContainer>
-          <span>총 {dummy.data.length}개의 명소</span>
+          <span>총 {dummy.place.length}개의 명소</span>
           <div>
             {filter.map((filter, idx) => (
               <FilterButton
@@ -146,7 +142,7 @@ const DetailPlace = () => {
           </div>
         </PlaceFilterContainer>
         <PlaceContainer>
-          {dummy.data.map((el) => (
+          {dummy.place.map((el) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img}></img>
               <PlaceInfo>
@@ -248,96 +244,4 @@ const SelectPlace = styled.ul`
     color: var(--black-600);
   }
 `;
-function LocationFilter() {
-  const [checkedList, setCheckedList] = React.useState([] as string[]);
-  const [openPlace, setOpenPlace] = useState(true);
-  const onCheckItem = (checked: boolean, item: string) => {
-    if (checked) return setCheckedList([...checkedList, item]);
-    else return setCheckedList(checkedList.filter((el) => el !== item));
-  };
-  const onRemove = (item: string) => {
-    setCheckedList(checkedList.filter((el) => el !== item));
-  };
-  const allRemove = () => {
-    setCheckedList([]);
-  };
-  let place = [
-    { id: "1", place: "강남구" },
-    { id: "2", place: "강동구" },
-    { id: "3", place: "강북구" },
-    { id: "4", place: "강서구" },
-    { id: "5", place: "관악구" },
-    { id: "6", place: "광진구" },
-    { id: "7", place: "구로구" },
-    { id: "8", place: "금천구" },
-    { id: "9", place: "노원구" },
-    { id: "10", place: "도봉구" },
-    { id: "11", place: "동대문구" },
-    { id: "12", place: "동작구" },
-    { id: "13", place: "마포구" },
-    { id: "14", place: "서대문구" },
-    { id: "15", place: "서초구" },
-    { id: "16", place: "성동구" },
-    { id: "17", place: "성북구" },
-    { id: "18", place: "성송파구" },
-    { id: "19", place: "양천구" },
-    { id: "20", place: "영등포구" },
-    { id: "21", place: "용산구" },
-    { id: "22", place: "은평구" },
-    { id: "23", place: "종로구" },
-    { id: "24", place: "중구" },
-    { id: "25", place: "중량구" },
-  ];
-
-  return (
-    <>
-      <SelectContainer>
-        <div>
-          <span>선택한 지역</span>
-          <button onClick={allRemove}>초기화</button>
-        </div>
-        {checkedList &&
-          checkedList.map((item, idx) => (
-            <SelectPlace key={idx}>
-              <li>
-                <button onClick={() => onRemove(item)}>
-                  <RiCloseLine />
-                </button>
-                {item}
-              </li>
-            </SelectPlace>
-          ))}
-      </SelectContainer>
-      <SelectBox>
-        <div>
-          <span>지역</span>
-          <button onClick={() => setOpenPlace(!openPlace)}>
-            {openPlace ? (
-              <MdOutlineKeyboardArrowUp />
-            ) : (
-              <MdOutlineKeyboardArrowDown />
-            )}
-          </button>
-        </div>
-        {openPlace
-          ? place.map((el) => (
-              <form key={el.id}>
-                <input
-                  className="hi"
-                  type="checkbox"
-                  id={el.id}
-                  value={el.place}
-                  checked={checkedList.includes(el.place) ? true : false}
-                  onChange={(e) =>
-                    onCheckItem(e.target.checked, e.target.value)
-                  }
-                ></input>
-                <label htmlFor={el.id}>{el.place}</label>
-              </form>
-            ))
-          : null}
-      </SelectBox>
-    </>
-  );
-}
 export default DetailPlace;
