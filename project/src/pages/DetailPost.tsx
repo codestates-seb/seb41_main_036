@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 
-const DetailPostWrraper = styled.div`
+const DetailPostWrapper = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
@@ -57,7 +57,7 @@ const DetailPostInfo = styled.div`
 `;
 const DetailPost = () => {
   return (
-    <DetailPostWrraper>
+    <DetailPostWrapper>
       <DetailPostTitle>
         <h2 className="post-title">
           이곳에 제목을 적어주세요 상자 크기를 화면보다 많이 작게 설정하고
@@ -82,7 +82,7 @@ const DetailPost = () => {
           <span>2021.01.01</span>
         </div>
       </DetailPostInfo>
-    </DetailPostWrraper>
+    </DetailPostWrapper>
   );
 };
 
