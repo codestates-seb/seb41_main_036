@@ -1,5 +1,5 @@
 {
-  "data": [
+  "place": [
     {
       "title": "봉은사",
       "locationId": "1",
@@ -107,6 +107,134 @@
       "bookmark": "1200",
       "reviewCount": "832",
       "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5360%2F2022%2F03%2F16%2F0000022534_001_20220316210004392.jpg&type=sc960_832"
+    }
+  ],
+  "post": [
+    {
+      "postId": "1",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "2",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "3",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "4",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "5",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "6",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "7",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "8",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
+    },
+    {
+      "postId": "9",
+      "username": "minse",
+      "userImg": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDAzMThfMjY0%2FMDAxNTg0NDU3NzUyMjc1.cxYSY2Kx668jZ4VCXO4Q871Iqsm6kb7FCxUex1y63Gwg.F6_goPApNHS66AxzyTcEeIkOkUwHbfqYgZV19oSPMvEg.PNG%2F7.PNG&type=sc960_832",
+      "title": "성지순례 왔습니다.",
+      "locationId": "1",
+      "createdAt": "2022년 01월 01일",
+      "content": "핫플 다녀온 썰 풉니다.",
+      "tags": ["핫플", "유니크", "성지순례"],
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2F20130320_139%2Fjery0907_1363706139733syTFJ_JPEG%2F662582642.jpeg&type=sc960_832",
+      "viewCount": "356",
+      "recommend": "212",
+      "memberId": "1"
     }
   ]
 }
