@@ -4,7 +4,7 @@ import LocationFilter from "../components/LocationFilter";
 import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye } from "react-icons/ai";
 
-const DetailPostWrapper = styled.div`
+const PostWrapper = styled.div`
   display: flex;
 `;
 
@@ -16,7 +16,7 @@ const LocationWrapper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PostWrapper = styled.div`
+const PostContainer = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -52,7 +52,7 @@ const FilterButton = styled.button`
   }
 `;
 
-const PostContainer = styled.div`
+const PostBox = styled.div`
   width: 100%;
   height: 90%;
   display: flex;
@@ -150,11 +150,11 @@ const Post = () => {
   };
 
   return (
-    <DetailPostWrapper>
+    <PostWrapper>
       <LocationWrapper>
         <LocationFilter />
       </LocationWrapper>
-      <PostWrapper>
+      <PostContainer>
         <PostFilterContainer>
           <span>총 {dummy.post.length}개의 방문 리뷰</span>
           <div>
@@ -169,7 +169,7 @@ const Post = () => {
             ))}
           </div>
         </PostFilterContainer>
-        <PostContainer>
+        <PostBox>
           {dummy.post.map((el) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img} />
@@ -195,9 +195,9 @@ const Post = () => {
               </PostInfo>
             </div>
           ))}
-        </PostContainer>
-      </PostWrapper>
-    </DetailPostWrapper>
+        </PostBox>
+      </PostContainer>
+    </PostWrapper>
   );
 };
 
