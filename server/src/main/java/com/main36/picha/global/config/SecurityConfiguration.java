@@ -1,5 +1,7 @@
 package com.main36.picha.global.config;
 
+import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,7 +16,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+    private final JwtTokenizer jwtTokenizer;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -25,15 +29,12 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
+                .apply(new CustomFilterConfigure(jwtTokenizer))
+                .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll());
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
