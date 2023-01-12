@@ -1,30 +1,28 @@
 import { useState } from "react";
-import dummy from "../dummyData.json";
-import { AiFillHeart } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-import { MdModeComment } from "react-icons/md";
+import dummy from "../dummyData.json";
+import { AiFillHeart, AiFillEye } from "react-icons/ai";
 
-const DetailPlaceWrraper = styled.div`
+const DetailPostWrapper = styled.div`
   display: flex;
 `;
 
-const LocationWrraper = styled.nav`
-  width: 20%;
+const LocationWrapper = styled.nav`
+  width: 17%;
   height: 90vh;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
 `;
 
-const PlaceWrapper = styled.div`
+const PostWrapper = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
 `;
 
-const PlaceFilterContainer = styled.div`
+const PostFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,7 +52,7 @@ const FilterButton = styled.button`
   }
 `;
 
-const PlaceContainer = styled.div`
+const PostContainer = styled.div`
   width: 100%;
   height: 90%;
   display: flex;
@@ -63,40 +61,47 @@ const PlaceContainer = styled.div`
 
   > div {
     min-width: 30%;
-    height: 30%;
+    height: 32%;
     border-radius: var(--br-s);
     background-color: white;
   }
 
   > div > img {
     width: 100%;
-    height: 70%;
+    height: 65%;
     border-radius: var(--br-s);
   }
 `;
-const PlaceInfo = styled.div`
+const PostInfo = styled.div`
   font-size: var(--font-base);
   font-weight: var(--fw-bold);
   display: flex;
   flex-direction: column;
 
-  > div {
-    padding: 3px;
+  .user-img {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--br-l);
   }
-  .info-title {
+  > div {
+    padding: 3px 10px;
+  }
+  .info-header {
     display: flex;
     justify-content: space-between;
   }
 
-  .info-bookmark-recommend {
+  .info-view-recommend {
     display: flex;
     align-items: center;
+    padding-bottom: 10px;
     font-size: var(--font-xs);
     font-weight: var(--fw-midium);
   }
 
-  .bookmark {
+  .view {
     color: var(--black-800);
+    font-size: var(--font-base);
   }
 
   .recommend {
@@ -110,11 +115,34 @@ const PlaceInfo = styled.div`
     font-size: var(--font-xs);
     font-weight: var(--fw-reg);
   }
+
   .reviewCount {
     color: var(--black-600);
   }
+
+  .info-user {
+    display: flex;
+    align-items: center;
+  }
+
+  .info-username-createdAt {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    font-size: var(--font-base);
+  }
+
+  .createdAt {
+    font-size: var(--font-xxs);
+    color: var(--black-600);
+  }
+
+  .info-title {
+    font-size: var(--font-xs);
+    color: var(--black-700);
+  }
 `;
-const DetailPlace = () => {
+const Post = () => {
   let filter: string[] = ["최신순", "추천순", "리뷰순"];
   const [onFilter, setOnFliter] = useState(0);
   const filtering = (idx: number) => {
@@ -122,13 +150,13 @@ const DetailPlace = () => {
   };
 
   return (
-    <DetailPlaceWrapper>
+    <DetailPostWrapper>
       <LocationWrapper>
         <LocationFilter />
       </LocationWrapper>
-      <PlaceWrapper>
-        <PlaceFilterContainer>
-          <span>총 {dummy.place.length}개의 명소</span>
+      <PostWrapper>
+        <PostFilterContainer>
+          <span>총 {dummy.post.length}개의 방문 리뷰</span>
           <div>
             {filter.map((filter, idx) => (
               <FilterButton
@@ -140,30 +168,37 @@ const DetailPlace = () => {
               </FilterButton>
             ))}
           </div>
-        </PlaceFilterContainer>
-        <PlaceContainer>
-          {dummy.place.map((el) => (
+        </PostFilterContainer>
+        <PostContainer>
+          {dummy.post.map((el) => (
             <div key={el.locationId}>
-              <img alt={el.title} src={el.img}></img>
-              <PlaceInfo>
-                <div className="info-title">
-                  {el.title}
-                  <div className="info-bookmark-recommend">
-                    <BsFillBookmarkFill className="bookmark" /> {el.bookmark}
-                    <AiFillHeart className="recommend" /> {el.recommend}
+              <img alt={el.title} src={el.img} />
+              <PostInfo>
+                <div className="info-header">
+                  <div className="info-user">
+                    <img alt={el.title} src={el.userImg} className="user-img" />
+                    <div className="info-username-createdAt">
+                      <span className="username">{el.username}</span>
+                      <span className="createdAt">{el.createdAt}</span>
+                    </div>
+                  </div>
+                  <div className="info-view-recommend">
+                    <AiFillEye className="view" />
+                    &nbsp;
+                    {el.viewCount}
+                    <AiFillHeart className="recommend" />
+                    &nbsp;
+                    {el.recommend}
                   </div>
                 </div>
-                <div className="info-reviewCount">
-                  <MdModeComment className="reviewCount" /> 포스트{" "}
-                  {el.reviewCount}
-                </div>
-              </PlaceInfo>
+                <div className="info-title">{el.title}</div>
+              </PostInfo>
             </div>
           ))}
-        </PlaceContainer>
-      </PlaceWrapper>
-    </DetailPlaceWrapper>
+        </PostContainer>
+      </PostWrapper>
+    </DetailPostWrapper>
   );
 };
 
-export default DetailPlace;
+export default Post;
