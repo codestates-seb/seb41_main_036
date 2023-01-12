@@ -10,11 +10,11 @@ import dummy from "../dummyData.json";
 import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 
-const DetailPlaceWrraper = styled.div`
+const DetailPlaceWrapper = styled.div`
   display: flex;
 `;
 
-const LocationWrraper = styled.nav`
+const LocationWrapper = styled.nav`
   width: 20%;
   height: 90vh;
   border-radius: var(--br-m);
@@ -22,7 +22,7 @@ const LocationWrraper = styled.nav`
   overflow-y: scroll;
 `;
 
-const PlaceWrraper = styled.div`
+const PlaceWrapper = styled.div`
   margin: 0 20px;
   width: 80%;
   height: 90vh;
@@ -126,11 +126,11 @@ const DetailPlace = () => {
   };
 
   return (
-    <DetailPlaceWrraper>
-      <LocationWrraper>
+    <DetailPlaceWrapper>
+      <LocationWrapper>
         <LocationFilter />
-      </LocationWrraper>
-      <PlaceWrraper>
+      </LocationWrapper>
+      <PlaceWrapper>
         <PlaceFilterContainer>
           <span>총 {dummy.place.length}개의 명소</span>
           <div>
@@ -165,8 +165,8 @@ const DetailPlace = () => {
             </div>
           ))}
         </PlaceContainer>
-      </PlaceWrraper>
-    </DetailPlaceWrraper>
+      </PlaceWrapper>
+    </DetailPlaceWrapper>
   );
 };
 
