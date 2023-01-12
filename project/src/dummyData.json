@@ -1,0 +1,112 @@
+{
+  "place": [
+    {
+      "title": "봉은사",
+      "locationId": "1",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 봉은사로 531 봉은사",
+      "info": "대한불교조계종 직할교구 소속으로, 조계사의 말사(末寺)이다.",
+      "region": "강남구",
+      "recommend": "100",
+      "bookmark": "80",
+      "reviewCount": "30",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA0MTdfMTM0%2FMDAxNjUwMTI5MjcxODEy.HEdbcfOSe6QuCIzfiAgxa-0-qvaKEHgYE2G36Svsdvsg.zHITymVyieOHhazWy6zW0jCwbsahT8AIR8rLhTZiytEg.JPEG.masaki1985%2FIMG_1363-HDR_size.jpg&type=sc960_832"
+    },
+    {
+      "title": "도산공원",
+      "locationId": "2",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 도산대로45길 20",
+      "info": "도산 공원(島山公園)은 서울 강남구 신사동에 있는 공원이다. 1971년 착공하여 1973년에 개원하였다. 공원 이름은 안창호 선생의 아호(我號)인 도산(島山)에서 따온 것으로 안창호 선생의 애국심과 교육정신을 기념하는 뜻으로 붙였다.",
+      "region": "강남구",
+      "recommend": "40",
+      "bookmark": "10",
+      "reviewCount": "20",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA5MDhfMTgx%2FMDAxNjYyNjMxMzM0NjIy.upnk-b9odHKgt5v4AwoV5GFDTVA8xC4SDTEAipVMKKYg.sdzrKO7Up8MaAlAsYdoQql7PB9rwIaZGB-hFtuxxPR4g.JPEG.richrule%2FDSCF9026.JPG&type=sc960_832"
+    },
+    {
+      "title": "호림박물관",
+      "locationId": "3",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 도산대로 317",
+      "info": "호림박물관 신사분관은 총 세 개의 건물로 이루어져 있으며, 그중 5층 규모의 박물관동 2, 3, 4층에서 고미술품을 비롯한 현대 작가들의 기획전을 전시하고 있다. 최근에는 다양한 장르를 아우르는 특별전시전도 제공하고 있다. 매월 마지막 주 목요일에 무료 관람을 시행하고 있다.",
+      "region": "강남구",
+      "recommend": "500",
+      "bookmark": "232",
+      "reviewCount": "73",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20090730_263%2Fblue4uu_1248955083336BtX45_jpg%2Fimg_0107_blue4uu.jpg&type=sc960_832"
+    },
+    {
+      "title": "송은",
+      "locationId": "4",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 도산대로 441",
+      "info": "송은은 미술계 젊은 인재들의 전시와 연구 활동을 지원하고자 1989년 설립된 비영리 문화재단으로 다양한 비영리 전시공간을 운영하며 국내외 작가들이 할동할 수 있는 무대를 마련해왔다.",
+      "region": "강남구",
+      "recommend": "654",
+      "bookmark": "433",
+      "reviewCount": "132",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMDZfNTIg%2FMDAxNjM4NzI0Nzk5Njk5.OWOUtq6wp3FSvUK6Q7xflQWeaUJhZ3GxUmFUeXkc6A4g.4tilv2tOojc1UCMYzHMzM2H8rBbM8Zy5Z98CTdjsGVwg.JPEG.minyx%2FIMG_0712.JPG&type=sc960_832"
+    },
+    {
+      "title": "선정릉",
+      "locationId": "5",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 선릉로100길 1",
+      "info": "선릉은 서울 시민들에게 가장 귀에 익은 능이다. 지하철 선릉역이 지나는 까닭이다. 임금의 능이기도 하지만 점심시간 전후로는 직장인들의 공원 역할도 한다. 그래서 사적 제199호인 선릉은 삼릉공원이라고도 불린다. 선릉은 조선조 9대 임금인 성종의 능과 계비인 정현왕후의 능을 말한다.",
+      "region": "강남구",
+      "recommend": "51",
+      "bookmark": "42",
+      "reviewCount": "36",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA5MTFfMjk5%2FMDAxNjYyODg5ODcwOTQ1.SHYAhPVn7m2DDvcdrtq7RY3DHGTqdU2N2LXvt_bHtT8g.dca-ZTM8bz6pxqnBGThiB2ac4uZ-At8ai1iBm8KV8WYg.JPEG.tjrrms8703%2FIMG_4159.jpg&type=sc960_832"
+    },
+    {
+      "title": "노블레스 컬렉션",
+      "locationId": "6",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강남구 선릉로162길 13",
+      "info": "노블레스 컬렉션은 `Bring Art to Life`를 슬로건으로 생활 속 창의적이며 수준 높은 예술을 전달하기 위해 오픈한 아트스페이스이다.",
+      "region": "강남구",
+      "recommend": "233",
+      "bookmark": "212",
+      "reviewCount": "156",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAxMDdfMTE4%2FMDAxNjczMDkxMjIyMjEx.gw5xLhAXSLfnmSXpPEsb_4Xfub-v-PtQi-sqXCRs2NIg.Hw8yLpyVkyG_LWR9upD9KMUsaSXH_Swkkxz7tp1fPo0g.PNG.feiloveu%2F20230107%25A3%25DF203330%25A3%25DF0000.png&type=sc960_832"
+    },
+    {
+      "title": "대한불교조계종 도선사",
+      "locationId": "7",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강북구 삼양로173길 504",
+      "info": "도선사(道詵寺)는 서울특별시 강북구 우이동에 위치한 사찰이다. 신라 경문왕 2년 도선(道詵)이 세운 것으로 알려져 있다.",
+      "region": "강북구",
+      "recommend": "632",
+      "bookmark": "453",
+      "reviewCount": "398",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2Fdata27%2F2007%2F6%2F16%2F34%2F1_20_39165_1.jpg&type=sc960_832"
+    },
+    {
+      "title": "우이동계곡",
+      "locationId": "8",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강북구 삼양로159길 60-7",
+      "info": "우이동은 도봉산과 북한산 사이의 계곡에 있는 시민의 휴식처로 우이동 입구에서 왼쪽은 백운대로 오르는 등산길이며, 도선사를 경유하여 인수봉 정상을 오를 수 있다.",
+      "region": "강북구",
+      "recommend": "100",
+      "bookmark": "99",
+      "reviewCount": "55",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA4MjRfNTAg%2FMDAxNjYxMzE1ODM5MjM4.KeSdeX0mPvf3bvpw1nc1pOdvBWvTjWkf58ZjYsjLijMg.OG1ZpEx0i0oi9i5H-dl6qsz1m2Yfi3-uKtQFQw6uTxsg.PNG.bingsuyablog%2F%25BF%25EC%25C0%25CC%25B5%25BF%25B0%25E8%25B0%25EE.png&type=sc960_832"
+    },
+    {
+      "title": "서울물재생공원",
+      "locationId": "9",
+      "createdAt": "2023-01-11 21:02:49.00",
+      "location": "서울 강서구 양천로 201",
+      "info": "서울물재생체험관은 물재생 과정을 직접 보고, 듣고, 체험할 수 있는 공간이다. 우리가 사용한 물이 어떻게 깨끗하게 되는지 차근차근 알아보고, 물재생과 물재생 시설의 소중함을 느껴볼 수 있다.",
+      "region": "강서구",
+      "recommend": "1232",
+      "bookmark": "1200",
+      "reviewCount": "832",
+      "img": "https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5360%2F2022%2F03%2F16%2F0000022534_001_20220316210004392.jpg&type=sc960_832"
+    }
+  ]
+}
