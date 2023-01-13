@@ -33,6 +33,13 @@ spring:
             scope:
               - email
               - profile
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+
 server:
   servlet:
     encoding:
