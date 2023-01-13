@@ -11,7 +11,9 @@ import java.util.List;
 @Data
 @Builder
 public class PostResponseDto {
+    private Long memberId;
     private Long postId;
+    private String attractionName;
     private String postTitle;
     private String attractionAddress;
     private String postContent;

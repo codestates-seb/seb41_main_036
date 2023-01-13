@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class SignUpResponseDto {
 
     private Long memberId;
-    
+
     private String email;
 
     private String phoneNumber;

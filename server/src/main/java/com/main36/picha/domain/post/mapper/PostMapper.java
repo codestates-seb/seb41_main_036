@@ -21,7 +21,11 @@ public interface PostMapper {
     @Mapping(target = "likes", constant = "0")
     Post postDtoToPost(PostDto postDto);
 
+    @Mapping(target= "memberId", expression = "java(post.getMember().getMemberId())")
+    @Mapping(target= "attractionAddress", expression = "java(post.getAttraction().getAttractionAddress())")
+    @Mapping(target= "attractionName", expression = "java(post.getAttraction().getAttractionName())")
     PostResponseDto postToPostResponseDto(Post post);
+
     @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
     @Mapping(target = "username", expression = "java(post.getMember().getUsername())")
     @Mapping(target = "userImage", expression = "java(post.getMember().getPicture())")
@@ -42,7 +46,6 @@ public interface PostMapper {
                             .content(post.getPostContent())
                             .views(post.getViews())
                             .likes(post.getLikes())
-                            .memberId(post.getMember().getMemberId())
                             .username(post.getMember().getUsername())
                             .picture(post.getMember().getPicture())
                             .comments(post.getComments().stream()

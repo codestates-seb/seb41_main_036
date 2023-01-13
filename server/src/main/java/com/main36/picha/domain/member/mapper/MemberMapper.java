@@ -33,7 +33,6 @@ public interface MemberMapper  {
     @Mapping(target = "password", constant = "")
     @Mapping(target = "phoneNumber", constant = "")
     @Mapping(target = "address", constant = "")
-    @Mapping(target = "point", constant = "0")
     @Mapping(target = "memberTitle", constant = "")
     Member oauthMemberDtoToMember(OauthMemberDto oauthMemberDto);
 

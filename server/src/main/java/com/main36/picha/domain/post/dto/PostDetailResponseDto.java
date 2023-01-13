@@ -19,7 +19,6 @@ public class PostDetailResponseDto {
     //    private List<HashTag> hashTagList;
     private int views;
     private int likes;
-    private Long memberId;
     private String username;
     private String picture;
     private List<CommentResponseDto> comments;

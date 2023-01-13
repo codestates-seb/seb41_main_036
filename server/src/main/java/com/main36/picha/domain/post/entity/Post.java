@@ -5,22 +5,18 @@ import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.comment.entity.Comment;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.global.audit.Auditable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Post extends Auditable {
-    //TODO : length 지정 생각해보기
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
