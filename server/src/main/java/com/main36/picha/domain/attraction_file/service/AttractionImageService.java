@@ -63,8 +63,9 @@ public class AttractionImageService {
 
     public void deleteAttractionImage(long attractionImageId){
         AttractionImage findattractionImage = findVerifiedAttractionImage(attractionImageId);
-        String filename = findattractionImage.getAttractionImageFileName();
-        s3Service.delete(filename);
+        String fileName = findattractionImage.getAttractionImageFileName();
+        String filePath = dirname+ "/" + fileName;
+        s3Service.delete(filePath);
         attractionImageRepository.delete(findattractionImage);
     }
 
