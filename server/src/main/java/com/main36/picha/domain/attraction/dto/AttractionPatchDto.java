@@ -1,6 +1,7 @@
 package com.main36.picha.domain.attraction.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class AttractionPatchDto {
@@ -12,7 +13,7 @@ public class AttractionPatchDto {
 
     private String attractionAddress;
 
-    private String attractionImage;
+    private MultipartFile attractionImage;
 
     private String province;
 }

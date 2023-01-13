@@ -22,7 +22,7 @@ public class AttractionResponseDto {
 
     private String attractionAddress;
 
-    private String attractionImage;
+    private String attractionImageUrl;
 
     private String province;
 }

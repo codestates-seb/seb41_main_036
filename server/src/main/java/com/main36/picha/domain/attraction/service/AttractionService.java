@@ -2,6 +2,7 @@ package com.main36.picha.domain.attraction.service;
 
 import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.attraction.repository.AttractionRepository;
+import com.main36.picha.domain.attraction_file.service.AttractionImageService;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AttractionService {
     public final AttractionRepository attractionRepository;
+    public final AttractionImageService attractionImageService;
 
     public Attraction createAttraction(Attraction attraction){
         verifyExistsAttraction(attraction.getAttractionAddress());
@@ -34,6 +36,17 @@ public class AttractionService {
         Optional.ofNullable(attraction.getAttractionDescription())
                 .ifPresent(findAttraction::setAttractionDescription);
 
+        // 이미지를 바꾸는 경우 기존 이미지를 삭제
+        Optional.ofNullable(attraction.getAttractionImage())
+                .ifPresent(attractionImage-> {
+                    attractionImageService.deleteAttractionImage(
+                            findAttraction.getAttractionImage().getAttractionImageId());
+                    findAttraction.setAttractionImage(attractionImage);
+                });
+
+        Optional.ofNullable(attraction.getProvince())
+                .ifPresent(findAttraction::setProvince);
+
         return attractionRepository.save(findAttraction);
     }
 
@@ -43,13 +56,14 @@ public class AttractionService {
 
     public Page<Attraction> findAttractions(int page, int size) {
         return attractionRepository.findAll(PageRequest.of(
-                page,size, Sort.by("attractionId").descending()
+                page,size, Sort.by("attractionId").ascending()
                 ));
     }
 
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
-
+        //attraction image도 같이 삭제(s3에서도 이미지파일 삭제)
+        attractionImageService.deleteAttractionImage(findAttraction.getAttractionImage().getAttractionImageId());
         attractionRepository.delete(findAttraction);
     }
 

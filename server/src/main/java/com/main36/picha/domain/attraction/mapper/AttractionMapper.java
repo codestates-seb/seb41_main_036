@@ -19,6 +19,7 @@ public interface AttractionMapper {
     @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
 
+    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
 
     List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
