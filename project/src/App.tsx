@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Main from './Main';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlaceDetail from './pages/PlaceDetail';
 
 function App() {

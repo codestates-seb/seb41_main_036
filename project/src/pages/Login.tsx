@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonForm from '../components/Button'
+import axios, {AxiosRequestConfig} from 'axios';
 
 interface TextProps {
     fontSize: string;
@@ -83,20 +84,6 @@ const Rightoverlay = styled.div<OverlayProps>`
     z-index: ${(props) => props.overlay ? '1': '0'};
     transform: ${(props) => props.overlay ? 'translateX(50%)': 'translateX(-50%)'};
 `
-const LoginButton = styled.button`
-    width: 180px;
-    height: 60px;
-    background-color: var(--purple-300);
-    border-radius: 30px;
-    border: 1px solid white;
-    color: white;
-    font-size: 24px;
-    &:hover {
-        background-color: white;
-        color: var(--purple-300)
-    }
-`
-
 const GButton = styled.button`
     width: 50px;
     height: 50px;
@@ -222,6 +209,13 @@ const Login  =  () => {
             setPhonenumber(e.target.value);
             };
 
+            const axiosTest = () => {
+                axios.get("http://pikcha36.o-r.kr:8080/")
+                .then(res => console.log(res.data))
+                .catch(err=>console.log(err))
+            }
+
+
 
     return (
         <Wrapper>
@@ -300,7 +294,11 @@ const Login  =  () => {
             <CustomPadding padding='70px 0px 0px 0px'></CustomPadding>
             <TextStyle color="white" fontSize='18px' fontweight='bold'>아직 회원이 아니신가요?</TextStyle>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>            
+            
+            
             <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='1px solid white' color='white' fontsize='24px' hoverbackgroundcolor='white' hovercolor='var(--purple-300)' text='회원가입' onClick={onClickBtn}></ButtonForm>
+        
+        
         </Rightoverlay>
     </Wrapper>
     );
