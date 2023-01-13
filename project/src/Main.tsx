@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Login from './components/Login';
 import KakaoMap from './components/KakaoMap';
 
-import Place from "./pages/Place";
 import Post from "./pages/Post";
+import PlaceDetail from './pages/PlaceDetail';
 
 const Header = styled.div`
   width: 100%;
@@ -27,8 +27,9 @@ function Main() {
   return (
     <>
     <Header>header헤더</Header>
-    <Body> 바디
-        </Body>
+
+        <PlaceDetail></PlaceDetail>
+
     <Footer>footer</Footer>
     </>
   );

@@ -148,6 +148,22 @@ const Post = () => {
   const filtering = (idx: number) => {
     setOnFliter(idx);
   };
+  
+  const dummyData: Dummy = dummy.post;
+  type Dummy = {
+    postId: string;
+    username: string;
+    userImg: string;
+    title: string;
+    locationId: string;
+    createdAt: string;
+    content: string;
+    tags: string[];
+    img: string;
+    viewCount: string;
+    recommend: string;
+    memberId: string;
+  }[];
 
   return (
     <PostWrapper>
@@ -155,8 +171,8 @@ const Post = () => {
         <LocationFilter />
       </LocationWrapper>
       <PostContainer>
-        <PostFilterContainer>
-          <span>총 {dummy.post.length}개의 방문 리뷰</span>
+        <PostFilterContainer >
+          <span>총 {dummyData.length}개의 방문 리뷰</span>
           <div>
             {filter.map((filter, idx) => (
               <FilterButton
@@ -170,7 +186,7 @@ const Post = () => {
           </div>
         </PostFilterContainer>
         <PostBox>
-          {dummy.post.map((el) => (
+          {dummyData.map((el:any) => (
             <div key={el.locationId}>
               <img alt={el.title} src={el.img} />
               <PostInfo>
