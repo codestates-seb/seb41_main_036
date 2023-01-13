@@ -3,10 +3,9 @@ import KakaoMap from "../components/KakaoMap";
 import { useState, useRef, useEffect } from 'react';
 import { BsShareFill, BsBookmarkFill } from 'react-icons/bs'
 import { SlNote } from 'react-icons/sl'
-import { AiFillHeart, AiFillFacebook, AiOutlineTwitter, AiOutlineInstagram } from 'react-icons/ai'
-import { IoMdShareAlt } from 'react-icons/io';
+import { AiFillHeart} from 'react-icons/ai'
 import { FaMapMarkerAlt } from 'react-icons/fa';
-// import PaginationComponent from "../components/PaginationComponent";
+import PaginationComponent from "../components/PaginationComponent";
 import "../index.css"
 
 const GlobalStyle = createGlobalStyle`
@@ -209,12 +208,19 @@ const PlaceDetail = ():JSX.Element => {
   }
 
   useEffect(() => {
+
+    // fetch("http://pikcha36.o-r.kr:8080/attractions") // 서버 주소 입력해주세요
+    // .then((res) => res.json())
+    // .then((data) => console.log(data)) // 데이터 잘 받아오는지 확인 
+    // .catch((err)=> console.log(err))
+
     window.addEventListener('scroll', updateScroll);
     window.addEventListener("scroll", onScroll);
     return () => {
+      window.addEventListener('scroll', updateScroll);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [fixBar]);  
+  }, []);  
 
   const handleView = (setting:string) => {
     setView(setting)
@@ -260,9 +266,9 @@ const PlaceDetail = ():JSX.Element => {
       </PostHeader>
       <PostBox>
         {/* 이곳에 post 컴포넌트 */}
+        <PaginationComponent></PaginationComponent>
       </PostBox>
     </Post>
-    {/* <PaginationComponent></PaginationComponent> */}
     </>
   )
 }
