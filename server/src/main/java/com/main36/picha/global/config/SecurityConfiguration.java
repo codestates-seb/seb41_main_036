@@ -27,8 +27,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @RequiredArgsConstructor
@@ -43,7 +43,6 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
-
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -56,7 +55,6 @@ public class SecurityConfiguration {
                 .and()
                 .apply(new CustomFilterConfigure())
                 .and()
-
                 .authorizeHttpRequests(authorize -> authorize
                         .mvcMatchers("/users/signup", "/login", "/attractions", "/main", "/attractions/**").permitAll()
                         .mvcMatchers("admin").hasRole("ADMIN")

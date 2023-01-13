@@ -7,6 +7,7 @@ import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

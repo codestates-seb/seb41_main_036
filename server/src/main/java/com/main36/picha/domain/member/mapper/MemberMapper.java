@@ -28,11 +28,11 @@ public interface MemberMapper  {
     @Mapping(target = "totalMySaves", expression = "java(member.getSaves().size())")
     ProfileHomeDto memberToProfileHomeDto(Member member);
 
-
     List<PostResponseDto> postListToPostResponseDtos(List<Post> posts);
     @Mapping(target = "password", constant = "")
     @Mapping(target = "phoneNumber", constant = "")
     @Mapping(target = "address", constant = "")
+
     @Mapping(target = "memberTitle", constant = "")
     Member oauthMemberDtoToMember(OauthMemberDto oauthMemberDto);
 
