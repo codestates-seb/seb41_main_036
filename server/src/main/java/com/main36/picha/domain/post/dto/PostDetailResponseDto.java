@@ -13,19 +13,15 @@ import java.util.List;
 public class PostDetailResponseDto {
 
     private String postTitle;
-
     private String attractionAddress;
-
-//    private List<HashTag> hashTagList;
-
-//    private String imageUrl;
-
-//    private String content;
+    private String imageUrl;
+    private String content;
+    //    private List<HashTag> hashTagList;
     private int views;
     private int likes;
     private Long memberId;
     private String username;
     private String picture;
-    private List<CommentResponseDto> commentResponseDtos;
+    private List<CommentResponseDto> comments;
 
 }

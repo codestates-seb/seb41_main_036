@@ -10,6 +10,8 @@ import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.beans.factory.support.SecurityContextProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,8 +32,11 @@ public class PostController {
     private final PostService postService;
     private final PostMapper mapper;
 
+    // 로그인 객체 찾기
     @PostMapping("/register")
-    public ResponseEntity registerPost(@Valid @RequestBody PostDto postDto) {
+    public ResponseEntity registerPost(Principal principal,
+                                       @Valid @RequestBody PostDto postDto) {
+        System.out.println(principal.getName());
         Post post = mapper.postDtoToPost(postDto);
         Post createPost = postService.createPost(post);
         PostResponseDto postResponseDto = mapper.postToPostResponseDto(createPost);
@@ -51,9 +57,6 @@ public class PostController {
 
     }
 
-
-
-    // 페이지내이션 추가
     // 포스트 메인 화면
     //사용자 id , likes, views, title, image, 만든시간 및 수정시간
     @GetMapping()
@@ -64,10 +67,8 @@ public class PostController {
         Page<Post> postsByNewestByPage = postService.findAllPostsByNewest(page - 1, size);
         List<Post> postsByNewest = postsByNewestByPage.getContent();
 
+        return new ResponseEntity(new MultiResponseDto<>(mapper.postToPostDetailDto(postsByNewest), postsByNewestByPage), HttpStatus.OK);
 
-//
-//
-//    }
-////
+    }
 
 }

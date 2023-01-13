@@ -20,10 +20,7 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface MemberMapper  {
 
-    @Mapping(target = "point", constant = "0")
-    @Mapping(target = "memberTitle", constant = "")
-    @Mapping(target = "aboutMe", constant = "")
-    @Mapping(target = "picture", constant = "")
+    @Mapping(target = "picture", constant = "https://drive.google.com/file/d/1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g/view?usp=sharing")
     Member memberPostDtoToMember(MemberPostDto memberPostDto);
 
     Member memberPatchDtoToMember(MemberPatchDto memberPatchDto);

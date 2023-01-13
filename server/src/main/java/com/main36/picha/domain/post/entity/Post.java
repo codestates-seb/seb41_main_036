@@ -28,12 +28,12 @@ public class Post extends Auditable {
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
+    @Column(name = "post_image")
+    private String postImageUrl;
+
     @Lob
     @Column(name = "post_content")
     private String postContent;
-
-//    @Column(name = "post_image")
-//    private String postImage;
 
     @Column(name = "views")
     private int views;

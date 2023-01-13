@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class PostHomeDto {
 
+    private Long memberId;
     private String username;
     private String userImage;
     private int views;

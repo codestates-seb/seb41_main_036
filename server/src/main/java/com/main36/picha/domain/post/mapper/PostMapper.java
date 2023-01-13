@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
@@ -21,32 +22,42 @@ public interface PostMapper {
     Post postDtoToPost(PostDto postDto);
 
     PostResponseDto postToPostResponseDto(Post post);
-
+    @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
     @Mapping(target = "username", expression = "java(post.getMember().getUsername())")
     @Mapping(target = "userImage", expression = "java(post.getMember().getPicture())")
     PostHomeDto postToPostHomeDto(Post post);
 
-    default PostDetailResponseDto postToPostDetailDto(Post post) {
-        return PostDetailResponseDto.builder()
-                .postTitle(post.getPostTitle())
-                .attractionAddress(post.getAttraction().getAttractionAddress())
-                .views(post.getViews())
-                .views(post.getLikes())
-                .memberId(post.getMember().getMemberId())
-                .username(post.getMember().getUsername())
-                .picture(post.getMember().getPicture())
-                .commentResponseDtos(post.getComments().stream()
-                        .map(comment -> {
-                            return CommentResponseDto.builder()
-                                    .createdAt(comment.getCreatedAt())
-                                    .modifiedAt(comment.getModifiedAt())
-                                    .memberId(comment.getMember().getMemberId())
-                                    .username(comment.getMember().getUsername())
-                                    .commentId(comment.getCommentId())
-                                    .commentContent(comment.getCommentContent())
-                                    .build();
-                        })
-                        .collect(Collectors.toList()))
-                .build();
+    default List<PostDetailResponseDto> postToPostDetailDto(List<Post> postList) {
+
+        if (postList == null) {
+            return null;
+        }
+
+        return postList.stream()
+                .map(post -> {
+                    return PostDetailResponseDto.builder()
+                            .postTitle(post.getPostTitle())
+                            .attractionAddress(post.getAttraction().getAttractionAddress())
+                            .imageUrl(post.getPostImageUrl())
+                            .content(post.getPostContent())
+                            .views(post.getViews())
+                            .likes(post.getLikes())
+                            .memberId(post.getMember().getMemberId())
+                            .username(post.getMember().getUsername())
+                            .picture(post.getMember().getPicture())
+                            .comments(post.getComments().stream()
+                                    .map(comment -> {
+                                        return CommentResponseDto.builder()
+                                                .memberId(comment.getMember().getMemberId())
+                                                .username(comment.getMember().getUsername())
+                                                .picture(comment.getMember().getPicture())
+                                                .commentId(comment.getCommentId())
+                                                .commentContent(comment.getCommentContent())
+                                                .createdAt(comment.getCreatedAt())
+                                                .modifiedAt(comment.getModifiedAt())
+                                                .build();
+                                    }).collect(Collectors.toList()))
+                            .build();
+                }).collect(Collectors.toList());
     }
 }

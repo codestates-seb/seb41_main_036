@@ -2,6 +2,8 @@ package com.main36.picha.domain.member.dto;
 
 import lombok.Builder;
 import lombok.Data;
+
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,6 +17,8 @@ public class SignUpResponseDto {
     private String address;
 
     private String username;
+
+    private String picture;
 
     private LocalDateTime createdAt;
 

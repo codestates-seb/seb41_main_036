@@ -24,13 +24,11 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post createPost(Post post) {
-
         return postRepository.save(post);
     }
 
     public Post findPost(Long postId) {
         Optional<Post> post =  postRepository.findById(postId);
-
         return post.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
