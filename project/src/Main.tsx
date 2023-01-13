@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Login from './components/Login';
+import Login from './pages/Login';
 import KakaoMap from './components/KakaoMap';
 
 import Place from "./pages/Place";
@@ -27,8 +27,7 @@ function Main() {
   return (
     <>
     <Header>header헤더</Header>
-    <Body> 바디
-        </Body>
+    <Body></Body>
     <Footer>footer</Footer>
     </>
   );
