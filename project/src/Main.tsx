@@ -28,7 +28,6 @@ function Main() {
     <>
     <Header>header헤더</Header>
     <Body> 
-      <Login />
         </Body>
     <Footer>footer</Footer>
     </>
