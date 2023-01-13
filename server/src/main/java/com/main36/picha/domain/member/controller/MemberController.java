@@ -50,6 +50,13 @@ public class MemberController {
         );
     }
 
+//    @GetMapping("/token")
+//    public ResponseEntity getOauth2MemberToken() {
+//        Member member = memberService.findMember()
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+
+
     // 멤버 프로필 조회(홈)
     @GetMapping("/{member-id}/{email}")
     public ResponseEntity<DataResponseDto> getMemberProfile(@Positive @PathVariable("member-id") long memberId,
