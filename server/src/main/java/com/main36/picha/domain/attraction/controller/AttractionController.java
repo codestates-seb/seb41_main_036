@@ -1,6 +1,7 @@
 package com.main36.picha.domain.attraction.controller;
 
 
+import com.main36.picha.domain.attraction.dto.AttractionFilterDto;
 import com.main36.picha.domain.attraction.dto.AttractionPatchDto;
 import com.main36.picha.domain.attraction.dto.AttractionPostDto;
 import com.main36.picha.domain.attraction.dto.AttractionResponseDto;
@@ -44,7 +45,7 @@ public class AttractionController {
 
     // s3에 저장될 위치
 
-    @PostMapping
+    @PostMapping("/upload")
     public ResponseEntity postAttraction(AttractionPostDto attractionPostDto) throws IOException {
 
         Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
@@ -78,9 +79,10 @@ public class AttractionController {
         if(!attractionPatchDto.getAttractionImage().isEmpty()){
             // 고칠 명소를 찾고
             Attraction findAttraction = attractionService.findAttraction(attractionId);
-            // 명소의 이미지를 s3와 데이터베이스에서 삭제
-            imageService.deleteAttractionImage(findAttraction.getAttractionImage().getAttractionImageId());
-
+            // 이미지가 이미 있다면 명소의 이미지를 s3와 데이터베이스에서 삭제
+            if(findAttraction.getAttractionImage() != null) {
+                imageService.deleteAttractionImage(findAttraction.getAttractionImage().getAttractionImageId());
+            }
             // 새로 받은 이미지를 저장한다
             AttractionImage attractionImage =
                     imageService.createAttractionImage(attractionPatchDto.getAttractionImage());
@@ -96,6 +98,16 @@ public class AttractionController {
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.findAttraction(attractionId));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                                 @Positive @RequestParam(required = false, defaultValue = "9") int size,
+                                                 @RequestBody AttractionFilterDto filterDto){
+        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page-1, size);
+        List<Attraction> attractions = attractionPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
     }
 
     @GetMapping

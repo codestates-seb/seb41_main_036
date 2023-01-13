@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,9 @@ public class S3Service {
    // S3버킷에 파일 저장위치 dirName, 하위에 fileName으로 저장
     public String upload(MultipartFile file, String dirName, String fileName) throws IOException {
        String filePath = dirName+ "/" + fileName;
-
-       s3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), null)
+       ObjectMetadata objectMetadata  = new ObjectMetadata();
+       objectMetadata.setContentLength(file.getInputStream().available());
+       s3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
                .withCannedAcl(CannedAccessControlList.PublicRead));
         return s3Client.getUrl(bucket, filePath).toString();
     }

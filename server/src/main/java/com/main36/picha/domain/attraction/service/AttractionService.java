@@ -8,10 +8,12 @@ import com.main36.picha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,11 +41,12 @@ public class AttractionService {
         // 이미지를 바꾸는 경우 기존 이미지를 삭제
         Optional.ofNullable(attraction.getAttractionImage())
                 .ifPresent(attractionImage-> {
-                    attractionImageService.deleteAttractionImage(
-                            findAttraction.getAttractionImage().getAttractionImageId());
+                    if(findAttraction.getAttractionImage()!= null) {
+                        attractionImageService.deleteAttractionImage(
+                                findAttraction.getAttractionImage().getAttractionImageId());
+                    }
                     findAttraction.setAttractionImage(attractionImage);
                 });
-
         Optional.ofNullable(attraction.getProvince())
                 .ifPresent(findAttraction::setProvince);
 
@@ -58,6 +61,11 @@ public class AttractionService {
         return attractionRepository.findAll(PageRequest.of(
                 page,size, Sort.by("attractionId").ascending()
                 ));
+    }
+
+    public Page<Attraction> findFilteredAttractions(List<String> provinces, int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("attractionId").descending());
+        return attractionRepository.findAllByProvinceIn(provinces, pageable);
     }
 
     public void deleteAttraction(long attractionId){

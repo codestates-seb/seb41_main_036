@@ -28,10 +28,10 @@ public class AttractionImageService {
         AttractionImage attractionImage = new AttractionImage();
 
         // 현재 날짜, 시간을 기준으로 생성한 10자리 숫자를 생성
-        int dateTimeInteger = (int) (new Date().getTime()/1000);
+//        int dateTimeInteger = (int) (new Date().getTime()/1000);
 
         // 생성된 날짜 + 원래 파일 이름 = 생성되는 파일 이름
-        String imageFileName = dateTimeInteger+file.getOriginalFilename();
+        String imageFileName = /*dateTimeInteger+*/file.getOriginalFilename();
 
         String imageUrl = s3Service.upload(file, dirname, imageFileName);
 

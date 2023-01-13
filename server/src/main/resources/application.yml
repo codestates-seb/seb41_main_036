@@ -13,10 +13,10 @@ spring:
   datasource:
     url: jdbc:h2:mem:test
 
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath*:db/h2/data.sql
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:db/h2/data.sql
 
   jpa:
     hibernate:
