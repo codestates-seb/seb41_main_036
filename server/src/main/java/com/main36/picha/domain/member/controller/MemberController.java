@@ -33,6 +33,7 @@ public class MemberController {
     public ResponseEntity<DataResponseDto> postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         Member member = mapper.memberPostDtoToMember(memberPostDto);
         Member createMember = memberService.createMember(member);
+
         return new ResponseEntity(
                 new DataResponseDto<>(mapper.memberToSignUpResponseDto(createMember)),
                 HttpStatus.CREATED);
