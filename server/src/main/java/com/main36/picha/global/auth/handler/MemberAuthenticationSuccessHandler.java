@@ -31,7 +31,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         String refreshToken = delegateRefreshToken(member);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+        response.setHeader("RefreshToken", refreshToken);
 
         log.info("# Authenticated successfully!");
     }

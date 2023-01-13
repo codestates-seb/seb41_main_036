@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Builder
 public class SignUpResponseDto {
 
-    private String email;
+    private Long memberId;
 
-    private String password;
+    private String email;
 
     private String phoneNumber;
 

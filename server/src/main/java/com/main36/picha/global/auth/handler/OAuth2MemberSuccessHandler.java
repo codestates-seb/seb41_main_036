@@ -44,16 +44,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         List<String> authorities = authorityUtils.createRoles(email);
 
         savedMember(name, email, picture);
-        log.info("request : {}", request);
-        log.info("response : {}", response);
-        log.info("email : {}", email);
-        log.info("authorities : {}", authorities);
-
         redirect(request, response, email, authorities);
-        log.info("request : {}", request);
-        log.info("response : {}", response);
-        log.info("email : {}", email);
-        log.info("authorities : {}", authorities);
+
 
     }
 
@@ -70,10 +62,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
-        log.info("accessToken : {}", accessToken);
-        log.info("refreshToken : {}", refreshToken);
         String uri = createURI(accessToken, refreshToken).toString();
-        log.info("uri : {}", uri);
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
