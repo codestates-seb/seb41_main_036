@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import {useState, useEffect} from "react"
+import ButtonForm from '../components/Button'
 
 interface TextProps {
     fontSize: string;
@@ -13,6 +13,7 @@ interface PaddingProps {
 interface OverlayProps {
     overlay: boolean;
 }
+
 
 const Wrapper = styled.section`
     width: 100%;
@@ -95,23 +96,11 @@ const LoginButton = styled.button`
         color: var(--purple-300)
     }
 `
-const LoginButton2 = styled.button`
-    width: 180px;
-    height: 60px;
-    background-color: var(--purple-300);
-    border-radius: 30px;
-    border: 0px white;
-    color: white;
-    font-size: 24px;
-    &:hover {
-        background-color: var(--purple-400);
-    }
-`
+
 const GButton = styled.button`
     width: 50px;
     height: 50px;
     border: 0px;
-    border-radius: 35px;
     background-color: var(--purple-300);
     border-radius: 30px;
     color: white;
@@ -138,7 +127,6 @@ const TextStyle = styled.div<TextProps>`
     color: ${(props)=>props.color};
     font-weight: ${(props)=>props.fontweight};
     padding-top: 10px;
-    /* transform: translateX(-50%); */
 `
 const ErrMsg = styled.div<TextProps>`
     font-size: ${(props) => props.fontSize};
@@ -237,10 +225,6 @@ const Login  =  () => {
 
     return (
         <Wrapper>
-            {/* <div>
-            <InputPadding>이메일</InputPadding>
-            <InputStyle placeholder='이메일'></InputStyle>
-        </div> */}
         <Logincontainer overlay={overlays}>
             <TextStyle color="#6154F8" fontSize='45px' fontweight='bold'>로그인</TextStyle>
             <CustomPadding padding='30px 0px 0px 0px'></CustomPadding>
@@ -248,7 +232,6 @@ const Login  =  () => {
             <TextStyle color="#6154F8" fontSize='22px' fontweight='bold'>SNS 계정으로 로그인</TextStyle>
             <CustomPadding padding='30px 0px 0px 0px'></CustomPadding>
             <InputStyle placeholder='이메일' onChange={handleLoginEmailChange}></InputStyle>
-
             {loginemailErr ? (
                 <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 이메일 형식이 아닙니다.</ErrMsg>
                 ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
@@ -257,7 +240,7 @@ const Login  =  () => {
                 <ErrMsg color="red" fontSize='16px' fontweight='normal'>비밀번호를 8자이상 입력해주세요.</ErrMsg>
                 ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
             <CustomPadding padding='50px 0px 0px 0px'></CustomPadding>
-            <LoginButton2>로그인</LoginButton2>
+            <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='0px white' color='white' fontsize='24px' hoverbackgroundcolor='var(--purple-400)' text='로그인'></ButtonForm>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
             <TextStyle color="#6154F8" fontSize='22px' fontweight='bold' >계정정보를 잊으셨나요?</TextStyle>
         </Logincontainer>
@@ -289,7 +272,7 @@ const Login  =  () => {
             <TextStyle color="white" fontSize='18px' fontweight='normal'>|</TextStyle>
             {/* <TextStyle color="black" fontSize='18px' fontweight='normal'>3글자 이상 입력해주세요.<div className=""></div></TextStyle> */}
             <CustomPadding padding='50px 0px 0px 0px'></CustomPadding>
-            <LoginButton2>회원가입</LoginButton2>
+            <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='0px white' color='white' fontsize='24px' hoverbackgroundcolor='var(--purple-400)' text='회원가입'></ButtonForm>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
             <TextStyle color="#6154F8" fontSize='22px' fontweight='bold' >계정정보를 잊으셨나요?</TextStyle>
         </Signincontainer>
@@ -304,7 +287,7 @@ const Login  =  () => {
             <CustomPadding padding='70px 0px 0px 0px'></CustomPadding>
             <TextStyle color="white" fontSize='18px' fontweight='bold'>이미 회원이시라면?</TextStyle>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>  
-            <LoginButton onClick={onClickBtn}>로그인</LoginButton>
+            <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='1px solid white' color='white' fontsize='24px' hoverbackgroundcolor='white' hovercolor='var(--purple-300)' text='로그인' onClick={onClickBtn}></ButtonForm>
         </Leftoverlay>
         <Rightoverlay overlay={overlays}>
             <TextStyle color="white" fontSize='25px' fontweight='normal'>welcome to the</TextStyle>
@@ -316,8 +299,8 @@ const Login  =  () => {
             <TextStyle color="white" fontSize='18px' fontweight='normal'>다양한 정보를 통해 나만의 사진을 찍어보세요.</TextStyle>
             <CustomPadding padding='70px 0px 0px 0px'></CustomPadding>
             <TextStyle color="white" fontSize='18px' fontweight='bold'>아직 회원이 아니신가요?</TextStyle>
-            <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
-            <LoginButton onClick={onClickBtn}>회원가입</LoginButton>
+            <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>            
+            <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='1px solid white' color='white' fontsize='24px' hoverbackgroundcolor='white' hovercolor='var(--purple-300)' text='회원가입' onClick={onClickBtn}></ButtonForm>
         </Rightoverlay>
     </Wrapper>
     );
