@@ -10,6 +10,9 @@ public enum ExceptionCode {
     ATTRACTION_NOT_FOUND(404, "Attraction not found"),
     ATTRACTION_EXISTS(409, "Attraction exists"),
 
+    ATTRACTION_IMAGE_NOT_FOUND(404, "Attraction image not found"),
+    ATTRACTION_IMAGE_EXISTS(409, "Attraction image exists"),
+
     COMMENT_NOT_FOUND(404, "Comment not found"),
     COMMENT_EXISTS(409, "Comment exists"),
 

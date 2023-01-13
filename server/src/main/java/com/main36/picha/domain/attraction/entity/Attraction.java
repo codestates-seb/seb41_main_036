@@ -1,5 +1,6 @@
 package com.main36.picha.domain.attraction.entity;
 
+import com.main36.picha.domain.attraction_file.entity.AttractionImage;
 import com.main36.picha.global.audit.Auditable;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,9 +29,12 @@ public class Attraction extends Auditable {
     @Column(name = "attraction_address", nullable = false)
     private String attractionAddress;
 
-    @Column(name = "attraction_image")
-    private String attractionImage;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "attraction_image_id")
+    private AttractionImage attractionImage;
 
+//    @Column(name = "attraction_image", nullable = false)
+//    private String attractionImage;
     @Column(name = "province", nullable = false)
     private String province;
 
