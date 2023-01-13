@@ -75,6 +75,12 @@ public class MemberService {
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    public Member findMember(String email) {
+        Optional<Member> byMemberIdAndEmail = memberRepository.findByEmail(email);
+        return byMemberIdAndEmail.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
     // 멤버 삭제
     public void deleteMember(long memberId) {
         Member verifiedMemberById = findVerifiedMemberById(memberId);

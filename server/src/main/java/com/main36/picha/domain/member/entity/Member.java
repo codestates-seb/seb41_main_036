@@ -37,9 +37,6 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    private int point;
-
     @Column(name = "member_title")
     private String memberTitle;
 

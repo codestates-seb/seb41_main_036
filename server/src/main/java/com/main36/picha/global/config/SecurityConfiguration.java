@@ -27,6 +27,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @RequiredArgsConstructor
@@ -54,12 +56,10 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/users").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/users").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("USER", "ADMIN")
-                        .antMatchers(HttpMethod.DELETE, "/users/delete/**").hasRole("USER")
-                        .anyRequest().permitAll()
+                        .mvcMatchers("/users/signup", "/login", "/attractions", "/main", "/attractions/**").permitAll()
+                        .mvcMatchers("admin").hasRole("ADMIN")
+                        .requestMatchers(toH2Console()).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, mapper))

@@ -6,11 +6,13 @@ import com.main36.picha.domain.member.dto.MemberPostDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.service.MemberService;
+import com.main36.picha.global.auth.userdetails.MemberDetailsService;
 import com.main36.picha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +34,9 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<DataResponseDto> postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         Member member = mapper.memberPostDtoToMember(memberPostDto);
+        member.setPicture("https://drive.google.com/file/d/1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g/view?usp=sharing");
         Member createMember = memberService.createMember(member);
+
         return new ResponseEntity(
                 new DataResponseDto<>(mapper.memberToSignUpResponseDto(createMember)),
                 HttpStatus.CREATED);
@@ -55,7 +59,6 @@ public class MemberController {
 //        Member member = memberService.findMember()
 //        return new ResponseEntity(HttpStatus.OK);
 //    }
-
 
     // 멤버 프로필 조회(홈)
     @GetMapping("/{member-id}/{email}")
