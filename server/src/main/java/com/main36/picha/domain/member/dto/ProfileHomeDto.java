@@ -26,8 +26,6 @@ public class ProfileHomeDto {
 
     private String email;
 
-    private String aboutMe;
-
     private int totalMyPosts;
 
     private int totalMySaves;

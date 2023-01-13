@@ -7,6 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +25,10 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
 
     @Column(name = "phone_number", nullable = false)
@@ -35,14 +37,8 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    private int point;
-
     @Column(name = "member_title")
     private String memberTitle;
-
-    @Column(name = "about_me")
-    private String aboutMe;
 
     @Column(name = "picture")
     private String picture;
