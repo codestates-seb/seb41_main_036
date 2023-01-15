@@ -20,6 +20,9 @@ public class AttractionLikes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long attractionLikesId;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean vote;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -27,5 +30,4 @@ public class AttractionLikes {
     @ManyToOne
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;
-
 }

@@ -43,8 +43,8 @@ public class AttractionController {
     private final AttractionMapper mapper;
     private final AttractionImageService imageService;
 
-    // s3에 저장될 위치
 
+    // 1. 명소 등록 핸들러
     @PostMapping("/upload")
     public ResponseEntity postAttraction(AttractionPostDto attractionPostDto) throws IOException {
 
@@ -68,6 +68,7 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
+    // 2. 명소 수정 핸들러
     @PatchMapping("/{attraction-id}")
     public ResponseEntity patchAttraction(@PathVariable("attraction-id") @Positive long attractionId,
                                           AttractionPatchDto attractionPatchDto) throws IOException {
@@ -93,6 +94,7 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
+    // 3. 명소 1개 정보 요청을 처리하는 핸들러
     @GetMapping("/{attraction-id}")
     public ResponseEntity getAttraction(@PathVariable("attraction-id") @Positive long attractionId){
         AttractionResponseDto response =
@@ -100,6 +102,8 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
+
+    // 4. 찾는 '구' 리스트를 받아 명소 Id 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     @GetMapping("/filter")
     public ResponseEntity getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                  @Positive @RequestParam(required = false, defaultValue = "9") int size,
@@ -110,6 +114,7 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
     }
 
+    // 5. 명소 Id를 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     @GetMapping
     public ResponseEntity getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                          @Positive @RequestParam(required = false, defaultValue = "9") int size){
@@ -119,6 +124,8 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
     }
 
+
+    // 6. 명소를 아예 삭제하는 요청을 처리하는 핸들러
     @DeleteMapping("/{attraction-id}")
     public ResponseEntity deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
         attractionService.deleteAttraction(attractionId);
