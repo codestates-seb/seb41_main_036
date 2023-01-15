@@ -18,6 +18,8 @@ public class PostResponseDto {
     private String postTitle;
     private String attractionAddress;
     private String postContent;
+    private int views;
+    private int likes;
 //    private List<String> hashtags;
     private List<CommentResponseDto> comments;
     private LocalDateTime createdAt;

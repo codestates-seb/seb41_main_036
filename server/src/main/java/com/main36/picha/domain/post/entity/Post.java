@@ -24,20 +24,19 @@ public class Post extends Auditable {
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @Column(name = "post_image")
-    private String postImageUrl;
+//    @Column(name = "post_image")
+//    private String postImageUrl;
 
     @Lob
     @Column(name = "post_content")
     private String postContent;
 
-    @Column(name = "views")
+    @Column(name = "views", columnDefinition = "integer default 0", nullable = false)
     private int views;
 
-    @Column(name = "likes")
+    @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
 
-//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -48,6 +47,7 @@ public class Post extends Auditable {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
+
 
 
 }

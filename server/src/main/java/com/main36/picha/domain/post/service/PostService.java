@@ -24,12 +24,28 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post createPost(Post post) {
+
         return postRepository.save(post);
     }
 
+//    public Post updatePost(Post post) {
+//        getVerifiedPostById(post);
+//
+//
+//    }
+//
+
+    private Post getVerifiedPostById(Post post) {
+        Optional<Post> byId = postRepository.findById(post.getPostId());
+        return byId.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
+
     public Post findPost(Long postId) {
-        Optional<Post> post =  postRepository.findById(postId);
-        return post.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Optional<Post> optionalPost =  postRepository.findById(postId);
+        Post post = optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        int views = post.getViews();
+        post.setViews(views + 1);
+        return post;
     }
 
     public Page<Post> findAllPostsByNewest(int page, int size) {

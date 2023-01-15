@@ -58,11 +58,11 @@ public class PostController {
     @PostMapping("/register/{attraction-id}")
     public ResponseEntity registerPost(HttpServletRequest request,
                                        @PathVariable("attraction-id") long attractionId,
-                                       @Valid @RequestBody PostDto postDto) {
+                                       @Valid @RequestBody PostRegisterDto postRegisterDto) {
         String username = extractedUsername(request);
         Member member = memberService.findMember(username);
         Attraction attraction = attractionService.findAttraction(attractionId);
-        Post post = mapper.postDtoToPost(postDto);
+        Post post = mapper.postRegisterDtoToPost(postRegisterDto);
         post.setMember(member);
         post.setAttraction(attraction);
         Post createPost = postService.createPost(post);
