@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonForm from '../components/Button'
 import axios, {AxiosRequestConfig} from 'axios';
+import DaumPostcode from 'react-daum-postcode'
+import AddressPopup from '../components/AddressPopup'
+
+
 
 interface TextProps {
     fontSize: string;
@@ -71,6 +75,7 @@ const Leftoverlay = styled.div<OverlayProps>`
 const Rightoverlay = styled.div<OverlayProps>`
     width: 40%;
     height: 100%;
+    
     border-radius: ${(props) => props.overlay ? '0px 30px 30px 0px': '30px 0px 0px 30px'};
     display: flex;
     flex-direction: column;
@@ -135,6 +140,21 @@ const LogoLogo = styled.div`
     color: black;
     font-size: 50px;
 `
+const CloseButton = styled.button`
+    z-index: 100;
+    width: 80px;
+    height: 50px;
+    margin-top: 51%;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 25px;
+    color: black;
+    position: absolute;
+    &:hover {
+        background-color: red;
+        color: white
+    }
+`
 
 const Login  =  () => {
     const [overlays, setOverlays] = useState(false)
@@ -147,12 +167,24 @@ const Login  =  () => {
     const [loginpassword, setLoginPassword] = useState('')
     const [loginpasswordErr, setLoginPasswordErr] = useState(false);
     const [passwordConfirm, setPasswordConfirm] = useState('');
-
     const [phonenumber, setPhonenumber] = useState('')
     const [phonenumberErr, setPhonenumberErr] = useState(false)
-
     // const [nickname, setNickname] = useState('')
-    // const [address, setAddress] = useState('')
+    const [address, setAddress] = useState("")
+
+    const [openPostcode, setOpenPostcode] = useState(false)
+
+    const handleAddress = {
+        clickInput: () =>{
+            setOpenPostcode(!openPostcode);
+        },
+        selectAddress: (data: any) =>{
+            console.log(data.address);
+            console.log(data);
+            setAddress(data.address);
+            setOpenPostcode(false);
+        }
+    } 
 
     const onClickBtn = (e:React.MouseEvent<HTMLButtonElement>) =>{
         setOverlays(!overlays)
@@ -201,24 +233,37 @@ const Login  =  () => {
 
     const handlePhoneChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
         const PHONE_REGEX = /01[016789]-[^0][0-9]{2,3}-[0-9]{4}/;
-            if (PHONE_REGEX.test(e.target.value)) {
-                setPhonenumberErr(false);
-            } else {
-                setPhonenumberErr(true);
-            }
-            setPhonenumber(e.target.value);
-            };
+        if (PHONE_REGEX.test(e.target.value)) {
+            setPhonenumberErr(false);
+        } else {
+            setPhonenumberErr(true);
+        }
+        setPhonenumber(e.target.value);
+    };
 
-            const axiosTest = () => {
-                axios.get("http://pikcha36.o-r.kr:8080/")
-                .then(res => console.log(res.data))
-                .catch(err=>console.log(err))
-            }
-
-
+    
 
     return (
         <Wrapper>
+            {openPostcode && (
+<>
+<DaumPostcode 
+style={{ display: "block",
+// position: "absolute",
+width: "90%",
+height: "90%",
+padding: "0px",
+zIndex: 10, }}
+onComplete={handleAddress.selectAddress}  // 값을 선택할 경우 실행되는 이벤트
+autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+defaultQuery='' // 팝업을 열때 기본적으로 입력되는 검색어 
+/>
+<CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
+</>
+            )
+}
+
+            
         <Logincontainer overlay={overlays}>
             <TextStyle color="#6154F8" fontSize='45px' fontweight='bold'>로그인</TextStyle>
             <CustomPadding padding='30px 0px 0px 0px'></CustomPadding>
@@ -257,14 +302,16 @@ const Login  =  () => {
             )}
             <InputStyle placeholder='전화번호(-를 포함해서 입력해주세요)' onChange={handlePhoneChange}></InputStyle>
             {phonenumberErr ? (
-                <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 전화번호 형식이 아닙니다.<div className=""></div></ErrMsg>
+                <ErrMsg color="red" fontSize='16px' fontweight='normal'>올바른 전화번호 형식이 아닙니다.</ErrMsg>
             ): <TextStyle color="white" fontSize='16px' fontweight='normal'>|</TextStyle>}
-            <InputStyle placeholder='주소'></InputStyle>
+            <InputStyle placeholder='주소' value={address} onClick={handleAddress.clickInput}></InputStyle>
+
+
+
             <TextStyle color="white" fontSize='18px' fontweight='normal'>|</TextStyle>
-            {/* <TextStyle color="black" fontSize='18px' fontweight='normal'>서울시 OO구 형식이 아닙니다.</TextStyle> */}
             <InputStyle placeholder='닉네임'></InputStyle>
             <TextStyle color="white" fontSize='18px' fontweight='normal'>|</TextStyle>
-            {/* <TextStyle color="black" fontSize='18px' fontweight='normal'>3글자 이상 입력해주세요.<div className=""></div></TextStyle> */}
+            {/* <TextStyle color="red" fontSize='16px' fontweight='normal'>3글자 이상 입력해주세요.</TextStyle> */}
             <CustomPadding padding='50px 0px 0px 0px'></CustomPadding>
             <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='0px white' color='white' fontsize='24px' hoverbackgroundcolor='var(--purple-400)' text='회원가입'></ButtonForm>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>
@@ -294,11 +341,7 @@ const Login  =  () => {
             <CustomPadding padding='70px 0px 0px 0px'></CustomPadding>
             <TextStyle color="white" fontSize='18px' fontweight='bold'>아직 회원이 아니신가요?</TextStyle>
             <CustomPadding padding='20px 0px 0px 0px'></CustomPadding>            
-            
-            
             <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='1px solid white' color='white' fontsize='24px' hoverbackgroundcolor='white' hovercolor='var(--purple-300)' text='회원가입' onClick={onClickBtn}></ButtonForm>
-        
-        
         </Rightoverlay>
     </Wrapper>
     );

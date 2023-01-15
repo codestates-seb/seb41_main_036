@@ -27,7 +27,7 @@ function Main() {
   return (
     <>
     <Header>header헤더</Header>
-    <Body></Body>
+    <Body><Login /></Body>
     <Footer>footer</Footer>
     </>
   );
