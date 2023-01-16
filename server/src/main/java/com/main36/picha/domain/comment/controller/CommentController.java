@@ -63,7 +63,7 @@ public class CommentController {
                 mapper.commentToCommentResponseDto(createdComment)), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{comment-id}")
+    @PatchMapping("/edit/{comment-id}")
     public ResponseEntity patchComment(HttpServletRequest request,
                                        @PathVariable("comment-id")@Positive long commentId,
                                        @RequestBody CommentDto postDto){
@@ -99,7 +99,7 @@ public class CommentController {
                 mapper.commentsToCommentResponseDtos(comments),commentPage), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{comment-id}")
+    @DeleteMapping("/delete/{comment-id}")
     public ResponseEntity deleteCommnet(@PathVariable("comment-id")@Positive long commentId){
         commentService.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
