@@ -11,33 +11,36 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@Builder
-@AllArgsConstructor
+
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Post extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
+    @Setter
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @Column(name = "post_image")
-    private String postImageUrl;
+//    @Column(name = "post_image")
+//    private String postImageUrl;
 
+    @Setter
     @Lob
     @Column(name = "post_content")
     private String postContent;
 
-    @Column(name = "views")
+    @Setter
+    @Column(name = "views", columnDefinition = "integer default 0", nullable = false)
     private int views;
 
-    @Column(name = "likes")
+    @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
 
-//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -46,8 +49,7 @@ public class Post extends Auditable {
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
-
 
 }
