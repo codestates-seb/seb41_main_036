@@ -6,6 +6,7 @@ import com.main36.picha.domain.attraction.service.AttractionService;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.PostDto;
+import com.main36.picha.domain.post.dto.PostRegisterDto;
 import com.main36.picha.domain.post.dto.PostResponseDto;
 import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.mapper.PostMapper;
@@ -65,7 +66,7 @@ public class PostController {
         post.setMember(member);
         post.setAttraction(attraction);
         Post createPost = postService.createPost(post);
-        PostResponseDto postResponseDto = mapper.postToPostResponseDto(createPost);
+        PostRegisterDto postResponseDto = mapper.postToPostRegisterDto(createPost);
 
         return new ResponseEntity(new DataResponseDto<>(postResponseDto), HttpStatus.CREATED);
     }

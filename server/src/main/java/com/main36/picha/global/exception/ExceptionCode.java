@@ -16,6 +16,8 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment not found"),
     COMMENT_EXISTS(409, "Comment exists"),
 
+    NOT_AUTHOR(403, "This Member didn't write the Comment"),
+
     HASHTAG_NOT_FOUND(404, "HashTag not found"),
     HASHTAG_EXISTS(409, "HashTag exists"),
 

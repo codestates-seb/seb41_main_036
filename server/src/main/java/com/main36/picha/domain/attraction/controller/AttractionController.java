@@ -68,7 +68,7 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{attraction-id}")
+    @PatchMapping("/edit/{attraction-id}")
     public ResponseEntity patchAttraction(@PathVariable("attraction-id") @Positive long attractionId,
                                           AttractionPatchDto attractionPatchDto) throws IOException {
 
@@ -119,7 +119,7 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{attraction-id}")
+    @DeleteMapping("/delete/{attraction-id}")
     public ResponseEntity deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
         attractionService.deleteAttraction(attractionId);
 
