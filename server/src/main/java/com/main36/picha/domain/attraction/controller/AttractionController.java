@@ -133,4 +133,10 @@ public class AttractionController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+//    @PostMapping("/likes/{attraction-id}")
+//    public ResponseEntity voteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
+//        Attraction attraction = attractionService.findAttraction(attractionId);
+//
+//    }
+
 }
