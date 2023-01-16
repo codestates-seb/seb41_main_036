@@ -28,23 +28,26 @@ public class PostService {
         return postRepository.save(post);
     }
 
-//    public Post updatePost(Post post) {
-//        getVerifiedPostById(post);
-//
-//
-//    }
-//
+    public Post updatePost(Post post) {
+        Post findPost = getVerifiedPostById(post);
+        Optional.ofNullable(post.getPostTitle())
+                .ifPresent(findPost::setPostTitle);
+        Optional.ofNullable(post.getPostContent())
+                .ifPresent(findPost::setPostContent);
+
+        return findPost;
+    }
 
     private Post getVerifiedPostById(Post post) {
-        Optional<Post> byId = postRepository.findById(post.getPostId());
-        return byId.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Optional<Post> postById = postRepository.findById(post.getPostId());
+        return postById.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
     public Post findPost(Long postId) {
-        Optional<Post> optionalPost =  postRepository.findById(postId);
+        Optional<Post> optionalPost = postRepository.findById(postId);
         Post post = optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-        int views = post.getViews();
-        post.setViews(views + 1);
+        post.setViews(post.getViews() + 1);
+
         return post;
     }
 
@@ -57,5 +60,6 @@ public class PostService {
     public void deletePost(long postId, long memberId) {
         Post post = findPost(postId);
     }
+
 
 }

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
-public class PostPatchDto {
+public class PostPatchRequestDto {
 
     private Long postId;
     @NotBlank(message = "제목을 입력해주세요.")

@@ -2,6 +2,7 @@ package com.main36.picha.global.advice;
 
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.response.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,9 +82,11 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception e) {
         log.error("# handle Exception", e);
-
         final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
 
         return response;
     }
+
+
+
 }

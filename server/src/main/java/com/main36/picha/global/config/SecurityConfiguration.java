@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .mvcMatchers("/users/signup", "/login", "/attractions", "/main", "/attractions/**").permitAll()
+                        .mvcMatchers("/","/users/signup", "/login", "/main","/attractions", "/attractions/**", "/posts", "/posts/*").permitAll()
                         .mvcMatchers("admin").hasRole("ADMIN")
                         .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().authenticated()
