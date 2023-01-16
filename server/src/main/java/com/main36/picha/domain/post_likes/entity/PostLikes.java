@@ -30,6 +30,4 @@ public class PostLikes {
     private Post post;
 
 
-
-
 }

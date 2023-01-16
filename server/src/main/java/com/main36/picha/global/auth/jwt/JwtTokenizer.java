@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
+
 public class JwtTokenizer {
     @Getter
     @Value("${jwt.secret-key}")
@@ -97,6 +99,16 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
+    }
+
+    public String getUsername(HttpServletRequest request) {
+        String authorization = request.getHeader("authorization");
+        String substring = authorization.substring(7);
+        String secretKey = this.getSecretKey();
+        Jws<Claims> claims = this.getClaims(substring,
+                this.encodeBase64SecretKey(secretKey));
+
+        return String.valueOf(claims.getBody().get("username"));
     }
 
 }

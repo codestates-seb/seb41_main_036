@@ -2,6 +2,7 @@ package com.main36.picha.global.response;
 
 import com.google.gson.Gson;
 import com.main36.picha.global.exception.ExceptionCode;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ public class ErrorResponse {
         this.violationErrors = violationErrors;
     }
 
+
     public static ErrorResponse of(BindingResult bindingResult) {
         return new ErrorResponse(FieldError.of(bindingResult), null);
     }
@@ -43,6 +45,8 @@ public class ErrorResponse {
     public static ErrorResponse of(ExceptionCode exceptionCode) {
         return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
     }
+
+
 
     public static ErrorResponse of(HttpStatus httpStatus) {
         return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
