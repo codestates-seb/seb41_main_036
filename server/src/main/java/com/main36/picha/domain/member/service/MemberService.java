@@ -5,10 +5,15 @@ import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
+import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,12 +22,28 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
+
 
     // 멤버 생성
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
-        // TODO: 멤버 비밀번호 암호화 필요
-        // TODO: 멤버 권한부여 필요
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+        return memberRepository.save(member);
+
+    }
+
+    public Member createOauth2Member(Member member) {
+//        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+//        if(findMember.isPresent()){
+//            return findMember.get();
+//        }
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
         return memberRepository.save(member);
 
     }
@@ -50,6 +71,12 @@ public class MemberService {
     // 멤버 조회(프로필)
     public Member findMember(Long memberId, String email) {
         Optional<Member> byMemberIdAndEmail = memberRepository.findByMemberIdAndEmail(memberId, email);
+        return byMemberIdAndEmail.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    public Member findMember(String email) {
+        Optional<Member> byMemberIdAndEmail = memberRepository.findByEmail(email);
         return byMemberIdAndEmail.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }

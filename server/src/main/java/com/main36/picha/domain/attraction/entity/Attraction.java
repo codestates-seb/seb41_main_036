@@ -43,4 +43,8 @@ public class Attraction extends Auditable {
 //    private String attractionImage;
     @Column(name = "province", nullable = false)
     private String province;
+
+
+
+
 }
