@@ -1,9 +1,11 @@
 package com.main36.picha.domain.attraction.mapper;
 
+import com.main36.picha.domain.attraction.dto.AttractionDetailResponseDto;
 import com.main36.picha.domain.attraction.dto.AttractionPatchDto;
 import com.main36.picha.domain.attraction.dto.AttractionPostDto;
 import com.main36.picha.domain.attraction.dto.AttractionResponseDto;
 import com.main36.picha.domain.attraction.entity.Attraction;
+import com.main36.picha.domain.post.dto.PostResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -18,9 +20,25 @@ public interface AttractionMapper {
     Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
     @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-
     @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+//    @Mapping(target = "isVoted", ignore = true)
+    default AttractionDetailResponseDto attractionToAttractionDetailResponseDto(Attraction attraction){
+        AttractionDetailResponseDto.builder()
+                .attractionId(attraction.getAttractionId())
+                .likes(attraction.getLikes())
+                .attractionName(attraction.getAttractionName())
+                .attractionDescription(attraction.getAttractionAddress())
+                .attractionAddress(attraction.getAttractionAddress())
+                .attractionImageUrl(attraction.getAttractionImage().getAttractionImageFileUrl())
+                .posts(attraction.getPosts().stream()
+                        .map(post -> PostResponseDto.builder()
+                                .memberId(post.getMember().getMemberId())
+                                .postId(post.getPostId())
+                                .attractionName(post.getAttraction())))
+
+    };
 
     List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
 }

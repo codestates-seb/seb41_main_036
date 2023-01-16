@@ -15,14 +15,7 @@ import javax.persistence.Id;
 @Builder
 public class AttractionResponseDto {
     private long attractionId;
-
+    private int likes;
     private String attractionName;
-
-    private String attractionDescription;
-
-    private String attractionAddress;
-
     private String attractionImageUrl;
-
-    private String province;
 }

@@ -1,18 +1,21 @@
 package com.main36.picha.domain.attraction.controller;
 
 
-import com.main36.picha.domain.attraction.dto.AttractionFilterDto;
-import com.main36.picha.domain.attraction.dto.AttractionPatchDto;
-import com.main36.picha.domain.attraction.dto.AttractionPostDto;
-import com.main36.picha.domain.attraction.dto.AttractionResponseDto;
+import com.main36.picha.domain.attraction.dto.*;
 import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.attraction.mapper.AttractionMapper;
 import com.main36.picha.domain.attraction.service.AttractionService;
 import com.main36.picha.domain.attraction_file.entity.AttractionImage;
 import com.main36.picha.domain.attraction_file.service.AttractionImageService;
+import com.main36.picha.domain.attraction_likes.repository.AttractionLikesRepository;
+import com.main36.picha.domain.member.entity.Member;
+import com.main36.picha.domain.member.service.MemberService;
+import com.main36.picha.global.auth.jwt.JwtTokenizer;
 import com.main36.picha.global.config.S3Service;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.File;
@@ -38,10 +42,11 @@ import java.util.UUID;
 @Validated
 public class AttractionController {
 
-    private final S3Service s3Service;
     private final AttractionService attractionService;
     private final AttractionMapper mapper;
     private final AttractionImageService imageService;
+    private final JwtTokenizer jwtTokenizer;
+    private final MemberService memberService;
 
 
     // 1. 명소 등록 핸들러
@@ -98,7 +103,7 @@ public class AttractionController {
     @GetMapping("/{attraction-id}")
     public ResponseEntity getAttraction(@PathVariable("attraction-id") @Positive long attractionId){
         AttractionResponseDto response =
-                mapper.attractionToAttractionResponseDto(attractionService.findAttraction(attractionId));
+                mapper.attractionToAttractionDe(attractionService.findAttraction(attractionId));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
@@ -133,10 +138,32 @@ public class AttractionController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PostMapping("/likes/{attraction-id}")
-//    public ResponseEntity voteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
-//        Attraction attraction = attractionService.findAttraction(attractionId);
-//
-//    }
+    @PostMapping("/likes/{attraction-id}")
+    public ResponseEntity voteAttraction(HttpServletRequest request,
+                                         @PathVariable("attraction-id") @Positive long attractionId){
+        // 회원 정보를 받아온다
+        String userEmail = extractedUsername(request);
+        Member member = memberService.findMember(userEmail);
+
+        // 명소 정보를 찾는다
+        Attraction attraction = attractionService.findAttraction(attractionId);
+
+        // 회원과 명소 정보를 바탕으로 좋아요가 눌러져 있다면 true, 아니면 false를 받는다.
+        boolean status = attractionService.voteAttraction(member, attraction);
+
+        // responseDto 생성
+        AttractionLikesResponseDto response = new AttractionLikesResponseDto();
+        response.setIsVoted(status);
+        return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
+    }
+
+    private String extractedUsername(HttpServletRequest request) {
+        String authorization = request.getHeader("authorization");
+        String substring = authorization.substring(7);
+        String secretKey = jwtTokenizer.getSecretKey();
+        Jws<Claims> claims = jwtTokenizer.getClaims(substring, jwtTokenizer.encodeBase64SecretKey(secretKey));
+
+        return String.valueOf(claims.getBody().get("username"));
+    }
 
 }

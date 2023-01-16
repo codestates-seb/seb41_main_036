@@ -1,6 +1,7 @@
 package com.main36.picha.domain.attraction.entity;
 
 import com.main36.picha.domain.attraction_file.entity.AttractionImage;
+import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -16,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-//@DynamicInsert
+@DynamicInsert
 public class Attraction extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +29,8 @@ public class Attraction extends Auditable {
     private String attractionName;
 
     @Column(name = "likes", nullable = false)
-//    @ColumnDefault("0")
-    private int likes =0;
+    @ColumnDefault("0")
+    private int likes;
     @Lob
     @Column( name = "attraction_description", nullable = false)
     private String attractionDescription;
@@ -44,7 +47,6 @@ public class Attraction extends Auditable {
     @Column(name = "province", nullable = false)
     private String province;
 
-
-
-
+    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
+    private List<Post> posts = new ArrayList<>();
 }
