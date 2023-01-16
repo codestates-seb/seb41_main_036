@@ -11,6 +11,7 @@ import java.util.List;
 public interface CommentMapper {
     @Mapping(target = "username", source = "member.username")
     @Mapping(target = "memberId", source = "member.memberId")
+    @Mapping(target = "memberPicture", source = "member.picture")
     CommentResponseDto commentToCommentResponseDto(Comment comment);
 
     List<CommentResponseDto> commentsToCommentResponseDtos(List<Comment> comments);
