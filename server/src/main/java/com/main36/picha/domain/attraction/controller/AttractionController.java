@@ -119,7 +119,7 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
     }
 
-    @DeleteMapping("/edit/{attraction-id}")
+    @DeleteMapping("/delete/{attraction-id}")
     public ResponseEntity deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
         attractionService.deleteAttraction(attractionId);
 
