@@ -53,7 +53,6 @@ public interface PostMapper {
                                         return CommentResponseDto.builder()
                                                 .memberId(comment.getMember().getMemberId())
                                                 .username(comment.getMember().getUsername())
-                                                .picture(comment.getMember().getPicture())
                                                 .commentId(comment.getCommentId())
                                                 .commentContent(comment.getCommentContent())
                                                 .createdAt(comment.getCreatedAt())
