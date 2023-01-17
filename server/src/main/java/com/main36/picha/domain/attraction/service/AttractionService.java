@@ -6,6 +6,8 @@ import com.main36.picha.domain.attraction_file.service.AttractionImageService;
 import com.main36.picha.domain.attraction_likes.entity.AttractionLikes;
 import com.main36.picha.domain.attraction_likes.repository.AttractionLikesRepository;
 import com.main36.picha.domain.member.entity.Member;
+import com.main36.picha.domain.save.entity.Save;
+import com.main36.picha.domain.save.repository.SaveRepository;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,8 @@ import java.util.Optional;
 public class AttractionService {
     private final AttractionRepository attractionRepository;
     private final AttractionImageService attractionImageService;
-
     private final AttractionLikesRepository attractionLikesRepository;
+    private final SaveRepository saveRepository;
 
 
     public Attraction createAttraction(Attraction attraction){
@@ -108,6 +110,35 @@ public class AttractionService {
     public boolean isVoted(Member member, Attraction attraction) {
         Optional<AttractionLikes> likes = attractionLikesRepository.findByMemberAndAttraction(member, attraction);
         return likes.isPresent();
+    }
+
+    public boolean saveAttraction(Member member, Attraction attraction){
+        // 즐겨찾기를 누른적이 있나?
+        Optional<Save> save = saveRepository.findByMemberAndAttraction(member, attraction);
+
+        // 즐겨찾기를 이미 눌렀다면
+        if(save.isPresent()){
+            // 즐겨찾기 데이터를 삭제하고
+            saveRepository.delete(save.get());
+            // 명소의 saves를 하나 감소시킨다
+            attraction.setSaves(attraction.getSaves()-1);
+            // 지금은 즐겨찾기를 누르지 않은 상태라는것을 반환한다.
+            return false;
+        }
+        // 즐겨찾기를 누르지 않았으면
+        else{
+            // 즐겨찾기 데이터를 생성하고
+            saveRepository.save(Save.builder().attraction(attraction).member(member).build());
+            // 명소의 saves를 하나 증가시킨다.
+            attraction.setSaves(attraction.getSaves()+1);
+            // 지금은 즐겨찾기를 누른 상태라는것을 반환한다.
+            return true;
+        }
+    }
+
+    public boolean isSaved(Member member, Attraction attraction) {
+        Optional<Save> save = saveRepository.findByMemberAndAttraction(member, attraction);
+        return save.isPresent();
     }
 
     private Attraction findVerifiedAttraction(long attractionId){

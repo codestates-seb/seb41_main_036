@@ -32,9 +32,9 @@ public class Attraction extends Auditable {
     @ColumnDefault("0")
     private Long likes;
 
-//    @Column(name = "saves", nullable = false)
-//    @ColumnDefault("0")
-//    private Long saves;
+    @Column(name = "saves", nullable = false)
+    @ColumnDefault("0")
+    private Long saves;
     @Lob
     @Column( name = "attraction_description", nullable = false)
     private String attractionDescription;

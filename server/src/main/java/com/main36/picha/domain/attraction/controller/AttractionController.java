@@ -102,7 +102,7 @@ public class AttractionController {
     }
 
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
-    // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지
+    // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
     @GetMapping("/{attraction-id}")
     public ResponseEntity getAttraction(HttpServletRequest request,
                                         @PathVariable("attraction-id") @Positive long attractionId){
@@ -111,6 +111,7 @@ public class AttractionController {
         AttractionDetailResponseDto response =
                 mapper.attractionToAttractionDetailResponseDto(attraction);
         response.setIsVoted(attractionService.isVoted(member, attraction));
+        response.setIsSaved(attractionService.isSaved(member,attraction));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
@@ -124,18 +125,18 @@ public class AttractionController {
         Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page-1, size);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
+                mapper.attractionsToAttractionResponseDtos(attractions),attractionPage), HttpStatus.OK);
     }
 
     // 5. 명소 Id를 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
-    // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
+    // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수
     @GetMapping
     public ResponseEntity getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                          @Positive @RequestParam(required = false, defaultValue = "9") int size){
         Page<Attraction> attractionPage = attractionService.findAttractions(page-1, size);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity(new MultiResponseDto<>(
-                mapper.attractionsToAttractionResponses(attractions),attractionPage), HttpStatus.OK);
+                mapper.attractionsToAttractionResponseDtos(attractions),attractionPage), HttpStatus.OK);
     }
 
 
@@ -164,6 +165,23 @@ public class AttractionController {
         // responseDto 생성
         AttractionLikesResponseDto response = new AttractionLikesResponseDto();
         response.setIsVoted(status);
+        return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
+    }
+
+    // 8. 명소 즐겨찾기
+    @PostMapping("/saves/{attraction-id}")
+    public ResponseEntity saveAttraction(HttpServletRequest request,
+                                         @PathVariable("attraction-id") @Positive long attractionId){
+        String userEmail = extractedUsername(request);
+        Member member = memberService.findMember(userEmail);
+
+        // 명소 정보를 찾는다
+        Attraction attraction = attractionService.findAttraction(attractionId);
+
+        boolean status = attractionService.saveAttraction(member, attraction);
+
+        AttractionSaveResponseDto response = new AttractionSaveResponseDto();
+        response.setIsSaved(status);
         return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
     }
 

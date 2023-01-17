@@ -11,11 +11,9 @@ import java.util.List;
 public class AttractionDetailResponseDto {
     private Long attractionId;
     private Long likes;
-
-//    private Long saves;
+    private Long saves;
     private Boolean isVoted;
-
-//    private Boolean isSaved;
+    private Boolean isSaved;
     private String attractionName;
     private String attractionDescription;
     private String attractionAddress;

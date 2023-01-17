@@ -19,7 +19,7 @@ public class AttractionResponseDto {
     private String attractionName;
     private String attractionImageUrl;
     private Long likes;
-//    private Long postNumber;
+    private Long saves;
 
-//    private Long saves;
+//    private Long postNumber;
 }

@@ -37,7 +37,7 @@ public interface AttractionMapper {
                 .build();
     };
 
-    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
+    List<AttractionResponseDto> attractionsToAttractionResponseDtos(List<Attraction> attractions);
 }
 
 /*@Component
