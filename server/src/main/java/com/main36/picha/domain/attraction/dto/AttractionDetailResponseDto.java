@@ -17,14 +17,15 @@ public class AttractionDetailResponseDto {
     private String attractionName;
     private String attractionDescription;
     private String attractionAddress;
-    private String attractionImageUrl;
+    private String fixedImage;
 
 //    private List<PostResponseDto> posts;
 
     @Builder
-    public AttractionDetailResponseDto(Long attractionId, Long likes, String attractionName, String attractionDescription, String attractionAddress/*, String attractionImageUrl*/) {
+    public AttractionDetailResponseDto(Long attractionId, Long likes, Long saves, String attractionName, String attractionDescription, String attractionAddress/*, String attractionImageUrl*/) {
         this.attractionId = attractionId;
         this.likes = likes;
+        this.saves = saves;
         this.attractionName = attractionName;
         this.attractionDescription = attractionDescription;
         this.attractionAddress = attractionAddress;

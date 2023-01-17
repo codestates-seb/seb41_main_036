@@ -57,7 +57,7 @@ public class AttractionController {
 
         Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
 
-        // dto로 받은 이미지 파일이 있다면
+/*        // dto로 받은 이미지 파일이 있다면
         if(!attractionPostDto.getAttractionImage().isEmpty()){
             // s3에 저장하고 AttractionImage를 attraction안에 저장
             AttractionImage attractionImage =
@@ -69,7 +69,7 @@ public class AttractionController {
             // AttractionImage 객체를 하나 만들어서 attraction에 넣는다.
             AttractionImage attractionImage = new AttractionImage();
             attraction.setAttractionImage(attractionImage);
-        }
+        }*/
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.createAttraction(attraction));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
@@ -84,7 +84,7 @@ public class AttractionController {
         Attraction attraction= mapper.attractionPatchDtoToAttraction(attractionPatchDto);
 
         // 새로운 이미지 파일을 받았다면
-        if(!attractionPatchDto.getAttractionImage().isEmpty()){
+ /*       if(!attractionPatchDto.getAttractionImage().isEmpty()){
             // 고칠 명소를 찾고
             Attraction findAttraction = attractionService.findAttraction(attractionId);
             // 이미지가 이미 있다면 명소의 이미지를 s3와 데이터베이스에서 삭제
@@ -95,7 +95,7 @@ public class AttractionController {
             AttractionImage attractionImage =
                     imageService.createAttractionImage(attractionPatchDto.getAttractionImage());
             attraction.setAttractionImage(attractionImage);
-        }
+        }*/
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.updateAttraction(attraction));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);

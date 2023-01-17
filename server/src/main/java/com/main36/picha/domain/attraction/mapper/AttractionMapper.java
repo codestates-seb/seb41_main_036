@@ -17,20 +17,21 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface AttractionMapper {
-    @Mapping(target = "attractionImage", ignore = true)
+//    @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
-    @Mapping(target = "attractionImage", ignore = true)
+//    @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
 //    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
 //    @Mapping(target = "isVoted", ignore = true)
-    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     default AttractionDetailResponseDto attractionToAttractionDetailResponseDto(Attraction attraction){
 //        Optional.ofNullable(attraction.getAttractionImage().getAttractionImageFileUrl()).orElse("")
         return AttractionDetailResponseDto.builder()
                 .attractionId(attraction.getAttractionId())
                 .likes(attraction.getLikes())
+                .saves(attraction.getSaves())
                 .attractionName(attraction.getAttractionName())
                 .attractionDescription(attraction.getAttractionAddress())
                 .attractionAddress(attraction.getAttractionAddress())

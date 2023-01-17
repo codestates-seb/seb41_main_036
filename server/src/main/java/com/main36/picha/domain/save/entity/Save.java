@@ -19,7 +19,7 @@ public class Save {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long saveId;
+    private Long saveId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

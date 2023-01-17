@@ -17,7 +17,7 @@ import javax.persistence.Id;
 public class AttractionResponseDto {
     private Long attractionId;
     private String attractionName;
-    private String attractionImageUrl;
+    private String fixedImage;
     private Long likes;
     private Long saves;
 

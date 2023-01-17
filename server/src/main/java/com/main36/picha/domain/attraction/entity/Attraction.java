@@ -42,9 +42,11 @@ public class Attraction extends Auditable {
     @Column(name = "attraction_address", nullable = false)
     private String attractionAddress;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "attraction_image_id")
-    private AttractionImage attractionImage;
+//    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    @JoinColumn(name = "attraction_image_id")
+//    private AttractionImage attractionImage;
+    @Column(name = "fixed_image")
+    private String fixedImage;
 
     @Column(name = "province", nullable = false)
     private String province;
