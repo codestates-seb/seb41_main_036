@@ -12,6 +12,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -24,20 +25,16 @@ public interface AttractionMapper {
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
 //    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
 //    @Mapping(target = "isVoted", ignore = true)
+    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     default AttractionDetailResponseDto attractionToAttractionDetailResponseDto(Attraction attraction){
-        AttractionDetailResponseDto.builder()
+//        Optional.ofNullable(attraction.getAttractionImage().getAttractionImageFileUrl()).orElse("")
+        return AttractionDetailResponseDto.builder()
                 .attractionId(attraction.getAttractionId())
                 .likes(attraction.getLikes())
                 .attractionName(attraction.getAttractionName())
                 .attractionDescription(attraction.getAttractionAddress())
                 .attractionAddress(attraction.getAttractionAddress())
-                .attractionImageUrl(attraction.getAttractionImage().getAttractionImageFileUrl())
-                .posts(attraction.getPosts().stream()
-                        .map(post -> PostResponseDto.builder()
-                                .memberId(post.getMember().getMemberId())
-                                .postId(post.getPostId())
-                                .attractionName(post.getAttraction())))
-
+                .build();
     };
 
     List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);

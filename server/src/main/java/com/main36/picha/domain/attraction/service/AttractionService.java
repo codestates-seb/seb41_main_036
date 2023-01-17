@@ -105,6 +105,11 @@ public class AttractionService {
         }
     }
 
+    public boolean isVoted(Member member, Attraction attraction) {
+        Optional<AttractionLikes> likes = attractionLikesRepository.findByMemberAndAttraction(member, attraction);
+        return likes.isPresent();
+    }
+
     private Attraction findVerifiedAttraction(long attractionId){
         return attractionRepository.findById(attractionId)
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ATTRACTION_NOT_FOUND));

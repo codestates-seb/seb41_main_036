@@ -30,7 +30,11 @@ public class Attraction extends Auditable {
 
     @Column(name = "likes", nullable = false)
     @ColumnDefault("0")
-    private int likes;
+    private Long likes;
+
+//    @Column(name = "saves", nullable = false)
+//    @ColumnDefault("0")
+//    private Long saves;
     @Lob
     @Column( name = "attraction_description", nullable = false)
     private String attractionDescription;
@@ -42,11 +46,9 @@ public class Attraction extends Auditable {
     @JoinColumn(name = "attraction_image_id")
     private AttractionImage attractionImage;
 
-//    @Column(name = "attraction_image", nullable = false)
-//    private String attractionImage;
     @Column(name = "province", nullable = false)
     private String province;
 
-    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
-    private List<Post> posts = new ArrayList<>();
+//    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
+//    private List<Post> posts = new ArrayList<>();
 }

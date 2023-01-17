@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,15 +102,21 @@ public class AttractionController {
     }
 
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
+    // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지
     @GetMapping("/{attraction-id}")
-    public ResponseEntity getAttraction(@PathVariable("attraction-id") @Positive long attractionId){
-        AttractionResponseDto response =
-                mapper.attractionToAttractionDe(attractionService.findAttraction(attractionId));
+    public ResponseEntity getAttraction(HttpServletRequest request,
+                                        @PathVariable("attraction-id") @Positive long attractionId){
+        Member member = memberService.findMember(extractedUsername(request));
+        Attraction attraction = attractionService.findAttraction(attractionId);
+        AttractionDetailResponseDto response =
+                mapper.attractionToAttractionDetailResponseDto(attraction);
+        response.setIsVoted(attractionService.isVoted(member, attraction));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
 
     // 4. 찾는 '구' 리스트를 받아 명소 Id 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
+    // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
     @GetMapping("/filter")
     public ResponseEntity getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                  @Positive @RequestParam(required = false, defaultValue = "9") int size,
@@ -120,6 +128,7 @@ public class AttractionController {
     }
 
     // 5. 명소 Id를 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
+    // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
     @GetMapping
     public ResponseEntity getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                          @Positive @RequestParam(required = false, defaultValue = "9") int size){
@@ -138,6 +147,7 @@ public class AttractionController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // 7. 명소 좋아요!
     @PostMapping("/likes/{attraction-id}")
     public ResponseEntity voteAttraction(HttpServletRequest request,
                                          @PathVariable("attraction-id") @Positive long attractionId){

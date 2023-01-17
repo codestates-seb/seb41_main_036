@@ -6,25 +6,30 @@ import lombok.Data;
 
 import java.util.List;
 
+// 명소 상세 페이지
 @Data
 public class AttractionDetailResponseDto {
-    private long attractionId;
-    private int likes;
-    private boolean isVoted;
+    private Long attractionId;
+    private Long likes;
+
+//    private Long saves;
+    private Boolean isVoted;
+
+//    private Boolean isSaved;
     private String attractionName;
     private String attractionDescription;
     private String attractionAddress;
     private String attractionImageUrl;
-    private List<PostResponseDto> posts;
+
+//    private List<PostResponseDto> posts;
 
     @Builder
-    public AttractionDetailResponseDto(long attractionId, int likes, String attractionName, String attractionDescription, String attractionAddress, String attractionImageUrl, List<PostResponseDto> posts) {
+    public AttractionDetailResponseDto(Long attractionId, Long likes, String attractionName, String attractionDescription, String attractionAddress/*, String attractionImageUrl*/) {
         this.attractionId = attractionId;
         this.likes = likes;
         this.attractionName = attractionName;
         this.attractionDescription = attractionDescription;
         this.attractionAddress = attractionAddress;
-        this.attractionImageUrl = attractionImageUrl;
-        this.posts = posts;
+//        this.attractionImageUrl = attractionImageUrl;
     }
 }
