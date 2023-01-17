@@ -1,0 +1,69 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --purple-400: hsl(242, 72%, 57%);
+  --purple-300: hsl(244.785, 92%, 65%);
+  --purple-200: hsl(237.931, 43%, 87%);
+  --purple-100: hsl(240, 27%, 94%);
+  --black-900: hsl(0, 0%, 20%);
+  --black-800: hsl(0, 0%, 25%);
+  --black-700: hsl(0, 0%, 45%);
+  --black-650: hsl(0, 0%, 65%);
+  --black-600: hsl(0, 0%, 70%);
+  --black-500: hsl(0, 0%, 80%);
+  --black-400: hsl(0, 0%, 85%);
+  --black-300: hsl(0, 0%, 90%);
+  --black-200: hsl(0, 0, 98%);
+  --white-header: hsl(210, 50%, 11%);
+  --pink-heart: hsl(352, 100%, 65%);
+  --lime-highlight: hsl(75, 100%, 50%);
+  --purple-tag: hsl(243, 100%, 96%);
+  --br-s: 5px;
+  --br-m: 10px;
+  --br-l: 22px;
+  --zi-m-four: -100;
+  --zi-m-three: -50;
+  --zi-m-two: -10;
+  --zi-m-one: -1;
+  --zi-basic: 0;
+  --zi-one: 1;
+  --zi-two: 10;
+  --zi-three: 50;
+  --zi-four: 100;
+  --font-xxs: 0.5rem;
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-md: 1.125rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.375rem;
+  --font-xxl: 1.875rem;
+  --font-xxxl: 2.125rem;
+  --fw-bold: 700;
+  --fw-medium: 500;
+  --fw-reg: 400;
+}
+/*
+white-header:헤더 맨 윗부분
+pink-heart:하트 아이콘
+limt-higlight:-
+purple-tag:태그 바탕색
+br:border-radius
+zi:z-index (-4~4, m=minus)
+font:font-size
+fw:font-weight(--fw-reg:default)
+*/
+
+li {
+  list-style: none;
+}
+
+
