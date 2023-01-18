@@ -13,7 +13,8 @@ import {
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 import profile from "./../../data/profile.png";
 import { ReactNode, MouseEventHandler } from "react";
-
+const IMG_SRC =
+  "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
 const isLoggedIn = true;
 
 const HeaderTopBar = () => {
@@ -65,7 +66,7 @@ const HeaderBodyBar = ({
         )}
         {isLoggedIn && (
           <Profile>
-            <img src={profile} alt="profile" />
+            <img src={IMG_SRC} alt="profile" />
           </Profile>
         )}
       </HeaderBody>
