@@ -51,6 +51,7 @@ public class PostController {
         Member member = memberService.findMember(username);
         Attraction attraction = attractionService.findAttraction(attractionId);
 
+        attraction.setNumOfPosts(attraction.getNumOfPosts()+1);
         Post post = mapper.postRegisterDtoToPost(postRegisterDto, member, attraction);
         Post createPost = postService.createPost(post);
 

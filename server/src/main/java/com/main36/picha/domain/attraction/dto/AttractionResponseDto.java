@@ -18,6 +18,7 @@ public class AttractionResponseDto {
     private Long attractionId;
     private String attractionName;
     private String fixedImage;
+    private Long numOfPosts;
     private Long likes;
     private Long saves;
 //    private Long postNumber;
