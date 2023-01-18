@@ -1,32 +1,31 @@
 package com.main36.picha.domain.post.dto;
 
-
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Setter(AccessLevel.NONE)
 @Builder
-@AllArgsConstructor
-public class PostResponseDto {
-    private Long postId;
+public class SinglePostResponseDto {
+    private long postId;
     private String postTitle;
     private String postContent;
-    private Long memberId;
-    private String username;
-    private String picture;
-    private Long attractionId;
-    private String attractionName;
+    private String hashTagContent;
+    private long attractionId;
     private String attractionAddress;
+    private String attractionName;
     private int views;
     private int likes;
-
-    //TODO : HashTag
-//    private List<String> hashtags;
+    private String username;
+    private String picture;
     private List<CommentResponseDto> comments;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
 }

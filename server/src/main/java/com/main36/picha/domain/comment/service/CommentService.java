@@ -24,15 +24,6 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Comment updateComment(Comment comment){
-        Comment findComment = findVerifiedComment(comment.getCommentId());
-
-        // 댓글 내용만 변경 가능
-        Optional.ofNullable(comment.getCommentContent())
-                .ifPresent(findComment::setCommentContent);
-        return commentRepository.save(findComment);
-    }
-
     public Comment findComment(long commentId){
         return findVerifiedComment(commentId);
     }

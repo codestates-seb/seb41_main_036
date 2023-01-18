@@ -106,8 +106,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-//                .host( "pikcha36.o-r.kr")
-                .host("localhost")
+                .host( "pikcha36.o-r.kr")
+//                .host("localhost")
                 .port(8080)
                 .path("/users/token")
                 .queryParams(queryParams)

@@ -56,20 +56,21 @@ public class MemberController {
         log.info("at={}", access_token);
         log.info("rt={}", refresh_token);
         String at = "Bearer " + access_token;
-//        Token tokenBuilder =
-//                Token.builder()
-//                .accessToken(at)
-//                .refreshToken(refresh_token)
-//                .build();
 
+        // 1. 헤더에 담아서 보내기
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", at);
         headers.set("RefreshToken", refresh_token);
-//        headers.add(HttpHeaders.AUTHORIZATION, at);
-
         return ResponseEntity.ok().headers(headers).body("SUCCESS");
-    }
 
+        // 2. 토큰 엔티티에 담아 보내기
+//        Token tokenBuilder =
+//                Token.builder()
+//                        .accessToken(at)
+//                        .refreshToken(refresh_token)
+//                        .build();
+//        return ResponseEntity.ok(tokenBuilder);
+    }
 
     @PatchMapping("/edit/{member-id}")
     public ResponseEntity<DataResponseDto> patchMember(@PathVariable("member-id") @Positive long memberId,
@@ -82,12 +83,6 @@ public class MemberController {
                 HttpStatus.OK
         );
     }
-
-//    @GetMapping("/token")
-//    public ResponseEntity getOauth2MemberToken() {
-//        Member member = memberService.findMember()
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 
     // 멤버 프로필 조회(홈)
     // TODO: 스프링 시큐리티 적용

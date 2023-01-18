@@ -24,7 +24,6 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post createPost(Post post) {
-
         return postRepository.save(post);
     }
 
@@ -34,6 +33,8 @@ public class PostService {
                 .ifPresent(findPost::setPostTitle);
         Optional.ofNullable(post.getPostContent())
                 .ifPresent(findPost::setPostContent);
+        Optional.ofNullable(post.getHashTagContent())
+                .ifPresent(findPost::setHashTagContent);
 
         return findPost;
     }
@@ -51,8 +52,8 @@ public class PostService {
         return post;
     }
 
-    public Page<Post> findAllPostsByNewest(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("postId").descending());
+    public Page<Post> findAllPostsBySort(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
         return postRepository.findAll(pageable);
     }

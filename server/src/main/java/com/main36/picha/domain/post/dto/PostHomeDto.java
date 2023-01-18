@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class PostHomeDto {
-
+    private Long postId;
     private Long memberId;
     private String username;
-    private String userImage;
+    private String picture;
     private int views;
     private int likes;
     private String postTitle;
