@@ -30,7 +30,6 @@ public class AttractionService {
     private final AttractionLikesRepository attractionLikesRepository;
     private final SaveRepository saveRepository;
 
-
     public Attraction createAttraction(Attraction attraction){
         verifyExistsAttraction(attraction.getAttractionAddress());
         return attractionRepository.save(attraction);
@@ -71,8 +70,8 @@ public class AttractionService {
                 ));
     }
 
-    public Page<Attraction> findFilteredAttractions(List<String> provinces, int page, int size){
-        Pageable pageable = PageRequest.of(page, size, Sort.by("attractionId").descending());
+    public Page<Attraction> findFilteredAttractions(List<String> provinces, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         return attractionRepository.findAllByProvinceIn(provinces, pageable);
     }
 

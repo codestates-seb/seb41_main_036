@@ -115,14 +115,22 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
-
     // 4. 찾는 '구' 리스트를 받아 명소 Id 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
     @GetMapping("/filter")
     public ResponseEntity getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                  @Positive @RequestParam(required = false, defaultValue = "9") int size,
+                                                 @RequestParam(required = false, defaultValue = "latest") String sort,
                                                  @RequestBody AttractionFilterDto filterDto){
-        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page-1, size);
+        switch(sort){
+            case "latest": sort = "attractionId";
+                break;
+            case "posts": sort = "numOfPosts";
+                break;
+            case "likes" : sort = "likes";
+                break;
+        }
+        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page-1, size, sort);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
                 mapper.attractionsToAttractionResponseDtos(attractions),attractionPage), HttpStatus.OK);

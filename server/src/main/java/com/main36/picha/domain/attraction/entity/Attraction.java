@@ -6,6 +6,7 @@ import com.main36.picha.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -35,6 +36,11 @@ public class Attraction extends Auditable {
     @Column(name = "saves", nullable = false)
     @ColumnDefault("0")
     private Long saves;
+
+    @Column(name = "num_of_posts")
+//    @Formula("(SELECT count(1) FROM post p WHERE p.postId = attractionId)")
+    @ColumnDefault("0")
+    private Long numOfPosts;
     @Lob
     @Column( name = "attraction_description", nullable = false)
     private String attractionDescription;
@@ -51,6 +57,6 @@ public class Attraction extends Auditable {
     @Column(name = "province", nullable = false)
     private String province;
 
-//    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
-//    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
+    private List<Post> posts = new ArrayList<>();
 }

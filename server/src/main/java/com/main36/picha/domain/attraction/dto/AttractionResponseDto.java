@@ -20,6 +20,5 @@ public class AttractionResponseDto {
     private String fixedImage;
     private Long likes;
     private Long saves;
-
 //    private Long postNumber;
 }
