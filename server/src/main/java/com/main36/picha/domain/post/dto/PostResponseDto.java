@@ -24,6 +24,7 @@ public class PostResponseDto {
     private String attractionAddress;
     private int views;
     private int likes;
+
     //TODO : HashTag
 //    private List<String> hashtags;
     private List<CommentResponseDto> comments;

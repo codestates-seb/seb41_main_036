@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class PostPageResponseDto {
+public class PostDetailPageResponseDto {
     private long postId;
     private String postTitle;
     private long attractionId;

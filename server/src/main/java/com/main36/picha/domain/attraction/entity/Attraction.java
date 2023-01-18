@@ -29,6 +29,8 @@ public class Attraction extends Auditable {
     @Column(name = "attraction_address", nullable = false)
     private String attractionAddress;
 
+    @Column(name = "fixed_image")
+    private String fixImage;
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "attraction_image_id")
     private AttractionImage attractionImage;

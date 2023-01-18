@@ -44,8 +44,14 @@ public class MemberService {
 //        }
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-        return memberRepository.save(member);
 
+        return memberRepository.save(member);
+    }
+
+    public boolean isPresentOauthMember(String email) {
+        Optional<Member> byEmail = memberRepository.findByEmail(email);
+
+        return byEmail.isPresent();
     }
 
     private void verifyExistsEmail(String email) {

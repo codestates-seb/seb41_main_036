@@ -4,12 +4,17 @@ package com.main36.picha.global.auth.handler;
 import com.main36.picha.domain.member.dto.OauthMemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
+import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.exception.BusinessLogicException;
+import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
@@ -21,10 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,12 +43,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String name = String.valueOf(oAuth2User.getAttributes().get("name"));
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         String picture = String.valueOf(oAuth2User.getAttributes().get("picture"));
+//        for (Map.Entry<String, Object> entry : oAuth2User.getAttributes().entrySet()) {
+//            log.info("key ={}" + " /  " +  "value = {}", entry.getKey(), entry.getValue());
+//        }
         List<String> authorities = authorityUtils.createRoles(email);
 
-        savedMember(name, email, picture);
+        boolean oauthMember = memberService.isPresentOauthMember(email);
+        if (!oauthMember) {
+            savedMember(name, email, picture);
+        }
         redirect(request, response, email, authorities);
-
-
     }
 
     private void savedMember(String name, String email, String picture) {
@@ -91,6 +97,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
+
     private URI createURI(String accessToken, String refreshToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
@@ -99,15 +106,12 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
+//                .host( "pikcha36.o-r.kr")
                 .host("localhost")
-//                .port(8080)
-//                .port(80)
-                .path("/receive-token.html")
-//                .path("/token")
+                .port(8080)
+                .path("/users/token")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
-
-
     }
 }

@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     Optional<Attraction> findByAttractionAddress(String address);
     Page<Attraction> findAllByProvinceIn(List<String> cities, Pageable pageable);
+
 }

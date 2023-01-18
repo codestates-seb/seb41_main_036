@@ -2,6 +2,7 @@ package com.main36.picha.global.config;
 
 
 import com.main36.picha.domain.member.mapper.MemberMapper;
+import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.auth.filter.JwtAuthenticationFilter;
 
@@ -27,6 +28,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
+
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 
@@ -37,6 +40,8 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
     private final MemberMapper mapper;
+
+    private final MemberRepository memberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,11 +61,14 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .mvcMatchers("/","/users/signup", "/login", "/main","/attractions", "/attractions/**", "/posts", "/posts/*").permitAll()
+                        .mvcMatchers("/", "/users/signup", "/login/**", "/login", "/users/token/**", "/main", "/attractions", "/attractions/**", "/posts", "/posts/*").permitAll()
                         .mvcMatchers("admin").hasRole("ADMIN")
                         .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().authenticated()
                 )
+//                .oauth2Login().
+//                .userInfoEndpoint()
+//                .userService()
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, mapper))
                 );
@@ -71,9 +79,12 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://pikcha36.o-r.kr/"
+                , "http://pikcha36.o-r.kr/"));
+        configuration.setAllowCredentials(true);
+        configuration.addExposedHeader("Authorization");
+        configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 

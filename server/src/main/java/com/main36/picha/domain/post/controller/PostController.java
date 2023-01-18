@@ -35,11 +35,8 @@ public class PostController {
 
     private final PostService postService;
     private final PostMapper mapper;
-
     private final MemberService memberService;
-
     private final AttractionService attractionService;
-
     private final JwtTokenizer jwtTokenizer;
 
     // 로그인 객체 찾기
@@ -51,7 +48,10 @@ public class PostController {
         Member member = memberService.findMember(username);
         Attraction attraction = attractionService.findAttraction(attractionId);
 
+        // TODO: String hashtag를 -> List<hashtag>로
+
         Post post = mapper.postRegisterDtoToPost(postRegisterDto, member, attraction);
+
         Post createPost = postService.createPost(post);
 
         PostRegisterResponseDto postRegisterResponseDto = mapper.postToPostRegisterResponseDto(createPost);

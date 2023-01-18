@@ -26,8 +26,7 @@ public class Post extends Auditable {
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-//    @Column(name = "post_image")
-//    private String postImageUrl;
+    private String hashTagContent;
 
     @Setter
     @Lob
