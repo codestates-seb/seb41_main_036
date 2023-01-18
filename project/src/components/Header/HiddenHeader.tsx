@@ -1,4 +1,3 @@
-//debouncing
 import { useState, useRef } from "react";
 import { Header } from ".";
 import { IoIosArrowDown as ArrowDownIcon } from "react-icons/io";

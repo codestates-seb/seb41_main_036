@@ -47,14 +47,14 @@ function getfilteredAttractions(
   }, init).sort((a, b) => {
     let diff = a.matchedletter[0]?.[0] - b.matchedletter[0]?.[0];
     let exactDiff = null;
-    //하나는 무조건 존재한다 따라서 reference오류가 날 일이 없다
+
     if (!a.exactmatchedletter.length && b.exactmatchedletter.length) return 1;
     else if (a.exactmatchedletter.length && !b.exactmatchedletter.length)
       return -1;
     else if (a.exactmatchedletter.length && b.exactmatchedletter.length) {
       exactDiff = a.exactmatchedletter[0][0] - b.exactmatchedletter[0][0];
     }
-    //exactmatchedletter가 존재하면
+
     return exactDiff
       ? exactDiff
       : diff

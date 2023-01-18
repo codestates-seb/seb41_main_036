@@ -11,7 +11,6 @@ import {
 } from "./style";
 
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
-import profile from "./../../data/profile.png";
 import { ReactNode, MouseEventHandler } from "react";
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";

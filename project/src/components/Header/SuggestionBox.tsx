@@ -26,8 +26,6 @@ interface SuggestionBoxProps {
 }
 
 const SuggestionBox = ({
-  //searchvalue를 받아서 데이터를 필터링하고 해당하는 순서의 suggestion으로 input값을 설정한다
-  //지금 selected가 양방향으로 일어난다
   trimmedSearchValue,
   filteredAttractions,
   numOfFilteredAttractions,
@@ -45,7 +43,6 @@ const SuggestionBox = ({
         onInputChange(trimmedSearchValue);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   useEffect(() => {
@@ -90,7 +87,6 @@ const SuggestionBox = ({
     </SuggestionItemWrapper>
   );
 };
-//inputValue를 받아 값을 필터링하고 suggestItem 리스트를 렌더링
 
 interface AttractionsProps {
   info: { name: string; id: number; address: string };
@@ -118,8 +114,7 @@ const SuggestionItem = ({
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
     onMouseEvent(true);
     onSelectionChange(order);
-  }; //이렇게 설정될 경우 inputvalue update가 일어나면 안된다
-  // const temp=attraction.exactmatchedletter.forEach
+  };
 
   let letterIndex = exactmatchedletter.flat();
 
@@ -145,5 +140,5 @@ const SuggestionItem = ({
     </AttractionItem>
   );
 };
-//값을 받아서 렌더링 하기만 하는 컴포넌트
+
 export { SuggestionBox };
