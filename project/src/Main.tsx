@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Login from './pages/Login';
 import KakaoMap from './components/KakaoMap';
-
+import Map from './pages/Map';
 import Place from "./pages/Place";
 import Post from "./pages/Post";
 
@@ -27,7 +27,7 @@ function Main() {
   return (
     <>
     <Header>header헤더</Header>
-    <Body></Body>
+    <Map></Map>
     <Footer>footer</Footer>
     </>
   );

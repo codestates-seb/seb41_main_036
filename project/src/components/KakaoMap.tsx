@@ -15,8 +15,15 @@ let info =
   <h3 style="font-size:13px;color:blue" >이렇게 설명도 쓸 수 있습니다.</h3>
 </div>`
 
+interface Type{
+  width:string, 
+  height:string, 
+  dataList:string[],
+  position:any,
+  left:string
+}
 
-const KakaoMap = () =>{
+const KakaoMap = ({width, height,dataList, position, left}:Type) =>{
 
   useEffect(()=>{
     const container = document.getElementById('map');// 지도를 담을 dom영역
@@ -53,7 +60,7 @@ const KakaoMap = () =>{
 
   return(
     <>
-    <div id="map" style={{width:"840px",height:"500px"}}></div>
+    <div id="map" style={{width:width,height:height, position:position, left:left}}></div>
     </>
   )
 }

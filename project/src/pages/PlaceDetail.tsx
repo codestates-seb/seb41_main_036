@@ -251,7 +251,7 @@ const PlaceDetail = ():JSX.Element => {
           <div><FaMapMarkerAlt color="grey" size="19"></FaMapMarkerAlt></div>
           <p>종로구 사직로 161</p>
         </div>
-        <KakaoMap></KakaoMap>
+        <KakaoMap width="100%" height="90vh" dataList={['1,2']} position="absolute" left="750px"></KakaoMap>
       </Container>
     <Post ref={scrollRefContent}>
       <PostHeader>
