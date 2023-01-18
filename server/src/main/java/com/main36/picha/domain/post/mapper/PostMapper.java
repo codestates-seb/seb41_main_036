@@ -10,7 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,7 +81,7 @@ public interface PostMapper {
     PostHomeDto postToPostHomeDto(Post post);
 
     // 포스트 페이지(전체 조회) 리스폰스
-    default List<PostPageResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
+    default List<PostDetailPageResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
             return null;
@@ -90,7 +89,7 @@ public interface PostMapper {
 
         return postList.stream()
                 .map(post -> {
-                    return PostPageResponseDto.builder()
+                    return PostDetailPageResponseDto.builder()
                             .postId(post.getPostId())
                             .postTitle(post.getPostTitle())
                             .attractionId(post.getAttraction().getAttractionId())

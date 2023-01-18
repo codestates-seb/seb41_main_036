@@ -1,7 +1,5 @@
 package com.main36.picha.domain.comment.controller;
 
-
-
 import com.main36.picha.domain.comment.dto.CommentDto;
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
 import com.main36.picha.domain.comment.entity.Comment;

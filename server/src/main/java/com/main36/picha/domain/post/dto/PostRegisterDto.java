@@ -11,6 +11,6 @@ public class PostRegisterDto {
     @NotBlank(message = "제목을 입력해주세요.")
     private String postTitle;
     private String postContent;
-//    private List<String> hashtags;
+    private String hashtags;
 
 }

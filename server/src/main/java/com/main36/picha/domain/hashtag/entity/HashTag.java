@@ -21,6 +21,6 @@ public class HashTag extends Auditable {
     private long hashTagId;
 
     @Column(name = "hash_tag_name")
-    private String hashTagName;
+    private String HashTagContent;
 
 }
