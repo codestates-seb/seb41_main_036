@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,5 +28,9 @@ public class PostLikes {
     @JoinColumn(name = "post_id")
     private Post post;
 
-
+    @Builder
+    public PostLikes(Member member, Post post) {
+        this.member = member;
+        this.post = post;
+    }
 }

@@ -4,11 +4,8 @@ import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.save.entity.Save;
 import com.main36.picha.global.audit.Auditable;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 

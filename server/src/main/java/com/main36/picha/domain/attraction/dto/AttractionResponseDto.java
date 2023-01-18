@@ -13,16 +13,13 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Builder
+// 명소 카드형식
 public class AttractionResponseDto {
-    private long attractionId;
-
+    private Long attractionId;
     private String attractionName;
-
-    private String attractionDescription;
-
-    private String attractionAddress;
-
-    private String attractionImageUrl;
-
-    private String province;
+    private String fixedImage;
+    private Long numOfPosts;
+    private Long likes;
+    private Long saves;
+//    private Long postNumber;
 }

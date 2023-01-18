@@ -13,7 +13,7 @@ public class AttractionPatchDto {
 
     private String attractionAddress;
 
-    private MultipartFile attractionImage;
+//    private MultipartFile attractionImage;
 
     private String province;
 }
