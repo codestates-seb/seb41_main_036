@@ -12,6 +12,8 @@ public class PostPatchDto {
     @NotBlank(message = "제목을 입력해주세요.")
     private String postTitle;
     private String postContent;
+
+    //TODO: 정규표현식 적용 -> []
     private String hashTagContent;
 
 }

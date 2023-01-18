@@ -5,6 +5,7 @@ import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
 import com.main36.picha.domain.comment.entity.Comment;
 import com.main36.picha.domain.member.entity.Member;
+import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
 import org.mapstruct.Mapper;
@@ -17,31 +18,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PostMapper {
 
-    // 포스트 등록
-    default Post postRegisterDtoToPost(PostRegisterDto postRegisterDto, Member member, Attraction attraction, List<Comment> comments) {
-        if (postRegisterDto == null && member == null && attraction == null && comments == null) {
-            return null;
-        }
-
-        assert postRegisterDto != null;
-
-        Post.PostBuilder post = Post.builder();
-        post.postTitle(postRegisterDto.getPostTitle());
-        post.postContent(postRegisterDto.getPostContent());
-        post.hashTagContent(postRegisterDto.getHashTagContent());
-
-        post.member(member);
-        post.attraction(attraction);
-        post.comments(comments);
-
-        return post.build();
-    }
-
-    // 포스트 수정
     Post postPatchDtoToPost(PostPatchDto postPatchDto);
 
-
-    // 포스트 단일 조회 리스폰스
     default SinglePostResponseDto postToSingleResponseDto(Post post) {
 
         if (post == null) {
@@ -104,8 +82,6 @@ public interface PostMapper {
     }
 
 
-
-    // 포스트 페이지(전체 조회) 리스폰스
     default List<SinglePostResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
