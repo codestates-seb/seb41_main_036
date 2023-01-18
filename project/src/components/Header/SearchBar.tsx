@@ -13,7 +13,7 @@ import { SuggestionBox } from "./SuggestionBox";
 import { SearchForm } from "./style";
 import useClickScrollDetect from "../../utils/useClickScrollDetect";
 import { getfilteredAttractions } from "../../utils/functions";
-import { AttractionsData } from "../../data/SearchBar";
+import { AttractionsData } from "../../data/searchBarData";
 import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoCloseOutline as ResetIcon } from "react-icons/io5";
 
