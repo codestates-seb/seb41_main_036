@@ -4,6 +4,7 @@ package com.main36.picha.global.auth.handler;
 import com.main36.picha.domain.member.dto.OauthMemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
+import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.auth.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
@@ -21,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,7 +43,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         savedMember(name, email, picture);
         redirect(request, response, email, authorities);
-
 
     }
 

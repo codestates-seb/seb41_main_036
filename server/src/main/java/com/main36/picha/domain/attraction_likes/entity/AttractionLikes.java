@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,7 +17,7 @@ public class AttractionLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long attractionLikesId;
+    private Long attractionLikesId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -28,4 +27,9 @@ public class AttractionLikes {
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;
 
+    @Builder
+    public AttractionLikes(Member member, Attraction attraction) {
+        this.member = member;
+        this.attraction = attraction;
+    }
 }

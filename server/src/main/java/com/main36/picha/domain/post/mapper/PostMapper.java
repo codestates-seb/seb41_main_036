@@ -18,7 +18,18 @@ import java.util.stream.Collectors;
 public interface PostMapper {
 
     // 포스트 등록
-    Post postRegisterDtoToPost(PostRegisterDto postRegisterDto, Member member, Attraction attraction);
+    default Post postRegisterDtoToPost(PostRegisterDto postRegisterDto, Member member, Attraction attraction) {
+        if ( postRegisterDto == null && member == null && attraction == null ) {
+            return null;
+        }
+
+        return Post.builder()
+                .postContent(postRegisterDto.getPostContent())
+                .postTitle(postRegisterDto.getPostTitle())
+                .member(member)
+                .attraction(attraction)
+                .build();
+    }
 
     // 포스트 수정
     Post postPatchDtoToPost(PostPatchRequestDto postPatchRequestDto);

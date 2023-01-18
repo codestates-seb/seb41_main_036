@@ -1,28 +1,44 @@
 package com.main36.picha.domain.attraction.mapper;
 
+import com.main36.picha.domain.attraction.dto.AttractionDetailResponseDto;
 import com.main36.picha.domain.attraction.dto.AttractionPatchDto;
 import com.main36.picha.domain.attraction.dto.AttractionPostDto;
 import com.main36.picha.domain.attraction.dto.AttractionResponseDto;
 import com.main36.picha.domain.attraction.entity.Attraction;
+import com.main36.picha.domain.post.dto.PostResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface AttractionMapper {
-    @Mapping(target = "attractionImage", ignore = true)
+//    @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
-    @Mapping(target = "attractionImage", ignore = true)
+//    @Mapping(target = "attractionImage", ignore = true)
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
-
-    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+//    @Mapping(target = "isVoted", ignore = true)
+//    @Mapping(target = "attractionImageUrl", source = "attractionImage.attractionImageFileUrl")
+    default AttractionDetailResponseDto attractionToAttractionDetailResponseDto(Attraction attraction){
+//        Optional.ofNullable(attraction.getAttractionImage().getAttractionImageFileUrl()).orElse("")
+        return AttractionDetailResponseDto.builder()
+                .attractionId(attraction.getAttractionId())
+                .likes(attraction.getLikes())
+                .saves(attraction.getSaves())
+                .attractionName(attraction.getAttractionName())
+                .attractionDescription(attraction.getAttractionAddress())
+                .attractionAddress(attraction.getAttractionAddress())
+                .build();
+    };
 
-    List<AttractionResponseDto> attractionsToAttractionResponses(List<Attraction> attractions);
+    List<AttractionResponseDto> attractionsToAttractionResponseDtos(List<Attraction> attractions);
 }
 
 /*@Component
