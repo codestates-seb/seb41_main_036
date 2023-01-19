@@ -15,6 +15,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/styled-react-modal": "^1.2.2",
     "axios": "^1.2.2",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
@@ -56,6 +57,5 @@
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
     "styled-components": "^5.3.6"
-  },
-  "proxy": "http://pikcha36.o-r.kr:8080"
+  }
 }

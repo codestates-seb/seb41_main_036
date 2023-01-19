@@ -246,9 +246,12 @@ const Login = () => {
 
   const onClickLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    if (loginemailErr || loginpasswordErr) {
+        alert("로그인 양식을 지켜주세요.");
+      }
 
     return axios
-      .post("/users/login", {
+      .post(process.env.REACT_APP_DB_HOST  + "/api/users/login", {
         username: loginemail,
         password: loginpassword,
       })
@@ -266,7 +269,10 @@ const Login = () => {
           navigate("/");
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+      console.error(err)
+      alert("회원이 아닙니다.")
+  });
   };
 
   const onClickSignin = (
@@ -274,11 +280,11 @@ const Login = () => {
   ) => {
     e.preventDefault();
     if (signemailErr || signpasswordErr || phonenumberErr) {
-      alert("회원가입 양식을 제대로 채워주세요");
+      alert("회원가입 양식을 제대로 채워주세요.");
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
-        .post("/users/signup", {
+        .post(process.env.REACT_APP_DB_HOST  + "/api/users/signup", {
           email: signemail,
           password: signpassword,
           phoneNumber: phonenumber,
@@ -287,12 +293,33 @@ const Login = () => {
         })
         .then((res) => {
           if (res.status === 201) {
-            navigate("/");
+            navigate("/login");
           }
         })
-        .catch((err) => alert("이미 존재하는 회원입니다."));
+        .catch((err) => {
+            console.error(err)
+            alert("이미 존재하는 회원입니다.")}
+            );
     }
   };
+
+  const onClickLogout =(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+    // e.preventDefault();
+    // return axios
+    // .post("/users/logout", {
+    //     email: ";;",
+    // })
+    // .then((res) => {
+    //     if (res.status === 201) {
+        //         setIslogin(false);
+        //         setAuth(null);
+        //         setRefresh(null);
+        //         navigate("/login");
+    //       }
+    // })
+    // .catch((err) => console.error(err));
+
+  }
 
   const Loginhandler = () => {
     // axios
@@ -352,16 +379,16 @@ const Login = () => {
   };
 
   const googlelogin = () => {
-    window.location.href =
-      "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
+    // window.location.href =
+    //   "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
 
-    const query = window.location.search;
-    console.log("이게무야2", query);
+    // const query = window.location.search;
+    // console.log("이게무야2", query);
 
-    const param = new URLSearchParams(query);
-    console.log(param);
+    // const param = new URLSearchParams(query);
+    // console.log(param);
 
-    navigate("/");
+    // navigate("/");
   };
 
   //회원가입은
@@ -394,7 +421,7 @@ const Login = () => {
 
   //수정할 것들
   //1. 주소 검색 모달창
-  //2. 회원가입 버튼을 누르거나 로그인 버튼을 누를 시 input내용삭제? 아니면 그냥 새로고침으로 퉁치기
+  //2. 회원가입 버튼을 누르거나 로그인 버튼을 누를 시 input내용삭제? 아니면 그냥 새로고침으로 퉁치기 => 경고문으로 대체 및 네비게이트
   //3. 브라우저 창 크기가 줄어도 css 안망가지게 (헤더나 푸터 침범 등) =>  최소 크기를 설정 또는 position fix 등 css 만지기
   //4. 주소 입력 컴포넌트 분리하고싶다..
   //5. porps로 상태를 내리면 랜더링이 어떻게 되는가? 찾아보기
@@ -402,8 +429,14 @@ const Login = () => {
   //  => 중복된 계정이거나 그러면 res.status가 다르게 올테니 경고창을 다르게 표시 및 새로고침
 
   //현재 로직
-  // 로그인 성공 시 localStorage에 
+  // 로그인 성공 시 로그인상태, token을 recoil 및 localStorage에 저장
+  // import로 recoilState 및 recoilValue 등을 선언 후 값 사용.
+  // const islogin = useRecoilValue(LoginState)
+  // const authToken = useRecoilValue(AuthToken)
+  // const refreshToken = useRecoilValue(RefreshToken)
 
+
+  
 
   return (
     <Wrapper>
@@ -426,10 +459,10 @@ const Login = () => {
         </>
       )}
       <Logincontainer overlay={overlays}>
-        <GButton onClick={GoogleHandler}>묵은지</GButton>
+        {/* <GButton onClick={GoogleHandler}>묵은지</GButton>
         <GButton onClick={googlelogin}>묵은지</GButton>
 
-        <Ouaths />
+        <Ouaths /> */}
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>
