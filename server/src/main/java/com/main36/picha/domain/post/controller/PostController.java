@@ -37,7 +37,7 @@ public class PostController {
     private final MemberService memberService;
     private final AttractionService attractionService;
     @PostMapping("/register/{attraction-id}")
-    public ResponseEntity<DataResponseDto<PostResponseDto>> registerPost(@ClientId Long clientId,
+    public ResponseEntity<DataResponseDto<?>> registerPost(@ClientId Long clientId,
                                                                          @PathVariable("attraction-id") @Positive long attractionId,
                                                                          @Valid @RequestBody PostDto.Post postRegisterDto) {
         Post.PostBuilder postBuilder = Post.builder();
@@ -53,25 +53,25 @@ public class PostController {
                         .build()
         );
 
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.postToSingleResponseDto(post)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.postToPostDetailResponseDto(post)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/edit/{post-id}")
-    public ResponseEntity<DataResponseDto<PostResponseDto>> editPost(@ClientId Long clientId,
+    public ResponseEntity<DataResponseDto<?>> editPost(@ClientId Long clientId,
                                                                      @PathVariable("post-id") @Positive long postId,
                                                                      @Valid @RequestBody PostDto.Patch postPatchDto) {
         postService.verifyClientId(clientId, postId);
         postPatchDto.setPostId(postId);
         Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
 
-        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(updatePost)));
+        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToPostDetailResponseDto(updatePost)));
     }
 
     @GetMapping("/{post-id}")
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId) {
         Post post = postService.findPost(postId);
 
-        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(post)));
+        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToPostDetailResponseDto(post)));
     }
 
     @GetMapping("/home")

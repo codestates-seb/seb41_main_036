@@ -13,23 +13,6 @@ import java.util.List;
 @Setter(AccessLevel.NONE)
 @Builder
 public class PostResponseDto {
-
-    private long postId;
-    private String postTitle;
-    private String postContent;
-    private String hashTagContent;
-    private long attractionId;
-    private String attractionAddress;
-    private String attractionName;
-    private int views;
-    private int likes;
-    private String username;
-    private String picture;
-    private List<CommentResponseDto> comments;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-
-
     @Data
     @Builder
     public static class Home {
@@ -40,6 +23,25 @@ public class PostResponseDto {
         private int views;
         private int likes;
         private String postTitle;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
+
+    @Data
+    @Builder
+    public static class Detail {
+        private long postId;
+        private String postTitle;
+        private String postContent;
+        private String hashTagContent;
+        private long attractionId;
+        private String attractionAddress;
+        private String attractionName;
+        private int views;
+        private int likes;
+        private String username;
+        private String picture;
+        private List<CommentResponseDto> comments;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }

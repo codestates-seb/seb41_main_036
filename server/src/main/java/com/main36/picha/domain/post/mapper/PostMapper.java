@@ -16,13 +16,13 @@ public interface PostMapper {
 
     Post postPatchDtoToPost(PostDto.Patch postPatchDto);
 
-    default PostResponseDto postToSingleResponseDto(Post post) {
+    default PostResponseDto.Detail postToPostDetailResponseDto(Post post) {
 
         if (post == null) {
             return null;
         }
 
-        return PostResponseDto.builder()
+        return PostResponseDto.Detail.builder()
                 .postId(post.getPostId())
                 .postTitle(post.getPostTitle())
                 .postContent(post.getPostContent())
@@ -51,11 +51,6 @@ public interface PostMapper {
                 .build();
     }
 
-    @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
-    @Mapping(target = "username", expression = "java(post.getMember().getUsername())")
-    @Mapping(target = "picture", expression = "java(post.getMember().getPicture())")
-    PostResponseDto.Home postToPostHomeDto(Post post);
-
     default List<PostResponseDto.Home> postListToPostHomeResponseDtoList(List<Post> postList) {
         if (postList == null) {
             return  null;
@@ -77,8 +72,7 @@ public interface PostMapper {
                 }).collect(Collectors.toList());
     }
 
-
-    default List<PostResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
+    default List<PostResponseDto.Detail> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
             return null;
@@ -86,7 +80,7 @@ public interface PostMapper {
 
         return postList.stream()
                 .map(post -> {
-                    return PostResponseDto.builder()
+                    return PostResponseDto.Detail.builder()
                             .postId(post.getPostId())
                             .postTitle(post.getPostTitle())
                             .postContent(post.getPostContent())

@@ -1,7 +1,7 @@
 package com.main36.picha.global.authorization.handler;
 
 
-import com.main36.picha.domain.member.dto.OauthMemberDto;
+import com.main36.picha.domain.member.dto.MemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.service.MemberService;
@@ -51,7 +51,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private void savedMember(String name, String email, String picture) {
-        OauthMemberDto oauthMemberDto = new OauthMemberDto(name, email, picture);
+        MemberDto.Oauth oauthMemberDto = new MemberDto.Oauth(name, email, picture);
         Member member = mapper.oauthMemberDtoToMember(oauthMemberDto);
         memberService.createOauth2Member(member);
     }

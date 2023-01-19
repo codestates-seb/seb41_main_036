@@ -14,16 +14,16 @@ public interface MemberMapper  {
 
     Member memberPatchDtoToMember(MemberDto.Patch memberPatchDto);
 
-    SignUpResponseDto memberToSignUpResponseDto(Member member);
+    MemberResponseDto.SignUp memberToSignUpResponseDto(Member member);
 
     @Mapping(target = "totalMyPosts", expression = "java(member.getPosts().size())")
     @Mapping(target = "totalMySaves", expression = "java(member.getSaves().size())")
-    ProfileHomeResponseDto memberToProfileHomeDto(Member member);
+   MemberResponseDto.Profile memberToProfileHomeDto(Member member);
 
     @Mapping(target = "password", constant = "")
     @Mapping(target = "phoneNumber", constant = "")
     @Mapping(target = "address", constant = "")
     @Mapping(target = "memberTitle", constant = "")
-    Member oauthMemberDtoToMember(OauthMemberDto oauthMemberDto);
+    Member oauthMemberDtoToMember(MemberDto.Oauth oauthMemberDto);
 
 }
