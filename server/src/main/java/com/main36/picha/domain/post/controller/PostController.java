@@ -10,7 +10,9 @@ import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.mapper.PostMapper;
 import com.main36.picha.domain.post.service.PostService;
 import com.main36.picha.global.authorization.resolver.ClientId;
+
 import com.main36.picha.global.config.S3Service;
+
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.response.DataResponseDto;
@@ -87,6 +89,7 @@ public class PostController {
         return ResponseEntity.ok(new DataResponseDto<>(response));
 
     }
+
 
     @GetMapping(value = {"/{post-id}", "/{post-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
@@ -179,6 +182,7 @@ public class PostController {
         }
 
         return post;
+
     }
     @PostMapping("/imagetest1")
     public ResponseEntity imageTest(PostDto.ImageTest imageDto) throws IOException {

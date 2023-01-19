@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Positive;
 import java.io.File;
@@ -92,6 +93,7 @@ public class AttractionController {
 
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
     // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
+
 //    @GetMapping("/{attraction-id}")
 //    public ResponseEntity<DataResponseDto<?>> getAttraction(@ClientId Long clientId,
 //                                        @PathVariable("attraction-id") @Positive long attractionId){
@@ -116,6 +118,7 @@ public class AttractionController {
             response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
             response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
         }
+        
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
