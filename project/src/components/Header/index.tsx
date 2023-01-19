@@ -9,6 +9,7 @@ import {
   SearchBarWrapper,
   Profile,
 } from "./style";
+import { useNavigate } from 'react-router-dom';
 
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 import { ReactNode, MouseEventHandler } from "react";
@@ -17,6 +18,7 @@ const IMG_SRC =
 const isLoggedIn = true;
 
 const HeaderTopBar = () => {
+  const navigate = useNavigate();
   return (
     <HeaderTop>
       <HeaderTopMenu>
@@ -29,7 +31,7 @@ const HeaderTopBar = () => {
           </>
         ) : (
           <li>
-            <a href="https://www.naver.com">로그인/회원가입</a>
+            <a onClick={()=>navigate('/login')}>로그인/회원가입</a>
           </li>
         )}
       </HeaderTopMenu>
@@ -47,6 +49,7 @@ const HeaderBodyBar = ({
   defaultValue = "",
   backgroundOn = true,
 }: HeaderBodyProps) => {
+  const navigate = useNavigate();
   return (
     <HeaderBodyWrapper backgroundOn={backgroundOn}>
       <HeaderBody>
@@ -54,9 +57,9 @@ const HeaderBodyBar = ({
           <div style={{ width: "200px", height: "70px" }} />
         </a>
         <HeaderBodyMenu>
-          <li>명소</li>
-          <li>방문리뷰</li>
-          <li>내 주변 명소 찾기</li>
+          <li onClick={()=>navigate('/place')}>명소</li>
+          <li onClick={()=>navigate('/post')}>방문리뷰</li>
+          <li onClick={()=>navigate('/map')}>내 주변 명소 찾기</li>
         </HeaderBodyMenu>
         {searchBarOn && (
           <SearchBarWrapper>

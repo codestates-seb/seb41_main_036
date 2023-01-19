@@ -5,6 +5,7 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { MdModeComment } from "react-icons/md";
+import { Header } from "../components/Header";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -122,6 +123,11 @@ const Place = () => {
   };
 
   return (
+    <>
+    <Header>
+      <Header.HeaderTop />
+      <Header.HeaderBody />
+    </Header>
     <PlaceWrapper>
       <LocationWrapper>
         <LocationFilter />
@@ -163,6 +169,7 @@ const Place = () => {
         </PlaceBox>
       </PlaceContainer>
     </PlaceWrapper>
+    </>
   );
 };
 

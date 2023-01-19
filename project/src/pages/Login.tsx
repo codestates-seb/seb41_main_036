@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ButtonForm from '../components/Button'
 import axios, {AxiosRequestConfig} from 'axios';
+import HiddenHeader from '../components/Header/HiddenHeader';
 
 interface TextProps {
     fontSize: string;
@@ -218,6 +219,8 @@ const Login  =  () => {
 
 
     return (
+        <>
+        <HiddenHeader></HiddenHeader>
         <Wrapper>
         <Logincontainer overlay={overlays}>
             <TextStyle color="#6154F8" fontSize='45px' fontweight='bold'>로그인</TextStyle>
@@ -301,6 +304,7 @@ const Login  =  () => {
         
         </Rightoverlay>
     </Wrapper>
+    </>
     );
 }
 
