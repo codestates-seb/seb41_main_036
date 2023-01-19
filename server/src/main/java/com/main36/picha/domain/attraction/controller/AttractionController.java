@@ -90,15 +90,15 @@ public class AttractionController {
 
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
     // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
-    @GetMapping("/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> getAttraction(HttpServletRequest request,
+
+    @GetMapping("/{member-id}/{attraction-id}")
+    public ResponseEntity getAttraction(@PathVariable("member-id") @Positive long memberId,
                                         @PathVariable("attraction-id") @Positive long attractionId){
-        Member member = memberService.findMemberByMemberEmail(extractedUsername(request));
         Attraction attraction = attractionService.findAttraction(attractionId);
         AttractionDetailResponseDto response =
                 mapper.attractionToAttractionDetailResponseDto(attraction);
-        response.setIsVoted(attractionService.isVoted(member, attraction));
-        response.setIsSaved(attractionService.isSaved(member,attraction));
+        response.setIsVoted(attractionService.isVoted(memberId, attractionId));
+        response.setIsSaved(attractionService.isSaved(memberId,attractionId));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
