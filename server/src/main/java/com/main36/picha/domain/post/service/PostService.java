@@ -1,10 +1,8 @@
 package com.main36.picha.domain.post.service;
 
 
-import com.main36.picha.domain.attraction.entity.Attraction;
-
-import com.main36.picha.domain.attraction_likes.entity.AttractionLikes;
 import com.main36.picha.domain.member.entity.Member;
+
 
 import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.repository.PostRepository;
