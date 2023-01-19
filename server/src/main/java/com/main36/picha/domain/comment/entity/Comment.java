@@ -6,12 +6,11 @@ import com.main36.picha.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Comment extends Auditable {
 
@@ -26,6 +25,7 @@ public class Comment extends Auditable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

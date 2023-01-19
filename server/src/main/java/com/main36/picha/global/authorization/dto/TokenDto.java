@@ -1,4 +1,4 @@
-package com.main36.picha.domain.member.dto;
+package com.main36.picha.global.authorization.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -6,14 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Token {
-
+public class TokenDto {
+//    private String grantType;
+//    private String authorizationType;
+//    private Long accessTokenExpiresIn;
     private String accessToken;
 
     private String refreshToken;

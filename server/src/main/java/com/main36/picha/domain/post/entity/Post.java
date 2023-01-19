@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Entity
@@ -26,18 +26,20 @@ public class Post extends Auditable {
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    private String hashTagContent;
-
     @Setter
     @Lob
     @Column(name = "post_content")
     private String postContent;
 
     @Setter
-    @Column(name = "views", columnDefinition = "integer default 0", nullable = false)
+    @Column(name = "hash_tag_content")
+    private String hashTagContent;
+
+    @Setter
+    @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
     private int views;
 
-    @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
+    @Column(name = "likes", nullable = false, columnDefinition = "integer default 0" )
     private int likes;
 
     @ManyToOne

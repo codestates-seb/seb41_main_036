@@ -1,10 +1,7 @@
 package com.main36.picha.domain.attraction.dto;
 
-import com.main36.picha.domain.post.dto.PostResponseDto;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 // 명소 상세 페이지
 @Data

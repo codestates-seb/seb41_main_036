@@ -1,4 +1,4 @@
-package com.main36.picha.global.auth.handler;
+package com.main36.picha.global.authorization.handler;
 
 import com.google.gson.Gson;
 import com.main36.picha.global.response.ErrorResponse;

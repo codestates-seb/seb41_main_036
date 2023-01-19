@@ -1,7 +1,6 @@
-package com.main36.picha.global.auth.dto;
+package com.main36.picha.global.authorization.dto;
 
 import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 public class LoginDto {

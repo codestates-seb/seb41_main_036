@@ -5,13 +5,10 @@ import com.main36.picha.domain.attraction.dto.*;
 import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.attraction.mapper.AttractionMapper;
 import com.main36.picha.domain.attraction.service.AttractionService;
-import com.main36.picha.domain.attraction_file.entity.AttractionImage;
 import com.main36.picha.domain.attraction_file.service.AttractionImageService;
-import com.main36.picha.domain.attraction_likes.repository.AttractionLikesRepository;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
-import com.main36.picha.global.config.S3Service;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 import io.jsonwebtoken.Claims;
@@ -20,23 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/attractions")

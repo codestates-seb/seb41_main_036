@@ -3,7 +3,9 @@ package com.main36.picha.domain.post.mapper;
 
 import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
+import com.main36.picha.domain.comment.entity.Comment;
 import com.main36.picha.domain.member.entity.Member;
+import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
 import org.mapstruct.Mapper;
@@ -16,48 +18,26 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PostMapper {
 
-    // 포스트 등록
-    default Post postRegisterDtoToPost(PostRegisterDto postRegisterDto, Member member, Attraction attraction) {
-        if ( postRegisterDto == null && member == null && attraction == null ) {
-            return null;
-        }
+    Post postPatchDtoToPost(PostPatchDto postPatchDto);
 
-        return Post.builder()
-                .postContent(postRegisterDto.getPostContent())
-                .postTitle(postRegisterDto.getPostTitle())
-                .member(member)
-                .attraction(attraction)
-                .build();
-    }
-
-    // 포스트 수정
-    Post postPatchDtoToPost(PostPatchRequestDto postPatchRequestDto);
-
-    // 포스트 등록 및 수정 리스폰스
-    @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
-    @Mapping(target = "attractionAddress", expression = "java(post.getAttraction().getAttractionAddress())")
-    @Mapping(target = "attractionName", expression = "java(post.getAttraction().getAttractionName())")
-    PostRegisterResponseDto postToPostRegisterResponseDto(Post post);
-
-    // 포스트 단일 조회 리스폰스
-    default PostResponseDto postToPostResponseDto(Post post) {
+    default SinglePostResponseDto postToSingleResponseDto(Post post) {
 
         if (post == null) {
             return null;
         }
 
-        return PostResponseDto.builder()
+        return SinglePostResponseDto.builder()
                 .postId(post.getPostId())
                 .postTitle(post.getPostTitle())
                 .postContent(post.getPostContent())
-                .memberId(post.getMember().getMemberId())
-                .username(post.getMember().getUsername())
-                .picture(post.getMember().getPicture())
+                .hashTagContent(post.getHashTagContent())
                 .attractionId(post.getAttraction().getAttractionId())
-                .attractionName(post.getAttraction().getAttractionName())
                 .attractionAddress(post.getAttraction().getAttractionAddress())
+                .attractionName(post.getAttraction().getAttractionName())
                 .views(post.getViews())
                 .likes(post.getLikes())
+                .username(post.getMember().getUsername())
+                .picture(post.getMember().getPicture())
                 .comments(post.getComments().stream()
                         .map(comment -> {
                             return CommentResponseDto.builder()
@@ -71,17 +51,38 @@ public interface PostMapper {
                                     .build();
                         }).collect(Collectors.toList()))
                 .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
                 .build();
-
     }
 
     @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
     @Mapping(target = "username", expression = "java(post.getMember().getUsername())")
-    @Mapping(target = "userImage", expression = "java(post.getMember().getPicture())")
+    @Mapping(target = "picture", expression = "java(post.getMember().getPicture())")
     PostHomeDto postToPostHomeDto(Post post);
 
-    // 포스트 페이지(전체 조회) 리스폰스
-    default List<PostDetailPageResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
+    default List<PostHomeDto> postListToPostHomeResponseDtoList(List<Post> postList) {
+        if (postList == null) {
+            return  null;
+        }
+
+        return postList.stream()
+                .map(post -> {
+                    return PostHomeDto.builder()
+                            .postId(post.getPostId())
+                            .memberId(post.getMember().getMemberId())
+                            .username(post.getMember().getUsername())
+                            .picture(post.getMember().getPicture())
+                            .views(post.getViews())
+                            .likes(post.getLikes())
+                            .postTitle(post.getPostTitle())
+                            .createdAt(post.getCreatedAt())
+                            .modifiedAt(post.getModifiedAt())
+                            .build();
+                }).collect(Collectors.toList());
+    }
+
+
+    default List<SinglePostResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
             return null;
@@ -89,12 +90,13 @@ public interface PostMapper {
 
         return postList.stream()
                 .map(post -> {
-                    return PostDetailPageResponseDto.builder()
+                    return SinglePostResponseDto.builder()
                             .postId(post.getPostId())
                             .postTitle(post.getPostTitle())
+                            .postContent(post.getPostContent())
+                            .hashTagContent(post.getHashTagContent())
                             .attractionId(post.getAttraction().getAttractionId())
                             .attractionAddress(post.getAttraction().getAttractionAddress())
-                            .content(post.getPostContent())
                             .views(post.getViews())
                             .likes(post.getLikes())
                             .username(post.getMember().getUsername())
@@ -112,6 +114,7 @@ public interface PostMapper {
                                                 .build();
                                     }).collect(Collectors.toList()))
                             .createdAt(post.getCreatedAt())
+                            .modifiedAt(post.getModifiedAt())
                             .build();
                 }).collect(Collectors.toList());
     }
