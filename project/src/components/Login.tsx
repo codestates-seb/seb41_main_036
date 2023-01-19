@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ButtonForm from "./Button";
 import axios, { AxiosRequestConfig } from "axios";
 import DaumPostcode from "react-daum-postcode";
-import Ouaths from ".//Ouaths";
+import Ouaths from "./Ouaths";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
@@ -392,12 +392,12 @@ const Login = () => {
   };
 
   const googlelogin = () => {
-    window.location.href =
-      "oauth2/authorization/google";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
+    // window.location.href =
+    //   "oauth2/authorization/google";
+    // const query = window.location.search;
+    // console.log("이게무야2", query);
+    // const param = new URLSearchParams(query);
+    // console.log(param);
   };
 
   return (
