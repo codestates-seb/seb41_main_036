@@ -24,8 +24,16 @@ public enum ExceptionCode {
     HASHTAG_EXISTS(409, "HashTag exists"),
 
     POST_NOT_FOUND(404, "Post not found"),
-    POST_EXISTS(409, "Post exists");
+    POST_EXISTS(409, "Post exists"),
 
+    /* JWT */
+    ACCESS_TOKEN_NOT_FOUND(404,"액세스토큰을 찾을 수 없습니다."),
+    TOKEN_EXPIRED(400, "Token Expired"),
+    TOKEN_INVALID(400, "Token Invalid"),
+    TOKEN_SIGNATURE_INVALID(400, "Token Signature Invalid"),
+    TOKEN_MALFORMED(400, "Token Malformed"),
+    TOKEN_UNSUPPORTED(400, "Token Unsupported"),
+    TOKEN_ILLEGAL_ARGUMENT(400, "Token Illegal Argument");
     @Getter
     private int status;
 

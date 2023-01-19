@@ -4,15 +4,17 @@ import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.save.entity.Save;
 import com.main36.picha.global.audit.Auditable;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member extends Auditable {
     @Id
@@ -48,5 +50,8 @@ public class Member extends Auditable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
 }

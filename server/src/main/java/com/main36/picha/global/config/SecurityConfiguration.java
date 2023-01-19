@@ -7,8 +7,10 @@ import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
 
+import com.main36.picha.domain.refreshToken.repository.RefreshTokenRepository;
 import com.main36.picha.global.authorization.filter.JwtAuthenticationFilter;
 import com.main36.picha.global.authorization.filter.JwtVerificationFilter;
+import com.main36.picha.global.authorization.filter.TokenProvider;
 import com.main36.picha.global.authorization.handler.*;
 import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
@@ -22,7 +24,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,6 +43,8 @@ public class SecurityConfiguration {
     private final MemberMapper mapper;
     private final MemberRepository memberRepository;
     private final Gson gson;
+    private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -61,24 +64,22 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(
-                                "/",
-                                "/signup",
-                                "/login",
-                                "/token",
-                                "/attractions", "/attractions/**",
-                                "/posts", "/posts/*",
-                                "/comments", "comments/*").permitAll()
-                        .antMatchers("admin").hasRole("ADMIN")
-                        .requestMatchers(toH2Console()).permitAll()
-                        .anyRequest().authenticated()
-                )
-//                .oauth2Login().
-//                .userInfoEndpoint()
-//                .userService()
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, mapper))
+//                        .antMatchers(
+//                                "/",
+//                                "/signup",
+//                                "/login",
+//                                "/token",
+//                                "/attractions", "/attractions/**",
+//                                "/posts", "/posts/*",
+//                                "/comments", "comments/*").permitAll()
+//                        .antMatchers("admin").hasRole("ADMIN")
+//                        .requestMatchers(toH2Console()).permitAll()
+                                .anyRequest().permitAll()
                 );
+//                .oauth2Login()
+//                .userInfoEndpoint();
+//                .userService()
+
 
         return http.build();
     }
@@ -96,6 +97,7 @@ public class SecurityConfiguration {
         configuration.addExposedHeader("Authorization");
         configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
@@ -107,12 +109,12 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(tokenProvider, authenticationManager);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer, mapper, gson));
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(refreshTokenRepository));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

@@ -27,7 +27,13 @@ public interface MemberMapper {
     @Mapping(target = "memberTitle", constant = "")
     Member oauthMemberDtoToMember(MemberDto.Oauth oauthMemberDto);
 
-    @Mapping(target = "password", constant = "")
-    LoginResponseDto memberToLoginResponseDto(Member member);
+
+    default LoginResponseDto memberToLoginResponseDto(Member member) {
+        return LoginResponseDto.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .roles(member.getRoles().get(0))
+                .build();
+    }
 
 }

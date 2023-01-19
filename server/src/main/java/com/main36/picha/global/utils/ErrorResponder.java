@@ -1,6 +1,9 @@
 package com.main36.picha.global.utils;
 
 import com.google.gson.Gson;
+import com.main36.picha.global.authorization.dto.LoginResponseDto;
+import com.main36.picha.global.authorization.userdetails.AuthMember;
+import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,4 +20,5 @@ public class ErrorResponder {
         response.setStatus(status.value());
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
+
 }
