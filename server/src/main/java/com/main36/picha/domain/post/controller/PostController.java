@@ -10,6 +10,8 @@ import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.mapper.PostMapper;
 import com.main36.picha.domain.post.service.PostService;
 import com.main36.picha.global.authorization.resolver.ClientId;
+import com.main36.picha.global.exception.BusinessLogicException;
+import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +60,7 @@ public class PostController {
         );
 
         // response 생성
-        SinglePostResponseDto response = mapper.postToSingleResponseDto(post);
+        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(post);
         // 좋아요 누른 여부를 false로 반환(처음 생성해서 false)
         response.setIsVoted(false);
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
@@ -74,19 +76,22 @@ public class PostController {
         Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
 
 
-        SinglePostResponseDto response = mapper.postToSingleResponseDto(updatePost);
-        response.setIsVoted(postService.isVoted(memberId, postId));
+        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(updatePost);
+        response.setIsVoted(postService.isVoted(clientId, postId));
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
 
     }
 
-    @GetMapping("/{member-id}/{post-id}")
-    public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("member-id") @Positive long memberId,
+    @GetMapping("/{post-id}")
+    public ResponseEntity<DataResponseDto<?>> getPost(@ClientId Long clientId,
                                                       @PathVariable("post-id") @Positive long postId) {
         Post post = postService.findPost(postId);
-        SinglePostResponseDto response = mapper.postToSingleResponseDto(post);
-        response.setIsVoted(postService.isVoted(memberId, postId));
+        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(post);
+        if(clientId == null){
+            response.setIsVoted(false);
+        }
+        else response.setIsVoted(postService.isVoted(clientId, postId));
 
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
@@ -143,12 +148,10 @@ public class PostController {
 
     // 포스트 좋아요!
     @PostMapping("/likes/{post-id}")
-    public ResponseEntity voteAttraction(HttpServletRequest request,
-                                         @PathVariable("post-id") @Positive long postId){
+    public ResponseEntity<DataResponseDto<?>> votePost(@ClientId Long clientId,
+                                   @PathVariable("post-id") @Positive long postId){
         // 회원 정보를 받아온다
-        String userEmail = jwtTokenizer.getUsername(request);
-        Member member = memberService.findMember(userEmail);
-
+        Member member  = memberService.findMemberByMemberId(clientId);
 
         // 포스트 정보를 찾는다
         Post post = postService.findPostNoneSetView(postId);
@@ -159,6 +162,15 @@ public class PostController {
         // responseDto 생성
         PostLikesResponseDto response = new PostLikesResponseDto();
         response.setIsVoted(status);
-        return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+    }
+    private Post verifiedById(long memberId, long postId) {
+        Post post = postService.findPostNoneSetView(postId);
+
+        if (!post.getMember().getMemberId().equals(memberId)) {
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
+        }
+
+        return post;
     }
 }

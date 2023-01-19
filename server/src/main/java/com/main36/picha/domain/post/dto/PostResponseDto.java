@@ -39,6 +39,7 @@ public class PostResponseDto {
         private String attractionName;
         private int views;
         private int likes;
+        private Boolean isVoted;
         private String username;
         private String picture;
         private List<CommentResponseDto> comments;

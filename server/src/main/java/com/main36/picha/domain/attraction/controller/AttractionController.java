@@ -9,6 +9,7 @@ import com.main36.picha.domain.attraction_file.service.AttractionImageService;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.authorization.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.resolver.ClientId;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 import io.jsonwebtoken.Claims;
@@ -19,10 +20,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -63,7 +67,7 @@ public class AttractionController {
     }
 
     // 2. 명소 수정 핸들러
-    @PatchMapping("/{attraction-id}")
+    @PatchMapping("/edit/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> patchAttraction(@PathVariable("attraction-id") @Positive long attractionId,
                                           AttractionPatchDto attractionPatchDto) throws IOException {
 
@@ -97,8 +101,8 @@ public class AttractionController {
         Attraction attraction = attractionService.findAttraction(attractionId);
         AttractionDetailResponseDto response =
                 mapper.attractionToAttractionDetailResponseDto(attraction);
-        response.setIsVoted(attractionService.isVoted(memberId, attractionId));
-        response.setIsSaved(attractionService.isSaved(memberId,attractionId));
+        response.setIsVoted(attractionService.isVoted(clientId, attractionId));
+        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
@@ -106,11 +110,11 @@ public class AttractionController {
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
     @GetMapping("/filter")
     public ResponseEntity<MultiResponseDto<?>> getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
-                                                 @Positive @RequestParam(required = false, defaultValue = "9") int size,
-                                                 @RequestParam(required = false, defaultValue = "latest") String sort,
-                                                 @RequestBody AttractionFilterDto filterDto){
+                                                                      @Positive @RequestParam(required = false, defaultValue = "9") int size,
+                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,
+                                                                      @RequestBody AttractionFilterDto filterDto){
         switch(sort){
-            case "latest": sort = "attractionId";
+            case "newest": sort = "attractionId";
                 break;
             case "posts": sort = "numOfPosts";
                 break;
@@ -127,7 +131,7 @@ public class AttractionController {
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수
     @GetMapping
     public ResponseEntity<MultiResponseDto<?>> getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
-                                         @Positive @RequestParam(required = false, defaultValue = "9") int size){
+                                                              @Positive @RequestParam(required = false, defaultValue = "9") int size){
         Page<Attraction> attractionPage = attractionService.findAttractions(page-1, size);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
@@ -145,11 +149,10 @@ public class AttractionController {
 
     // 7. 명소 좋아요!
     @PostMapping("/likes/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> voteAttraction(HttpServletRequest request,
-                                         @PathVariable("attraction-id") @Positive long attractionId){
+    public ResponseEntity<DataResponseDto<?>> voteAttraction(@ClientId Long clientId,
+                                                             @PathVariable("attraction-id") @Positive long attractionId){
         // 회원 정보를 받아온다
-        String userEmail = extractedUsername(request);
-        Member member = memberService.findMemberByMemberEmail(userEmail);
+        Member member = memberService.findMemberByMemberId(clientId);
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);
@@ -165,10 +168,10 @@ public class AttractionController {
 
     // 8. 명소 즐겨찾기
     @PostMapping("/saves/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> saveAttraction(HttpServletRequest request,
-                                         @PathVariable("attraction-id") @Positive long attractionId){
-        String userEmail = extractedUsername(request);
-        Member member = memberService.findMemberByMemberEmail(userEmail);
+    public ResponseEntity<DataResponseDto<?>> saveAttraction(@ClientId Long clientId,
+                                                             @PathVariable("attraction-id") @Positive long attractionId){
+
+        Member member = memberService.findMemberByMemberId(clientId);
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);
@@ -178,15 +181,6 @@ public class AttractionController {
         AttractionSaveResponseDto response = new AttractionSaveResponseDto();
         response.setIsSaved(status);
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
-    }
-
-    private String extractedUsername(HttpServletRequest request) {
-        String authorization = request.getHeader("authorization");
-        String substring = authorization.substring(7);
-        String secretKey = jwtTokenizer.getSecretKey();
-        Jws<Claims> claims = jwtTokenizer.getClaims(substring, jwtTokenizer.encodeBase64SecretKey(secretKey));
-
-        return String.valueOf(claims.getBody().get("username"));
     }
 
 }
