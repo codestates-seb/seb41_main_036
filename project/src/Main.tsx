@@ -1,16 +1,11 @@
-import styled from 'styled-components';
-import Login from './pages/Login';
-import KakaoMap from './components/KakaoMap';
-
+import styled from "styled-components";
+import Login from "./pages/Login";
+import KakaoMap from "./components/KakaoMap";
+import FixedOnScrollUpHeader from "./components/Header/FixedOnScrollUpHeader";
 import Place from "./pages/Place";
 import Post from "./pages/Post";
-
-const Header = styled.div`
-  width: 100%;
-  background-color: pink;
-  height: 157px;
-`;
-
+import { Header } from "./components/Header/index";
+import HiddenHeader from "./components/Header/HiddenHeader";
 const Body = styled.div`
   width: 83.5%;
   margin: 0 auto;
@@ -26,9 +21,14 @@ const Footer = styled.div`
 function Main() {
   return (
     <>
-    <Header>header헤더</Header>
-    <Body></Body>
-    <Footer>footer</Footer>
+      {/* <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header> */}
+      {/* <HiddenHeader /> */}
+      <FixedOnScrollUpHeader />
+      <Body></Body>
+      <Footer>footer</Footer>
     </>
   );
 }
