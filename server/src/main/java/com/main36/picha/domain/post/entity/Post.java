@@ -37,6 +37,7 @@ public class Post extends Auditable {
     @Column(name = "views", columnDefinition = "integer default 0", nullable = false)
     private int views;
 
+    @Setter
     @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
 

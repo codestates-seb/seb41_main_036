@@ -1,6 +1,7 @@
 package com.main36.picha.domain.post.controller;
 
 
+import com.main36.picha.domain.attraction.dto.AttractionLikesResponseDto;
 import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.attraction.service.AttractionService;
 import com.main36.picha.domain.member.entity.Member;
@@ -94,5 +95,25 @@ public class PostController {
     @DeleteMapping("delete/{post-id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // 포스트 좋아요!
+    @PostMapping("/likes/{post-id}")
+    public ResponseEntity voteAttraction(HttpServletRequest request,
+                                         @PathVariable("post-id") @Positive long postId){
+        // 회원 정보를 받아온다
+        String userEmail = jwtTokenizer.getUsername(request);
+        Member member = memberService.findMember(userEmail);
+
+        // 포스트 정보를 찾는다
+        Post post = postService.findPost(postId);
+
+        // 회원과 포스트 정보를 바탕으로 좋아요가 눌러져 있다면 true, 아니면 false를 받는다.
+        boolean status = postService.votePost(member, post);
+
+        // responseDto 생성
+        PostLikesResponseDto response = new PostLikesResponseDto();
+        response.setIsVoted(status);
+        return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
     }
 }

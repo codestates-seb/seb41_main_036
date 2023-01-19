@@ -1,8 +1,13 @@
 package com.main36.picha.domain.post.service;
 
 
+import com.main36.picha.domain.attraction.entity.Attraction;
+import com.main36.picha.domain.attraction_likes.entity.AttractionLikes;
+import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.repository.PostRepository;
+import com.main36.picha.domain.post_likes.entity.PostLikes;
+import com.main36.picha.domain.post_likes.repository.PostLikesRepository;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostLikesRepository postLikesRepository;
 
     public Post createPost(Post post) {
 
@@ -61,5 +67,28 @@ public class PostService {
         Post post = findPost(postId);
     }
 
+    public boolean votePost(Member member, Post post){
+        // 좋아요를 누른적이 있나?
+        Optional<PostLikes> likes = postLikesRepository.findByMemberAndPost(member, post);
+
+        // 좋아요를 이미 눌렀다면
+        if(likes.isPresent()){
+            // 좋아요 데이터를 삭제하고
+            postLikesRepository.delete(likes.get());
+            // post의 likes를 하나 감소시킨다
+            post.setLikes(post.getLikes()-1);
+            // 지금은 좋아요를 누르지 않은 상태라는것을 반환한다.
+            return false;
+        }
+        // 좋아요를 누르지 않았으면
+        else{
+            // 좋아요 데이터를 생성하고
+            postLikesRepository.save(PostLikes.builder().post(post).member(member).build());
+            // post의 likes를 하나 증가시킨다.
+            post.setLikes(post.getLikes()+1);
+            // 지금은 좋아요를 누른 상태라는것을 반환한다.
+            return true;
+        }
+    }
 
 }

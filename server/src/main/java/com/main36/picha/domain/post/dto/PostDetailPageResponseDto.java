@@ -18,6 +18,7 @@ public class PostDetailPageResponseDto {
     //    private List<HashTag> hashTagList;
     private int views;
     private int likes;
+//    private Boolean isVoted;
     private String username;
     private String picture;
     private List<CommentResponseDto> comments;
