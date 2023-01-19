@@ -3,6 +3,7 @@ package com.main36.picha.domain.post.controller;
 
 import com.main36.picha.domain.attraction.service.AttractionService;
 
+import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
