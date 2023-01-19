@@ -293,18 +293,12 @@ const Login = () => {
           username: username,
         },{
             withCredentials:true,
-        },
-        // {
-        //     headers:{
-        //         "Content-Type": "application.json",
-        //     },
-        // }
-        )
+        },)
         .then((res) => {
             console.log(res);
           if (res.status === 201) {
             console.log("회원가입 성공")
-            // navigate("/login");
+            navigate("/login");
           }
         })
         .catch((err) => {
@@ -324,6 +318,8 @@ const Login = () => {
     // })
     // .then((res) => {
     //     if (res.status === 201) {
+    // axios.defaults.headers.common["authorization"] = null;
+    // axios.defaults.headers.common["refreshtoken"] = null;
     //         setIslogin(false);
     //         setAuth(null);
     //         setRefresh(null);
@@ -386,7 +382,7 @@ const Login = () => {
       //     username: loginemail,
       //     password: loginpassword,
       // })
-      .get("/oauth2/authorization/google", {
+      .get("oauth2/authorization/google", {
         // headers: {
         //     "Content-Type" : "application/x-www-form-urlencoded"
         // }
@@ -396,13 +392,12 @@ const Login = () => {
   };
 
   const googlelogin = () => {
-    // window.location.href =
-    //   "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
-    // const query = window.location.search;
-    // console.log("이게무야2", query);
-    // const param = new URLSearchParams(query);
-    // console.log(param);
-    // navigate("/");
+    window.location.href =
+      "oauth2/authorization/google";
+    const query = window.location.search;
+    console.log("이게무야2", query);
+    const param = new URLSearchParams(query);
+    console.log(param);
   };
 
   //회원가입은
@@ -470,10 +465,10 @@ const Login = () => {
         </>
       )}
       <Logincontainer overlay={overlays}>
-        {/* <GButton onClick={GoogleHandler}>묵은지</GButton>
+        <GButton onClick={GoogleHandler}>묵은지</GButton>
         <GButton onClick={googlelogin}>묵은지</GButton>
 
-        <Ouaths /> */}
+        <Ouaths />
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>
@@ -520,8 +515,8 @@ const Login = () => {
           fontsize="24px"
           hoverbackgroundcolor="var(--purple-400)"
           text="로그인"
-        //   onClick={Loginhandler}
-          onClick={onClickLogin}
+          onClick={Loginhandler}
+        //   onClick={onClickLogin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">

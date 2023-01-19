@@ -49,7 +49,7 @@ function Main() {
 
     return axios
       .post(process.env.REACT_APP_DB_HOST + "/users/login", {
-        username: "sign@naver.con",
+        username: "tutu@naver.com",
         password: 12121212,
       })
       .then((res) => {
@@ -71,7 +71,7 @@ function Main() {
     <Body> Bodt 바디
       <button onClick={testBtn}>콘솔버튼</button>
       <button onClick={onClickLogin}>로긴버튼</button>
-      
+        
     </Body>
     <Footer>footer</Footer>
     </>
