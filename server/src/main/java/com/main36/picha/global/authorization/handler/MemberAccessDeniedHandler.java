@@ -1,6 +1,5 @@
-package com.main36.picha.global.auth.handler;
+package com.main36.picha.global.authorization.handler;
 
-import com.main36.picha.global.response.ErrorResponse;
 import com.main36.picha.global.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

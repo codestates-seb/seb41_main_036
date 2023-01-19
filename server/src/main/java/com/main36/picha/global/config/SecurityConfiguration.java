@@ -5,10 +5,10 @@ import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
 
-import com.main36.picha.global.auth.filter.JwtAuthenticationFilter;
-import com.main36.picha.global.auth.filter.JwtVerificationFilter;
-import com.main36.picha.global.auth.handler.*;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.filter.JwtAuthenticationFilter;
+import com.main36.picha.global.authorization.filter.JwtVerificationFilter;
+import com.main36.picha.global.authorization.handler.*;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

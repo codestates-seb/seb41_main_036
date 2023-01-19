@@ -1,20 +1,15 @@
-package com.main36.picha.global.auth.handler;
+package com.main36.picha.global.authorization.handler;
 
 
 import com.main36.picha.domain.member.dto.OauthMemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
-import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
-import com.main36.picha.global.exception.BusinessLogicException;
-import com.main36.picha.global.exception.ExceptionCode;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
@@ -68,7 +63,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI(request, accessToken, refreshToken).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -97,17 +92,17 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-
-    private URI createURI(String accessToken, String refreshToken) {
+    private URI createURI(HttpServletRequest request, String accessToken, String refreshToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+//        queryParams.add("refresh_token", refreshToken);
+
+        String serverName = request.getServerName();
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host( "pikcha36.o-r.kr")
-//                .host("localhost")
+                .host( serverName)
                 .port(8080)
                 .path("/users/token")
                 .queryParams(queryParams)

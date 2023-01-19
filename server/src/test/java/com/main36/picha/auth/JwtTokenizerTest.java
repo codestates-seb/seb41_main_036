@@ -1,7 +1,7 @@
 package com.main36.picha.auth;
 
 
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeAll;

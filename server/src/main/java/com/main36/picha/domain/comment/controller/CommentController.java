@@ -8,14 +8,11 @@ import com.main36.picha.domain.comment.service.CommentService;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.service.PostService;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,11 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -71,16 +66,7 @@ public class CommentController {
     public ResponseEntity<DataResponseDto<?>> patchComment(@PathVariable("member-id") @Positive long memberId,
                                                            @PathVariable("comment-id") @Positive long commentId,
                                                            @RequestBody @Valid CommentPostDto commentPostDto) {
-
-        Member member = memberService.findVerifiedMemberById(memberId);
-        Comment comment = commentService.findComment(commentId);
-
-        if (!comment.getMember().getMemberId().equals(memberId)) {
-            throw new BusinessLogicException(ExceptionCode.NOT_AUTHOR);
-        }
-
-        comment.setCommentId(commentId);
-        comment.setMember(member);
+        Comment comment = verifiedById(memberId, commentId);
         comment.setCommentContent(commentPostDto.getCommentContent());
 
         CommentResponseDto commentResponseDto = mapper.commentToCommentResponseDto(comment);
@@ -106,10 +92,23 @@ public class CommentController {
         return ResponseEntity.ok(new MultiResponseDto<>(commentResponseDtos, commentPage));
     }
 
-    @DeleteMapping("/delete/{comment-id}")
-    public ResponseEntity<HttpStatus> deleteCommnet(@PathVariable("comment-id") @Positive long commentId) {
+    @DeleteMapping("/delete/{member-id}/{comment-id}")
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("member-id") @Positive long memberId,
+                                                    @PathVariable("comment-id") @Positive long commentId) {
+        verifiedById(memberId, commentId);
         commentService.deleteComment(commentId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private Comment verifiedById(long memberId, long commentId) {
+        Member member = memberService.findVerifiedMemberById(memberId);
+        Comment comment = commentService.findComment(commentId);
+
+        if (!comment.getMember().getMemberId().equals(memberId)) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHOR);
+        }
+
+        return comment;
     }
 }
