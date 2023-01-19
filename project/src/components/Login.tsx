@@ -6,8 +6,11 @@ import DaumPostcode from "react-daum-postcode";
 import Ouaths from "../pages/Ouaths";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { LoginState, AuthToken, RefreshToken, 
-// LoggedUser
+import {
+  LoginState,
+  AuthToken,
+  RefreshToken,
+  LoggedUser,
 } from "../recoil/state";
 
 interface TextProps {
@@ -166,30 +169,29 @@ const CloseButton = styled.button`
 `;
 
 const Login = () => {
-  const [overlays, setOverlays] = useState(false);
-  const [loginemail, setLoginEmail] = useState("");
-  const [loginpassword, setLoginPassword] = useState("");
+  const [overlays, setOverlays] = useState<boolean>(false);
+  const [loginemail, setLoginEmail] = useState<string>("");
+  const [loginpassword, setLoginPassword] = useState<string>("");
 
-  const [signemail, setSignEmail] = useState("");
-  const [signpassword, setSignPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [phonenumber, setPhonenumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [openPostcode, setOpenPostcode] = useState(false);
+  const [signemail, setSignEmail] = useState<string>("");
+  const [signpassword, setSignPassword] = useState<string>("");
+  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+  const [phonenumber, setPhonenumber] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
 
-  const [loginemailErr, setLoginEmailErr] = useState(true);
-  const [loginpasswordErr, setLoginPasswordErr] = useState(true);
+  const [loginemailErr, setLoginEmailErr] = useState<boolean>(true);
+  const [loginpasswordErr, setLoginPasswordErr] = useState<boolean>(true);
 
-  const [signemailErr, setSignEmailErr] = useState(true);
-  const [signpasswordErr, setSignPasswordErr] = useState(true);
-  const [phonenumberErr, setPhonenumberErr] = useState(true);
-  const [username, setUsername] = useState("");
+  const [signemailErr, setSignEmailErr] = useState<boolean>(true);
+  const [signpasswordErr, setSignPasswordErr] = useState<boolean>(true);
+  const [phonenumberErr, setPhonenumberErr] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>("");
 
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [rafresh, setRefresh] = useRecoilState(RefreshToken);
-//   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
+  const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
 
   const navigate = useNavigate();
 
@@ -247,32 +249,31 @@ const Login = () => {
   const onClickLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (loginemailErr || loginpasswordErr) {
-        alert("로그인 양식을 지켜주세요.");
-      }
+      alert("로그인 양식을 지켜주세요.");
+    }
 
     return axios
-      .post(process.env.REACT_APP_DB_HOST  + "/api/users/login", {
+      .post(process.env.REACT_APP_DB_HOST + "/users/login", {
         username: loginemail,
         password: loginpassword,
       })
       .then((res) => {
+        const { authorization, refreshtoken } = res.headers;
         if (res.status === 200) {
-          const { authorization, refreshtoken } = res.headers;
+          axios.defaults.headers.common["authorization"] = authorization;
+          axios.defaults.headers.common["refreshtoken"] = refreshtoken;
+        console.log("로그인성공");
           setIslogin(true);
           setAuth(authorization);
           setRefresh(refreshtoken);
-        //   setLoggedUser(loginemail);
-          // sessionStorage.setItem("userId", loginemail);
-          // sessionStorage.setItem("authToken", `${authorization}`);
-          // sessionStorage.setItem("refreshToken", `${refreshtoken}`);
-
+          setLoggedUser(loginemail);
           navigate("/");
         }
       })
       .catch((err) => {
-      console.error(err)
-      alert("회원이 아닙니다.")
-  });
+        console.error(err);
+        alert("회원이 아닙니다.");
+      });
   };
 
   const onClickSignin = (
@@ -284,26 +285,38 @@ const Login = () => {
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
-        .post(process.env.REACT_APP_DB_HOST  + "/api/users/signup", {
+        .post(process.env.REACT_APP_DB_HOST + "/users/signup", {
           email: signemail,
           password: signpassword,
           phoneNumber: phonenumber,
           address: address,
           username: username,
-        })
+        },{
+            withCredentials:true,
+        },
+        // {
+        //     headers:{
+        //         "Content-Type": "application.json",
+        //     },
+        // }
+        )
         .then((res) => {
+            console.log(res);
           if (res.status === 201) {
-            navigate("/login");
+            console.log("회원가입 성공")
+            // navigate("/login");
           }
         })
         .catch((err) => {
-            console.error(err)
-            alert("이미 존재하는 회원입니다.")}
-            );
+          console.error(err);
+          alert("이미 존재하는 회원입니다.");
+        });
     }
   };
 
-  const onClickLogout =(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+  const onClickLogout = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     // e.preventDefault();
     // return axios
     // .post("/users/logout", {
@@ -311,15 +324,14 @@ const Login = () => {
     // })
     // .then((res) => {
     //     if (res.status === 201) {
-        //         setIslogin(false);
-        //         setAuth(null);
-        //         setRefresh(null);
-        //         navigate("/login");
+    //         setIslogin(false);
+    //         setAuth(null);
+    //         setRefresh(null);
+    //         navigate("/login");
     //       }
     // })
     // .catch((err) => console.error(err));
-
-  }
+  };
 
   const Loginhandler = () => {
     // axios
@@ -335,9 +347,14 @@ const Login = () => {
     // setIslogin(!isLogin)
     // setAuth("어우")
     // setRefresh("리프")
+
+    axios.defaults.headers.common["Authorization"] = "어스";
+    axios.defaults.headers.common["Refresh"] = "리프";
+
     setIslogin(true);
     setAuth(loginemail);
     setRefresh(loginpassword);
+    setLoggedUser(loginemail);
 
     // localStorage.setItem("userId", loginemail);
     // localStorage.setItem("authorizationToken(이메일)", loginemail );
@@ -381,13 +398,10 @@ const Login = () => {
   const googlelogin = () => {
     // window.location.href =
     //   "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
-
     // const query = window.location.search;
     // console.log("이게무야2", query);
-
     // const param = new URLSearchParams(query);
     // console.log(param);
-
     // navigate("/");
   };
 
@@ -434,9 +448,6 @@ const Login = () => {
   // const islogin = useRecoilValue(LoginState)
   // const authToken = useRecoilValue(AuthToken)
   // const refreshToken = useRecoilValue(RefreshToken)
-
-
-  
 
   return (
     <Wrapper>
@@ -509,8 +520,8 @@ const Login = () => {
           fontsize="24px"
           hoverbackgroundcolor="var(--purple-400)"
           text="로그인"
-          onClick={Loginhandler}
-          // onClick={onClickLogin}
+        //   onClick={Loginhandler}
+          onClick={onClickLogin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
