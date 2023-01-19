@@ -31,8 +31,6 @@ public class MemberDto {
 
         @NotBlank(message = "not allowed null values and spaces.")
         private String username;
-
-
     }
 
     @Data

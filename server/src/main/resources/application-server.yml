@@ -1,0 +1,64 @@
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pikcha36?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
+    username: ${MYSQL_ID} # 유저네임
+    password: ${MYSQL_PASSWORD} # 비밀번호
+  #  sql:
+  #    init:
+  #      mode: always
+  #      data-locations: classpath*:db/h2/data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none  # If deploy server, have to change please
+    #    show-sql: true
+    #    properties:
+    #      hibernate:
+    #        format_sql: true
+    defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${G_CLIENT_ID} # 구글 API콘솔로 발급받은 ID
+            clientSecret: ${G_CLIENT_SECRET} # 구글 API콘솔로 발급받은 SECRET
+            scope:
+              - email
+              - profile
+
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+
+server:
+  servlet:
+    encoding:
+      force-response: true
+
+mail:
+  address:
+    admin: admin@gmail.com
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}  # 환경 변수로 설정했음
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+
+
+cloud:
+  aws:
+    s3:
+      bucket: ${AWS_BUCKET_NAME}
+    credentials:
+      accesskey: ${S3_ACCESS_KEY}
+      secretkey: ${S3_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
