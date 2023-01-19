@@ -1,16 +1,15 @@
 package com.main36.picha.domain.post.controller;
 
 
-import com.main36.picha.domain.attraction.dto.AttractionLikesResponseDto;
-import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.attraction.service.AttractionService;
-import com.main36.picha.domain.member.entity.Member;
+
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.mapper.PostMapper;
 import com.main36.picha.domain.post.service.PostService;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.exception.BusinessLogicException;
+import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,72 +38,102 @@ public class PostController {
     private final PostMapper mapper;
     private final MemberService memberService;
     private final AttractionService attractionService;
-    private final JwtTokenizer jwtTokenizer;
+    @PostMapping("/register/{member-id}/{attraction-id}")
+    public ResponseEntity<DataResponseDto<SinglePostResponseDto>> registerPost(@PathVariable("member-id") @Positive long memberId,
+                                                                               @PathVariable("attraction-id") @Positive long attractionId,
+                                                                               @Valid @RequestBody PostRegisterDto postRegisterDto) {
+        Post.PostBuilder postBuilder = Post.builder();
 
-    // 로그인 객체 찾기
-    @PostMapping("/register/{attraction-id}")
-    public ResponseEntity<DataResponseDto<PostRegisterResponseDto>> registerPost(HttpServletRequest request,
-                                                                                 @PathVariable("attraction-id") long attractionId,
-                                                                                 @Valid @RequestBody PostRegisterDto postRegisterDto) {
-        String username = jwtTokenizer.getUsername(request);
-        Member member = memberService.findMember(username);
-        Attraction attraction = attractionService.findAttraction(attractionId);
+        Post post = postService.createPost(
+                postBuilder
+                        .postTitle(postRegisterDto.getPostTitle())
+                        .postContent(postRegisterDto.getPostContent())
+                        .hashTagContent(postRegisterDto.getHashTagContent())
+                        .member(memberService.findVerifiedMemberById(memberId))
+                        .attraction(attractionService.findAttraction(attractionId))
+                        .comments(new ArrayList<>())
+                        .build()
+        );
 
-        attraction.setNumOfPosts(attraction.getNumOfPosts()+1);
-        
-        Post post = mapper.postRegisterDtoToPost(postRegisterDto, member, attraction);
-
-        Post createPost = postService.createPost(post);
-
-        PostRegisterResponseDto postRegisterResponseDto = mapper.postToPostRegisterResponseDto(createPost);
-
-        return new ResponseEntity<>(new DataResponseDto<>(postRegisterResponseDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.postToSingleResponseDto(post)), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{post-id}")
-    public ResponseEntity<DataResponseDto<PostRegisterResponseDto>> editPost(@Positive @PathVariable("post-id") long postId,
-                                                                     @Valid @RequestBody PostPatchRequestDto postPatchRequestDto) {
-        postPatchRequestDto.setPostId(postId);
-        Post post = postService.updatePost(mapper.postPatchDtoToPost(postPatchRequestDto));
-        PostRegisterResponseDto postRegisterResponseDto = mapper.postToPostRegisterResponseDto(post);
+    @PatchMapping("/edit/{member-id}/{post-id}")
+    public ResponseEntity<DataResponseDto<SinglePostResponseDto>> editPost(@PathVariable("member-id") @Positive long memberId,
+                                                                           @PathVariable("post-id") @Positive long postId,
+                                                                           @Valid @RequestBody PostPatchDto postPatchDto) {
+        verifiedById(memberId, postId);
 
-        return ResponseEntity.ok(new DataResponseDto<>(postRegisterResponseDto));
+        postPatchDto.setPostId(postId);
+        Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
+
+        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(updatePost)));
     }
 
-    // 포스트 단일 조회
     @GetMapping("/{post-id}")
-    public ResponseEntity<DataResponseDto<PostResponseDto>> getPost(@Positive @PathVariable("post-id") long postId) {
+    public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId) {
         Post post = postService.findPost(postId);
-        PostResponseDto postResponseDto = mapper.postToPostResponseDto(post);
 
-        return ResponseEntity.ok(new DataResponseDto<>(postResponseDto));
+        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(post)));
     }
 
-    // 포스트 페이지(전체 조회)
+    @GetMapping("/home")
+    public ResponseEntity<MultiResponseDto<?>> getHomePosts(@RequestParam(defaultValue = "newest", required = false) String sort,
+                                                         @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                         @RequestParam(defaultValue = "8", required = false) @Positive int size) {
+        sort = getString(sort);
+        Page<Post> allPostsBySort = postService.findAllPostsBySort(page - 1, size, sort);
+        List<Post> content = allPostsBySort.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.postListToPostHomeResponseDtoList(content), allPostsBySort), HttpStatus.OK);
+
+    }
+
+
     @GetMapping()
-    public ResponseEntity<MultiResponseDto> getPosts(@RequestParam(defaultValue = "newest", required = false) String tab,
-                                                     @RequestParam(defaultValue = "1", required = false) int page,
-                                                     @RequestParam(defaultValue = "9", required = false) int size) {
-        Page<Post> postsByNewestByPage = postService.findAllPostsByNewest(page - 1, size);
+    public ResponseEntity<MultiResponseDto<?>> getAllPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
+                                                        @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                        @RequestParam(defaultValue = "9", required = false) @Positive int size) {
+        sort = getString(sort);
+        Page<Post> postsByNewestByPage = postService.findAllPostsBySort(page - 1, size, sort);
         List<Post> postsByNewest = postsByNewestByPage.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(
                 mapper.postListToPostPageResponseDtoList(postsByNewest), postsByNewestByPage), HttpStatus.OK);
     }
 
-    // 포스트 삭제
-    @DeleteMapping("delete/{post-id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId) {
+    private static String getString(String sort) {
+        switch (sort) {
+            case "newest":
+                sort = "postId";
+                break;
+            case "likes":
+                sort = "likes";
+                break;
+            case "views":
+                sort = "views";
+                break;
+        }
+        return sort;
+    }
+
+    @DeleteMapping("/delete/{member-id}/{post-id}")
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("member-id") long memberId,
+                                                 @PathVariable("post-id") long postId) {
+
+        Post post = verifiedById(memberId, postId);
+        postService.erasePost(post);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // 포스트 좋아요!
-    @PostMapping("/likes/{post-id}")
-    public ResponseEntity voteAttraction(HttpServletRequest request,
+    @PostMapping("/likes/{member-id}/{post-id}")
+    public ResponseEntity votePost(@PathVariable("member-id") long memberId,
                                          @PathVariable("post-id") @Positive long postId){
         // 회원 정보를 받아온다
-        String userEmail = jwtTokenizer.getUsername(request);
-        Member member = memberService.findMember(userEmail);
+       Member member  = memberService.findVerifiedMemberById(memberId);
 
         // 포스트 정보를 찾는다
         Post post = postService.findPost(postId);
@@ -116,4 +146,15 @@ public class PostController {
         response.setIsVoted(status);
         return new ResponseEntity(new DataResponseDto<>(response), HttpStatus.OK);
     }
+
+    private Post verifiedById(long memberId, long postId) {
+        Post post = postService.findPostNoneSetView(postId);
+
+        if (!post.getMember().getMemberId().equals(memberId)) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHOR);
+        }
+
+        return post;
+    }
+
 }

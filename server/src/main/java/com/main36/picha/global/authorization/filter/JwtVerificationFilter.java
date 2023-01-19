@@ -1,6 +1,6 @@
-package com.main36.picha.global.auth.filter;
+package com.main36.picha.global.authorization.filter;
 
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 

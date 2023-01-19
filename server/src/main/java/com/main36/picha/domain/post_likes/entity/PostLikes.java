@@ -3,15 +3,12 @@ package com.main36.picha.domain.post_likes.entity;
 
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.post.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 public class PostLikes {

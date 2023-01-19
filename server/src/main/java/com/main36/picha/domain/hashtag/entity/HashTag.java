@@ -2,16 +2,13 @@ package com.main36.picha.domain.hashtag.entity;
 
 
 import com.main36.picha.global.audit.Auditable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 public class HashTag extends Auditable {

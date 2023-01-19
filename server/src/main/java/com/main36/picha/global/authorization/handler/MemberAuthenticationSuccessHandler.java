@@ -1,7 +1,7 @@
-package com.main36.picha.global.auth.handler;
+package com.main36.picha.global.authorization.handler;
 
 import com.main36.picha.domain.member.entity.Member;
-import com.main36.picha.global.auth.jwt.JwtTokenizer;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

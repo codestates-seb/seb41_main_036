@@ -1,4 +1,4 @@
-package com.main36.picha.global.auth.userdetails;
+package com.main36.picha.global.authorization.userdetails;
 
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.repository.MemberRepository;

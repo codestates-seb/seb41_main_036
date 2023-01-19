@@ -5,15 +5,9 @@ import com.main36.picha.domain.attraction.dto.AttractionPatchDto;
 import com.main36.picha.domain.attraction.dto.AttractionPostDto;
 import com.main36.picha.domain.attraction.dto.AttractionResponseDto;
 import com.main36.picha.domain.attraction.entity.Attraction;
-import com.main36.picha.domain.post.dto.PostResponseDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface AttractionMapper {
