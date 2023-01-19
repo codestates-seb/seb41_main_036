@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ButtonForm from "../components/Button";
+import ButtonForm from "./Button";
 import axios, { AxiosRequestConfig } from "axios";
 import DaumPostcode from "react-daum-postcode";
-import Ouaths from "../pages/Ouaths";
+import Ouaths from ".//Ouaths";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
