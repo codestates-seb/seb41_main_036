@@ -77,6 +77,8 @@ public class PostService {
     }
 
     public void erasePost(Post post) {
+        Long numOfPostsSubtractOne = post.getAttraction().getNumOfPosts()-1;
+        post.getAttraction().setNumOfPosts(numOfPostsSubtractOne);
         postRepository.delete(post);
     }
 
@@ -113,4 +115,9 @@ public class PostService {
             return true;
         }
     }
+
+    public boolean isVoted(long memberId, long postId){
+        return postLikesRepository.findByMemberIdAndPostId(memberId, postId).isPresent();
+    }
+
 }
