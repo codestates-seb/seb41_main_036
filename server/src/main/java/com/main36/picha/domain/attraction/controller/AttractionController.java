@@ -12,17 +12,14 @@ import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.authorization.resolver.ClientId;
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import java.io.File;
 import java.io.IOException;
