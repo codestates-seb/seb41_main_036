@@ -3,6 +3,7 @@ package com.main36.picha.domain.post.controller;
 
 import com.main36.picha.domain.attraction.service.AttractionService;
 
+import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
