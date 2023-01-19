@@ -22,6 +22,8 @@ public class PostDetailPageResponseDto {
     @Setter
     private Boolean isVoted;
 
+
+//    private Boolean isVoted;
     private String username;
     private String picture;
     private List<CommentResponseDto> comments;

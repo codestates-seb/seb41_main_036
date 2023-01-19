@@ -167,6 +167,7 @@ public class PostController {
         // responseDto 생성
         PostLikesResponseDto response = new PostLikesResponseDto();
         response.setIsVoted(status);
+
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
     private Post verifiedById(long memberId, long postId) {
@@ -360,4 +361,5 @@ public class PostController {
         }
         return new ResponseEntity<>(urls, HttpStatus.CREATED);
     }
+
 }
