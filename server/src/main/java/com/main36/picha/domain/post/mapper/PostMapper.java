@@ -1,11 +1,7 @@
 package com.main36.picha.domain.post.mapper;
 
 
-import com.main36.picha.domain.attraction.entity.Attraction;
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
-import com.main36.picha.domain.comment.entity.Comment;
-import com.main36.picha.domain.member.entity.Member;
-import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.post.dto.*;
 import com.main36.picha.domain.post.entity.Post;
 import org.mapstruct.Mapper;
@@ -18,15 +14,15 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PostMapper {
 
-    Post postPatchDtoToPost(PostPatchDto postPatchDto);
+    Post postPatchDtoToPost(PostDto.Patch postPatchDto);
 
-    default SinglePostResponseDto postToSingleResponseDto(Post post) {
+    default PostResponseDto postToSingleResponseDto(Post post) {
 
         if (post == null) {
             return null;
         }
 
-        return SinglePostResponseDto.builder()
+        return PostResponseDto.builder()
                 .postId(post.getPostId())
                 .postTitle(post.getPostTitle())
                 .postContent(post.getPostContent())
@@ -58,16 +54,16 @@ public interface PostMapper {
     @Mapping(target = "memberId", expression = "java(post.getMember().getMemberId())")
     @Mapping(target = "username", expression = "java(post.getMember().getUsername())")
     @Mapping(target = "picture", expression = "java(post.getMember().getPicture())")
-    PostHomeDto postToPostHomeDto(Post post);
+    PostResponseDto.Home postToPostHomeDto(Post post);
 
-    default List<PostHomeDto> postListToPostHomeResponseDtoList(List<Post> postList) {
+    default List<PostResponseDto.Home> postListToPostHomeResponseDtoList(List<Post> postList) {
         if (postList == null) {
             return  null;
         }
 
         return postList.stream()
                 .map(post -> {
-                    return PostHomeDto.builder()
+                    return PostResponseDto.Home.builder()
                             .postId(post.getPostId())
                             .memberId(post.getMember().getMemberId())
                             .username(post.getMember().getUsername())
@@ -82,7 +78,7 @@ public interface PostMapper {
     }
 
 
-    default List<SinglePostResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
+    default List<PostResponseDto> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
             return null;
@@ -90,7 +86,7 @@ public interface PostMapper {
 
         return postList.stream()
                 .map(post -> {
-                    return SinglePostResponseDto.builder()
+                    return PostResponseDto.builder()
                             .postId(post.getPostId())
                             .postTitle(post.getPostTitle())
                             .postContent(post.getPostContent())

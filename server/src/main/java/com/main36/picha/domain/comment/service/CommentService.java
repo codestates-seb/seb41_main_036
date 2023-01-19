@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,14 +32,22 @@ public class CommentService {
         ));
     }
 
-    public void deleteComment(long commentId){
-        Comment findComment = findVerifiedComment(commentId);
-        commentRepository.delete(findComment);
+    public void deleteComment(Comment comment){
+        commentRepository.delete(comment);
     }
 
-    private Comment findVerifiedComment(long commentId){
+    public Comment findVerifiedComment(long commentId){
         return commentRepository.findById(commentId)
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+    }
+
+    public Comment verifyClientId(long clientId, long commentId) {
+        Comment comment = findComment(commentId);
+        if (!comment.getMember().getMemberId().equals(clientId)) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHOR);
+        }
+
+        return comment;
     }
 
 

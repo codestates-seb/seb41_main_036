@@ -72,8 +72,17 @@ public class PostService {
     }
 
     public void erasePost(Post post) {
-        postRepository.delete(post);
+        postRepository.delete( post);
     }
 
+    public Post verifyClientId(Long clientId, Long postId) {
+        Post post = findPost(postId);
+
+        if (!post.getMember().getMemberId().equals(clientId)) {
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
+        }
+
+        return post;
+    }
 
 }

@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,6 +40,7 @@ public class SecurityConfiguration {
     private final MemberMapper mapper;
     private final MemberRepository memberRepository;
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -57,8 +59,14 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/", "/users/signup", "/users/login", "/users/token/**",
-                                "/main", "/attractions", "/attractions/**", "/posts", "/posts/*", "/comments", "comments/*").permitAll()
+                        .antMatchers(
+                                "/",
+                                "/signup",
+                                "/login",
+                                "/token",
+                                "/attractions", "/attractions/**",
+                                "/posts", "/posts/*",
+                                "/comments", "comments/*").permitAll()
                         .antMatchers("admin").hasRole("ADMIN")
                         .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().authenticated()
@@ -94,7 +102,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/users/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 

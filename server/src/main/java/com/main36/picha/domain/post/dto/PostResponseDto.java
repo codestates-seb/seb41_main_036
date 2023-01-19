@@ -12,7 +12,8 @@ import java.util.List;
 @Data
 @Setter(AccessLevel.NONE)
 @Builder
-public class SinglePostResponseDto {
+public class PostResponseDto {
+
     private long postId;
     private String postTitle;
     private String postContent;
@@ -27,5 +28,20 @@ public class SinglePostResponseDto {
     private List<CommentResponseDto> comments;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+
+    @Data
+    @Builder
+    public static class Home {
+        private Long postId;
+        private Long memberId;
+        private String username;
+        private String picture;
+        private int views;
+        private int likes;
+        private String postTitle;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
 
 }

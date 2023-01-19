@@ -1,11 +1,11 @@
 package com.main36.picha.domain.member.controller;
 
 
-import com.main36.picha.domain.member.dto.MemberPatchDto;
-import com.main36.picha.domain.member.dto.MemberPostDto;
+import com.main36.picha.domain.member.dto.MemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.service.MemberService;
+import com.main36.picha.global.authorization.resolver.ClientId;
 import com.main36.picha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,6 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/users")
 public class MemberController {
 
     private final MemberService memberService;
@@ -33,7 +32,10 @@ public class MemberController {
 
     //멤버 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
+        log.info("email={}", memberPostDto.getEmail());
+        log.info("username={}", memberPostDto.getUsername());
+
         Member member = mapper.memberPostDtoToMember(memberPostDto);
         member.setPicture("https://drive.google.com/file/d/1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g/view?usp=sharing");
         Member createMember = memberService.createMember(member);
@@ -48,6 +50,7 @@ public class MemberController {
                                       @RequestParam String refresh_token) {
         log.info("at={}", access_token);
         log.info("rt={}", refresh_token);
+
         String at = "Bearer " + access_token;
 
         // 1. 헤더에 담아서 보내기
@@ -65,9 +68,12 @@ public class MemberController {
 //        return ResponseEntity.ok(tokenBuilder);
     }
 
-    @PatchMapping("/edit/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> patchMember(@PathVariable("member-id") @Positive long memberId,
-                                                          @Valid @RequestBody MemberPatchDto memberPatchDto) {
+    @PatchMapping("/users/edit/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> patchMember(@ClientId Long clientId,
+                                                          @PathVariable("member-id") @Positive Long memberId,
+                                                          @Valid @RequestBody MemberDto.Patch memberPatchDto) {
+        memberService.isEqualToClientIdAndMemberId(clientId, memberId);
+
         memberPatchDto.setMemberId(memberId);
         Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 
@@ -77,27 +83,22 @@ public class MemberController {
         );
     }
 
-    @GetMapping("/{member-id}/{email}")
-    public ResponseEntity<DataResponseDto<?>> getMemberProfile(@Positive @PathVariable("member-id") long memberId,
-                                                               @PathVariable("email") String email) {
-        //TODO: verifyLoginMember
-        Member member = memberService.findMember(memberId, email);
+    @GetMapping("/users/profile/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> getMemberProfile(@ClientId Long clientId,
+                                                               @PathVariable("member-id") @Positive Long memberId) {
+        Member member = memberService.isEqualToClientIdAndMemberId(clientId, memberId);
+
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),
                 HttpStatus.OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<HttpStatus> getMembers(@RequestParam(defaultValue = "1", required = false) int page,
-                                                 @RequestParam(defaultValue = "9", required = false) int size) {
-//        Page<Member> pageMember =
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    @DeleteMapping("/users/delete/{member-id}")
+    public ResponseEntity<HttpStatus> deleteMember(@ClientId Long clientId,
+                                                   @PathVariable("member-id") @Positive Long memberId) {
+        Member member = memberService.isEqualToClientIdAndMemberId(clientId, memberId);
+        memberService.deleteMember(member);
 
-    @DeleteMapping("/delete/{member-id}/confirm")
-    public ResponseEntity<HttpStatus> deleteMember(@PathVariable("member-id") @Positive long memberId) {
-        //TODO: verifyLoginMember
-        memberService.deleteMember(memberId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

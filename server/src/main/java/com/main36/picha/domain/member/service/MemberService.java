@@ -1,14 +1,11 @@
 package com.main36.picha.domain.member.service;
 
-import com.main36.picha.domain.member.dto.MemberPatchDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +22,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
 
-
-    // 멤버 생성
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -34,7 +29,6 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
         return memberRepository.save(member);
-
     }
 
     public Member createOauth2Member(Member member) {
@@ -60,9 +54,8 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 
-    // 멤버 업데이트
     public Member updateMember(Member member) {
-        Member findMember = findVerifiedMemberById(member.getMemberId());
+        Member findMember = findMemberByMemberId(member.getMemberId());
         Optional.ofNullable(member.getUsername())
                 .ifPresent(name -> findMember.setUsername(name));
         Optional.ofNullable(member.getPhoneNumber())
@@ -74,37 +67,30 @@ public class MemberService {
         return memberRepository.save(findMember);
     }
 
-    // 멤버 조회(프로필)
-    public Member findMember(Long memberId, String email) {
-        Optional<Member> byMemberIdAndEmail = memberRepository.findByMemberIdAndEmail(memberId, email);
-        return byMemberIdAndEmail.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-    }
-
-    public Member findMember(String email) {
-        Optional<Member> byMemberIdAndEmail = memberRepository.findByEmail(email);
-        return byMemberIdAndEmail.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-    }
-
-    // 멤버 삭제
-    public void deleteMember(long memberId) {
-        Member verifiedMemberById = findVerifiedMemberById(memberId);
-        memberRepository.delete(verifiedMemberById);
-    }
-
-
-    public Member findVerifiedMemberByEmail(String email) {
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        return findMember.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-    }
-
-    public Member findVerifiedMemberById(long memberId) {
+    public Member findMemberByMemberId(long memberId) {
         Optional<Member> findMember = memberRepository.findById(memberId);
         return findMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    public Member findMemberByMemberEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        return findMember.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    public void deleteMember(Member member) {
+        memberRepository.delete(member);
+    }
+
+    public Member isEqualToClientIdAndMemberId(Long clientId, Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+
+        if (!member.getMemberId().equals(clientId)) {
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
+        }
+
+        return member;
+    }
 }
 
