@@ -106,9 +106,8 @@ public class AttractionService {
         }
     }
 
-    public boolean isVoted(Member member, Attraction attraction) {
-        Optional<AttractionLikes> likes = attractionLikesRepository.findByMemberAndAttraction(member, attraction);
-        return likes.isPresent();
+    public boolean isVoted(long memberId, long attractionId){
+        return attractionLikesRepository.findByMemberIdAndAttractionId(memberId, attractionId).isPresent();
     }
 
     public boolean saveAttraction(Member member, Attraction attraction){
@@ -135,9 +134,8 @@ public class AttractionService {
         }
     }
 
-    public boolean isSaved(Member member, Attraction attraction) {
-        Optional<Save> save = saveRepository.findByMemberAndAttraction(member, attraction);
-        return save.isPresent();
+    public boolean isSaved(long memberId, long attractionId) {
+        return saveRepository.findByMemberIdAndAttractionId(memberId, attractionId).isPresent();
     }
 
     private Attraction findVerifiedAttraction(long attractionId){
