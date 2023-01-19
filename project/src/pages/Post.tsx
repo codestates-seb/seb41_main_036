@@ -3,6 +3,8 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye } from "react-icons/ai";
+import { Header } from "../components/Header";
+
 
 const PostWrapper = styled.div`
   display: flex;
@@ -150,6 +152,11 @@ const Post = () => {
   };
 
   return (
+    <>
+      <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header>
     <PostWrapper>
       <LocationWrapper>
         <LocationFilter />
@@ -198,6 +205,7 @@ const Post = () => {
         </PostBox>
       </PostContainer>
     </PostWrapper>
+    </>
   );
 };
 

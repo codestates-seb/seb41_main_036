@@ -32,7 +32,7 @@ function getfilteredAttractions(
     if (searcher.search(attraction.name.replace(/[0-9 ]/g, "")) === -1)
       return acc;
     const exactmatchedletter = matchedletter.filter(
-      (el) =>
+      (el:any) =>
         attraction.name[el[1]] === trimmedSearchValue.slice(-1) &&
         Hangul.isCompleteAll(blankNumRemovedValue)
     );
