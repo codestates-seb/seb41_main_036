@@ -22,6 +22,8 @@ public class SinglePostResponseDto {
     private String attractionName;
     private int views;
     private int likes;
+    @Setter
+    private Boolean isVoted;
     private String username;
     private String picture;
     private List<CommentResponseDto> comments;

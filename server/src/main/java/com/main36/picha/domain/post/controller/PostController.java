@@ -55,8 +55,11 @@ public class PostController {
                         .comments(new ArrayList<>())
                         .build()
         );
-
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.postToSingleResponseDto(post)), HttpStatus.CREATED);
+        // response 생성
+        SinglePostResponseDto response = mapper.postToSingleResponseDto(post);
+        // 좋아요 누른 여부를 false로 반환(처음 생성해서 false)
+        response.setIsVoted(false);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/edit/{member-id}/{post-id}")
@@ -68,14 +71,20 @@ public class PostController {
         postPatchDto.setPostId(postId);
         Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
 
-        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(updatePost)));
+        SinglePostResponseDto response = mapper.postToSingleResponseDto(updatePost);
+        response.setIsVoted(postService.isVoted(memberId, postId));
+
+        return ResponseEntity.ok(new DataResponseDto<>(response));
     }
 
-    @GetMapping("/{post-id}")
-    public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId) {
+    @GetMapping("/{member-id}/{post-id}")
+    public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("member-id") @Positive long memberId,
+                                                      @PathVariable("post-id") @Positive long postId) {
         Post post = postService.findPost(postId);
+        SinglePostResponseDto response = mapper.postToSingleResponseDto(post);
+        response.setIsVoted(postService.isVoted(memberId, postId));
 
-        return ResponseEntity.ok(new DataResponseDto<>(mapper.postToSingleResponseDto(post)));
+        return ResponseEntity.ok(new DataResponseDto<>(response));
     }
 
     @GetMapping("/home")
@@ -134,10 +143,10 @@ public class PostController {
     public ResponseEntity votePost(@PathVariable("member-id") long memberId,
                                          @PathVariable("post-id") @Positive long postId){
         // 회원 정보를 받아온다
-       Member member  = memberService.findVerifiedMemberById(memberId);
+        Member member  = memberService.findVerifiedMemberById(memberId);
 
         // 포스트 정보를 찾는다
-        Post post = postService.findPost(postId);
+        Post post = postService.findPostNoneSetView(postId);
 
         // 회원과 포스트 정보를 바탕으로 좋아요가 눌러져 있다면 true, 아니면 false를 받는다.
         boolean status = postService.votePost(member, post);
