@@ -100,6 +100,7 @@ public class PostController {
 
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
+
     }
 
     @GetMapping("/home")

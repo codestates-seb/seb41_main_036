@@ -78,7 +78,6 @@ public class PostService {
 
         Long numOfPostsSubtractOne = post.getAttraction().getNumOfPosts()-1;
         post.getAttraction().setNumOfPosts(numOfPostsSubtractOne);
-
         postRepository.delete(post);
     }
 
@@ -119,7 +118,6 @@ public class PostService {
 
     public boolean isVoted(long memberId, long postId){
         return postLikesRepository.findByMemberIdAndPostId(memberId, postId).isPresent();
-
     }
 
 }
