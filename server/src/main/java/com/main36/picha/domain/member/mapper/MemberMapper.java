@@ -2,31 +2,32 @@ package com.main36.picha.domain.member.mapper;
 
 import com.main36.picha.domain.member.dto.*;
 import com.main36.picha.domain.member.entity.Member;
-import com.main36.picha.domain.post.entity.Post;
+import com.main36.picha.global.authorization.dto.LoginResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.List;
-
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface MemberMapper  {
+public interface MemberMapper {
 
-    Member memberPostDtoToMember(MemberPostDto memberPostDto);
+    Member memberPostDtoToMember(MemberDto.Post memberPostDto);
 
-    Member memberPatchDtoToMember(MemberPatchDto memberPatchDto);
+    Member memberPatchDtoToMember(MemberDto.Patch memberPatchDto);
 
-    SignUpResponseDto memberToSignUpResponseDto(Member member);
+    MemberResponseDto.SignUp memberToSignUpResponseDto(Member member);
 
     @Mapping(target = "totalMyPosts", expression = "java(member.getPosts().size())")
     @Mapping(target = "totalMySaves", expression = "java(member.getSaves().size())")
-    ProfileHomeDto memberToProfileHomeDto(Member member);
+    MemberResponseDto.Profile memberToProfileHomeDto(Member member);
 
     @Mapping(target = "password", constant = "")
     @Mapping(target = "phoneNumber", constant = "")
     @Mapping(target = "address", constant = "")
     @Mapping(target = "memberTitle", constant = "")
-    Member oauthMemberDtoToMember(OauthMemberDto oauthMemberDto);
+    Member oauthMemberDtoToMember(MemberDto.Oauth oauthMemberDto);
+
+    @Mapping(target = "password", constant = "")
+    LoginResponseDto memberToLoginResponseDto(Member member);
 
 }

@@ -68,7 +68,6 @@ public class PostService {
         return optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
-
     public Page<Post> findAllPostsBySort(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -81,6 +80,15 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    public Post verifyClientId(Long clientId, Long postId) {
+        Post post = findPost(postId);
+
+        if (!post.getMember().getMemberId().equals(clientId)) {
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
+        }
+
+        return post;
+    }
     public boolean votePost(Member member, Post post){
         // 좋아요를 누른적이 있나?
         Optional<PostLikes> likes = postLikesRepository.findByMemberAndPost(member, post);
