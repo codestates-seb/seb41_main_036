@@ -64,7 +64,6 @@ public class PostService {
         return optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
-
     public Page<Post> findAllPostsBySort(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 

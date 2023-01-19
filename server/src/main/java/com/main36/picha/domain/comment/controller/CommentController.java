@@ -30,13 +30,9 @@ import java.util.List;
 @Validated
 public class CommentController {
     private final JwtTokenizer jwtTokenizer;
-
     private final MemberService memberService;
-
     private final CommentService commentService;
-
     private final PostService postService;
-
     private final CommentMapper mapper;
 
     @PostMapping("/upload/{post-id}")

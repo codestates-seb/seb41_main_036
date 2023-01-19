@@ -1,6 +1,8 @@
 package com.main36.picha.global.config;
 
 
+import com.google.gson.Gson;
+import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
@@ -39,7 +41,7 @@ public class SecurityConfiguration {
     private final MemberService memberService;
     private final MemberMapper mapper;
     private final MemberRepository memberRepository;
-
+    private final Gson gson;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -84,8 +86,12 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://pikcha36.o-r.kr/"
-                , "http://pikcha36.o-r.kr/"));
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:3000",
+                        "https://pikcha36.o-r.kr/",
+                        "http://pikcha36.o-r.kr/")
+        );
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("Authorization");
         configuration.addAllowedHeader("*");
@@ -103,7 +109,7 @@ public class SecurityConfiguration {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer));
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer, mapper, gson));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);

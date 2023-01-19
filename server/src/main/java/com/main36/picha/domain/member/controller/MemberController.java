@@ -30,7 +30,6 @@ public class MemberController {
 
     private final MemberMapper mapper;
 
-    //멤버 회원가입
     @PostMapping("/signup")
     public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
         log.info("email={}", memberPostDto.getEmail());
@@ -79,8 +78,7 @@ public class MemberController {
 
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),
-                HttpStatus.OK
-        );
+                HttpStatus.OK);
     }
 
     @GetMapping("/users/profile/{member-id}")

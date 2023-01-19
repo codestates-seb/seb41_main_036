@@ -43,8 +43,9 @@ public class CommentService {
 
     public Comment verifyClientId(long clientId, long commentId) {
         Comment comment = findComment(commentId);
+
         if (!comment.getMember().getMemberId().equals(clientId)) {
-            throw new BusinessLogicException(ExceptionCode.NOT_AUTHOR);
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
         }
 
         return comment;

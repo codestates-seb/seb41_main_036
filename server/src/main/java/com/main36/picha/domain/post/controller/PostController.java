@@ -36,10 +36,11 @@ public class PostController {
     private final PostMapper mapper;
     private final MemberService memberService;
     private final AttractionService attractionService;
+
     @PostMapping("/register/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> registerPost(@ClientId Long clientId,
-                                                                         @PathVariable("attraction-id") @Positive long attractionId,
-                                                                         @Valid @RequestBody PostDto.Post postRegisterDto) {
+                                                           @PathVariable("attraction-id") @Positive long attractionId,
+                                                           @Valid @RequestBody PostDto.Post postRegisterDto) {
         Post.PostBuilder postBuilder = Post.builder();
 
         Post post = postService.createPost(
@@ -58,8 +59,8 @@ public class PostController {
 
     @PatchMapping("/edit/{post-id}")
     public ResponseEntity<DataResponseDto<?>> editPost(@ClientId Long clientId,
-                                                                     @PathVariable("post-id") @Positive long postId,
-                                                                     @Valid @RequestBody PostDto.Patch postPatchDto) {
+                                                       @PathVariable("post-id") @Positive long postId,
+                                                       @Valid @RequestBody PostDto.Patch postPatchDto) {
         postService.verifyClientId(clientId, postId);
         postPatchDto.setPostId(postId);
         Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
@@ -76,8 +77,8 @@ public class PostController {
 
     @GetMapping("/home")
     public ResponseEntity<MultiResponseDto<?>> getHomePosts(@RequestParam(defaultValue = "newest", required = false) String sort,
-                                                         @RequestParam(defaultValue = "1", required = false) @Positive int page,
-                                                         @RequestParam(defaultValue = "8", required = false) @Positive int size) {
+                                                            @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                            @RequestParam(defaultValue = "8", required = false) @Positive int size) {
         sort = getString(sort);
         Page<Post> allPostsBySort = postService.findAllPostsBySort(page - 1, size, sort);
         List<Post> content = allPostsBySort.getContent();
@@ -89,8 +90,8 @@ public class PostController {
 
     @GetMapping()
     public ResponseEntity<MultiResponseDto<?>> getAllPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
-                                                        @RequestParam(defaultValue = "1", required = false) @Positive int page,
-                                                        @RequestParam(defaultValue = "9", required = false) @Positive int size) {
+                                                           @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                           @RequestParam(defaultValue = "9", required = false) @Positive int size) {
         sort = getString(sort);
         Page<Post> postsByNewestByPage = postService.findAllPostsBySort(page - 1, size, sort);
         List<Post> postsByNewest = postsByNewestByPage.getContent();

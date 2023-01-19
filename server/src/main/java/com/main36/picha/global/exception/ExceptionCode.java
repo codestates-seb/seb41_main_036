@@ -7,7 +7,7 @@ public enum ExceptionCode {
     MEMBER_NOT_ALLOW(405, "That Member doesn't have authority"),
     MEMBER_EXISTS(409, "Member exists"),
 
-    CLIENT_IS_NOT_EQUAL(400, "Client is not equal member, post, comment"),
+    CLIENT_IS_NOT_EQUAL(400, "Client is not equal memberId"),
 
     ATTRACTION_NOT_FOUND(404, "Attraction not found"),
     ATTRACTION_EXISTS(409, "Attraction exists"),
