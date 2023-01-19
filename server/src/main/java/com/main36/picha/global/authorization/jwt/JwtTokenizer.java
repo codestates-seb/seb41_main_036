@@ -1,5 +1,7 @@
 package com.main36.picha.global.authorization.jwt;
 
+import com.main36.picha.domain.member.entity.Member;
+import com.main36.picha.domain.member.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -7,6 +9,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,7 +23,10 @@ import java.util.Map;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenizer {
+
+    private final MemberService memberService;
 
     @Getter
     @Value("${jwt.secret-key}")
@@ -110,4 +116,9 @@ public class JwtTokenizer {
         return String.valueOf(claims.getBody().get("username"));
     }
 
+    public Long getUserId(HttpServletRequest request) {
+        Member member = memberService.findMemberByMemberEmail( getUsername(request));
+
+        return member.getMemberId();
+    }
 }

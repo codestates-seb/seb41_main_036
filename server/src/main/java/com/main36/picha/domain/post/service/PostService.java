@@ -64,7 +64,6 @@ public class PostService {
         return optionalPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
-
     public Page<Post> findAllPostsBySort(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -72,8 +71,17 @@ public class PostService {
     }
 
     public void erasePost(Post post) {
-        postRepository.delete(post);
+        postRepository.delete( post);
     }
 
+    public Post verifyClientId(Long clientId, Long postId) {
+        Post post = findPost(postId);
+
+        if (!post.getMember().getMemberId().equals(clientId)) {
+            throw new BusinessLogicException(ExceptionCode.CLIENT_IS_NOT_EQUAL);
+        }
+
+        return post;
+    }
 
 }

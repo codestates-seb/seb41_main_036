@@ -28,7 +28,7 @@ public class JwtTokenizerTest {
 
     @BeforeAll
     public void init() {
-        jwtTokenizer = new JwtTokenizer();
+        jwtTokenizer = new JwtTokenizer(null);
         secretKey = "kevin1234123412341234123412341234";
 
         base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);

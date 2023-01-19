@@ -1,6 +1,8 @@
 package com.main36.picha.global.config;
 
 
+import com.google.gson.Gson;
+import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
@@ -20,6 +22,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,6 +41,7 @@ public class SecurityConfiguration {
     private final MemberService memberService;
     private final MemberMapper mapper;
     private final MemberRepository memberRepository;
+    private final Gson gson;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,8 +61,14 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/", "/users/signup", "/users/login", "/users/token/**",
-                                "/main", "/attractions", "/attractions/**", "/posts", "/posts/*", "/comments", "comments/*").permitAll()
+                        .antMatchers(
+                                "/",
+                                "/signup",
+                                "/login",
+                                "/token",
+                                "/attractions", "/attractions/**",
+                                "/posts", "/posts/*",
+                                "/comments", "comments/*").permitAll()
                         .antMatchers("admin").hasRole("ADMIN")
                         .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().authenticated()
@@ -76,8 +86,12 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://pikcha36.o-r.kr/"
-                , "http://pikcha36.o-r.kr/"));
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:3000",
+                        "https://pikcha36.o-r.kr/",
+                        "http://pikcha36.o-r.kr/")
+        );
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("Authorization");
         configuration.addAllowedHeader("*");
@@ -94,8 +108,8 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/users/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer));
+            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer, mapper, gson));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
