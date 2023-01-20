@@ -1,50 +1,63 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 interface ButtonProps {
-    width?: string;
-    height?: string;
-    backgroundcolor?: string;
-    border?: string;
-    color?: string;
-    fontsize?: string;
-    hoverbackgroundcolor?: string;
-    hovercolor?: string;
-    text?: string;
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  width?: string;
+  height?: string;
+  backgroundcolor?: string;
+  border?: string;
+  color?: string;
+  fontsize?: string;
+  hoverbackgroundcolor?: string;
+  hovercolor?: string;
+  text?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ButtonForm = styled.button<ButtonProps>`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    background-color: ${(props) => props.backgroundcolor};
-    border-radius: 30px;
-    border: ${(props) => props.border};
-    color: ${(props) => props.color};
-    font-size: ${(props) => props.fontsize};
-    &:hover {
-        background-color: ${(props) => props.hoverbackgroundcolor};
-        color: ${(props) => props.hovercolor};
-    }
-`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  background-color: var(--purple-300);
+  border-radius: var(--br-l);
+  border: none;
+  color: white;
+  font-weight: var(--fw-bold);
+  font-size: ${(props) => props.fontsize};
+  cursor: pointer;
+  &:hover {
+    background-color: var(--purple-400);
+    color: ${(props) => props.hovercolor};
+  }
+`;
 
-const Button = ({width, height, backgroundcolor, border, color, fontsize, hoverbackgroundcolor, hovercolor, text, onClick}: ButtonProps) => {
-
-    return (
-        <ButtonForm 
-        width={width}
-        height={height} 
-        backgroundcolor={backgroundcolor} 
-        border={border} 
-        color={color} 
-        fontsize={fontsize} 
-        hoverbackgroundcolor={hoverbackgroundcolor}
-        hovercolor={hovercolor}
-        onClick={onClick}>
-            {text}
-        </ButtonForm>
-    )
-}
+const Button = ({
+  width,
+  height,
+  backgroundcolor,
+  border,
+  color,
+  fontsize,
+  hoverbackgroundcolor,
+  hovercolor,
+  text,
+  onClick,
+}: ButtonProps) => {
+  return (
+    <ButtonForm
+      width={width}
+      height={height}
+      backgroundcolor={backgroundcolor}
+      border={border}
+      color={color}
+      fontsize={fontsize}
+      hoverbackgroundcolor={hoverbackgroundcolor}
+      hovercolor={hovercolor}
+      onClick={onClick}
+    >
+      {text}
+    </ButtonForm>
+  );
+};
 
 export default Button;
 
