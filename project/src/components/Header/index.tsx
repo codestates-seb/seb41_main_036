@@ -10,28 +10,55 @@ import {
   Profile,
 } from "./style";
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  LoginState,
+  AuthToken,
+  RefreshToken,
+  LoggedUser,}
+  from '../../recoil/state'
+  import axios from "axios";
+  import Button from "../Button"
+
+
+
 
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 import { ReactNode, MouseEventHandler } from "react";
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
-const isLoggedIn = true;
 
 const HeaderTopBar = () => {
   const navigate = useNavigate();
+  const [isLogin, setIslogin] = useRecoilState<boolean>(LoginState);
+  const [auth, setAuth] = useRecoilState<string>(AuthToken);
+  const [rafresh, setRefresh] = useRecoilState<string>(RefreshToken);
+  const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
+  
+  const onClickLogout = ( e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    setIslogin(false);
+    axios.defaults.headers.common["authorization"] = "";
+    axios.defaults.headers.common["refreshtoken"] = "";
+    setAuth("");
+    setRefresh("");
+    setLoggedUser("")
+    navigate('/')
+  }
+  
   return (
     <HeaderTop>
       <HeaderTopMenu>
-        {isLoggedIn ? (
+        {isLogin ? (
           <>
             <li>마이페이지</li>
             <li>
-              <a href="https://www.naver.com">로그아웃</a>
+              <button onClick={onClickLogout}>로그아웃</button>
             </li>
           </>
         ) : (
           <li>
-            <a onClick={()=>navigate('/login')}>로그인/회원가입</a>
+            <button onClick={()=>navigate('/login')}>로그인/회원가입</button>
           </li>
         )}
       </HeaderTopMenu>
@@ -50,6 +77,7 @@ const HeaderBodyBar = ({
   backgroundOn = true,
 }: HeaderBodyProps) => {
   const navigate = useNavigate();
+  const islogin = useRecoilValue(LoginState) 
   return (
     <HeaderBodyWrapper backgroundOn={backgroundOn}>
       <HeaderBody>
@@ -66,7 +94,7 @@ const HeaderBodyBar = ({
             <SearchBar defaultValue={defaultValue} />
           </SearchBarWrapper>
         )}
-        {isLoggedIn && (
+        {islogin && (
           <Profile>
             <img src={IMG_SRC} alt="profile" />
           </Profile>

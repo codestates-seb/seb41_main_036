@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Login from '../components/Login';
-import HiddenHeader from "../components/Header/HiddenHeader";
+import FixedOnScrollUpHeader from "../components/Header/HiddenHeader";
 
 // import GoogleLogIn from '../components/GoogleLogin';
 
@@ -20,7 +20,7 @@ function LoginSign() {
   
   return (
     <>
-      <HiddenHeader/>
+      <FixedOnScrollUpHeader/>
     <Body> 
       <Login />
     </Body>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
 import Ouaths from "./Ouaths";
 import { useNavigate } from "react-router-dom";
@@ -253,7 +253,7 @@ const Login = () => {
     }
 
     return axios
-      .post(process.env.REACT_APP_DB_HOST + "/users/login", {
+      .post(process.env.REACT_APP_DB_HOST + "/login", {
         username: loginemail,
         password: loginpassword,
       })
@@ -263,6 +263,8 @@ const Login = () => {
           axios.defaults.headers.common["authorization"] = authorization;
           axios.defaults.headers.common["refreshtoken"] = refreshtoken;
         console.log("로그인성공");
+        console.log(res);
+
           setIslogin(true);
           setAuth(authorization);
           setRefresh(refreshtoken);
@@ -285,7 +287,7 @@ const Login = () => {
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
-        .post(process.env.REACT_APP_DB_HOST + "/users/signup", {
+        .post(process.env.REACT_APP_DB_HOST + "/signup", {
           email: signemail,
           password: signpassword,
           phoneNumber: phonenumber,
@@ -308,74 +310,6 @@ const Login = () => {
     }
   };
 
-  const onClickLogout = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    // e.preventDefault();
-    // return axios
-    // .post("/users/logout", {
-    //     email: ";;",
-    // })
-    // .then((res) => {
-    //     if (res.status === 201) {
-    // axios.defaults.headers.common["authorization"] = null;
-    // axios.defaults.headers.common["refreshtoken"] = null;
-    //         setIslogin(false);
-    //         setAuth(null);
-    //         setRefresh(null);
-    //         navigate("/login");
-    //       }
-    // })
-    // .catch((err) => console.error(err));
-  };
-
-  const Loginhandler = () => {
-    // axios
-    // .post("/users/login", {
-    //     username: loginemail,
-    //     password: loginpassword,
-    // })
-    // .then((res) => {
-    //     console.log(res)
-    //     // navigate("/");
-    // })
-    // .catch((err)=>console.error(err))
-    // setIslogin(!isLogin)
-    // setAuth("어우")
-    // setRefresh("리프")
-
-    axios.defaults.headers.common["Authorization"] = "어스";
-    axios.defaults.headers.common["Refresh"] = "리프";
-
-    setIslogin(true);
-    setAuth(loginemail);
-    setRefresh(loginpassword);
-    setLoggedUser(loginemail);
-
-    // localStorage.setItem("userId", loginemail);
-    // localStorage.setItem("authorizationToken(이메일)", loginemail );
-    // localStorage.setItem("refreshToken(패스워드)", loginpassword);
-    navigate("/");
-  };
-
-  const Signuphandler = () => {
-    axios
-      .post("/users/signup", {
-        email: signemail,
-        password: signpassword,
-        phoneNumber: phonenumber,
-        address: address,
-        username: username,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("리스폰스: ", res);
-        console.log("리스폰스헤더", res.headers);
-        navigate("/");
-      })
-      .catch((err) => console.error(err));
-  };
-
   const GoogleHandler = () => {
     axios
       // .post("/login/oauth2/code/google", {
@@ -392,12 +326,12 @@ const Login = () => {
   };
 
   const googlelogin = () => {
-    // window.location.href =
-    //   "oauth2/authorization/google";
-    // const query = window.location.search;
-    // console.log("이게무야2", query);
-    // const param = new URLSearchParams(query);
-    // console.log(param);
+    window.location.href =
+      "oauth2/authorization/google";
+    const query = window.location.search;
+    console.log("이게무야2", query);
+    const param = new URLSearchParams(query);
+    console.log(param);
   };
 
   return (
@@ -421,9 +355,9 @@ const Login = () => {
         </>
       )}
       <Logincontainer overlay={overlays}>
-        {/* <GButton onClick={GoogleHandler}>묵은지</GButton>
+        <GButton onClick={GoogleHandler}>묵은지</GButton>
         <GButton onClick={googlelogin}>묵은지</GButton>
-        <Ouaths /> */}
+        <Ouaths />
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>

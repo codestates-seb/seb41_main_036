@@ -21,6 +21,8 @@ const ButtonForm = styled.button<ButtonProps>`
     border-radius: 30px;
     border: ${(props) => props.border};
     color: ${(props) => props.color};
+    cursor: pointer;
+    font-weight: var(--fw-bold);
     font-size: ${(props) => props.fontsize};
     &:hover {
         background-color: ${(props) => props.hoverbackgroundcolor};
@@ -47,6 +49,16 @@ const Button = ({width, height, backgroundcolor, border, color, fontsize, hoverb
 }
 
 export default Button;
+
+// ButtonForm.defaultProps ={
+//     backgroundcolor: "red",
+//     hovercolor: "yellow",
+//     hoverbackgroundcolor: "blue",
+//     color: "green",
+//     fontsize: "15px",
+//     border: "22px pink solid",
+
+// }
 
 /*  버튼 사용 시 
 import ButtonForm from '위치'  // 선언
