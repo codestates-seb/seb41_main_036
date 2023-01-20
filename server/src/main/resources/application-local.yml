@@ -3,9 +3,14 @@ spring:
     allow-circular-references: true
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 2MB  # 2MB 제한
+      max-request-size: 2MB # 2MB 제한
 
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
   h2:
     console:
       enabled: true
@@ -20,7 +25,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

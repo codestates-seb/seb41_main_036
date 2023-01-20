@@ -1,11 +1,22 @@
 spring:
   main:
     allow-circular-references: true
+
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+
+  servlet:
+    multipart:
+      max-file-size: 2MB  # 2MB 제한
+      max-request-size: 2MB # 2MB 제한
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/pikcha36?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
-    username: ${MYSQL_ID} # 유저네임
-    password: ${MYSQL_PASSWORD} # 비밀번호
+    username: admin # 유저네임
+    password: ${RDS_PASSWORD} # 비밀번호
   #  sql:
   #    init:
   #      mode: always

@@ -2,7 +2,6 @@ package com.main36.picha.global.config;
 
 
 import com.google.gson.Gson;
-import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.repository.MemberRepository;
 import com.main36.picha.domain.member.service.MemberService;
@@ -10,7 +9,7 @@ import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.domain.refreshToken.repository.RefreshTokenRepository;
 import com.main36.picha.global.authorization.filter.JwtAuthenticationFilter;
 import com.main36.picha.global.authorization.filter.JwtVerificationFilter;
-import com.main36.picha.global.authorization.filter.TokenProvider;
+import com.main36.picha.global.authorization.filter.JwtProvider;
 import com.main36.picha.global.authorization.handler.*;
 import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.utils.CustomAuthorityUtils;
@@ -31,8 +30,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 
 @Configuration
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class SecurityConfiguration {
     private final MemberMapper mapper;
     private final MemberRepository memberRepository;
     private final Gson gson;
-    private final TokenProvider tokenProvider;
+    private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
@@ -109,12 +106,12 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(tokenProvider, authenticationManager);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, authenticationManager);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(refreshTokenRepository));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtProvider);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

@@ -25,7 +25,7 @@ import java.net.Authenticator;
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private final JwtTokenizer jwtTokenizer;
-    private final MemberService memberService;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
 
@@ -35,12 +35,15 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Long resolveArgument(MethodParameter parameter,
-                                  ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) throws Exception {
+                                ModelAndViewContainer mavContainer,
+                                NativeWebRequest webRequest,
+                                WebDataBinderFactory binderFactory) throws Exception {
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        return jwtTokenizer.getUserId(request);
+        Long userId = jwtTokenizer.getUserId(request);
+        log.debug("userId = {}", userId);
+        return userId;
+
     }
 }

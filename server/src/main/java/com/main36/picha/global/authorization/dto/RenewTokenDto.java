@@ -1,6 +1,5 @@
 package com.main36.picha.global.authorization.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TokenDto {
-    private String grantType;
+public class RenewTokenDto {
+
+    private Long memberId;
+    private String email;
     private String accessToken;
-    private String refreshToken;
     private Long accessTokenExpiresIn;
-
 }
-

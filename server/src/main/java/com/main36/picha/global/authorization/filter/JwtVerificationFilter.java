@@ -1,7 +1,6 @@
 package com.main36.picha.global.authorization.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.main36.picha.global.authorization.filter.TokenProvider;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
-    private final TokenProvider tokenProvider;
+    public static final String BEARER_TYPE = "bearer";
+    private final JwtProvider jwtProvider;
 
 
     // 인증에서 제외할 url
@@ -52,9 +52,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             String jwt = resolveToken(request);
 
             // 토큰 검증을 통과하면 다음 필터 진행
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            if (StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)) {
                 // 토큰으로부터 Authentication 객체를 만듬
-                Authentication authentication = tokenProvider.getAuthentication(jwt);
+                Authentication authentication = jwtProvider.getAuthentication(jwt);
 
                 log.info("# Token verification success !");
 

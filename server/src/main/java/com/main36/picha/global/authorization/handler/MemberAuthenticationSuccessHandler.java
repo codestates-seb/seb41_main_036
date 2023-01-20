@@ -1,17 +1,6 @@
 package com.main36.picha.global.authorization.handler;
 
-import com.google.gson.Gson;
-import com.main36.picha.domain.member.entity.Member;
-import com.main36.picha.domain.member.mapper.MemberMapper;
-import com.main36.picha.domain.refreshToken.entity.RefreshToken;
 import com.main36.picha.domain.refreshToken.repository.RefreshTokenRepository;
-import com.main36.picha.global.authorization.dto.LoginDto;
-import com.main36.picha.global.authorization.dto.LoginResponseDto;
-import com.main36.picha.global.authorization.dto.TokenDto;
-import com.main36.picha.global.authorization.filter.TokenProvider;
-import com.main36.picha.global.authorization.jwt.JwtTokenizer;
-import com.main36.picha.global.authorization.resolver.ClientId;
-import com.main36.picha.global.authorization.userdetails.AuthMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -22,9 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Slf4j

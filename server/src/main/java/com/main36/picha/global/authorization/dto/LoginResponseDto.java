@@ -4,28 +4,30 @@ import com.main36.picha.global.authorization.userdetails.AuthMember;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Builder
 public class LoginResponseDto {
 
     private Long memberId;
     private String email;
     private String roles;
+    private String accessToken;
 
     @Builder
-    public LoginResponseDto(Long memberId, String email, String roles) {
+    public LoginResponseDto(Long memberId, String email, String roles, String accessToken) {
         this.memberId = memberId;
         this.email = email;
         this.roles = roles;
+        this.accessToken = accessToken;
     }
 
-    public static LoginResponseDto of(AuthMember authMember){
+    @Builder
+    public static LoginResponseDto of(AuthMember authMember, String accessToken){
         return LoginResponseDto.builder()
                 .memberId(authMember.getMemberId())
                 .email(authMember.getEmail())
                 .roles(authMember.getRoles().get(0))
+                .accessToken(accessToken)
                 .build();
     }
+
 }

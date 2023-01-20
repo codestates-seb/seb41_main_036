@@ -37,8 +37,9 @@ public class PostController {
     private final MemberService memberService;
     private final AttractionService attractionService;
 
-    @PostMapping("/register/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> registerPost(@ClientId Long clientId,
+    @PostMapping("/register/{member-id}/{attraction-id}")
+    public ResponseEntity<DataResponseDto<?>> registerPost(@PathVariable("member-id") @Positive long memberId,
+//            @ClientId Long clientId,
                                                            @PathVariable("attraction-id") @Positive long attractionId,
                                                            @Valid @RequestBody PostDto.Post postRegisterDto) {
         Post.PostBuilder postBuilder = Post.builder();
@@ -48,7 +49,7 @@ public class PostController {
                         .postTitle(postRegisterDto.getPostTitle())
                         .postContent(postRegisterDto.getPostContent())
                         .hashTagContent(postRegisterDto.getHashTagContent())
-                        .member(memberService.findMemberByMemberId(clientId))
+                        .member(memberService.findMemberByMemberId(memberId))
                         .attraction(attractionService.findAttraction(attractionId))
                         .comments(new ArrayList<>())
                         .build()

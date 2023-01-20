@@ -5,7 +5,12 @@ import com.main36.picha.domain.member.dto.MemberDto;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.mapper.MemberMapper;
 import com.main36.picha.domain.member.service.MemberService;
+import com.main36.picha.global.authorization.dto.RenewTokenDto;
+import com.main36.picha.global.authorization.dto.TokenDto;
+import com.main36.picha.global.authorization.filter.JwtProvider;
+import com.main36.picha.global.authorization.jwt.JwtTokenizer;
 import com.main36.picha.global.authorization.resolver.ClientId;
+import com.main36.picha.global.authorization.userdetails.AuthMember;
 import com.main36.picha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+
+import static com.main36.picha.global.authorization.filter.JwtVerificationFilter.BEARER_PREFIX;
 
 @Slf4j
 @RestController
@@ -29,6 +37,8 @@ public class MemberController {
     private final MemberService memberService;
 
     private final MemberMapper mapper;
+    private final JwtProvider jwtProvider;
+    private final JwtTokenizer jwtTokenizer;
 
     @PostMapping("/signup")
     public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
@@ -67,6 +77,35 @@ public class MemberController {
 //        return ResponseEntity.ok(tokenBuilder);
     }
 
+    @GetMapping("/renew/{member-id}")
+    public ResponseEntity<?> getToken(@PathVariable("member-id") Long memberId,
+                                      HttpServletRequest request) {
+        //TODO header에서 리프레쉬 토큰 뽑아내기
+        jwtProvider.validateToken(request.getHeader("refresh"));
+        Member memberByClientId = memberService.findMemberByMemberId(memberId);
+        AuthMember authMember = AuthMember.of(memberByClientId);
+        TokenDto tokenDto = jwtProvider.generateTokenDto(authMember);
+        String at = BEARER_PREFIX + tokenDto.getAccessToken();
+
+        RenewTokenDto builder = RenewTokenDto.builder()
+                .memberId(authMember.getMemberId())
+                .email(authMember.getEmail())
+                .accessToken(at)
+                .accessTokenExpiresIn(tokenDto.getAccessTokenExpiresIn())
+                .build();
+
+        return ResponseEntity.ok(new DataResponseDto<>(builder));
+
+        // 2. 토큰 엔티티에 담아 보내기
+//        Token tokenBuilder =
+//                Token.builder()
+//                        .accessToken(at)
+//                        .refreshToken(refresh_token)
+//                        .build();
+//        return ResponseEntity.ok(tokenBuilder);
+    }
+
+
     @PatchMapping("/users/edit/{member-id}")
     public ResponseEntity<DataResponseDto<?>> patchMember(@ClientId Long clientId,
                                                           @PathVariable("member-id") @Positive Long memberId,
@@ -76,9 +115,7 @@ public class MemberController {
         memberPatchDto.setMemberId(memberId);
         Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 
-        return new ResponseEntity<>(
-                new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),
-                HttpStatus.OK);
+        return ResponseEntity.ok(new DataResponseDto<>(mapper.memberToProfileHomeDto(member)));
     }
 
     @GetMapping("/users/profile/{member-id}")

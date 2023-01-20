@@ -13,40 +13,33 @@ import java.util.stream.Collectors;
 import com.main36.picha.domain.refreshToken.exception.*;
 import com.main36.picha.global.authorization.dto.TokenDto;
 import com.main36.picha.global.authorization.userdetails.AuthMember;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Encoders;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 
+import static com.main36.picha.global.authorization.filter.JwtVerificationFilter.BEARER_TYPE;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 
-public class TokenProvider {
+public class JwtProvider {
     /* 유저 정보로 JWT 토큰을 만들거나 토큰을 바탕으로 유저 정보를 가져옴
      *  JWT 토큰 관련 암호화, 복호화, 검증 로직
      */
 
-    private static final String BEARER_TYPE = "bearer";
+
 
     @Getter
     @Value("${jwt.secret-key}")
@@ -137,7 +130,6 @@ public class TokenProvider {
                 authorities);
 
         auth.getRoles().stream().forEach(authMember -> log.info("# AuthMember.getRoles 권한 체크 = {}", authMember));
-        // auth.getAuthorities().stream().forEach(a -> log.info("# auth.getAuthorities 권한 체크 = {}",a));
 
         return new UsernamePasswordAuthenticationToken(auth, null, auth.getAuthorities());
     }
@@ -180,4 +172,18 @@ public class TokenProvider {
                 .getBody();
     }
 
+//    public String getUsername(HttpServletRequest request) {
+//        String authorization = request.getHeader("authorization");
+//        String substring = authorization.substring(7);
+//        String secretKey = this.getSecretKey();
+//        Jws<Claims> claims = this.getClaims(substring,
+//                this.encodeBase64SecretKey(secretKey));
+//
+//        return String.valueOf(claims.getBody().get("username"));
+//    }
+//    public Long getUserId(HttpServletRequest request) {
+//        Member member = memberService.findMemberByMemberEmail( getUsername(request));
+//
+//        return member.getMemberId();
+//    }
 }
