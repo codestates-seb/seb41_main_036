@@ -8,7 +8,6 @@ import Post from './pages/Post';
 import Map from './pages/Map';
 import PlaceDetail from './pages/PlaceDetail';
 
-
 function App() {
   return (
     <div className="App">

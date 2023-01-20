@@ -50,7 +50,6 @@ const KakaoMap = ({width, height, dataList, position, left}:Map) =>{
     // 기본 주소 객체 생성 
     const map = new window.kakao.maps.Map(container,options);
 
-  
     // 주소 - 좌표 변환
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new window.kakao.maps.services.Geocoder();
