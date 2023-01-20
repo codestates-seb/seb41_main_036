@@ -118,7 +118,7 @@ public class AttractionController {
             response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
             response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
         }
-        
+
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
