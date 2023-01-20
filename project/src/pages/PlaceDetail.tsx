@@ -7,6 +7,8 @@ import { AiFillHeart, AiFillFacebook, AiOutlineTwitter, AiOutlineInstagram } fro
 import { IoMdShareAlt } from 'react-icons/io';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 // import PaginationComponent from "../components/PaginationComponent";
+import { Header } from "../components/Header";
+import FixedOnScrollUpHeader from '../components/Header/FixedOnScrollUpHeader';
 import "../index.css"
 
 const GlobalStyle = createGlobalStyle`
@@ -30,7 +32,7 @@ const ImageBox = styled.div`
 const Container = styled.div`
 
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   background-color: white;
   margin: 0 auto;
 
@@ -164,7 +166,7 @@ const FixBoxVertical = styled.div<{inverted:boolean}>`
   box-shadow: 0px 0px 21px rgba(180, 180, 180, 0.25);
   position: ${(props)=> (props.inverted ? 'fixed':'absolute')};
   left: ${(props)=> (props.inverted ? '87%':'87%')};
-  top : ${(props)=> (props.inverted ? '70%':'1300px')};
+  top : ${(props)=> (props.inverted ? '60%':'1050px')};
   >div{
     cursor: pointer;
     margin-left: 11px;
@@ -225,11 +227,12 @@ const PlaceDetail = ():JSX.Element => {
 
   return(
     <>
+    <FixedOnScrollUpHeader />
     <GlobalStyle/>
       <ImageBox>
         <img src="https://images-ext-1.discordapp.net/external/UtUblHy4eFpjTRa-PmoWfhKJ6bmsNVznQ3A_uHnhlxg/%3Fixlib%3Drb-4.0.3%26ixid%3DMnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8%26auto%3Dformat%26fit%3Dcrop%26w%3D1528%26q%3D80/https/images.unsplash.com/photo-1546417404-73e80b4a749b" alt="배경이미지"></img>
       </ImageBox>
-      <FixBoxVertical inverted = { fixBar < 650 ? true : false }>
+      <FixBoxVertical inverted = { fixBar < 520 ? true : false }>
         <div className="icon" onClick={()=>{setShareOpen(!shareOpen)}}><BsShareFill size="15"/></div>
         <div> <SlNote size="16"/></div>
         <div><BsBookmarkFill size="16" /></div>
@@ -238,8 +241,8 @@ const PlaceDetail = ():JSX.Element => {
         <MarkerCount>91</MarkerCount>
       </FixBoxVertical>
       <NavBar>
-          <button className={ view === 'info'? 'active':''} onClick={()=>{handleView('info');console.log(view)}}>상세페이지</button>
-          <button className={ view === 'post'? 'active':''} onClick={()=>{handleView('post');console.log(view)}}>포스트</button>
+          <button className={ view === 'info'? 'active':''} onClick={()=>{handleView('info')}}>상세페이지</button>
+          <button className={ view === 'post'? 'active':''} onClick={()=>{handleView('post')}}>포스트</button>
         </NavBar>
       <Container>
         <h2>경복궁</h2>
@@ -251,7 +254,7 @@ const PlaceDetail = ():JSX.Element => {
           <div><FaMapMarkerAlt color="grey" size="19"></FaMapMarkerAlt></div>
           <p>종로구 사직로 161</p>
         </div>
-        <KakaoMap></KakaoMap>
+        <KakaoMap width="730px" height="300px" dataList={['1,2']} position="absolute" left="20%"></KakaoMap>
       </Container>
     <Post ref={scrollRefContent}>
       <PostHeader>

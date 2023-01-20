@@ -16,11 +16,14 @@ body {
   --black-900: hsl(0, 0%, 20%);
   --black-800: hsl(0, 0%, 25%);
   --black-700: hsl(0, 0%, 45%);
+  --black-680: hsl(0, 0%, 55%);
   --black-650: hsl(0, 0%, 65%);
   --black-600: hsl(0, 0%, 70%);
   --black-500: hsl(0, 0%, 80%);
   --black-400: hsl(0, 0%, 85%);
   --black-300: hsl(0, 0%, 90%);
+  --black-275: hsl(0, 0%, 95%);
+  --black-250: hsl(0, 0%, 97%);
   --black-200: hsl(0, 0, 98%);
   --white-header: hsl(210, 50%, 11%);
   --pink-heart: hsl(352, 100%, 65%);
@@ -38,6 +41,7 @@ body {
   --zi-two: 10;
   --zi-three: 50;
   --zi-four: 100;
+  --zi-five: 200;
   --font-xxs: 0.5rem;
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
@@ -51,6 +55,23 @@ body {
   --fw-medium: 500;
   --fw-reg: 400;
 }
+
+li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  outline: none;
+}
+a:visited {
+  color: inherit;
+}
+
 /*
 white-header:헤더 맨 윗부분
 pink-heart:하트 아이콘
@@ -61,9 +82,3 @@ zi:z-index (-4~4, m=minus)
 font:font-size
 fw:font-weight(--fw-reg:default)
 */
-
-li {
-  list-style: none;
-}
-
-

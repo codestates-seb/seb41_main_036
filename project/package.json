@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.10",
     "aws-sdk": "^2.1296.0",
     "axios": "^1.2.2",
+    "hangul-js": "^0.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-geocode": "^0.2.3",
