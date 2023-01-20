@@ -32,7 +32,7 @@ function getfilteredAttractions(
     if (searcher.search(attraction.name.replace(/[0-9 ]/g, "")) === -1)
       return acc;
     const exactmatchedletter = matchedletter.filter(
-      (el:any) =>
+      (el: any) =>
         attraction.name[el[1]] === trimmedSearchValue.slice(-1) &&
         Hangul.isCompleteAll(blankNumRemovedValue)
     );
@@ -46,7 +46,7 @@ function getfilteredAttractions(
     ];
   }, init).sort((a, b) => {
     let diff = a.matchedletter[0]?.[0] - b.matchedletter[0]?.[0];
-    let exactDiff = null;
+    let exactDiff: number | null = null;
 
     if (!a.exactmatchedletter.length && b.exactmatchedletter.length) return 1;
     else if (a.exactmatchedletter.length && !b.exactmatchedletter.length)
