@@ -9,7 +9,6 @@ import Map from './pages/Map';
 import PlaceDetail from './pages/PlaceDetail';
 import { RecoilRoot } from 'recoil';
 
-
 function App() {
   return (
     <div className="App">

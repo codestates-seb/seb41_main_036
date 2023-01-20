@@ -14,6 +14,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-modal": "^3.13.1",
     "@types/styled-react-modal": "^1.2.2",
+    "aws-sdk": "^2.1296.0",
     "axios": "^1.2.2",
     "http-proxy-middleware": "^2.0.6",
     "hangul-js": "^0.2.6",
