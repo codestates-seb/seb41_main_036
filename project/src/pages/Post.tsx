@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye } from "react-icons/ai";
 import { Header } from "../components/Header";
-
 
 const PostWrapper = styled.div`
   display: flex;
@@ -157,54 +156,58 @@ const Post = () => {
         <Header.HeaderTop />
         <Header.HeaderBody />
       </Header>
-    <PostWrapper>
-      <LocationWrapper>
-        <LocationFilter />
-      </LocationWrapper>
-      <PostContainer>
-        <PostFilterContainer>
-          <span>총 {dummy.post.length}개의 방문 리뷰</span>
-          <div>
-            {filter.map((filter, idx) => (
-              <FilterButton
-                className={onFilter === idx ? "active" : ""}
-                key={idx}
-                onClick={() => filtering(idx)}
-              >
-                {filter}
-              </FilterButton>
-            ))}
-          </div>
-        </PostFilterContainer>
-        <PostBox>
-          {dummy.post.map((el) => (
-            <div key={el.locationId}>
-              <img alt={el.title} src={el.img} />
-              <PostInfo>
-                <div className="info-header">
-                  <div className="info-user">
-                    <img alt={el.title} src={el.userImg} className="user-img" />
-                    <div className="info-username-createdAt">
-                      <span className="username">{el.username}</span>
-                      <span className="createdAt">{el.createdAt}</span>
+      <PostWrapper>
+        <LocationWrapper>
+          <LocationFilter />
+        </LocationWrapper>
+        <PostContainer>
+          <PostFilterContainer>
+            <span>총 {dummy.post.length}개의 방문 리뷰</span>
+            <div>
+              {filter.map((filter, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => filtering(idx)}
+                >
+                  {filter}
+                </FilterButton>
+              ))}
+            </div>
+          </PostFilterContainer>
+          <PostBox>
+            {dummy.post.map((el) => (
+              <div key={el.locationId}>
+                <img alt={el.title} src={el.img} />
+                <PostInfo>
+                  <div className="info-header">
+                    <div className="info-user">
+                      <img
+                        alt={el.title}
+                        src={el.userImg}
+                        className="user-img"
+                      />
+                      <div className="info-username-createdAt">
+                        <span className="username">{el.username}</span>
+                        <span className="createdAt">{el.createdAt}</span>
+                      </div>
+                    </div>
+                    <div className="info-view-recommend">
+                      <AiFillEye className="view" />
+                      &nbsp;
+                      {el.viewCount}
+                      <AiFillHeart className="recommend" />
+                      &nbsp;
+                      {el.recommend}
                     </div>
                   </div>
-                  <div className="info-view-recommend">
-                    <AiFillEye className="view" />
-                    &nbsp;
-                    {el.viewCount}
-                    <AiFillHeart className="recommend" />
-                    &nbsp;
-                    {el.recommend}
-                  </div>
-                </div>
-                <div className="info-title">{el.title}</div>
-              </PostInfo>
-            </div>
-          ))}
-        </PostBox>
-      </PostContainer>
-    </PostWrapper>
+                  <div className="info-title">{el.title}</div>
+                </PostInfo>
+              </div>
+            ))}
+          </PostBox>
+        </PostContainer>
+      </PostWrapper>
     </>
   );
 };

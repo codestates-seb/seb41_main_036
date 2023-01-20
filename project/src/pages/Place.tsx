@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import dummy from "../dummyData.json";
 import { AiFillHeart } from "react-icons/ai";

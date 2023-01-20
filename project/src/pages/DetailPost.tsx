@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
