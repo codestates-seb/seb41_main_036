@@ -27,7 +27,7 @@ public interface AttractionMapper {
                 .likes(attraction.getLikes())
                 .saves(attraction.getSaves())
                 .attractionName(attraction.getAttractionName())
-                .attractionDescription(attraction.getAttractionAddress())
+                .attractionDescription(attraction.getAttractionDescription())
                 .attractionAddress(attraction.getAttractionAddress())
                 .fixedImage(attraction.getFixedImage())
                 .build();
