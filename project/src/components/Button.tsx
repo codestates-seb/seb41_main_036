@@ -15,20 +15,20 @@ interface ButtonProps {
 }
 
 const ButtonForm = styled.button<ButtonProps>`
-   // width: ${(props) => props.width};
-//    height: ${(props) => props.height};
+  // width: ${(props) => props.width};
+  //    height: ${(props) => props.height};
   //  background-color: ${(props) => props.backgroundcolor};
- //   border-radius: 30px;
- //   border: ${(props) => props.border};
- //   color: ${(props) => props.color};
- //   cursor: pointer;
- //   font-weight: var(--fw-bold);
+  //   border-radius: 30px;
+  //   border: ${(props) => props.border};
+  //   color: ${(props) => props.color};
+  //   cursor: pointer;
+  //   font-weight: var(--fw-bold);
   //  font-size: ${(props) => props.fontsize};
   //  &:hover {
-   //     background-color: ${(props) => props.hoverbackgroundcolor};
-   //     color: ${(props) => props.hovercolor};
-   // }
-`
+  //     background-color: ${(props) => props.hoverbackgroundcolor};
+  //     color: ${(props) => props.hovercolor};
+  // }
+
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: var(--purple-300);

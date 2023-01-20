@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import dummy from "../dummyData.json";
-import { AiFillHeart } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-import { MdModeComment } from "react-icons/md";
 import { Header } from "../components/Header";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { locationFilterValue } from "../recoil/state";
+import PlaceCardComponent from "../components/PlaceCardComponent";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -71,105 +71,76 @@ const PlaceBox = styled.div`
   }
 
   > div > img {
-    width: 100%;
-    height: 70%;
+    width: 400px;
+    height: 250px;
     border-radius: var(--br-s);
   }
 `;
-const PlaceInfo = styled.div`
-  font-size: var(--font-base);
-  font-weight: var(--fw-bold);
-  display: flex;
-  flex-direction: column;
 
-  > div {
-    padding: 3px;
-  }
-  .info-title {
-    display: flex;
-    justify-content: space-between;
-  }
+export type PlaceType = {
+  attractionId: number;
+  attractionName: string;
+  fixedImage: string;
+  likes: number;
+  numOfPosts: number;
+  saves: number;
+}[];
 
-  .info-bookmark-recommend {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-midium);
-  }
-
-  .bookmark {
-    color: var(--black-800);
-  }
-
-  .recommend {
-    margin-left: 5px;
-    color: var(--pink-heart);
-  }
-
-  .info-reviewCount {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-reg);
-  }
-  .reviewCount {
-    color: var(--black-600);
-  }
-`;
 const Place = () => {
-  let filter: string[] = ["최신순", "추천순", "리뷰순"];
-  const [onFilter, setOnFliter] = useState(0);
-  const filtering = (idx: number) => {
-    setOnFliter(idx);
+  const [placeData, setPlaceData] = useState<PlaceType>([]);
+  const [checkedList] = useRecoilState(locationFilterValue);
+  useEffect(() => {
+    axios
+      .get(`/attractions`)
+      .then((res) => {
+        setPlaceData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  //선택한 지역이 []일 때 최신순, 리뷰순, 인기순 클릭 시 화면 렌더 안됨.
+  //백단에서 선택한 지역이 null일 시 page번호와 size번호로 조회해서 sort로 반환
+  const handleSortPlace = (sort: string) => {
+    axios
+      .post(`/attractions/filter?sort=${sort}`, {
+        provinces: checkedList,
+      })
+      .then((res) => setPlaceData(res.data.data))
+      .catch((err) => console.error(err));
   };
-
+  console.log(placeData);
   return (
     <>
-    <Header>
-      <Header.HeaderTop />
-      <Header.HeaderBody />
-    </Header>
-    <PlaceWrapper>
-      <LocationWrapper>
-        <LocationFilter />
-      </LocationWrapper>
-      <PlaceContainer>
-        <PlaceFilterContainer>
-          <span>총 {dummy.place.length}개의 명소</span>
-          <div>
-            {filter.map((filter, idx) => (
-              <FilterButton
-                className={onFilter === idx ? "active" : ""}
-                key={idx}
-                onClick={() => filtering(idx)}
-              >
-                {filter}
+      <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header>
+      <PlaceWrapper>
+        <LocationWrapper>
+          <LocationFilter setPlaceData={setPlaceData} />
+        </LocationWrapper>
+        <PlaceContainer>
+          <PlaceFilterContainer>
+            <span>총 {}개의 명소</span>
+            <div>
+              <FilterButton onClick={() => handleSortPlace("newest")}>
+                최신순
               </FilterButton>
-            ))}
-          </div>
-        </PlaceFilterContainer>
-        <PlaceBox>
-          {dummy.place.map((el) => (
-            <div key={el.locationId}>
-              <img alt={el.title} src={el.img}></img>
-              <PlaceInfo>
-                <div className="info-title">
-                  {el.title}
-                  <div className="info-bookmark-recommend">
-                    <BsFillBookmarkFill className="bookmark" /> {el.bookmark}
-                    <AiFillHeart className="recommend" /> {el.recommend}
-                  </div>
-                </div>
-                <div className="info-reviewCount">
-                  <MdModeComment className="reviewCount" /> 포스트{" "}
-                  {el.reviewCount}
-                </div>
-              </PlaceInfo>
+              <FilterButton onClick={() => handleSortPlace("posts")}>
+                리뷰순
+              </FilterButton>
+              <FilterButton onClick={() => handleSortPlace("likes")}>
+                인기순
+              </FilterButton>
             </div>
-          ))}
-        </PlaceBox>
-      </PlaceContainer>
-    </PlaceWrapper>
+          </PlaceFilterContainer>
+          <PlaceBox>
+            {placeData &&
+              placeData.map((data, idx) => (
+                <PlaceCardComponent key={idx} data={data} />
+              ))}
+          </PlaceBox>
+        </PlaceContainer>
+      </PlaceWrapper>
     </>
   );
 };

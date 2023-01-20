@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import PostComment from "../components/PostComment";
+import axios from "axios";
 
 const DetailPostWrapper = styled.div`
   width: 100%;
@@ -161,6 +162,12 @@ const AddComment = styled.form`
   }
 `;
 const DetailPost = () => {
+  useEffect(() => {
+    axios
+      .get(`/posts/1`)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  });
   return (
     <DetailPostWrapper>
       <div>
