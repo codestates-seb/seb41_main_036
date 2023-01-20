@@ -9,7 +9,7 @@ import com.main36.picha.domain.attraction_file.service.AttractionImageService;
 import com.main36.picha.domain.member.entity.Member;
 import com.main36.picha.domain.member.service.MemberService;
 import com.main36.picha.global.authorization.jwt.JwtTokenizer;
-import com.main36.picha.global.authorization.resolver.ClientId;
+
 import com.main36.picha.global.response.DataResponseDto;
 import com.main36.picha.global.response.MultiResponseDto;
 
@@ -19,12 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.validation.constraints.Positive;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -68,10 +68,10 @@ public class AttractionController {
     // 2. 명소 수정 핸들러
     @PatchMapping("/edit/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> patchAttraction(@PathVariable("attraction-id") @Positive long attractionId,
-                                          AttractionPatchDto attractionPatchDto) throws IOException {
+                                                              AttractionPatchDto attractionPatchDto) throws IOException {
 
         attractionPatchDto.setAttractionId(attractionId);
-        Attraction attraction= mapper.attractionPatchDtoToAttraction(attractionPatchDto);
+        Attraction attraction = mapper.attractionPatchDtoToAttraction(attractionPatchDto);
 
         // 새로운 이미지 파일을 받았다면
  /*       if(!attractionPatchDto.getAttractionImage().isEmpty()){
@@ -94,7 +94,7 @@ public class AttractionController {
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
     // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
 
-//    @GetMapping("/{attraction-id}")
+    //    @GetMapping("/{attraction-id}")
 //    public ResponseEntity<DataResponseDto<?>> getAttraction(@ClientId Long clientId,
 //                                        @PathVariable("attraction-id") @Positive long attractionId){
 //        Attraction attraction = attractionService.findAttraction(attractionId);
@@ -104,17 +104,16 @@ public class AttractionController {
 //        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
 //        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
 //    }
-    @GetMapping(value = {"/{attraction-id}","/{attraction-id}/{member-id}"})
+    @GetMapping(value = {"/{attraction-id}", "/{attraction-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getAttraction(@PathVariable("attraction-id") @Positive long attractionId,
-                                                            @PathVariable(value = "member-id", required = false) Optional<Long> memberId){
+                                                            @PathVariable(value = "member-id", required = false) Optional<Long> memberId) {
         Attraction attraction = attractionService.findAttraction(attractionId);
         AttractionDetailResponseDto response =
                 mapper.attractionToAttractionDetailResponseDto(attraction);
-        if(memberId.isEmpty()){
+        if (memberId.isEmpty()) {
             response.setIsVoted(false);
             response.setIsSaved(false);
-        }
-        else {
+        } else {
             response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
             response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
         }
@@ -128,47 +127,50 @@ public class AttractionController {
     public ResponseEntity<MultiResponseDto<?>> getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                                       @Positive @RequestParam(required = false, defaultValue = "9") int size,
                                                                       @RequestParam(required = false, defaultValue = "newest") String sort,
-                                                                      @RequestBody AttractionFilterDto filterDto){
-        switch(sort){
-            case "newest": sort = "attractionId";
+                                                                      @RequestBody AttractionFilterDto filterDto) {
+        switch (sort) {
+            case "newest":
+                sort = "attractionId";
                 break;
-            case "posts": sort = "numOfPosts";
+            case "posts":
+                sort = "numOfPosts";
                 break;
-            case "likes" : sort = "likes";
+            case "likes":
+                sort = "likes";
                 break;
         }
-        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page-1, size, sort);
+        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.attractionsToAttractionResponseDtos(attractions),attractionPage), HttpStatus.OK);
+                mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
 
     // 5. 명소 Id를 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수
     @GetMapping
     public ResponseEntity<MultiResponseDto<?>> getAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
-                                                              @Positive @RequestParam(required = false, defaultValue = "9") int size){
-        Page<Attraction> attractionPage = attractionService.findAttractions(page-1, size);
+                                                              @Positive @RequestParam(required = false, defaultValue = "9") int size) {
+        Page<Attraction> attractionPage = attractionService.findAttractions(page - 1, size);
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.attractionsToAttractionResponseDtos(attractions),attractionPage), HttpStatus.OK);
+                mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
 
 
     // 6. 명소를 아예 삭제하는 요청을 처리하는 핸들러
     @DeleteMapping("/{attraction-id}")
-    public ResponseEntity<HttpStatus> deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId){
+    public ResponseEntity<HttpStatus> deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId) {
         attractionService.deleteAttraction(attractionId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // 7. 명소 좋아요!
-    @PostMapping("/likes/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> voteAttraction(@ClientId Long clientId,
-                                                             @PathVariable("attraction-id") @Positive long attractionId){
+    @PostMapping("/likes/{attraction-id}/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> voteAttraction(@PathVariable("attraction-id") @Positive long attractionId,
+                                                             @PathVariable("member-id") @Positive long memberId) {
         // 회원 정보를 받아온다
-        Member member = memberService.findMemberByMemberId(clientId);
+        Member member = memberService.findMemberByMemberId(memberId);
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);
@@ -183,11 +185,11 @@ public class AttractionController {
     }
 
     // 8. 명소 즐겨찾기
-    @PostMapping("/saves/{attraction-id}")
-    public ResponseEntity<DataResponseDto<?>> saveAttraction(@ClientId Long clientId,
-                                                             @PathVariable("attraction-id") @Positive long attractionId){
+    @PostMapping("/saves/{attraction-id}/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> saveAttraction(@PathVariable("attraction-id") @Positive long attractionId,
+                                                             @PathVariable("member-id") @Positive long memberId) {
 
-        Member member = memberService.findMemberByMemberId(clientId);
+        Member member = memberService.findMemberByMemberId(memberId);
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);

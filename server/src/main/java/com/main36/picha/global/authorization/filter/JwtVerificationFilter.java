@@ -34,9 +34,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/h2",
                     "/signup",
                     "/login",
-                    "/oauth2/authorization/google",
-                    "/oauth2/authorization/kakao",
-                    "/oauth2/authorization/naver");
+                    "/attractions",
+                    "/home",
+                    "posts",
+                    "/oauth2/authorization/google"
+            );
 
     /* 실제 필터링 로직은 doFilterInternal 에서 수행
      * JWT 토큰의 인증 정보를 현재 쓰레드의 SecurityContext 에 저장하는 역할
@@ -66,9 +68,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
             if (e instanceof BusinessLogicException) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                String json = objectMapper.writeValueAsString(ErrorResponse.of(((BusinessLogicException)e).getExceptionCode()));
+                String json = objectMapper.writeValueAsString(ErrorResponse.of(((BusinessLogicException) e).getExceptionCode()));
                 response.getWriter().write(json);
-                response.setStatus(((BusinessLogicException)e).getExceptionCode().getStatus());
+                response.setStatus(((BusinessLogicException) e).getExceptionCode().getStatus());
             }
         }
     }
@@ -81,12 +83,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         return null;
     }
+
     // OncePerRequestFilter의 shouldNotFilter(); 오버라이딩함
     // EXCLUDE_URL과 동일한 요청이들어 왔을 경우, 현재 필터를 진행하지 않고 다음 필터를 진행
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         boolean result = EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
-        log.info("# Exclude url check = {}, result check = {}",request.getServletPath(),result);
+        log.info("# Exclude url check = {}, result check = {}", request.getServletPath(), result);
         return result;
     }
 

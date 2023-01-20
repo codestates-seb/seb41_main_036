@@ -35,9 +35,9 @@ public class CommentController {
     private final PostService postService;
     private final CommentMapper mapper;
 
-    @PostMapping("/upload/{post-id}")
-    public ResponseEntity<DataResponseDto<?>> postComment(@ClientId Long clientId,
-                                                          @PathVariable("post-id") @Positive long postId,
+    @PostMapping("/upload/{post-id}/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> postComment(@PathVariable("post-id") @Positive long postId,
+                                                          @PathVariable("member-id") @Positive long memberId,
                                                           @RequestBody @Valid CommentDto.Post commentPostDto) {
         Comment.CommentBuilder commentBuilder = Comment.builder();
 
@@ -45,7 +45,7 @@ public class CommentController {
                 commentService.createComment(
                         commentBuilder
                                 .commentContent(commentPostDto.getCommentContent())
-                                .member(memberService.findMemberByMemberId(clientId))
+                                .member(memberService.findMemberByMemberId(memberId))
                                 .post(postService.findPost(postId))
                                 .build()
                 );
@@ -55,11 +55,11 @@ public class CommentController {
         return new ResponseEntity<>(new DataResponseDto<>(commentResponseDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{comment-id}")
-    public ResponseEntity<DataResponseDto<?>> patchComment(@ClientId Long clientId,
-                                                           @PathVariable("comment-id") @Positive long commentId,
+    @PatchMapping("/edit/{comment-id}/{member-id}")
+    public ResponseEntity<DataResponseDto<?>> patchComment(@PathVariable("comment-id") @Positive long commentId,
+                                                           @PathVariable("member-id") @Positive long memberId,
                                                            @RequestBody @Valid CommentDto.Patch commentPatchDto) {
-        Comment comment = commentService.verifyClientId(clientId, commentId);
+        Comment comment = commentService.verifyClientId(memberId, commentId);
         comment.setCommentContent(commentPatchDto.getCommentContent());
 
         CommentResponseDto commentResponseDto = mapper.commentToCommentResponseDto(comment);
@@ -85,10 +85,10 @@ public class CommentController {
         return ResponseEntity.ok(new MultiResponseDto<>(commentResponseDtos, commentPage));
     }
 
-    @DeleteMapping("/delete/{comment-id}")
-    public ResponseEntity<HttpStatus> deleteComment(@ClientId Long clientId,
-                                                    @PathVariable("comment-id") @Positive long commentId) {
-        Comment comment = commentService.verifyClientId(clientId, commentId);
+    @DeleteMapping("/delete/{comment-id}/{member-id}")
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("comment-id") @Positive long commentId,
+                                                    @PathVariable("member-id") @Positive long memberId) {
+        Comment comment = commentService.verifyClientId(memberId, commentId);
         commentService.deleteComment(comment);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

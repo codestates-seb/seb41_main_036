@@ -3,6 +3,7 @@ package com.main36.picha.domain.post.dto;
 import com.main36.picha.domain.comment.dto.CommentResponseDto;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;

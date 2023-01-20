@@ -1,46 +1,37 @@
 spring:
   main:
     allow-circular-references: true
-
-  cache:
-    type: redis
-  redis:
-    host: localhost
-    port: 6379
-
   servlet:
     multipart:
-      max-file-size: 2MB  # 2MB 제한
-      max-request-size: 2MB # 2MB 제한
+      max-file-size: 2MB
+      max-request-size: 10MB
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/pikcha36?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
+    # localhost 금지
+    url: jdbc:mysql://seb41-main-036.cofrzunhrbrs.ap-northeast-2.rds.amazonaws.com:3306/pikcha36?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
     username: admin # 유저네임
     password: ${RDS_PASSWORD} # 비밀번호
 
-  #  sql:
-  #    init:
-  #      mode: always
-  #      data-locations: classpath*:db/h2/data.sql
   jpa:
     hibernate:
-      ddl-auto: none  # If deploy server, have to change please
-    #    show-sql: true
-    #    properties:
-    #      hibernate:
-    #        format_sql: true
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
     defer-datasource-initialization: true
+
   security:
     oauth2:
       client:
         registration:
           google:
-            clientId: ${G_CLIENT_ID} # 구글 API콘솔로 발급받은 ID
-            clientSecret: ${G_CLIENT_SECRET} # 구글 API콘솔로 발급받은 SECRET
+            clientId: ${G_CLIENT_ID}
+            clientSecret: ${G_CLIENT_SECRET}
             scope:
               - email
               - profile
-
 logging:
   level:
     org:
@@ -58,10 +49,9 @@ mail:
     admin: admin@gmail.com
 
 jwt:
-  secret-key: ${JWT_SECRET_KEY}  # 환경 변수로 설정했음
-  access-token-expiration-minutes: 30
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 420
   refresh-token-expiration-minutes: 420
-
 
 cloud:
   aws:

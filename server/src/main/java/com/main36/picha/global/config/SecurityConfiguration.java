@@ -61,19 +61,6 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-<<<<<<< HEAD
-//                        .antMatchers(
-//                                "/",
-//                                "/signup",
-//                                "/login",
-//                                "/token",
-//                                "/attractions", "/attractions/**",
-//                                "/posts", "/posts/*",
-//                                "/comments", "comments/*").permitAll()
-//                        .antMatchers("admin").hasRole("ADMIN")
-//                        .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().permitAll()
-=======
                         .antMatchers(
                                 "/",
                                 "/signup",
@@ -85,18 +72,10 @@ public class SecurityConfiguration {
                         .antMatchers("admin").hasRole("ADMIN")
                         .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().permitAll()
-                )
-//                .oauth2Login().
-//                .userInfoEndpoint()
-//                .userService()
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, mapper))
->>>>>>> 6997bf8 (feat: test 23.01.20)
                 );
 //                .oauth2Login()
 //                .userInfoEndpoint();
 //                .userService()
-
 
         return http.build();
     }
