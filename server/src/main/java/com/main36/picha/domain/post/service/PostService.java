@@ -115,7 +115,6 @@ public class PostService {
             return true;
         }
     }
-    
     public boolean isVoted(long memberId, long postId) {
         return postLikesRepository.findByMemberIdAndPostId(memberId, postId).isPresent();
     }
