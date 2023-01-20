@@ -10,6 +10,7 @@ import com.main36.picha.domain.post.entity.Post;
 import com.main36.picha.domain.post.mapper.PostMapper;
 import com.main36.picha.domain.post.service.PostService;
 import com.main36.picha.global.authorization.resolver.ClientId;
+import com.main36.picha.global.config.S3Service;
 import com.main36.picha.global.exception.BusinessLogicException;
 import com.main36.picha.global.exception.ExceptionCode;
 import com.main36.picha.global.response.DataResponseDto;
@@ -21,13 +22,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -40,10 +44,11 @@ public class PostController {
     private final PostMapper mapper;
     private final MemberService memberService;
     private final AttractionService attractionService;
+    private final S3Service s3Service;
+
 
     @PostMapping("/register/{member-id}/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> registerPost(@PathVariable("member-id") @Positive long memberId,
-//            @ClientId Long clientId,
                                                            @PathVariable("attraction-id") @Positive long attractionId,
                                                            @Valid @RequestBody PostDto.Post postRegisterDto) {
         Post.PostBuilder postBuilder = Post.builder();
@@ -83,15 +88,15 @@ public class PostController {
 
     }
 
-    @GetMapping("/{post-id}")
-    public ResponseEntity<DataResponseDto<?>> getPost(@ClientId Long clientId,
-                                                      @PathVariable("post-id") @Positive long postId) {
+    @GetMapping(value = {"/{post-id}", "/{post-id}/{member-id}"})
+    public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
+                                                      @PathVariable("member-id") Optional<Long> memberId) {
         Post post = postService.findPost(postId);
         PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(post);
-        if(clientId == null){
+        if(memberId.isEmpty()){
             response.setIsVoted(false);
         }
-        else response.setIsVoted(postService.isVoted(clientId, postId));
+        else response.setIsVoted(postService.isVoted(memberId.get(), postId));
 
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
@@ -172,5 +177,187 @@ public class PostController {
         }
 
         return post;
+    }
+    @PostMapping("/imagetest1")
+    public ResponseEntity imageTest(PostDto.ImageTest imageDto) throws IOException {
+        String dirName = "images";
+
+        String imageUrl = s3Service.upload(imageDto.getImage(), dirName, imageDto.getImage().getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest2")
+    public ResponseEntity imageTest2(@RequestBody PostDto.ImageTest imageDto) throws IOException {
+        String dirName = "images";
+
+        String imageUrl = s3Service.upload(imageDto.getImage(), dirName, imageDto.getImage().getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+
+
+    @PostMapping("/imagetest3")
+    public ResponseEntity imageTest3(@RequestPart(value="image") MultipartFile file) throws IOException {
+        String dirName = "images";
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagestest4")
+    public ResponseEntity imageTest(@RequestParam("imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest5")
+    public ResponseEntity imageTest5(PostDto.ImageTest2 imageDto) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(imageDto.getImage(), dirName, imageDto.getImage().getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest6")
+    public ResponseEntity imageTest6(@RequestPart(value = "dto") PostDto.ImageTest4 imageDto,
+                                      @RequestParam(value = "imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    //가능
+    @PostMapping("/imagetest7")
+    public ResponseEntity imageTest7(@RequestPart(value = "dto") PostDto.ImageTest4 imageDto,
+                                      @RequestPart(value = "imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    //불가능
+    @PostMapping("/imagetest8")
+    public ResponseEntity imageTest8(@RequestPart PostDto.ImageTest4 imageDto,
+                                     @RequestParam("imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+    // 가능
+    @PostMapping("/imagetest9")
+    public ResponseEntity imageTest9(@RequestPart(value = "dto") PostDto.ImageTest4 imageDto,
+                                     @RequestParam(value = "imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    // 가능
+    @PostMapping("/imagetest10")
+    public ResponseEntity imageTest10(@RequestPart("dto") PostDto.ImageTest4 imageDto,
+                                     @RequestParam("imageFile") MultipartFile file) throws IOException {
+        String dirName = "images";
+        log.info("title = {}", imageDto.getPostTitle());
+        log.info("content = {}", imageDto.getPostContent());
+
+        String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+        PostResponseDto.ImageResponse response = new PostResponseDto.ImageResponse();
+        response.setImageS3Url(imageUrl);
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest11")
+    public ResponseEntity imageTest11(PostDto.ImageTest6 imageDto) throws IOException {
+        String dirName = "images";
+        List<String> urls = new ArrayList<>();
+        List<MultipartFile> files = imageDto.getImages();
+        for(MultipartFile file : files){
+            String imageUrl = s3Service.upload(file, dirName, file.getOriginalFilename());
+            urls.add(imageUrl);
+        }
+
+        return new ResponseEntity<>(urls, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest12")
+    public ResponseEntity imageTest12(@RequestParam("dto") List<PostDto.ImageTest3> imageDtos) throws IOException {
+        String dirName = "images";
+        List<String> urls = new ArrayList<>();
+        for(PostDto.ImageTest3 imageDto : imageDtos){
+            MultipartFile image = imageDto.getImage();
+            String imageUrl = s3Service.upload(image, dirName, image.getOriginalFilename());
+            urls.add(imageUrl);
+        }
+        return new ResponseEntity<>(urls, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest13")
+    public ResponseEntity imageTest13(@RequestPart("dto") List<PostDto.ImageTest3> imageDtos) throws IOException {
+        String dirName = "images";
+        List<String> urls = new ArrayList<>();
+        for(PostDto.ImageTest3 imageDto : imageDtos){
+            MultipartFile image = imageDto.getImage();
+            String imageUrl = s3Service.upload(image, dirName, image.getOriginalFilename());
+            urls.add(imageUrl);
+        }
+        return new ResponseEntity<>(urls, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest14")
+    public ResponseEntity imageTest14(@RequestParam List<PostDto.ImageTest3> imageDtos) throws IOException {
+        String dirName = "images";
+        List<String> urls = new ArrayList<>();
+        for(PostDto.ImageTest3 imageDto : imageDtos){
+            MultipartFile image = imageDto.getImage();
+            String imageUrl = s3Service.upload(image, dirName, image.getOriginalFilename());
+            urls.add(imageUrl);
+        }
+        return new ResponseEntity<>(urls, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/imagetest15")
+    public ResponseEntity imageTest15(List<PostDto.ImageTest3> imageDtos) throws IOException {
+        String dirName = "images";
+        List<String> urls = new ArrayList<>();
+        for(PostDto.ImageTest3 imageDto : imageDtos){
+            MultipartFile image = imageDto.getImage();
+            String imageUrl = s3Service.upload(image, dirName, image.getOriginalFilename());
+            urls.add(imageUrl);
+        }
+        return new ResponseEntity<>(urls, HttpStatus.CREATED);
     }
 }

@@ -1,5 +1,7 @@
 package com.main36.picha.global.config;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -37,11 +39,44 @@ public class S3Service {
 
    // S3버킷에 파일 저장위치 dirName, 하위에 fileName으로 저장
     public String upload(MultipartFile file, String dirName, String fileName) throws IOException {
+
+       // 저장될 위치 + 파일이름
        String filePath = dirName+ "/" + fileName;
+
+       // 확장자 추출
+       String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+       String contentType = "";
+
+       //content type을 지정해서 올려주지 않으면 자동으로 "application/octet-stream"으로 고정이 되서 링크 클릭시 웹에서 열리는게 아니라 자동 다운이 시작됨.
+        switch (ext) {
+            case "jpeg":
+                contentType = "image/jpeg";
+                break;
+            case "png":
+                contentType = "image/png";
+                break;
+            case "txt":
+                contentType = "text/plain";
+                break;
+            case "csv":
+                contentType = "text/csv";
+                break;
+        }
+
+       // 메타데이터 설정
        ObjectMetadata objectMetadata  = new ObjectMetadata();
        objectMetadata.setContentLength(file.getInputStream().available());
-       s3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
-               .withCannedAcl(CannedAccessControlList.PublicRead));
+       objectMetadata.setContentType(contentType);
+
+       // s3에 이미지 업로드
+       try{
+           s3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
+                   .withCannedAcl(CannedAccessControlList.PublicRead));
+       } catch(SdkClientException e) {
+           e.printStackTrace();
+       }
+
+        // s3 이미지 url 반환
         return s3Client.getUrl(bucket, filePath).toString();
     }
 

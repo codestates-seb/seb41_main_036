@@ -19,13 +19,13 @@ public class AttractionDetailResponseDto {
 //    private List<PostResponseDto> posts;
 
     @Builder
-    public AttractionDetailResponseDto(Long attractionId, Long likes, Long saves, String attractionName, String attractionDescription, String attractionAddress/*, String attractionImageUrl*/) {
+    public AttractionDetailResponseDto(Long attractionId, Long likes, Long saves, String attractionName, String attractionDescription, String attractionAddress, String fixedImage) {
         this.attractionId = attractionId;
         this.likes = likes;
         this.saves = saves;
         this.attractionName = attractionName;
         this.attractionDescription = attractionDescription;
         this.attractionAddress = attractionAddress;
-//        this.attractionImageUrl = attractionImageUrl;
+        this.fixedImage = fixedImage;
     }
 }

@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/attractions")
@@ -94,15 +95,30 @@ public class AttractionController {
 
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
     // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
-
-    @GetMapping("/{member-id}/{attraction-id}")
-    public ResponseEntity getAttraction(@PathVariable("member-id") @Positive long memberId,
-                                        @PathVariable("attraction-id") @Positive long attractionId){
+//    @GetMapping("/{attraction-id}")
+//    public ResponseEntity<DataResponseDto<?>> getAttraction(@ClientId Long clientId,
+//                                        @PathVariable("attraction-id") @Positive long attractionId){
+//        Attraction attraction = attractionService.findAttraction(attractionId);
+//        AttractionDetailResponseDto response =
+//                mapper.attractionToAttractionDetailResponseDto(attraction);
+//        response.setIsVoted(attractionService.isVoted(clientId, attractionId));
+//        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
+//        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+//    }
+    @GetMapping(value = {"/{attraction-id}","/{attraction-id}/{member-id}"})
+    public ResponseEntity<DataResponseDto<?>> getAttraction(@PathVariable("attraction-id") @Positive long attractionId,
+                                                            @PathVariable(value = "member-id", required = false) Optional<Long> memberId){
         Attraction attraction = attractionService.findAttraction(attractionId);
         AttractionDetailResponseDto response =
                 mapper.attractionToAttractionDetailResponseDto(attraction);
-        response.setIsVoted(attractionService.isVoted(clientId, attractionId));
-        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
+        if(memberId.isEmpty()){
+            response.setIsVoted(false);
+            response.setIsSaved(false);
+        }
+        else {
+            response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
+            response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
+        }
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 

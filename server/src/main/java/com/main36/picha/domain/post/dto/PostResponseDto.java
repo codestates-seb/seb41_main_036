@@ -46,5 +46,9 @@ public class PostResponseDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+    @Data
+    public static class ImageResponse{
+        private String imageS3Url;
+    }
 
 }
