@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
+import axios from "axios";
+import { PlaceType } from "../pages/Place";
+import { useRecoilState } from "recoil";
+import { locationFilterValue } from "../recoil/state";
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -85,9 +89,22 @@ const SelectPost = styled.ul`
     color: var(--black-600);
   }
 `;
-export default function LocationFilter() {
-  const [checkedList, setCheckedList] = React.useState([] as string[]);
+export default function LocationFilter({
+  setPlaceData,
+}: {
+  setPlaceData: Dispatch<SetStateAction<PlaceType>>;
+}) {
+  const [checkedList, setCheckedList] = useRecoilState(locationFilterValue);
   const [openPost, setOpenPost] = useState(true);
+
+  useEffect(() => {
+    axios
+      .post(`/attractions/filter?sort=newest`, {
+        provinces: checkedList,
+      })
+      .then((res) => setPlaceData(res.data.data))
+      .catch((err) => console.error(err));
+  }, [checkedList]);
   const onCheckItem = (checked: boolean, item: string) => {
     if (checked) return setCheckedList([...checkedList, item]);
     else return setCheckedList(checkedList.filter((el) => el !== item));

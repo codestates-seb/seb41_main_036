@@ -213,24 +213,18 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const tags = [tag, tag];
     const formData = new FormData();
     formData.append("title", title);
     tags.forEach((tag) => {
       formData.append("tags", tag);
     });
-
-    axios
-      .post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-
-    for (let key of formData.values()) {
-      console.log(key);
-    }
+    imgFiles.forEach((img) => {
+      formData.append("imgs", img);
+    });
+    content.forEach((text) => {
+      formData.append("content", text);
+    });
   };
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

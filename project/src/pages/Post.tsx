@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import dummy from "../dummyData.json";
-import { AiFillHeart, AiFillEye } from "react-icons/ai";
+
 import { Header } from "../components/Header";
+import { PlaceType } from "./Place";
+import PostCardComponent from "../components/PostCardComponent";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { locationFilterValue } from "../recoil/state";
 
 const PostWrapper = styled.div`
   display: flex;
@@ -73,83 +78,20 @@ const PostBox = styled.div`
     border-radius: var(--br-s);
   }
 `;
-const PostInfo = styled.div`
-  font-size: var(--font-base);
-  font-weight: var(--fw-bold);
-  display: flex;
-  flex-direction: column;
 
-  .user-img {
-    width: 30px;
-    height: 30px;
-    border-radius: var(--br-l);
-  }
-  > div {
-    padding: 3px 10px;
-  }
-  .info-header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .info-view-recommend {
-    display: flex;
-    align-items: center;
-    padding-bottom: 10px;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-midium);
-  }
-
-  .view {
-    color: var(--black-800);
-    font-size: var(--font-base);
-  }
-
-  .recommend {
-    margin-left: 5px;
-    color: var(--pink-heart);
-  }
-
-  .info-reviewCount {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-reg);
-  }
-
-  .reviewCount {
-    color: var(--black-600);
-  }
-
-  .info-user {
-    display: flex;
-    align-items: center;
-  }
-
-  .info-username-createdAt {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    font-size: var(--font-base);
-  }
-
-  .createdAt {
-    font-size: var(--font-xxs);
-    color: var(--black-600);
-  }
-
-  .info-title {
-    font-size: var(--font-xs);
-    color: var(--black-700);
-  }
-`;
 const Post = () => {
-  let filter: string[] = ["최신순", "추천순", "리뷰순"];
-  const [onFilter, setOnFliter] = useState(0);
-  const filtering = (idx: number) => {
-    setOnFliter(idx);
-  };
+  const [postData, setPostData] = useState();
+  const [PlaceData, setPlaceData] = useState<PlaceType>([]);
+  const [checkedList] = useRecoilState(locationFilterValue);
 
+  const handleSortPlace = (sort: string) => {
+    axios
+      .post(`/attractions/filter?sort=${sort}`, {
+        provinces: checkedList,
+      })
+      .then((res) => setPostData(res.data.data))
+      .catch((err) => console.error(err));
+  };
   return (
     <>
       <Header>
@@ -158,53 +100,27 @@ const Post = () => {
       </Header>
       <PostWrapper>
         <LocationWrapper>
-          <LocationFilter />
+          <LocationFilter setPlaceData={setPlaceData} />
         </LocationWrapper>
         <PostContainer>
           <PostFilterContainer>
             <span>총 {dummy.post.length}개의 방문 리뷰</span>
             <div>
-              {filter.map((filter, idx) => (
-                <FilterButton
-                  className={onFilter === idx ? "active" : ""}
-                  key={idx}
-                  onClick={() => filtering(idx)}
-                >
-                  {filter}
+              <FilterButton>
+                <FilterButton onClick={() => handleSortPlace("newest")}>
+                  최신순
                 </FilterButton>
-              ))}
+                <FilterButton onClick={() => handleSortPlace("posts")}>
+                  리뷰순
+                </FilterButton>
+                <FilterButton onClick={() => handleSortPlace("likes")}>
+                  인기순
+                </FilterButton>
+              </FilterButton>
             </div>
           </PostFilterContainer>
           <PostBox>
-            {dummy.post.map((el) => (
-              <div key={el.locationId}>
-                <img alt={el.title} src={el.img} />
-                <PostInfo>
-                  <div className="info-header">
-                    <div className="info-user">
-                      <img
-                        alt={el.title}
-                        src={el.userImg}
-                        className="user-img"
-                      />
-                      <div className="info-username-createdAt">
-                        <span className="username">{el.username}</span>
-                        <span className="createdAt">{el.createdAt}</span>
-                      </div>
-                    </div>
-                    <div className="info-view-recommend">
-                      <AiFillEye className="view" />
-                      &nbsp;
-                      {el.viewCount}
-                      <AiFillHeart className="recommend" />
-                      &nbsp;
-                      {el.recommend}
-                    </div>
-                  </div>
-                  <div className="info-title">{el.title}</div>
-                </PostInfo>
-              </div>
-            ))}
+            <PostCardComponent />
           </PostBox>
         </PostContainer>
       </PostWrapper>
