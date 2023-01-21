@@ -26,7 +26,6 @@ function Main() {
 
   return (
     <>
-
       <Header>
         <Header.HeaderTop />
         <Header.HeaderBody />
