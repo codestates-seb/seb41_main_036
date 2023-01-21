@@ -116,6 +116,20 @@ public class PostController {
 
     }
 
+    @GetMapping("/details/{attraction-id}")
+    public ResponseEntity<MultiResponseDto<?>> getPostsByAttractionDetailsPage(@PathVariable("attraction-id") long attractionId,
+                                                                          @RequestParam(defaultValue = "newest", required = false) String sort,
+                                                            @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                            @RequestParam(defaultValue = "8", required = false) @Positive int size) {
+        sort = getString(sort);
+        Page<Post> allPostsBySort = postService.findAllPostsByAttractionId(attractionId,page - 1, size, sort);
+        List<Post> content = allPostsBySort.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.postListToPostHomeResponseDtoList(content), allPostsBySort), HttpStatus.OK);
+
+    }
+
     @GetMapping()
     public ResponseEntity<MultiResponseDto<?>> getAllPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
                                                            @RequestParam(defaultValue = "1", required = false) @Positive int page,

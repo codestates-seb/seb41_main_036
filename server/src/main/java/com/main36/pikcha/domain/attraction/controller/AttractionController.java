@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,8 +139,14 @@ public class AttractionController {
                 sort = "likes";
                 break;
         }
-        Page<Attraction> attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
-        List<Attraction> attractions = attractionPage.getContent();
+        List<Attraction> attractions = new ArrayList<>();
+        Page<Attraction> attractionPage;
+        if(filterDto.getProvinces().size() == 0 ) {
+            attractionPage = attractionService.findAllProvincesAttractions(page - 1, size, sort);
+        }else{
+            attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
+        }
+        attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
                 mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
