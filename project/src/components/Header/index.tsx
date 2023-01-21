@@ -18,7 +18,7 @@ import {
   LoggedUser,}
   from '../../recoil/state'
   import axios from "axios";
-  //import Button from "../Button"
+  import Button from "../Button"
 
 
 
@@ -85,7 +85,7 @@ const HeaderBodyBar = ({
           <div style={{ width: "200px", height: "70px" }} />
         </a>
         <HeaderBodyMenu>
-          <li onClick={()=>navigate('/attractions')}>명소</li>
+          <li onClick={()=>navigate('/place')}>명소</li>
           <li onClick={()=>navigate('/post')}>방문리뷰</li>
           <li onClick={()=>navigate('/map')}>내 주변 명소 찾기</li>
         </HeaderBodyMenu>

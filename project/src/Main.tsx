@@ -32,7 +32,9 @@ function Main() {
       </Header>
       {/* <HiddenHeader /> */}
       {/* <FixedOnScrollUpHeader /> */}
-      <Body></Body>
+      <Body>
+
+      </Body>
       <Footer>footer</Footer>
     </>
   );

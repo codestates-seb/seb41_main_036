@@ -82,7 +82,6 @@ const Container = styled.div`
     border-bottom: 1px solid var(--purple-400);
   }
 `;
-
 const NavBar = styled.div`
   display: flex;
   margin: 0 auto;

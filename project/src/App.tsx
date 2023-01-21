@@ -11,7 +11,6 @@ import PlaceDetail from "./pages/PlaceDetail";
 import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 
-
 function App() {
   return (
     <div className="App">

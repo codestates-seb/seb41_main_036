@@ -1,4 +1,3 @@
-import { off } from 'process';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -47,25 +46,17 @@ const Button:any = styled.button`
   }
 `;
 
-const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any, offset:number}) => {
+const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
   const numPages = Math.ceil(total / limit);
-
-  // total -> 전체 페이지 
-  // limit -> 페이지당 보여질 갯수 
-  // page -> 말 그대로 현재 페이지 
-  // setPage -> 현재 페이지 설정해주는 함수 
-
-  // 지금 > 이 버튼은 다음 한 페이지를 증가시켜줌 
-  // 근데 저걸 누르면 사실 5페이지를 증가시켜줘야함. 
 
   return (
     <>
       <Nav>
-        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => {setPage(page - 1); console.log(page-1)}} disabled={page === 1}>
+        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => setPage(page - 1)} disabled={page === 1}>
           {'<'}
         </Button>
-        {new Array<number>(5) // 5개의 페이지로 설정했음 
-          .fill(0)
+        {new Array<number>(numPages)
+          .fill(1)
           .map((_, i) => (
             <Button key={i + 1} onClick={() => setPage(i + 1)} aria-current={page === i + 1 ? 'page' : null}>
               {i + 1}
@@ -111,7 +102,7 @@ const PaginationComponent = ():JSX.Element => {
         ))}
       </main>
     <Page>
-      <Pagination total={posts.length} limit={limit} page={page} setPage={setPage} offset={offset}></Pagination>
+      <Pagination total={posts.length} limit={limit} page={page} setPage={setPage}></Pagination>
     </Page>
     </>
   )  
