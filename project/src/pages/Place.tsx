@@ -10,11 +10,12 @@ import PlaceCardComponent from "../components/PlaceCardComponent";
 
 const PlaceWrapper = styled.div`
   display: flex;
+  width: 83.5%;
+  margin: 0 auto;
 `;
 
 const LocationWrapper = styled.nav`
-  width: 20%;
-  height: 90vh;
+  min-width: 210px;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
@@ -23,21 +24,20 @@ const LocationWrapper = styled.nav`
 const PlaceContainer = styled.div`
   margin: 0 20px;
   width: 80%;
-  height: 90vh;
 `;
 
 const PlaceFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
-  width: 95%;
-  height: 10%;
 
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
     font-weight: var(--fw-bold);
+  }
+  > div {
+    margin-right: 3%;
   }
 `;
 
@@ -57,24 +57,9 @@ const FilterButton = styled.button`
 `;
 
 const PlaceBox = styled.div`
-  width: 100%;
-  height: 90%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-
-  > div {
-    min-width: 30%;
-    height: 30%;
-    border-radius: var(--br-s);
-    background-color: white;
-  }
-
-  > div > img {
-    width: 400px;
-    height: 250px;
-    border-radius: var(--br-s);
-  }
+  margin-top: 20px;
 `;
 
 export type PlaceType = {
