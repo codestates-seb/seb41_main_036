@@ -40,10 +40,10 @@ public class PostService {
         Post findPost = getVerifiedPostById(post);
         Optional.ofNullable(post.getPostTitle())
                 .ifPresent(findPost::setPostTitle);
-        Optional.ofNullable(post.getPostContent())
-                .ifPresent(findPost::setPostContent);
-        Optional.ofNullable(post.getHashTagContent())
-                .ifPresent(findPost::setHashTagContent);
+        Optional.ofNullable(post.getPostContents())
+                .ifPresent(findPost::setPostContents);
+        Optional.ofNullable(post.getHashTags())
+                .ifPresent(findPost::setHashTags);
 
         return findPost;
     }

@@ -2,7 +2,9 @@ package com.main36.pikcha.domain.post.entity;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.comment.entity.Comment;
+import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.member.entity.Member;
+import com.main36.pikcha.domain.post_image.entity.PostImage;
 import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
 
@@ -12,7 +14,7 @@ import java.util.List;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor/*(access = AccessLevel.PROTECTED)*/
 @AllArgsConstructor
 @Builder
 @Entity
@@ -26,13 +28,15 @@ public class Post extends Auditable {
     private String postTitle;
 
     @Setter
-    @Lob
-    @Column(name = "post_content")
-    private String postContent;
+    @ElementCollection
+    @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
+    @OrderColumn
+    @Column(name = "post_contents")
+    private List<String> postContents = new ArrayList<>();
 
     @Setter
-    @Column(name = "hash_tag_content")
-    private String hashTagContent;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    private List<HashTag> hashTags = new ArrayList<>();
 
     @Setter
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
@@ -53,5 +57,9 @@ public class Post extends Auditable {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
+
+    @Setter
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PostImage> postImages = new ArrayList<>();
 
 }

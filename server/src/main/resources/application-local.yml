@@ -3,8 +3,8 @@ spring:
     allow-circular-references: true
   servlet:
     multipart:
-      max-file-size: 2MB  # 2MB 제한
-      max-request-size: 2MB # 2MB 제한
+      max-file-size: 10MB  # 2MB 제한
+      max-request-size: 10MB # 2MB 제한
 
   cache:
     type: redis

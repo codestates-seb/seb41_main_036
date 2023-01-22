@@ -47,7 +47,7 @@ public class AttractionController {
 
         Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
 
-/*        // dto로 받은 이미지 파일이 있다면
+        /*        // dto로 받은 이미지 파일이 있다면
         if(!attractionPostDto.getAttractionImage().isEmpty()){
             // s3에 저장하고 AttractionImage를 attraction안에 저장
             AttractionImage attractionImage =
@@ -74,7 +74,7 @@ public class AttractionController {
         Attraction attraction = mapper.attractionPatchDtoToAttraction(attractionPatchDto);
 
         // 새로운 이미지 파일을 받았다면
- /*       if(!attractionPatchDto.getAttractionImage().isEmpty()){
+        /*if(!attractionPatchDto.getAttractionImage().isEmpty()){
             // 고칠 명소를 찾고
             Attraction findAttraction = attractionService.findAttraction(attractionId);
             // 이미지가 이미 있다면 명소의 이미지를 s3와 데이터베이스에서 삭제
@@ -94,16 +94,16 @@ public class AttractionController {
     // 3. 명소 1개 정보 요청을 처리하는 핸들러
     // 반환하는  정보 : 명소 정보(Id,이름, 설명, 주소, 이미지 주소), 좋아요 수, 좋아요 눌렀는지, 즐겨찾기 수, 즐겨찾기 눌렀는지
 
-    //    @GetMapping("/{attraction-id}")
-//    public ResponseEntity<DataResponseDto<?>> getAttraction(@ClientId Long clientId,
-//                                        @PathVariable("attraction-id") @Positive long attractionId){
-//        Attraction attraction = attractionService.findAttraction(attractionId);
-//        AttractionDetailResponseDto response =
-//                mapper.attractionToAttractionDetailResponseDto(attraction);
-//        response.setIsVoted(attractionService.isVoted(clientId, attractionId));
-//        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
-//        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
-//    }
+    /*    @GetMapping("/{attraction-id}")
+    public ResponseEntity<DataResponseDto<?>> getAttraction(@ClientId Long clientId,
+                                        @PathVariable("attraction-id") @Positive long attractionId){
+        Attraction attraction = attractionService.findAttraction(attractionId);
+        AttractionDetailResponseDto response =
+                mapper.attractionToAttractionDetailResponseDto(attraction);
+        response.setIsVoted(attractionService.isVoted(clientId, attractionId));
+        response.setIsSaved(attractionService.isSaved(clientId,attractionId));
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+    }*/
     @GetMapping(value = {"/{attraction-id}", "/{attraction-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getAttraction(@PathVariable("attraction-id") @Positive long attractionId,
                                                             @PathVariable(value = "member-id", required = false) Optional<Long> memberId) {
