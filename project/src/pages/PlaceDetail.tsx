@@ -86,7 +86,7 @@ const Container = styled.div`
 `;
 const NavBar = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 0 30%;
   width: 50%;
   height: 100px;
   background-color: white;
@@ -129,8 +129,8 @@ const PostHeader = styled.div`
     height: 40px;
     font-size: 30px;
     white-space: nowrap;
-    margin-right: 5%;
-    margin-bottom: 20px;
+    /* margin-right: 5%; */
+    margin: 25px 0 20px 7%;
   }
   > button {
     width: 164px;
