@@ -36,7 +36,7 @@ public class Post extends Auditable {
     private List<String> postContents = new ArrayList<>();
 
 
-    @OneToMany(/*mappedBy = "post",*/ cascade = {CascadeType.PERSIST,  CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE})
     @JoinColumn(name = "post_id")
     private List<HashTag> hashTags = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class Post extends Auditable {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(/*mappedBy = "post",*/ cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private List<PostImage> postImages = new ArrayList<>();
 

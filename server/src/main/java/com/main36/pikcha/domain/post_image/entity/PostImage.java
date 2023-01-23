@@ -19,7 +19,4 @@ public class PostImage {
 
     @Column(nullable = false)
     private String postImageUrl;
-
-    /*@ManyToOne(fetch =  FetchType.LAZY)
-    private Post post;*/
 }
