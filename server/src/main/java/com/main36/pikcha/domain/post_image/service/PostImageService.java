@@ -57,12 +57,13 @@ public class PostImageService {
         }
     }
 
-    public void deletePostImage(PostImage postImage){
-        PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());
-        String fileName = findPostImage.getPostImageFileName();
-        String filePath = dirName + "/" + fileName;
-        s3Service.delete(filePath);
-        postImageRepository.delete(findPostImage);
+    public void deleteOnlyS3Images(List<PostImage> postImages){
+        for(PostImage postImage : postImages) {
+            PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());
+            String fileName = findPostImage.getPostImageFileName();
+            String filePath = dirName + "/" + fileName;
+            s3Service.delete(filePath);
+        }
     }
 
     public PostImage findVerifiedPostImage(long postImageId){

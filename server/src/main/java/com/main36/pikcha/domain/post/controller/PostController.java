@@ -253,10 +253,10 @@ public class PostController {
     @DeleteMapping("/delete/{post-id}/{member-id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId,
                                                  @PathVariable("member-id") @Positive long memberId) {
+        String dirName = "images";
         Post post = postService.verifyClientId(memberId, postId);
         // 포스트 이미지, 해시태그 삭제
-        postImageService.deletePostImages(post.getPostImages());
-        hashTagService.deleteHashTags(post.getHashTags());
+        postImageService.deleteOnlyS3Images(post.getPostImages());
 
         postService.erasePost(post);
 
