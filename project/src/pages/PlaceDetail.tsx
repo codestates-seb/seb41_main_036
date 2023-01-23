@@ -278,6 +278,8 @@ const PlaceDetail = ():JSX.Element => {
   }, [attractionData === undefined, postData===undefined]);  
 
 
+  const name = 'hyesu'
+
 
 
   return (
