@@ -12,7 +12,6 @@ import {
 } from "../recoil/state";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
-import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
 
 const PlaceWrapper = styled.div`
@@ -173,7 +172,6 @@ const Place = () => {
                     <PlaceCardComponent key={idx} data={data} />
                   ))}
               </PlaceBox>
-              {placesPageInfo && <Pagination />}
             </>
           )}
         </PlaceContainer>
