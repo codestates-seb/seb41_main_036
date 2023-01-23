@@ -23,8 +23,8 @@ function App() {
             <Route path="/post" element={<Post />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />
-            <Route path="/attractions/detail" element={<PlaceDetail />} />
-            <Route path="/post/detail" element={<DetailPost />} />
+            <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
+            <Route path="/post/detail/:id" element={<DetailPost />} />
           </Routes>
         </RecoilRoot>
       </BrowserRouter>
