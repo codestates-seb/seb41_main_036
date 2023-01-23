@@ -12,6 +12,8 @@ import PostBox from "../components/PostBox";
 import "../index.css"
 import axios from "axios";
 
+
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -20,7 +22,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const ImageBox = styled.div`
-  //@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
   width: 100%;
   height: 300px;
 
@@ -85,7 +86,7 @@ const Container = styled.div`
 `;
 const NavBar = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 0 30%;
   width: 50%;
   height: 100px;
   background-color: white;
@@ -128,8 +129,8 @@ const PostHeader = styled.div`
     height: 40px;
     font-size: 30px;
     white-space: nowrap;
-    margin-right: 5%;
-    margin-bottom: 20px;
+    /* margin-right: 5%; */
+    margin: 25px 0 20px 7%;
   }
   > button {
     width: 164px;
@@ -201,6 +202,7 @@ const PlaceDetail = ():JSX.Element => {
   const [postData, setPostData] = useState<PostData[]|undefined>();
   const url = "http://pikcha36.o-r.kr:8080/attractions/1"; 
   const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8"; 
+  const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100"
   const navigate = useNavigate();
 
 
@@ -251,18 +253,6 @@ const PlaceDetail = ():JSX.Element => {
 
   useEffect(() => {
 
-    // axios
-    // .get(url)
-    // .then((res)=> setAttractionData(res.data.data))
-    // console.log(data)
-
-    // if(data === undefined){
-    //   console.log('로딩중입니다..')
-    // }else{
-    //   console.log(data)
-    // }
-
-    // 포스트 데이터까지 받아오는거는 나중에
     axios
     .all([axios.get(url), axios.get(url2)])
       .then(
@@ -291,6 +281,7 @@ const PlaceDetail = ():JSX.Element => {
   const name = 'hyesu'
 
 
+
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -304,9 +295,7 @@ const PlaceDetail = ():JSX.Element => {
             <div className="icon" onClick={()=>{setShareOpen(!shareOpen)}}><BsShareFill size="15"/></div>
             <div onClick = { ()=>{navigate('/write')}}> <SlNote size="16"/></div>
             <div><BsBookmarkFill size="16" /></div>
-
-              <MarkerCount color = { attractionData!.saves === 0 ? 'red' : 'grey'}>{attractionData!.saves}</MarkerCount>
-
+            <MarkerCount color = { attractionData!.saves === 0 ? 'red' : 'grey'}>{attractionData!.saves}</MarkerCount>
             <div><AiFillHeart size="16" /></div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
@@ -328,24 +317,11 @@ const PlaceDetail = ():JSX.Element => {
             <h2>포스트</h2>
             <button onClick = { ()=>{navigate('/write')}}>포스트 작성</button>
           </PostHeader>
-          {/* <PostBox>
-            {postData && 
-              postData.map((el:any,index:number)=>{
-                return(
-                  <PostCard key={index}>
-                    <div><img src={el.picture} alt="이미지"></img></div>
-                    <div>{el.postTitle}</div>
-                  </PostCard>
-                )
-            })}
-          </PostBox> */}
           <PostBox postData = {postData}></PostBox>
         </Post>
-      
       </>
       :
       <div>Loading ... </div>}
-      <PaginationComponent></PaginationComponent>
       </>
   );
 };

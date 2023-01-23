@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Page = styled.div`
+export const Page = styled.div`
   width: 300px;
   margin: 0 auto;
 `;
 
-const Nav = styled.nav`
+export const Nav = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,7 @@ const Nav = styled.nav`
   margin: 16px;
 `;
 
-const Button:any = styled.button`
+export const Button:any = styled.button`
   border: none;
   border-radius: 4px;
   padding: 8px;
@@ -46,28 +46,32 @@ const Button:any = styled.button`
   }
 `;
 
-const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
-  const numPages = Math.ceil(total / limit);
+export const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
+  const numPages = Math.ceil(total / limit); 
+  const [start, setStart] = useState(1);
+  const list = [1,1,1,1,1]
+  
 
   return (
     <>
       <Nav>
-        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => setPage(page - 1)} disabled={page === 1}>
+        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => {setPage(start-5);setStart(start-5);}} disabled={page <= 5 || start < 1}>
           {'<'}
         </Button>
-        {new Array<number>(numPages)
-          .fill(1)
-          .map((_, i) => (
-            <Button key={i + 1} onClick={() => setPage(i + 1)} aria-current={page === i + 1 ? 'page' : null}>
-              {i + 1}
-            </Button>
-          ))}
-        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => setPage(page + 1)} disabled={page === numPages}>
+          {
+            list.map((el, index)=>{
+              return(
+                <Button key={start+index} onClick={() => setPage(start+index)} aria-current={page === start+index ? 'page' : null}>{start+index}</Button>
+              )
+            })
+          }
+        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => {setPage( start+5);setStart(start+5)}} disabled={page >= numPages-5}>
           {'>'}
         </Button>
       </Nav>
     </>
   );
+
 };
 
 
