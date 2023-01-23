@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   MdOutlineKeyboardArrowDown,
@@ -6,9 +6,14 @@ import {
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
 import axios from "axios";
-import { PlaceType } from "../pages/Place";
 import { useRecoilState } from "recoil";
-import { locationFilterValue } from "../recoil/state";
+import {
+  locationFilterValue,
+  pageInfoData,
+  placeInfoData,
+  postInfoData,
+} from "../recoil/state";
+import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -89,20 +94,25 @@ const SelectPost = styled.ul`
     color: var(--black-600);
   }
 `;
-export default function LocationFilter({
-  setPlaceData,
-}: {
-  setPlaceData: Dispatch<SetStateAction<PlaceType>>;
-}) {
+export default function LocationFilter() {
   const [checkedList, setCheckedList] = useRecoilState(locationFilterValue);
   const [openPost, setOpenPost] = useState(true);
-
+  const pageLocation = useLocation();
+  const [_, setPlacesData] = useRecoilState(placeInfoData);
+  const [__, setPostsData] = useRecoilState(postInfoData);
+  const [___, setPageInfo] = useRecoilState(pageInfoData);
   useEffect(() => {
     axios
-      .post(`/attractions/filter?sort=newest`, {
+      .post(`${pageLocation.pathname}/filter?sort=newest`, {
         provinces: checkedList,
       })
-      .then((res) => setPlaceData(res.data.data))
+      .then((res) => {
+        if (pageLocation.pathname === "/attractions")
+          setPlacesData(res.data.data);
+        setPageInfo(res.data.pageInfo);
+        if (pageLocation.pathname === "/posts") setPostsData(res.data.data);
+        setPageInfo(res.data.pageInfo);
+      })
       .catch((err) => console.error(err));
   }, [checkedList]);
   const onCheckItem = (checked: boolean, item: string) => {
@@ -115,7 +125,7 @@ export default function LocationFilter({
   const allRemove = () => {
     setCheckedList([]);
   };
-  let Post = [
+  const Post = [
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
