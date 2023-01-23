@@ -20,7 +20,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const ImageBox = styled.div`
-  //@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
   width: 100%;
   height: 300px;
 
@@ -251,18 +250,6 @@ const PlaceDetail = ():JSX.Element => {
 
   useEffect(() => {
 
-    // axios
-    // .get(url)
-    // .then((res)=> setAttractionData(res.data.data))
-    // console.log(data)
-
-    // if(data === undefined){
-    //   console.log('로딩중입니다..')
-    // }else{
-    //   console.log(data)
-    // }
-
-    // 포스트 데이터까지 받아오는거는 나중에
     axios
     .all([axios.get(url), axios.get(url2)])
       .then(
@@ -304,9 +291,7 @@ const PlaceDetail = ():JSX.Element => {
             <div className="icon" onClick={()=>{setShareOpen(!shareOpen)}}><BsShareFill size="15"/></div>
             <div onClick = { ()=>{navigate('/write')}}> <SlNote size="16"/></div>
             <div><BsBookmarkFill size="16" /></div>
-
-              <MarkerCount color = { attractionData!.saves === 0 ? 'red' : 'grey'}>{attractionData!.saves}</MarkerCount>
-
+            <MarkerCount color = { attractionData!.saves === 0 ? 'red' : 'grey'}>{attractionData!.saves}</MarkerCount>
             <div><AiFillHeart size="16" /></div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
@@ -328,20 +313,8 @@ const PlaceDetail = ():JSX.Element => {
             <h2>포스트</h2>
             <button onClick = { ()=>{navigate('/write')}}>포스트 작성</button>
           </PostHeader>
-          {/* <PostBox>
-            {postData && 
-              postData.map((el:any,index:number)=>{
-                return(
-                  <PostCard key={index}>
-                    <div><img src={el.picture} alt="이미지"></img></div>
-                    <div>{el.postTitle}</div>
-                  </PostCard>
-                )
-            })}
-          </PostBox> */}
           <PostBox postData = {postData}></PostBox>
         </Post>
-      
       </>
       :
       <div>Loading ... </div>}

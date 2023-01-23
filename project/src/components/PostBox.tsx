@@ -10,6 +10,7 @@ const PostContainer = styled.div`
   margin: 0 auto;
   display:flex;
   flex-wrap: wrap;
+  align-items: center;
 `;
 
 
@@ -125,6 +126,10 @@ const PostBox = ({postData}:any) => {
             )
           })
         }
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
       </PostContainer>
     </>
   )
