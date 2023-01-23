@@ -57,70 +57,79 @@ public class PostController {
     private final HashTagService hashTagService;
     private final PostImageService postImageService;
 
-    /*@PostMapping("/register/{attraction-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> registerPost(@PathVariable("attraction-id") @Positive long attractionId,
-                                                           @PathVariable("member-id") @Positive long memberId,
-                                                           @Valid @RequestBody PostDto.Post postRegisterDto) {
-        Post.PostBuilder postBuilder = Post.builder();
-
-        Post post = postService.createPost(
-                postBuilder
-                        .postTitle(postRegisterDto.getPostTitle())
-                        .postContent(postRegisterDto.getPostContent())
-                        .hashTagContent(postRegisterDto.getHashTagContent())
-                        .member(memberService.findMemberByMemberId(memberId))
-                        .attraction(attractionService.findAttraction(attractionId))
-                        .comments(new ArrayList<>())
-                        .build()
-        );
-
-        // response 생성
-        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(post);
-        // 좋아요 누른 여부를 false로 반환(처음 생성해서 false)
-        response.setIsVoted(false);
-        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
-
-    }*/
 
     @PostMapping("/register/{attraction-id}/{member-id}")
     public ResponseEntity<DataResponseDto<?>> registerPost2(@PathVariable("attraction-id") @Positive long attractionId,
                                                            @PathVariable("member-id") @Positive long memberId,
                                                            PostDto.PostDtoFinal postDto) {
-        String dirName = "images";
         Post post = new Post();
-        String imageUrl = "";
         String oFileName = "";
         log.info("title = {}", postDto.getPostTitle());
+
+        // 포스트 제목 설정
+        post.setPostTitle(postDto.getPostTitle());
+
+        // 빈 리스트 생성
+        List<HashTag> hashTagList = new ArrayList<>();
+        List<String> postContentList = new ArrayList<>();
+        List<PostImage> postImageList = new ArrayList<>();
+
+        // 포스트 해시태그 생성 후 추가
         if(postDto.getPostHashTags() != null) {
             for(String hashtag: postDto.getPostHashTags()) {
                 log.info("hashtag = {}", hashtag);
                 HashTag newHashTag = new HashTag();
                 newHashTag.setHashTagContent(hashtag);
-                HashTag created = hashTagService.createHashTag(newHashTag);
-                post.getHashTags().add(newHashTag);
+                hashTagList.add(hashTagService.createHashTag(newHashTag));
             }
         }
+        // 포스트 캡션 추가
         if(postDto.getPostContents() != null) {
             for(String postContent: postDto.getPostContents()) {
                 log.info("postContent = {}", postContent);
-                post.getPostContents().add(postContent);
+                postContentList.add(postContent);
             }
         }
+        // 포스트 이미지 s3에 저장 후 추가
         if(postDto.getPostImageFiles()!= null) {
             for(MultipartFile file : postDto.getPostImageFiles()) {
                 oFileName = file.getOriginalFilename();
                 log.info("imageFileName = {}", oFileName);
                 try{
-                    PostImage postImage = postImageService.createPostImage(file);
-                    post.getPostImages().add(postImage);
+                    postImageList.add(postImageService.createPostImage(file));
                 }catch(AmazonServiceException | IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+        for(String content: postContentList){
+            log.info("content is = {}", content);
+        }
+        for(HashTag hashTag : hashTagList){
+            log.info("hashTag is = {}", hashTag.getHashTagContent());
+        }
+        for(PostImage postImage : postImageList){
+            log.info("post Image file name is = {}", postImage.getPostImageFileName());
+        }
+        post.setHashTags(hashTagList);
+        post.setPostContents(postContentList);
+        post.setPostImages(postImageList);
+        post.setAttraction(attractionService.findAttraction(attractionId));
+        post.setMember(memberService.findMemberByMemberId(memberId));
+        post.setComments(new ArrayList<>());
 
         Post createdPost = postService.createPost(post);
-
+        for(String content: createdPost.getPostContents()){
+            log.info("after save content is = {}", content);
+        }
+        for(HashTag hashTag : createdPost.getHashTags()){
+            log.info("after save hashTag id is = {}", hashTag.getHashTagId());
+            log.info("after save hashTag content is = {}", hashTag.getHashTagContent());
+        }
+        for(PostImage postImage : createdPost.getPostImages()){
+            log.info("after save post Image file id is = {}", postImage.getPostImageId());
+            log.info("after save post Image file name is = {}", postImage.getPostImageFileName());
+        }
         // response 생성
         PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(createdPost);
         // 좋아요 누른 여부를 false로 반환(처음 생성해서 false)
@@ -129,18 +138,52 @@ public class PostController {
 
     }
 
+
     @PatchMapping("/edit/{post-id}/{member-id}")
     public ResponseEntity<DataResponseDto<?>> editPost(@PathVariable("post-id") @Positive long postId,
                                                        @PathVariable("member-id") @Positive long memberId,
-                                                       @Valid @RequestBody PostDto.Patch postPatchDto) {
-        postService.verifyClientId(memberId, postId);
-        postPatchDto.setPostId(postId);
-        Post updatePost = postService.updatePost(mapper.postPatchDtoToPost(postPatchDto));
+                                                       PostDto.PostDtoFinal postPatchDto) {
+        Post findPost = postService.findPostNoneSetView(postId);
 
+        // 수정할 포스트 캡션, 해시태그, 이미지 전체 삭제
+        findPost.getPostContents().clear();
+        findPost.getPostImages().clear();
+        postImageService.deletePostImages(findPost.getPostImages());
+        findPost.getHashTags().clear();
+        hashTagService.deleteHashTags(findPost.getHashTags());
 
-        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(updatePost);
+        // 포스트 제목 설정
+        findPost.setPostTitle(postPatchDto.getPostTitle());
+
+        // 해시태그 데이터 생성 후 추가
+        if(postPatchDto.getPostHashTags() != null) {
+            for(String hashtag: postPatchDto.getPostHashTags()) {
+                HashTag newHashTag = new HashTag();
+                newHashTag.setHashTagContent(hashtag);
+                HashTag created = hashTagService.createHashTag(newHashTag);
+                findPost.getHashTags().add(created);
+            }
+        }
+        // 캡션 추가
+        if(postPatchDto.getPostContents() != null) {
+            for(String postContent: postPatchDto.getPostContents()) {
+                findPost.getPostContents().add(postContent);
+            }
+        }
+        // 이미지 추가
+        if(postPatchDto.getPostImageFiles()!= null) {
+            for(MultipartFile file : postPatchDto.getPostImageFiles()) {
+                try{
+                    PostImage postImage = postImageService.createPostImage(file);
+                    findPost.getPostImages().add(postImage);
+                }catch(AmazonServiceException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        Post createdPost = postService.updatePost(findPost);
+        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(createdPost);
         response.setIsVoted(postService.isVoted(memberId, postId));
-
         return ResponseEntity.ok(new DataResponseDto<>(response));
 
     }
@@ -150,13 +193,22 @@ public class PostController {
                                                       @PathVariable("member-id") Optional<Long> memberId) {
         Post post = postService.findPost(postId);
         PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(post);
+        log.info("post attraction id = {}", post.getAttraction().getAttractionId());
+        log.info("post member id = {}", post.getMember().getMemberId());
+        for(String content: post.getPostContents()){
+            log.info("content is = {}", content);
+        }
+        for(HashTag hashTag : post.getHashTags()){
+            log.info("hashTag is = {}", hashTag.getHashTagContent());
+        }
+        for(PostImage postImage : post.getPostImages()){
+            log.info("post Image file name is = {}", postImage.getPostImageFileName());
+        }
         if (memberId.isEmpty()) {
             response.setIsVoted(false);
         } else response.setIsVoted(postService.isVoted(memberId.get(), postId));
 
-
         return ResponseEntity.ok(new DataResponseDto<>(response));
-
     }
 
     @GetMapping("/home")
@@ -202,6 +254,10 @@ public class PostController {
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId,
                                                  @PathVariable("member-id") @Positive long memberId) {
         Post post = postService.verifyClientId(memberId, postId);
+        // 포스트 이미지, 해시태그 삭제
+        postImageService.deletePostImages(post.getPostImages());
+        hashTagService.deleteHashTags(post.getHashTags());
+
         postService.erasePost(post);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -18,32 +18,32 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@Setter
 public class Post extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Setter
+
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @Setter
+
     @ElementCollection
     @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
     @OrderColumn
     @Column(name = "post_contents")
     private List<String> postContents = new ArrayList<>();
 
-    @Setter
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+
+    @OneToMany(/*mappedBy = "post",*/ cascade = {CascadeType.PERSIST,  CascadeType.REMOVE})
+    @JoinColumn(name = "post_id")
     private List<HashTag> hashTags = new ArrayList<>();
 
-    @Setter
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
     private int views;
 
 
-    @Setter
     @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
 
@@ -58,8 +58,8 @@ public class Post extends Auditable {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    @Setter
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(/*mappedBy = "post",*/ cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
     private List<PostImage> postImages = new ArrayList<>();
 
 }

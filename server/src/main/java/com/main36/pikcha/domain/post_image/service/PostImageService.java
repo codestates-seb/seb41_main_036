@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,16 @@ public class PostImageService {
                 .ifPresent(findPostImage::setPostImageUrl);
 
         return postImageRepository.save(findPostImage);
+    }
+
+    public void deletePostImages(List<PostImage> postImages){
+        for(PostImage postImage : postImages) {
+            PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());
+            String fileName = findPostImage.getPostImageFileName();
+            String filePath = dirName + "/" + fileName;
+            s3Service.delete(filePath);
+            postImageRepository.delete(findPostImage);
+        }
     }
 
     public void deletePostImage(PostImage postImage){

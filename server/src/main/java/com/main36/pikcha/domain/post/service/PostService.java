@@ -37,15 +37,15 @@ public class PostService {
     }
 
     public Post updatePost(Post post) {
-        Post findPost = getVerifiedPostById(post);
+/*        Post findPost = getVerifiedPostById(post);
         Optional.ofNullable(post.getPostTitle())
                 .ifPresent(findPost::setPostTitle);
         Optional.ofNullable(post.getPostContents())
                 .ifPresent(findPost::setPostContents);
         Optional.ofNullable(post.getHashTags())
-                .ifPresent(findPost::setHashTags);
+                .ifPresent(findPost::setHashTags);*/
 
-        return findPost;
+        return postRepository.save(post);
     }
 
     private Post getVerifiedPostById(Post post) {
@@ -82,7 +82,6 @@ public class PostService {
     }
 
     public void erasePost(Post post) {
-
         Long numOfPostsSubtractOne = post.getAttraction().getNumOfPosts() - 1;
         post.getAttraction().setNumOfPosts(numOfPostsSubtractOne);
         postRepository.delete(post);

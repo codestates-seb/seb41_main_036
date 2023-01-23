@@ -23,6 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @RequiredArgsConstructor
@@ -62,7 +64,7 @@ public class SecurityConfiguration {
                                         "/posts", "/posts/*", "/posts/**",
                                         "/comments", "comments/*").permitAll()
                                 .antMatchers("admin").hasRole("ADMIN")
-//                        .requestMatchers(toH2Console()).permitAll()
+                        .requestMatchers(toH2Console()).permitAll()
                                 .anyRequest().authenticated()
                 );
 //                .oauth2Login(oauth2 -> oauth2

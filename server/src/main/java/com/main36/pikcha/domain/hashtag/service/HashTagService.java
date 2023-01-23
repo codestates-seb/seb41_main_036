@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,12 @@ public class HashTagService{
         HashTag findHashTag = findVerifiedHashTag(hashTag.getHashTagContent());
 
         hashTagRepository.delete(findHashTag);
+    }
+    public void deleteHashTags(List<HashTag> hashTags){
+        for(HashTag hashTag: hashTags){
+            HashTag findHashTag = findVerifiedHashTag(hashTag.getHashTagContent());
+            hashTagRepository.delete(findHashTag);
+        }
     }
     public HashTag findVerifiedHashTag(String content){
         return hashTagRepository.findByHashTagContent(content)
