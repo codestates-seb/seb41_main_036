@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Page = styled.div`
+export const Page = styled.div`
   width: 300px;
   margin: 0 auto;
 `;
 
-const Nav = styled.nav`
+export const Nav = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,7 @@ const Nav = styled.nav`
   margin: 16px;
 `;
 
-const Button:any = styled.button`
+export const Button:any = styled.button`
   border: none;
   border-radius: 4px;
   padding: 8px;
@@ -46,7 +46,7 @@ const Button:any = styled.button`
   }
 `;
 
-const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
+export const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
   const numPages = Math.ceil(total / limit); 
   const [start, setStart] = useState(1);
   const list = [1,1,1,1,1]

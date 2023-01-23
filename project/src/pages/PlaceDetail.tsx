@@ -12,6 +12,8 @@ import PostBox from "../components/PostBox";
 import "../index.css"
 import axios from "axios";
 
+
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -200,6 +202,7 @@ const PlaceDetail = ():JSX.Element => {
   const [postData, setPostData] = useState<PostData[]|undefined>();
   const url = "http://pikcha36.o-r.kr:8080/attractions/1"; 
   const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8"; 
+  const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100"
   const navigate = useNavigate();
 
 
@@ -275,7 +278,6 @@ const PlaceDetail = ():JSX.Element => {
   }, [attractionData === undefined, postData===undefined]);  
 
 
-  const name = 'hyesu'
 
 
   return (
@@ -318,7 +320,6 @@ const PlaceDetail = ():JSX.Element => {
       </>
       :
       <div>Loading ... </div>}
-      <PaginationComponent></PaginationComponent>
       </>
   );
 };

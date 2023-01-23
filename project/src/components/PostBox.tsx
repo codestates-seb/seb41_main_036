@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { BsEye} from 'react-icons/bs';
 import {AiFillHeart} from 'react-icons/ai';
+import {Pagination,Page} from "./PaginationComponent";
+import { useState } from "react";
 
 
 const PostContainer = styled.div`
@@ -10,7 +12,6 @@ const PostContainer = styled.div`
   margin: 0 auto;
   display:flex;
   flex-wrap: wrap;
-  align-items: center;
 `;
 
 
@@ -100,6 +101,12 @@ type PostData = {
 
 
 const PostBox = ({postData}:any) => {
+
+  const [posts, setPosts] = useState([]); 
+  const limit = 8; // 여기 조절해서 한 페이지당 게시물 수 바꿀 수 있습니다. 
+  const [page, setPage] = useState(1); 
+  const offset = (page - 1) * limit; 
+
   return(
     <>
       <PostContainer>
@@ -130,6 +137,17 @@ const PostBox = ({postData}:any) => {
         <PostCard></PostCard>
         <PostCard></PostCard>
         <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+        <PostCard></PostCard>
+      <Page>
+        <Pagination total={postData.length} limit={5} page={page} setPage={setPage}></Pagination>
+      </Page>
       </PostContainer>
     </>
   )
