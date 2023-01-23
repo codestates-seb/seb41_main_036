@@ -3,15 +3,7 @@ import styled from "styled-components";
 import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
-
-export type PlaceDataType = {
-  attractionId: number;
-  attractionName: string;
-  fixedImage: string;
-  likes: number;
-  numOfPosts: number;
-  saves: number;
-};
+import { PlaceType } from "../pages/Place";
 
 const PlaceCardWrapper = styled.div`
   width: 31.2%;
@@ -68,7 +60,7 @@ const PlaceCardInfoContainer = styled.div`
   }
 `;
 
-const PlaceCardComponent = ({ data }: { data: PlaceDataType }) => {
+const PlaceCardComponent = ({ data }: { data: PlaceType }) => {
   return (
     <>
       <PlaceCardWrapper>
