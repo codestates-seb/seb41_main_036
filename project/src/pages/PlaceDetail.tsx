@@ -8,6 +8,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from '../components/Header/FixedOnScrollUpHeader';
 import KakaoMap from "../components/KakaoMap";
+import PostBox from "../components/PostBox";
 import "../index.css"
 import axios from "axios";
 
@@ -148,15 +149,6 @@ const PostHeader = styled.div`
   }
 `;
 
-const PostBox = styled.div`
-  width: 85%;
-  height: 600px;
-  background-color: #6d9faa;
-  margin: 0 auto;
-  display:flex;
-  flex-wrap: wrap;
-
-`;
 
 const FixBoxVertical = styled.div<{ inverted: boolean }>`
   box-sizing: content-box;
@@ -198,30 +190,6 @@ const MarkerCount = styled.p`
   margin: 2px auto;
 `;
 
-const PostCard = styled.div`
-  width: 400px;
-  height: 250px;
-  //background-color: red;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-
-  >div:nth-child(1){
-    width: 100%;
-    height: 190px;
-    background-color: yellow;
-    >img{
-      background-image:cover;
-    }
-
-  }
-  >div:nth-child(2){
-    width: 100%;
-    height: 60px;
-    clear: both;
-    background-color: white;
-  }
-`
 
 
 const PlaceDetail = ():JSX.Element => {
@@ -230,7 +198,7 @@ const PlaceDetail = ():JSX.Element => {
   const [shareOpen, setShareOpen] = useState(false);
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>();// 명소 정보 저장 
-  const [postData, setPostData] = useState<PostData[]>();
+  const [postData, setPostData] = useState<PostData[]|undefined>();
   const url = "http://pikcha36.o-r.kr:8080/attractions/1"; 
   const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8"; 
   const navigate = useNavigate();
@@ -305,7 +273,10 @@ const PlaceDetail = ():JSX.Element => {
       //.catch((err)=>console.log(err))
     )
     console.log(attractionData)
-    console.log(postData)
+    console.log('이거',postData)
+    postData?.forEach((el)=>{
+      console.log(el.picture)
+    })
 
     window.addEventListener("scroll", updateScroll);
     window.addEventListener("scroll", onScroll);
@@ -316,6 +287,8 @@ const PlaceDetail = ():JSX.Element => {
     };
   }, [attractionData === undefined, postData===undefined]);  
 
+
+  const name = 'hyesu'
 
 
   return (
@@ -355,19 +328,18 @@ const PlaceDetail = ():JSX.Element => {
             <h2>포스트</h2>
             <button onClick = { ()=>{navigate('/write')}}>포스트 작성</button>
           </PostHeader>
-          <PostBox>
+          {/* <PostBox>
             {postData && 
-              postData.map((el:any,index:any)=>{
+              postData.map((el:any,index:number)=>{
                 return(
                   <PostCard key={index}>
                     <div><img src={el.picture} alt="이미지"></img></div>
-                    <div></div>
+                    <div>{el.postTitle}</div>
                   </PostCard>
                 )
             })}
-            
-
-          </PostBox>
+          </PostBox> */}
+          <PostBox postData = {postData}></PostBox>
         </Post>
       
       </>
