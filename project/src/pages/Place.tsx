@@ -5,14 +5,10 @@ import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import {
-  locationFilterValue,
-  pageInfoData,
-  placeInfoData,
-} from "../recoil/state";
+import { locationFilterValue, placeInfoData } from "../recoil/state";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
-import { useLocation } from "react-router-dom";
+import PaginationComponent from "../components/PaginationComponent";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -36,14 +32,14 @@ const PlaceFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 5px;
+  width: 95%;
+  height: 50px;
 
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
     font-weight: var(--fw-bold);
-  }
-  > div {
-    margin-right: 3%;
   }
 `;
 
@@ -88,12 +84,12 @@ export interface ArrayPlaceType extends Array<PlaceType> {}
 
 const Place = () => {
   const [placesData, setPlacesData] = useRecoilState(placeInfoData);
-  const [placesPageInfo, setPlacesPageInfo] = useRecoilState(pageInfoData);
   const [checkedList] = useRecoilState(locationFilterValue);
   const [sortClick, setSortClick] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
 
+  console.log(placesData);
   const sortList: { kor: string; eng: string }[] = [
     {
       kor: "최신순",
@@ -144,9 +140,7 @@ const Place = () => {
         </LocationWrapper>
         <PlaceContainer>
           <PlaceFilterContainer>
-            <span>
-              총 {placesPageInfo && placesPageInfo.totalElements}개의 명소
-            </span>
+            <span>총 {placesData && placesData.length}개의 명소</span>
             <div>
               {sortList.map((sort, idx) => (
                 <FilterButton
@@ -167,13 +161,13 @@ const Place = () => {
           ) : (
             <>
               <PlaceBox>
-                {placesData &&
-                  placesData.map((data, idx) => (
-                    <PlaceCardComponent key={idx} data={data} />
-                  ))}
+                {placesData && (
+                  <PlaceCardComponent placesData={placesData} limit={9} />
+                )}
               </PlaceBox>
             </>
           )}
+          <PaginationComponent props={placesData} limit={9} />
         </PlaceContainer>
       </PlaceWrapper>
     </>

@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
-import { PlaceType } from "../pages/Place";
+import { ArrayPlaceType } from "../pages/Place";
+import { useRecoilState } from "recoil";
+import { curPageValue } from "../recoil/state";
 
 const PlaceCardWrapper = styled.div`
   width: 31.2%;
@@ -60,29 +62,42 @@ const PlaceCardInfoContainer = styled.div`
   }
 `;
 
-const PlaceCardComponent = ({ data }: { data: PlaceType }) => {
+const PlaceCardComponent = ({
+  placesData,
+  limit,
+}: {
+  placesData: ArrayPlaceType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useRecoilState(curPageValue);
+  const indexOfLastPost = curPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
+  const currentPlacesData = placesData.slice(indexOfFirstPost, indexOfLastPost);
   return (
     <>
-      <PlaceCardWrapper>
-        <img alt={data.attractionName} src={data.fixedImage}></img>
-        <PlaceCardInfoContainer>
-          <div>
-            {data.attractionName}
-            <div>
-              <span>
-                <BsFillBookmarkFill /> {data.saves}
-              </span>
-              <span>
-                <AiFillHeart /> {data.likes}
-              </span>
-            </div>
-          </div>
-          <div>
-            <MdModeComment />
-            &nbsp; 포스트 {data.numOfPosts}
-          </div>
-        </PlaceCardInfoContainer>
-      </PlaceCardWrapper>
+      {currentPlacesData &&
+        currentPlacesData.map((place) => (
+          <PlaceCardWrapper>
+            <img alt={place.attractionName} src={place.fixedImage}></img>
+            <PlaceCardInfoContainer>
+              <div>
+                {place.attractionName}
+                <div>
+                  <span>
+                    <BsFillBookmarkFill /> {place.saves}
+                  </span>
+                  <span>
+                    <AiFillHeart /> {place.likes}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <MdModeComment />
+                &nbsp; 포스트 {place.numOfPosts}
+              </div>
+            </PlaceCardInfoContainer>
+          </PlaceCardWrapper>
+        ))}
     </>
   );
 };

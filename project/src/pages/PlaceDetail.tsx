@@ -1,18 +1,17 @@
 import styled, { createGlobalStyle } from "styled-components";
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { SlNote } from "react-icons/sl";
-import { AiFillHeart} from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import PaginationComponent from "../components/PaginationComponent";
-import FixedOnScrollUpHeader from '../components/Header/FixedOnScrollUpHeader';
+import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
-import PostBox from "../components/PostBox";
-import "../index.css"
+import "../index.css";
 import axios from "axios";
-
-
+import PostCardComponent from "../components/PostCardComponent.tsx";
+import { ArrayPostType } from "./Post";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -43,19 +42,17 @@ const Container = styled.div`
     height: 100px;
     transition: left 0.3s ease;
   }
-  > h2{
-
-    font-size:32px;
+  > h2 {
+    font-size: 32px;
     margin: 77px auto 30px;
     display: block;
     text-align: center;
-    
   }
-  > p{
+  > p {
     width: 60%;
     text-align: left;
     padding: 10px;
-    display:block;
+    display: block;
     text-align: center;
     height: 80px;
     margin: 0 auto;
@@ -66,16 +63,15 @@ const Container = styled.div`
     text-align: center;
     font-size: 22px;
   }
-  > div{
+  > div {
     display: block;
     height: 40px;
     margin: 10px auto;
     text-align: center;
-    & div{
-    text-align: center;
-    width:15px;
-    height: 20px;
-    
+    & div {
+      text-align: center;
+      width: 15px;
+      height: 20px;
     }
   }
   .active {
@@ -150,7 +146,6 @@ const PostHeader = styled.div`
   }
 `;
 
-
 const FixBoxVertical = styled.div<{ inverted: boolean }>`
   box-sizing: content-box;
   padding: 10px;
@@ -162,10 +157,10 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
   height: 200px;
   border-radius: 85px;
   box-shadow: 0px 0px 21px rgba(180, 180, 180, 0.25);
-  position: ${(props)=> (props.inverted ? 'fixed':'absolute')};
-  left: ${(props)=> (props.inverted ? '87%':'87%')};
-  top : ${(props)=> (props.inverted ? '60%':'1010px')};
-  >div{
+  position: ${(props) => (props.inverted ? "fixed" : "absolute")};
+  left: ${(props) => (props.inverted ? "87%" : "87%")};
+  top: ${(props) => (props.inverted ? "60%" : "1010px")};
+  > div {
     cursor: pointer;
     margin-left: 11px;
     :nth-child(1) {
@@ -191,45 +186,29 @@ const MarkerCount = styled.p`
   margin: 2px auto;
 `;
 
+type PlaceData = {
+  attractionId: number | undefined;
+  attractionAddress: string | undefined;
+  attractionDescription: string | undefined;
+  attractionName: string | undefined;
+  fixedImage: string | undefined;
+  isSaved: boolean | undefined;
+  isVoted: boolean | undefined;
+  likes: number | undefined;
+  saves: number | undefined;
+};
 
-
-const PlaceDetail = ():JSX.Element => {
-  let [view,setView] = useState<string>('info'); 
+const PlaceDetail = (): JSX.Element => {
+  let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [fixBar, setFixBar] = useState(0);
-  const [attractionData, setAttractionData] = useState<PlaceData>();// 명소 정보 저장 
-  const [postData, setPostData] = useState<PostData[]|undefined>();
-  const url = "http://pikcha36.o-r.kr:8080/attractions/1"; 
-  const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8"; 
-  const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100"
+  const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
+  const [postData, setPostData] = useState<ArrayPostType>();
+  const url = "http://pikcha36.o-r.kr:8080/attractions/1";
+  const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8";
+  const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
   const navigate = useNavigate();
-
-
-  type PlaceData =  {
-    attractionId:number|undefined, 
-    attractionAddress: string|undefined, 
-    attractionDescription: string|undefined, 
-    attractionName : string|undefined, 
-    fixedImage: string|undefined, 
-    isSaved : boolean|undefined
-    isVoted:boolean|undefined,
-    likes: number|undefined, 
-    saves:number|undefined
-  }
-
-  type PostData = {
-    createdAt:string|undefined, 
-    likes:number|undefined,
-    memberId:number|undefined,
-    modifiedAt:string|undefined,
-    picture:string|undefined,
-    postId:number|undefined,
-    postTitle:string|undefined,
-    username:string|undefined,
-    views:number|undefined
-  }
-
 
   function onScroll() {
     if (window.scrollY <= 700) {
@@ -241,32 +220,26 @@ const PlaceDetail = ():JSX.Element => {
 
   const updateScroll = () => {
     setFixBar(window.scrollY || document.documentElement.scrollTop);
-  }
- 
-  const handleView = (setting:string) => {
-    setView(setting)
-    if(view === 'info'){
-      scrollRefContent?.current?.scrollIntoView({  behavior: 'smooth', block: 'start' });
-    }
-  }
+  };
 
+  const handleView = (setting: string) => {
+    setView(setting);
+    if (view === "info") {
+      scrollRefContent?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   useEffect(() => {
-
-    axios
-    .all([axios.get(url), axios.get(url2)])
-      .then(
-      axios.spread((res1,res2)=>{
+    axios.all([axios.get(url), axios.get(url2)]).then(
+      axios.spread((res1, res2) => {
         setAttractionData(res1.data.data);
-        setPostData(res2.data.data)
+        setPostData(res2.data.data);
       })
       //.catch((err)=>console.log(err))
-    )
-    console.log(attractionData)
-    console.log('이거',postData)
-    postData?.forEach((el)=>{
-      console.log(el.picture)
-    })
+    );
 
     window.addEventListener("scroll", updateScroll);
     window.addEventListener("scroll", onScroll);
@@ -275,54 +248,106 @@ const PlaceDetail = ():JSX.Element => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", updateScroll);
     };
-  }, [attractionData === undefined, postData===undefined]);  
-
-
-  const name = 'hyesu'
-
-
+  }, [attractionData === undefined, postData === undefined]);
 
   return (
     <>
       <FixedOnScrollUpHeader />
-        <GlobalStyle/>
-          { attractionData !== undefined ?
-            <>
+      <GlobalStyle />
+      {attractionData !== undefined ? (
+        <>
           <ImageBox>
-            <img src={attractionData!.fixedImage}  alt="배경이미지"></img>
+            <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
-          <FixBoxVertical inverted = { fixBar < 470 ? true : false }>
-            <div className="icon" onClick={()=>{setShareOpen(!shareOpen)}}><BsShareFill size="15"/></div>
-            <div onClick = { ()=>{navigate('/write')}}> <SlNote size="16"/></div>
-            <div><BsBookmarkFill size="16" /></div>
-            <MarkerCount color = { attractionData!.saves === 0 ? 'red' : 'grey'}>{attractionData!.saves}</MarkerCount>
-            <div><AiFillHeart size="16" /></div>
+          <FixBoxVertical inverted={fixBar < 470 ? true : false}>
+            <div
+              className="icon"
+              onClick={() => {
+                setShareOpen(!shareOpen);
+              }}
+            >
+              <BsShareFill size="15" />
+            </div>
+            <div
+              onClick={() => {
+                navigate("/write");
+              }}
+            >
+              {" "}
+              <SlNote size="16" />
+            </div>
+            <div>
+              <BsBookmarkFill size="16" />
+            </div>
+            <MarkerCount color={attractionData!.saves === 0 ? "red" : "grey"}>
+              {attractionData!.saves}
+            </MarkerCount>
+            <div>
+              <AiFillHeart size="16" />
+            </div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
           <NavBar>
-              <button className={ view === 'info'? 'active':''} onClick={()=>{handleView('info')}}>상세페이지</button>
-              <button className={ view === 'post'? 'active':''} onClick={()=>{handleView('post')}}>포스트</button>
-            </NavBar>
+            <button
+              className={view === "info" ? "active" : ""}
+              onClick={() => {
+                handleView("info");
+              }}
+            >
+              상세페이지
+            </button>
+            <button
+              className={view === "post" ? "active" : ""}
+              onClick={() => {
+                handleView("post");
+              }}
+            >
+              포스트
+            </button>
+          </NavBar>
           <Container>
-            <h2>{attractionData!.attractionName}</h2>
-            <p>{attractionData!.attractionDescription}</p>
+            <h2>{attractionData?.attractionName}</h2>
+            <p>{attractionData?.attractionDescription}</p>
             <h3>위치 안내</h3>
             <div>
-              <p><FaMapMarkerAlt color="grey" size="14"></FaMapMarkerAlt>{attractionData!.attractionAddress}</p>
+              <p>
+                <FaMapMarkerAlt color="grey" size="14"></FaMapMarkerAlt>
+                {attractionData!.attractionAddress}
+              </p>
             </div>
-            <KakaoMap width="60%" height="320px" dataList={attractionData!.attractionAddress} position="absolute" left="20%"></KakaoMap>
+            <KakaoMap
+              width="60%"
+              height="320px"
+              dataList={attractionData!.attractionAddress}
+              position="absolute"
+              left="20%"
+            ></KakaoMap>
           </Container>
-        <Post ref={scrollRefContent}>
-          <PostHeader>
-            <h2>포스트</h2>
-            <button onClick = { ()=>{navigate('/write')}}>포스트 작성</button>
-          </PostHeader>
-          <PostBox postData = {postData}></PostBox>
-        </Post>
-      </>
-      :
-      <div>Loading ... </div>}
-      </>
+          <Post ref={scrollRefContent}>
+            <PostHeader>
+              <h2>포스트</h2>
+              <button
+                onClick={() => {
+                  navigate("/write");
+                }}
+              >
+                포스트 작성
+              </button>
+            </PostHeader>
+            {postData && (
+              <PostCardComponent
+                posts={postData}
+                limit={8}
+                margin="0 12%"
+                width="22%"
+              ></PostCardComponent>
+            )}
+          </Post>
+        </>
+      ) : (
+        <div>Loading ... </div>
+      )}
+    </>
   );
 };
 export default PlaceDetail;
