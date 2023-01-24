@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   MdOutlineKeyboardArrowDown,
@@ -6,12 +6,6 @@ import {
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import {
-  locationFilterValue,
-  placeInfoData,
-  postInfoData,
-} from "../recoil/state";
 import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`
@@ -93,21 +87,25 @@ const SelectPost = styled.ul`
     color: var(--black-600);
   }
 `;
-export default function LocationFilter() {
-  const [checkedList, setCheckedList] = useRecoilState(locationFilterValue);
-  const [openPost, setOpenPost] = useState(true);
+export default function LocationFilter({
+  setData,
+  checkedList,
+  setCheckedList,
+}: {
+  checkedList: string[];
+  setCheckedList: Dispatch<SetStateAction<string[]>>;
+  setData: any;
+}) {
+  const [openLocation, setOpenLocation] = useState(true);
   const pageLocation = useLocation();
-  const [_, setPlacesData] = useRecoilState(placeInfoData);
-  const [__, setPostsData] = useRecoilState(postInfoData);
   useEffect(() => {
     axios
-      .post(`${pageLocation.pathname}/filter?sort=newest`, {
+      .post(`${pageLocation.pathname}/filter?page=1&size=100&sort=newest`, {
         provinces: checkedList,
       })
       .then((res) => {
-        if (pageLocation.pathname === "/attractions")
-          setPlacesData(res.data.data);
-        if (pageLocation.pathname === "/posts") setPostsData(res.data.data);
+        if (pageLocation.pathname === "/attractions") setData(res.data.data);
+        if (pageLocation.pathname === "/posts") setData(res.data.data);
       })
       .catch((err) => console.error(err));
   }, [checkedList]);
@@ -171,15 +169,15 @@ export default function LocationFilter() {
       <SelectBox>
         <div>
           <span>지역</span>
-          <button onClick={() => setOpenPost(!openPost)}>
-            {openPost ? (
+          <button onClick={() => setOpenLocation(!openLocation)}>
+            {openLocation ? (
               <MdOutlineKeyboardArrowUp />
             ) : (
               <MdOutlineKeyboardArrowDown />
             )}
           </button>
         </div>
-        {openPost
+        {openLocation
           ? Post.map((el) => (
               <form key={el.id}>
                 <input

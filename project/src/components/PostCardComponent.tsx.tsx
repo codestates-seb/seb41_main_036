@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import { BsEye } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ArrayPostType } from "../pages/Post";
-import { useRecoilState } from "recoil";
-import { curPageValue } from "../recoil/state";
 
 const PostContainer = styled.div<{ margin: string }>`
   margin: ${(props) => (props.margin === "0 12%" ? "0 12%" : "0")};
@@ -99,16 +97,18 @@ const PostCardComponent = ({
   limit,
   margin,
   width,
+  curPage = 1,
 }: {
   posts: ArrayPostType;
   limit: number;
   margin: string;
   width: string;
+  curPage?: number;
 }) => {
-  const [curPage, setCurPage] = useRecoilState(curPageValue);
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  console.log(posts);
   return (
     <>
       <PostContainer margin={margin}>

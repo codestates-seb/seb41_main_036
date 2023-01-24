@@ -1,9 +1,7 @@
-import {  useState } from "react";
-import { useRecoilState } from "recoil";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { ArrayPlaceType } from "../pages/Place";
 import { ArrayPostType } from "../pages/Post";
-import { curPageValue } from "../recoil/state";
 
 export const Page = styled.nav`
   width: 300px;
@@ -55,11 +53,14 @@ export const Button: any = styled.button`
 const PaginationComponent = ({
   props,
   limit,
+  curPage = 1,
+  setCurPage,
 }: {
   props: ArrayPostType | ArrayPlaceType;
   limit: number;
+  curPage: number;
+  setCurPage: Dispatch<SetStateAction<number>>;
 }) => {
-  const [curPage, setCurPage] = useRecoilState(curPageValue);
   const numPages = Math.ceil(props.length / limit);
   const [start, setStart] = useState(1);
   const list: number[] = [];

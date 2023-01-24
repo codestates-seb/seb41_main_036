@@ -4,8 +4,6 @@ import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
 import { ArrayPlaceType } from "../pages/Place";
-import { useRecoilState } from "recoil";
-import { curPageValue } from "../recoil/state";
 
 const PlaceCardWrapper = styled.div`
   width: 31.2%;
@@ -65,11 +63,12 @@ const PlaceCardInfoContainer = styled.div`
 const PlaceCardComponent = ({
   placesData,
   limit,
+  curPage = 1,
 }: {
   placesData: ArrayPlaceType;
   limit: number;
+  curPage?: number;
 }) => {
-  const [curPage, setCurPage] = useRecoilState(curPageValue);
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPlacesData = placesData.slice(indexOfFirstPost, indexOfLastPost);

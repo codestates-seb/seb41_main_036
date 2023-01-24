@@ -4,8 +4,6 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { locationFilterValue, placeInfoData } from "../recoil/state";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
 import PaginationComponent from "../components/PaginationComponent";
@@ -83,13 +81,13 @@ export interface PageInfoType {
 export interface ArrayPlaceType extends Array<PlaceType> {}
 
 const Place = () => {
-  const [placesData, setPlacesData] = useRecoilState(placeInfoData);
-  const [checkedList] = useRecoilState(locationFilterValue);
+  const [placesData, setPlacesData] = useState<ArrayPlaceType>();
+  const [checkedList, setCheckedlist] = useState<string[]>([]);
   const [sortClick, setSortClick] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
+  const [curPage, setCurPage] = useState(1);
 
-  console.log(placesData);
   const sortList: { kor: string; eng: string }[] = [
     {
       kor: "최신순",
@@ -110,16 +108,16 @@ const Place = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`/attractions`)
+      .get(`/attractions?page=1&size=100`)
       .then((res) => {
         setIsLoading(false);
-        console.log(res.data);
+        setPlacesData(res.data.data);
       })
       .catch((err) => console.error(err));
-  }, [placesData]);
+  }, []);
   const handleSortPlace = (sort: string) => {
     axios
-      .post(`/attractions/filter?sort=${sort}`, {
+      .post(`/attractions/filter?page=1&size=100&sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => {
@@ -136,7 +134,13 @@ const Place = () => {
       </Header>
       <PlaceWrapper>
         <LocationWrapper>
-          <LocationFilter />
+          {placesData && (
+            <LocationFilter
+              setData={setPlacesData}
+              checkedList={checkedList}
+              setCheckedList={setCheckedlist}
+            />
+          )}
         </LocationWrapper>
         <PlaceContainer>
           <PlaceFilterContainer>
@@ -162,12 +166,23 @@ const Place = () => {
             <>
               <PlaceBox>
                 {placesData && (
-                  <PlaceCardComponent placesData={placesData} limit={9} />
+                  <PlaceCardComponent
+                    placesData={placesData}
+                    limit={9}
+                    curPage={curPage}
+                  />
                 )}
               </PlaceBox>
             </>
           )}
-          <PaginationComponent props={placesData} limit={9} />
+          {placesData && (
+            <PaginationComponent
+              props={placesData}
+              limit={9}
+              curPage={curPage}
+              setCurPage={setCurPage}
+            />
+          )}
         </PlaceContainer>
       </PlaceWrapper>
     </>

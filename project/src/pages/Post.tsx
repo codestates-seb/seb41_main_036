@@ -4,8 +4,6 @@ import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import PostCardComponent from "../components/PostCardComponent.tsx";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { locationFilterValue, postInfoData } from "../recoil/state";
 import PaginationComponent from "../components/PaginationComponent";
 
 const PostWrapper = styled.div`
@@ -69,15 +67,16 @@ export interface PostType {
 
 export interface ArrayPostType extends Array<PostType> {}
 const Post = () => {
-  const [postData, setPostData] = useRecoilState(postInfoData);
-  const [checkedList] = useRecoilState(locationFilterValue);
+  const [postsData, setPostsData] = useState<ArrayPostType>();
+  const [curPage, setCurPage] = useState(1);
+  const [checkedList, setCheckedlist] = useState<string[]>([]);
   const [onFilter, setOnFliter] = useState(0);
 
   useEffect(() => {
     axios
       .get(`/posts/home`)
       .then((res) => {
-        setPostData(res.data.data);
+        setPostsData(res.data.data);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -86,7 +85,7 @@ const Post = () => {
       .post(`/posts/filter?sort=${sort}`, {
         provinces: checkedList,
       })
-      .then((res) => setPostData(res.data.data))
+      .then((res) => setPostsData(res.data.data))
       .catch((err) => console.error(err));
   };
   const handleSort = (idx: number) => {
@@ -114,11 +113,17 @@ const Post = () => {
       </Header>
       <PostWrapper>
         <LocationWrapper>
-          <LocationFilter />
+          {postsData && (
+            <LocationFilter
+              setData={setPostsData}
+              checkedList={checkedList}
+              setCheckedList={setCheckedlist}
+            />
+          )}
         </LocationWrapper>
         <PostContainer>
           <PostFilterContainer>
-            <span>총 {postData.length}개의 방문 리뷰</span>
+            <span>총 {postsData?.length}개의 방문 리뷰</span>
             <div>
               {sortList.map((sort, idx) => (
                 <FilterButton
@@ -134,13 +139,24 @@ const Post = () => {
               ))}
             </div>
           </PostFilterContainer>
-          <PostCardComponent
-            posts={postData}
-            limit={5}
-            margin="0"
-            width="31%"
-          />
-          {postData && <PaginationComponent props={postData} limit={7} />}
+          {postsData && (
+            <PostCardComponent
+              posts={postsData}
+              limit={5}
+              margin="0"
+              width="31%"
+              curPage={curPage}
+            />
+          )}
+
+          {postsData && (
+            <PaginationComponent
+              props={postsData}
+              limit={5}
+              curPage={curPage}
+              setCurPage={setCurPage}
+            />
+          )}
         </PostContainer>
       </PostWrapper>
     </>
