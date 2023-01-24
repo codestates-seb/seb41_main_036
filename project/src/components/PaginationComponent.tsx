@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import {  useState } from "react";
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
+import { ArrayPlaceType } from "../pages/Place";
+import { ArrayPostType } from "../pages/Post";
+import { curPageValue } from "../recoil/state";
 
-export const Page = styled.div`
+export const Page = styled.nav`
   width: 300px;
   margin: 0 auto;
 `;
 
-export const Nav = styled.nav`
+export const Nav = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +18,7 @@ export const Nav = styled.nav`
   margin: 16px;
 `;
 
-export const Button:any = styled.button`
+export const Button: any = styled.button`
   border: none;
   border-radius: 4px;
   padding: 8px;
@@ -46,70 +50,60 @@ export const Button:any = styled.button`
   }
 `;
 
-export const Pagination = ({ total, limit, page, setPage }:{total:number, limit:number, page:number, setPage:any}) => {
-  const numPages = Math.ceil(total / limit); 
-  const [start, setStart] = useState(1);
-  const list = [1,1,1,1,1]
-  
-
-  return (
-    <>
-      <Nav>
-        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => {setPage(start-5);setStart(start-5);}} disabled={page <= 5 || start < 1}>
-          {'<'}
-        </Button>
-          {
-            list.map((el, index)=>{
-              return(
-                <Button key={start+index} onClick={() => setPage(start+index)} aria-current={page === start+index ? 'page' : null}>{start+index}</Button>
-              )
-            })
-          }
-        <Button style={{ width: '44px', fontSize: '14px' }} onClick={() => {setPage( start+5);setStart(start+5)}} disabled={page >= numPages-5}>
-          {'>'}
-        </Button>
-      </Nav>
-    </>
-  );
-
-};
-
-
 // 사용할 때
 // PaginationComponent 임포트해서 사용하시면 됩니다.
-const PaginationComponent = ():JSX.Element => {
-    const [posts, setPosts] = useState([]); 
-    const limit = 8; // 여기 조절해서 한 페이지당 게시물 수 바꿀 수 있습니다. 
-    const [page, setPage] = useState(1); 
-    const offset = (page - 1) * limit; 
-    const url = `${process.env.REACT_APP_API_URL}/members?page=1&size=35`;
-  
-    useEffect(() => {
-      fetch("https://jsonplaceholder.typicode.com/todos") // 서버 주소 입력해주세요
-        .then((res) => res.json())
-        .then((data) => {setPosts(data);console.log(posts)});// 데이터 잘 받아오는지 확인 
-    }, []);
-    
-  
-  
-    return(
+const PaginationComponent = ({
+  props,
+  limit,
+}: {
+  props: ArrayPostType | ArrayPlaceType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useRecoilState(curPageValue);
+  const numPages = Math.ceil(props.length / limit);
+  const [start, setStart] = useState(1);
+  const list: number[] = [];
+  for (let i = 1; i <= numPages; i++) {
+    list.push(i);
+  }
+  return (
     <>
-     {/* 이쪽에 받아올 데이터 body값 작성하시면 됩니다.  */}
-      <main>
-        {posts.slice(offset, offset + limit).map(({ id, title, body }) => (
-          <article key={id}>
-            <h3>
-              {id}. {title}
-            </h3>
-            <p>{body}</p>
-          </article>
-        ))}
-      </main>
-    <Page>
-      <Pagination total={posts.length} limit={limit} page={page} setPage={setPage}></Pagination>
-    </Page>
+      <Page>
+        <Nav>
+          <Button
+            style={{ width: "44px", fontSize: "14px" }}
+            onClick={() => {
+              setCurPage(start - 5);
+              setStart(start - 5);
+            }}
+            disabled={curPage <= 5 || start < 1}
+          >
+            {"<"}
+          </Button>
+          {list.map((_, index) => {
+            return (
+              <Button
+                key={start + index}
+                onClick={() => setCurPage(start + index)}
+                aria-current={curPage === start + index ? "page" : null}
+              >
+                {start + index}
+              </Button>
+            );
+          })}
+          <Button
+            style={{ width: "44px", fontSize: "14px" }}
+            onClick={() => {
+              setCurPage(start + 5);
+              setStart(start + 5);
+            }}
+            disabled={curPage >= numPages - 5}
+          >
+            {">"}
+          </Button>
+        </Nav>
+      </Page>
     </>
-  )  
-}
+  );
+};
 export default PaginationComponent;
-

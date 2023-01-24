@@ -73,7 +73,15 @@ const PostManageButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-const PostComment = () => {
+const PostComment = ({
+  comment,
+}: {
+  comment: {
+    userName: string;
+    content: string;
+    createdAt: string;
+  };
+}) => {
   const [commentEdit, setCommentEdit] = useState(false);
   const [commentContent, setCommentcontent] = useState(dummy.post[0].content);
   const commentContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
