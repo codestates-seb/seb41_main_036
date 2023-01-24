@@ -10,6 +10,7 @@ import WritePost from "./pages/WritePost";
 import PlaceDetail from "./pages/PlaceDetail";
 import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/map" element={<Map />} />
             <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
             <Route path="/post/detail/:id" element={<DetailPost />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </RecoilRoot>
       </BrowserRouter>
