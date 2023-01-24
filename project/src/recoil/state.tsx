@@ -35,16 +35,16 @@ export const locationFilterValue = atom<string[]>({
 });
 
 export const placeInfoData = atom<ArrayPlaceType>({
-  key: "placeData",
+  key: "placeInfoData",
   default: [],
 });
 
 export const postInfoData = atom<ArrayPostType>({
-  key: "postData",
+  key: "postInfoData",
   default: [],
 });
 
-export const pageInfoData = atom<PageInfoType>({
-  key: "pageInfoData",
-  default: undefined,
+export const curPageValue = atom<number>({
+  key: "curPageValue",
+  default: 1,
 });

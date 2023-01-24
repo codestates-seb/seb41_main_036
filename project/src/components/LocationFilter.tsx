@@ -9,7 +9,6 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import {
   locationFilterValue,
-  pageInfoData,
   placeInfoData,
   postInfoData,
 } from "../recoil/state";
@@ -100,7 +99,6 @@ export default function LocationFilter() {
   const pageLocation = useLocation();
   const [_, setPlacesData] = useRecoilState(placeInfoData);
   const [__, setPostsData] = useRecoilState(postInfoData);
-  const [___, setPageInfo] = useRecoilState(pageInfoData);
   useEffect(() => {
     axios
       .post(`${pageLocation.pathname}/filter?sort=newest`, {
@@ -109,9 +107,7 @@ export default function LocationFilter() {
       .then((res) => {
         if (pageLocation.pathname === "/attractions")
           setPlacesData(res.data.data);
-        setPageInfo(res.data.pageInfo);
         if (pageLocation.pathname === "/posts") setPostsData(res.data.data);
-        setPageInfo(res.data.pageInfo);
       })
       .catch((err) => console.error(err));
   }, [checkedList]);

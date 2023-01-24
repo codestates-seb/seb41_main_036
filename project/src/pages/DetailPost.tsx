@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
-import dummy from "../dummyData.json";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import PostComment from "../components/PostComment";
 import axios from "axios";
+import Button from "../components/Button";
 
 const DetailPostWrapper = styled.div`
-  width: 100%;
+  width: 83.5%;
+  margin: 0 auto;
 
   > div:first-child {
     display: flex;
@@ -160,14 +161,57 @@ const AddComment = styled.form`
     border-radius: var(--br-m);
     resize: none;
   }
+
+  button {
+    position: relative;
+    top: 8em;
+    right: 6.2em;
+  }
 `;
+
+interface PostDetailType {
+  attractionAddress: string;
+  attractionId: number;
+  attractionName: string;
+  comments: [
+    {
+      userName: string;
+      content: string;
+      createdAt: string;
+    }
+  ];
+  createdAt: string;
+  isVoted: boolean;
+  likes: number;
+  modifiedAt: string;
+  picture: string;
+  postContents: string[];
+  postHashTags: string[];
+  postId: number;
+  postImageUrls: string[];
+  postTitle: string;
+  username: string;
+  views: number;
+}
+
 const DetailPost = () => {
+  const [post, setPost] = useState<PostDetailType>();
+  const [comment, setComment] = useState("");
   useEffect(() => {
     axios
       .get(`/posts/1`)
+      .then((res) => setPost(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axios
+      .post(`/comments/upload/1/1`, {
+        commentContent: comment,
+      })
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
-  });
+  };
   return (
     <DetailPostWrapper>
       <div>
@@ -179,30 +223,30 @@ const DetailPost = () => {
         </PostManageButton>
       </div>
       <DetailPostTitle>
-        <h2>{dummy.post[0].title}</h2>
+        <h2>{post?.postTitle}</h2>
       </DetailPostTitle>
       <DetailPostInfo>
         <div>
-          <MdPlace /> &nbsp;종로구 사직로 161
+          <MdPlace /> &nbsp;{post?.attractionAddress}
         </div>
         <div>
           <button>
             <RxDoubleArrowLeft />
             &nbsp; 이 명소 방문 리뷰 더보기
           </button>
-          <span>2021.01.01</span>
+          <span>{post?.createdAt}</span>
         </div>
       </DetailPostInfo>
       <PostContentContainer>
-        <img alt={dummy.post[0].title} src={dummy.post[0].img} />
+        <img alt={post?.postTitle} src={post?.postImageUrls[0]} />
         <div>여기는 본문이 위치하게 될 것입니다.</div>
         <div>
           <TagsButton>#tags</TagsButton>
         </div>
         <PostContentBottom>
           <div>
-            <img alt="userImg" src={dummy.post[0].userImg} />
-            {dummy.post[0].username}님의 포스트
+            <img alt="userImg" src={post?.picture} />
+            {post?.username}님의 포스트
           </div>
           <div>
             <div>
@@ -211,23 +255,32 @@ const DetailPost = () => {
             </div>
             <div>
               <AiFillEye />
-              <span>{dummy.post[0].viewCount}</span>
+              <span>{post?.views}</span>
             </div>
             <div>
               <AiFillHeart />
-              <span>{dummy.post[0].recommend}</span>
+              <span>{post?.likes}</span>
             </div>
           </div>
         </PostContentBottom>
       </PostContentContainer>
-      <PostComment />
-      <PostComment />
-      <PostComment />
+      {post?.comments.map((comment) => (
+        <PostComment key={post.postId} comment={comment}></PostComment>
+      ))}
       <AddComment>
         <h3>댓글 남기기</h3>
         <div>
-          <img src={dummy.post[0].userImg} alt="userImg" />
-          <textarea></textarea>
+          <img src={post?.picture} alt="userImg" />
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <Button
+            width="80px"
+            height="35px"
+            text="등록"
+            onClick={(e) => handleCommentSubmit(e)}
+          />
         </div>
       </AddComment>
     </DetailPostWrapper>

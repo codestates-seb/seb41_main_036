@@ -1,38 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-import dummy from "../dummyData.json";
-
 import { Header } from "../components/Header";
-import { PlaceType } from "./Place";
-import PostCardComponent from "../components/PostCardComponent";
+import PostCardComponent from "../components/PostCardComponent.tsx";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { locationFilterValue } from "../recoil/state";
+import { locationFilterValue, postInfoData } from "../recoil/state";
+import PaginationComponent from "../components/PaginationComponent";
 
 const PostWrapper = styled.div`
   display: flex;
+  width: 83.5%;
+  margin: 0 auto;
 `;
 
 const LocationWrapper = styled.nav`
-  width: 17%;
-  height: 90vh;
+  min-width: 210px;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
 `;
 
 const PostContainer = styled.div`
-  margin: 0 20px;
   width: 80%;
-  height: 90vh;
 `;
 
 const PostFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
+  margin-left: 20px;
   width: 95%;
   height: 10%;
 
@@ -58,40 +55,57 @@ const FilterButton = styled.button`
   }
 `;
 
-const PostBox = styled.div`
-  width: 100%;
-  height: 90%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+export interface PostType {
+  postId: number;
+  postTitle: string;
+  memberId: number;
+  username: string;
+  picture: string | string[];
+  createdAt: string;
+  likes: number;
+  modifiedAt: number;
+  views: number;
+}
 
-  > div {
-    min-width: 30%;
-    height: 32%;
-    border-radius: var(--br-s);
-    background-color: white;
-  }
-
-  > div > img {
-    width: 100%;
-    height: 65%;
-    border-radius: var(--br-s);
-  }
-`;
-
+export interface ArrayPostType extends Array<PostType> {}
 const Post = () => {
-  const [postData, setPostData] = useState();
-  const [PlaceData, setPlaceData] = useState<PlaceType>([]);
+  const [postData, setPostData] = useRecoilState(postInfoData);
   const [checkedList] = useRecoilState(locationFilterValue);
+  const [onFilter, setOnFliter] = useState(0);
 
+  useEffect(() => {
+    axios
+      .get(`/posts/home`)
+      .then((res) => {
+        setPostData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   const handleSortPlace = (sort: string) => {
     axios
-      .post(`/attractions/filter?sort=${sort}`, {
+      .post(`/posts/filter?sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => setPostData(res.data.data))
       .catch((err) => console.error(err));
   };
+  const handleSort = (idx: number) => {
+    setOnFliter(idx);
+  };
+  const sortList: { kor: string; eng: string }[] = [
+    {
+      kor: "최신순",
+      eng: "newest",
+    },
+    {
+      kor: "리뷰순",
+      eng: "posts",
+    },
+    {
+      kor: "인기순",
+      eng: "likes",
+    },
+  ];
   return (
     <>
       <Header>
@@ -100,28 +114,33 @@ const Post = () => {
       </Header>
       <PostWrapper>
         <LocationWrapper>
-          <LocationFilter setPlaceData={setPlaceData} />
+          <LocationFilter />
         </LocationWrapper>
         <PostContainer>
           <PostFilterContainer>
-            <span>총 {dummy.post.length}개의 방문 리뷰</span>
+            <span>총 {postData.length}개의 방문 리뷰</span>
             <div>
-              <FilterButton>
-                <FilterButton onClick={() => handleSortPlace("newest")}>
-                  최신순
+              {sortList.map((sort, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => {
+                    handleSort(idx);
+                    handleSortPlace(sort.eng);
+                  }}
+                >
+                  {sort.kor}
                 </FilterButton>
-                <FilterButton onClick={() => handleSortPlace("posts")}>
-                  리뷰순
-                </FilterButton>
-                <FilterButton onClick={() => handleSortPlace("likes")}>
-                  인기순
-                </FilterButton>
-              </FilterButton>
+              ))}
             </div>
           </PostFilterContainer>
-          <PostBox>
-            <PostCardComponent />
-          </PostBox>
+          <PostCardComponent
+            posts={postData}
+            limit={5}
+            margin="0"
+            width="31%"
+          />
+          {postData && <PaginationComponent props={postData} limit={7} />}
         </PostContainer>
       </PostWrapper>
     </>
