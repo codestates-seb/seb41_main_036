@@ -4,6 +4,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
 import { ArrayPlaceType } from "../pages/Place";
+import { useNavigate } from "react-router-dom";
 
 const PlaceCardWrapper = styled.div`
   width: 31.2%;
@@ -16,6 +17,7 @@ const PlaceCardWrapper = styled.div`
     height: 240px;
     border-top-left-radius: var(--br-m);
     border-top-right-radius: var(--br-m);
+    cursor: pointer;
   }
 `;
 
@@ -32,6 +34,10 @@ const PlaceCardInfoContainer = styled.div`
     align-items: center;
     margin-top: 5px;
     font-weight: var(--fw-bold);
+
+    div:nth-child(1) {
+      cursor: pointer;
+    }
 
     div {
       padding-bottom: 3px;
@@ -72,15 +78,28 @@ const PlaceCardComponent = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPlacesData = placesData.slice(indexOfFirstPost, indexOfLastPost);
+  const navigate = useNavigate();
   return (
     <>
       {currentPlacesData &&
-        currentPlacesData.map((place) => (
-          <PlaceCardWrapper>
-            <img alt={place.attractionName} src={place.fixedImage}></img>
+        currentPlacesData.map((place, index) => (
+          <PlaceCardWrapper key={place.attractionId}>
+            <img
+              alt={place.attractionName}
+              src={place.fixedImage}
+              onClick={() =>
+                navigate(`/attractions/detail/${place.attractionId}`)
+              }
+            ></img>
             <PlaceCardInfoContainer>
               <div>
-                {place.attractionName}
+                <div
+                  onClick={() =>
+                    navigate(`/attractions/detail/${place.attractionId}`)
+                  }
+                >
+                  {place.attractionName}
+                </div>
                 <div>
                   <span>
                     <BsFillBookmarkFill /> {place.saves}

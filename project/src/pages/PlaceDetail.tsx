@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { SlNote } from "react-icons/sl";
 import { AiFillHeart } from "react-icons/ai";
@@ -205,11 +205,13 @@ const PlaceDetail = (): JSX.Element => {
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
-  const url = "http://pikcha36.o-r.kr:8080/attractions/1";
-  const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8";
+  const { id } = useParams();
+  const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
+  const url2 = `http://pikcha36.o-r.kr:8080/posts/details/${id}?page=1&size=8`;
   const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
   const navigate = useNavigate();
 
+  console.log(id);
   function onScroll() {
     if (window.scrollY <= 700) {
       setTimeout(function () {
