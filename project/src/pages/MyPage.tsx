@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { AiTwotoneHome } from "react-icons/ai";
 import { MdModeComment } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
-import { GrMap } from "react-icons/gr";
+import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";
+import { TfiPencil } from "react-icons/tfi";
+import Button from "../components/Button";
 const MyPageWrapper = styled.div`
   height: 100vh;
   display: flex;
@@ -22,17 +23,53 @@ const MyPageContainer = styled.div`
 const MyPageUserInfo = styled.aside`
   width: 20%;
   height: 100%;
-  border: 1px solid black;
 
   form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-  }
-  img {
-    width: 80px;
-    height: 80px;
-    border-radius: 100%;
+    height: 70%;
+    margin-top: 4em;
+    margin-left: 2em;
+
+    > img {
+      width: 80px;
+      height: 80px;
+      border-radius: 100%;
+      margin-bottom: 20px;
+    }
+
+    div {
+      margin-bottom: 10px;
+      font-size: var(--font-sm);
+    }
+    div:nth-child(2) {
+      display: flex;
+      align-items: center;
+      font-weight: var(--fw-bold);
+      font-size: var(--font-xl);
+      margin-bottom: 20px;
+      svg {
+        margin-left: 10px;
+      }
+    }
+    div:nth-child(3) {
+      color: var(--black-800);
+      font-size: var(--font-base);
+      font-weight: var(--fw-bold);
+    }
+    div:nth-child(4) {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+        color: var(--purple-400);
+      }
+    }
+    button {
+      position: relative;
+      top: 13em;
+    }
   }
 `;
 const MyPage = () => {
@@ -43,15 +80,16 @@ const MyPage = () => {
         <MyPageUserInfo>
           <form>
             <img src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g" />
-            <ol>
-              <li>개구리 뒷다리</li>
-              <li>초보 여행자</li>
-              <li>
-                <GrMap /> 서울시 동작구
-              </li>
-              <li>abcdefg@gmail.com</li>
-              <li>010-1234-5678</li>
-            </ol>
+            <div>
+              개구리 뒷다리 <TfiPencil />
+            </div>
+            <div>초보 여행자</div>
+            <div>
+              <FaMapMarkerAlt /> 서울시 동작구
+            </div>
+            <div>abcdefg@gmail.com</div>
+            <div>010-1234-5678</div>
+            <Button width="100px" height="40px" text="회원 탈퇴" />
           </form>
         </MyPageUserInfo>
       </MyPageContainer>
