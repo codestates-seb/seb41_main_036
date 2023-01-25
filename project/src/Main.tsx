@@ -6,7 +6,7 @@ import Place from "./pages/Place";
 import Post from "./pages/Post";
 import { Header } from "./components/Header/index";
 import HiddenHeader from "./components/Header/HiddenHeader";
-
+import Carousel from "./components/Carousel";
 
 const Body = styled.div`
   width: 83.5%;
@@ -20,10 +20,7 @@ const Footer = styled.div`
   height: 157px;
 `;
 
-
-
 function Main() {
-
   return (
     <>
       <Header>
@@ -32,18 +29,14 @@ function Main() {
       </Header>
       {/* <HiddenHeader /> */}
       {/* <FixedOnScrollUpHeader /> */}
-      <Body>
-
-      </Body>
+      <Carousel />
+      <Body></Body>
       <Footer>footer</Footer>
     </>
   );
 }
 
 export default Main;
-
-
-
 
 // import axios from "axios";
 // import ButtonForm from "./components/Button"
@@ -55,8 +48,6 @@ export default Main;
 //   RefreshToken,
 //   LoggedUser,
 // } from "./recoil/state";
-
-
 
 // const [isLogin, setIslogin] = useRecoilState(LoginState);
 // const [auth, setAuth] = useRecoilState(AuthToken);
@@ -79,7 +70,7 @@ export default Main;
 //     }
 //   })
 //   .then((res) => {
-//       console.log(res)  
+//       console.log(res)
 //       console.log("로긴성공")
 
 //       // navigate("/");
@@ -88,5 +79,6 @@ export default Main;
 
 // }
 
-
-{/* <button onClick={onClickBtn}>버튼버튼</button> */}
+{
+  /* <button onClick={onClickBtn}>버튼버튼</button> */
+}
