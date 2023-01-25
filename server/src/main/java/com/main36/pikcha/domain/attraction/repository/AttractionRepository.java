@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     Optional<Attraction> findByAttractionAddress(String address);
     Page<Attraction> findAllByProvinceIn(List<String> cities, Pageable pageable);
-    List<Attraction> findByAttractionNameContainingIgnoreCase(String keyword);
+    Page<Attraction> findByAttractionNameContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<Attraction> findByAttractionNameContainingIgnoreCaseAndProvinceIn(String keyword, List<String> cities, Pageable pageable);
 }

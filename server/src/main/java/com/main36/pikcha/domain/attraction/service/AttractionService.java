@@ -84,8 +84,14 @@ public class AttractionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Attraction> findSearchedAttractions(String keyword){
-        return attractionRepository.findByAttractionNameContainingIgnoreCase(keyword);
+    public Page<Attraction> findFilteredSearchedAttractions(List<String> provinces, String keyword, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        return attractionRepository.findByAttractionNameContainingIgnoreCaseAndProvinceIn(keyword, provinces, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<Attraction> findAllSearchedAttractions(String keyword, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        return attractionRepository.findByAttractionNameContainingIgnoreCase(keyword, pageable);
     }
 
 

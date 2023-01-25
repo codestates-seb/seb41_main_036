@@ -48,8 +48,10 @@ public class PostResponseDto {
         private LocalDateTime modifiedAt;
     }
     @Data
-    public static class ImageResponse{
-        private String imageS3Url;
+    public static class MapsImageUrlResponse{
+        private long postId;
+        private String imageUrls;
+
     }
 
 }
