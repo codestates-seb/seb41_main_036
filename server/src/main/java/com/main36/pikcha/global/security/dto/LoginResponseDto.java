@@ -12,6 +12,7 @@ public class LoginResponseDto {
     private String roles;
     private String accessToken;
 
+    private String refreshToken;
     @Builder
     public LoginResponseDto(Long memberId, String email, String roles, String accessToken) {
         this.memberId = memberId;

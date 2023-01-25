@@ -70,7 +70,6 @@ public class JwtParser {
     }
 
     public boolean verifyToken(String token) {
-
         try {
             getBody(token);
             return true;
@@ -92,8 +91,8 @@ public class JwtParser {
         }
     }
 
-    private Claims getBody(String accessToken) {
 
+    private Claims getBody(String accessToken) {
         // TODO: 예외 처리 필요 키값이 이상할때!
         return Jwts.
                 parserBuilder().
