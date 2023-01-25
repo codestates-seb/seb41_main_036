@@ -106,5 +106,6 @@ const PaginationComponent = ({
       </Page>
     </>
   );
+
 };
 export default PaginationComponent;

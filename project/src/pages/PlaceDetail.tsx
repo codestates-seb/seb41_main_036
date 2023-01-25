@@ -5,13 +5,15 @@ import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { SlNote } from "react-icons/sl";
 import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import PaginationComponent from "../components/PaginationComponent";
+//import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
 import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent.tsx";
 import { ArrayPostType } from "./Post";
+
+
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -252,6 +254,7 @@ const PlaceDetail = (): JSX.Element => {
     };
   }, [attractionData === undefined, postData === undefined]);
 
+
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -323,6 +326,7 @@ const PlaceDetail = (): JSX.Element => {
               dataList={attractionData!.attractionAddress}
               position="absolute"
               left="20%"
+              regionFilter="null"
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>

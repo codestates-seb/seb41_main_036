@@ -175,9 +175,13 @@ interface PostDetailType {
   attractionName: string;
   comments: [
     {
-      userName: string;
-      content: string;
+      commentId: number;
+      memberId: number;
+      username: string;
+      memberPicture: string;
+      commentContent: string;
       createdAt: string;
+      modifiedAt: string;
     }
   ];
   createdAt: string;
@@ -206,9 +210,18 @@ const DetailPost = () => {
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .post(`/comments/upload/1/1`, {
-        commentContent: comment,
-      })
+      .post(
+        `/comments/upload/1/1`,
+        {
+          commentContent: comment,
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ1OTAzMTEsImV4cCI6MTY3NDYxNTUxMX0.4RtI8-nDeiPOkSizHb84n6I8uv-4k2Mty9fSQbA_vweYAO4PInCQkDapISGzVTERnwEi2oWwCSTSoY-QpOdc_w",
+          },
+        }
+      )
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   };
@@ -264,9 +277,10 @@ const DetailPost = () => {
           </div>
         </PostContentBottom>
       </PostContentContainer>
-      {post?.comments.map((comment) => (
-        <PostComment key={post.postId} comment={comment}></PostComment>
-      ))}
+      {post &&
+        post.comments.map((comment) => (
+          <PostComment key={comment.commentId} comment={comment}></PostComment>
+        ))}
       <AddComment>
         <h3>댓글 남기기</h3>
         <div>

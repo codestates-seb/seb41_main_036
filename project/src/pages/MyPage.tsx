@@ -23,7 +23,6 @@ const MyPageContainer = styled.div`
   border-radius: var(--br-l);
   display: flex;
 `;
-
 const MyPageUserInfo = styled.aside`
   width: 20%;
   height: 100%;
@@ -76,7 +75,6 @@ const MyPageUserInfo = styled.aside`
     }
   }
 `;
-
 const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
@@ -178,6 +176,7 @@ const MyPageTabBarMenu = styled.button`
     }
   }
 `;
+
 const MyPage = () => {
   const [tab, setTab] = useState(0);
   const MyPageMyPostCard = () => {

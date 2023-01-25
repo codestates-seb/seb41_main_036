@@ -17,6 +17,7 @@ const LocationWrapper = styled.nav`
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
+  margin-top: 10px;
 `;
 
 const PostContainer = styled.div`
@@ -29,7 +30,7 @@ const PostFilterContainer = styled.div`
   align-items: center;
   margin-left: 20px;
   width: 95%;
-  height: 10%;
+  height: 50px;
 
   > span {
     font-size: var(--font-base);
@@ -82,7 +83,7 @@ const Post = () => {
   }, []);
   const handleSortPlace = (sort: string) => {
     axios
-      .post(`/posts/filter?sort=${sort}`, {
+      .post(`/posts/filter?size=100&sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => setPostsData(res.data.data))
@@ -97,12 +98,12 @@ const Post = () => {
       eng: "newest",
     },
     {
-      kor: "리뷰순",
-      eng: "posts",
-    },
-    {
       kor: "인기순",
       eng: "likes",
+    },
+    {
+      kor: "조회순",
+      eng: "views",
     },
   ];
   return (
