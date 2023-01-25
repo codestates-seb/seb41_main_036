@@ -10,17 +10,12 @@ declare global {
 
 // 안내창 커스텀입니다. 
 let info = 
-`<div style="width:190px;height:90px;background-color:white;padding:5px 5px;border:1px solid grey;border-radius:5px">
+`<div style="width:180px;height:90px;background-color:white;padding:5px 5px;border:none;border-radius:5px">
   <h3 style="color:#6255F8; width:100%;height:30px;background-color:#faf7df;line-height:30px">광화문</h3>
   <h3 style="font-size:13px;color:#393939;font-weight:400;padding:6px 0" > 주소 : 종로구 사직로 161</h3>
-  <a href="www.naver.com" style="font-size:13px;text-decoration-line:none;margin-left:140px">더보기</a>
+  <a href="www.naver.com" style="font-size:13px;text-decoration-line:none;margin-left:130px">더보기</a>
 </div>`
 
-
-// 현재위치 버튼입니다.
-let currentLocationButton = 
-`<div style="width:190px;height:90px;background-color:white;padding:5px 5px;border:1px solid grey;border-radius:5px">
-</div>`
 
   // 주소 더미 데이터
   var listData = [
@@ -86,7 +81,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     const options = {
       // center에 위도, 경도 좌표를 설정 
       center: new window.kakao.maps.LatLng(37.573898277022,126.9731314753), // 지도의 중심 좌표
-      level:3 // 확대되어 보여지는 레벨  설정 
+      level:4 // 확대되어 보여지는 레벨  설정 
     };
 
     // 기본 주소 객체 생성 
@@ -193,19 +188,17 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
-
-
   },[filterOrPosition])
 
+    //document.getElementsByClassName(class)
   
 
 
   return(
     <>
-    
-    <div id="map" style={{width:width,height:height, position:position,left:left}}>
+    <div id="map" style={{width:width,height:height, position:position,left:left, border:"1px solid white"}}>
       { component === "map" ?  
-        <MyPosition onClick={()=>{setFilterOrPosition(!filterOrPosition)}}>{filterOrPosition ? "위치 검색 OFF": "주변 위치로 검색"}</MyPosition>: null}
+        <MyPosition onClick={()=>{setFilterOrPosition(!filterOrPosition)}}>{filterOrPosition ? "위치 검색 OFF": "내 주변 검색"}</MyPosition>: null}
     </div>
     </>
   )
