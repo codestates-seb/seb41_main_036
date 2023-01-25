@@ -310,7 +310,7 @@ const PlaceDetail = ():JSX.Element => {
             <div>
               <p><FaMapMarkerAlt color="grey" size="14"></FaMapMarkerAlt>{attractionData!.attractionAddress}</p>
             </div>
-            <KakaoMap width="60%" height="320px" dataList={attractionData!.attractionAddress} position="absolute" left="20%"></KakaoMap>
+            <KakaoMap width="60%" height="320px" dataList={attractionData!.attractionAddress} position="absolute" left="20%" regionFilter="null"></KakaoMap>
           </Container>
         <Post ref={scrollRefContent}>
           <PostHeader>
