@@ -66,17 +66,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ResponseCookie cookie = getResponseCookie(refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setHeader("Set-Cookie", String.valueOf(cookie));
-        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
-
-//        setCookie(response, refreshToken);
+//        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
 
         Gson gson = new Gson();
         LoginResponseDto of = LoginResponseDto.of(authMember, BEARER_PREFIX + accessToken);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-
-
-        //tokenProvider.refreshTokenSetHeader(refreshToken,response); // RefreshToken Header response 생성
 
     }
 
