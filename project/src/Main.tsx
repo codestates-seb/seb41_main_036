@@ -79,16 +79,24 @@ function Main() {
 
   return (
     <>
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       <Header>
+=======
+      {/* <Header>
+>>>>>>> 26d4e2ac4589f4caa20711c03e900f061c2ec9d9
         <Header.HeaderTop />
         <Header.HeaderBody />
-      </Header>
+      </Header> */}
       {/* <HiddenHeader /> */}
+<<<<<<< HEAD
       {/* <FixedOnScrollUpHeader /> */}
 =======
       <FixedOnScrollUpHeader />
 >>>>>>> Stashed changes
+=======
+      <FixedOnScrollUpHeader />
+>>>>>>> 26d4e2ac4589f4caa20711c03e900f061c2ec9d9
       <Carousel />
       <Ranking />
       <Body>

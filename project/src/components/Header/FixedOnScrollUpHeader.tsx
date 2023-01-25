@@ -1,20 +1,17 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useRecoilState } from "recoil";
+import HeaderVisibilityState from "../../recoil/HeaderState";
 import { Header } from ".";
+import { throttle } from "../../utils";
 
-const FixedHeaderOnScrollUp = () => {
+interface FixedHeaderOnScrollUpProps {
+  defaultValue?: string;
+}
+const FixedHeaderOnScrollUp = ({
+  defaultValue = "",
+}: FixedHeaderOnScrollUpProps) => {
   const pageOffsetRef = useRef<number | null>(null);
-  const [showHeader, setShowHeader] = useState(true);
-
-  const throttle = useCallback((callback: Function, delay: number) => {
-    let timerId: ReturnType<typeof setTimeout> | null = null;
-    return () => {
-      if (timerId) return;
-      timerId = setTimeout(() => {
-        callback();
-        timerId = null;
-      }, delay);
-    };
-  }, []);
+  const [showHeader, setShowHeader] = useRecoilState(HeaderVisibilityState);
 
   const handleScroll = () => {
     if (pageOffsetRef.current === null) pageOffsetRef.current = 0;
@@ -25,7 +22,7 @@ const FixedHeaderOnScrollUp = () => {
     pageOffsetRef.current = scrollY;
   };
 
-  const handlethrottleScroll = throttle(handleScroll, 200);
+  const handlethrottleScroll = throttle(handleScroll, 300);
   useEffect(() => {
     window.addEventListener("scroll", handlethrottleScroll);
     return () => {
@@ -37,7 +34,7 @@ const FixedHeaderOnScrollUp = () => {
     <>
       <Header isVisible={showHeader}>
         <Header.HeaderTop />
-        <Header.HeaderBody />
+        <Header.HeaderBody defaultValue={defaultValue} />
       </Header>
     </>
   );

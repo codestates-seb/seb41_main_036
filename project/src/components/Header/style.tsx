@@ -17,12 +17,10 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
   padding: 3px 3px 5px;
   box-shadow: ${(props) =>
     props.isVisible ? "0px 0px 10px 5px rgba(225,225,225,0.2)" : "none"};
-  border: 1px solid var(--black-200);
-
   input {
     font-family: "Pretendard Variable";
     font-size: var(--font-sm);
-    padding: 10px 35px 10px 12px;
+    padding: 10px 60px 10px 12px;
     border: 0;
     border-radius: ${(props) => (props.isVisible ? "0" : "var(--br-m)")};
     border-bottom: ${(props) =>
@@ -156,10 +154,9 @@ const HeaderTop = styled.div`
   justify-content: flex-end;
   z-index: var(--zi-four);
   position: relative;
-  width: 80rem;
+  width: 100%;
   max-width: 100%;
-  padding: 0 20px;
-  margin: 0 auto;
+  padding: 0 75px;
 `;
 const HeaderTopMenu = styled.ul`
   position: relative;
@@ -172,16 +169,19 @@ const HeaderTopMenu = styled.ul`
     height: 100%;
     list-style: none;
     color: var(--black-900);
+    button {
+      border: 0;
+      background-color: transparent;
+    }
   }
 `;
 const HeaderBody = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  width: 80rem;
+
   max-width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 75px;
   svg.logo {
     width: 200px;
   }
@@ -219,18 +219,18 @@ const Profile = styled.div`
   }
 `;
 const HeaderWrapper = styled.header<{ isVisible: boolean }>`
-  background-color: var(--black-250);
+  background-color: white;
   flex-direction: column;
   position: sticky;
   z-index: var(--zi-five);
   top: ${(props) => (props.isVisible ? "0" : "-104px")};
   display: flex;
-  margin: 0 auto;
   transition: all 0.7s cubic-bezier(0.3, 1, 0.65, 1);
-  will-change: top;
+  will-change: auto;
 `;
 const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
   width: 100%;
+
   background-color: ${(props) =>
     props.backgroundOn ? "white" : "transparent"};
 `;
