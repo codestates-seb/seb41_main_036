@@ -72,25 +72,12 @@ const throttle = (callback: Function, delay: number, e?: MouseEvent) => {
   let timerId: ReturnType<typeof setTimeout> | null = null;
   return () => {
     if (timerId) {
-<<<<<<< HEAD
       return;
     }
     timerId = setTimeout(() => {
       callback(e);
       timerId = null;
     }, delay);
-=======
-      console.log(timerId, "util-돌아가");
-      return;
-    }
-    console.log("util-없어", timerId);
-    timerId = setTimeout(() => {
-      callback(e);
-      console.log(timerId, "settimeout내부-이제끝남");
-      timerId = null;
-    }, delay);
-    console.log("util-마지막 코드:new", timerId);
->>>>>>> 26d4e2ac4589f4caa20711c03e900f061c2ec9d9
   };
 };
 

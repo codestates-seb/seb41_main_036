@@ -9,6 +9,8 @@ import PlaceCardComponent from "./components/PlaceCardComponent";
 import Carousel from "./components/Carousel";
 import Ranking from "./components/Ranking";
 import { Link } from "react-router-dom";
+import { Header } from "./components/Header";
+import HiddenHeader from "./components/Header/HiddenHeader";
 
 const Body = styled.div`
   width: 83.5%;
@@ -79,24 +81,9 @@ function Main() {
 
   return (
     <>
-<<<<<<< HEAD
-<<<<<<< Updated upstream
       <Header>
-=======
-      {/* <Header>
->>>>>>> 26d4e2ac4589f4caa20711c03e900f061c2ec9d9
-        <Header.HeaderTop />
-        <Header.HeaderBody />
-      </Header> */}
-      {/* <HiddenHeader /> */}
-<<<<<<< HEAD
-      {/* <FixedOnScrollUpHeader /> */}
-=======
-      <FixedOnScrollUpHeader />
->>>>>>> Stashed changes
-=======
-      <FixedOnScrollUpHeader />
->>>>>>> 26d4e2ac4589f4caa20711c03e900f061c2ec9d9
+        <FixedOnScrollUpHeader />
+      </Header>
       <Carousel />
       <Ranking />
       <Body>
