@@ -201,7 +201,7 @@ const PlaceDetail = ():JSX.Element => {
   const [attractionData, setAttractionData] = useState<PlaceData>();// 명소 정보 저장 
   const [postData, setPostData] = useState<PostData[]|undefined>();
   const url = "http://pikcha36.o-r.kr:8080/attractions/1"; 
-  const url2 = "http://pikcha36.o-r.kr:8080/posts/details/1?page=1&size=8"; 
+  const url2 = "http://pikcha36.o-r.kr:8080/posts/home"; 
   const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100"
   const navigate = useNavigate();
 

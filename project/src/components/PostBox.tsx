@@ -153,7 +153,7 @@ const PostBox = ({postData}:any) => {
         <PostCard></PostCard>
         <PostCard></PostCard>
       <Page>
-        <Pagination total={postData.length} limit={5} page={page} setPage={setPage}></Pagination>
+        <Pagination total={postData.length} limit={limit} page={page} setPage={setPage}></Pagination>
       </Page>
       </PostContainer>
     </>
