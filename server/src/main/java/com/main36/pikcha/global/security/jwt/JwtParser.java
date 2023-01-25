@@ -1,6 +1,6 @@
 package com.main36.pikcha.global.security.jwt;
 
-import com.main36.pikcha.domain.refreshToken.exception.*;
+import com.main36.pikcha.global.security.jwt.exception.*;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;

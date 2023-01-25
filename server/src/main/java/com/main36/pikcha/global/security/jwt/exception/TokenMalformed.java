@@ -1,4 +1,4 @@
-package com.main36.pikcha.domain.refreshToken.exception;
+package com.main36.pikcha.global.security.jwt.exception;
 
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;

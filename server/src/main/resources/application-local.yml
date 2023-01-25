@@ -6,11 +6,6 @@ spring:
       max-file-size: 10MB  # 2MB 제한
       max-request-size: 10MB # 2MB 제한
 
-  cache:
-    type: redis
-  redis:
-    host: localhost
-    port: 6379
   h2:
     console:
       enabled: true

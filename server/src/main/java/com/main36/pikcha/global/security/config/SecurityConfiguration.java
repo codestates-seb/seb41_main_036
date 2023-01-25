@@ -71,7 +71,7 @@ public class SecurityConfiguration {
                                 "/token/refresh/*",
                                 "/attractions", "/attractions/**",
                                 "/posts", "/posts/*", "/posts/**",
-                                "/comments", "comments/*",
+                                "/comments", "/comments/*",
                                 "/oauth2/authorization/*",
                                 "/receive-token.html/**"
                         ).permitAll()
