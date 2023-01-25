@@ -48,6 +48,7 @@ const SuggestionBox = ({
   useEffect(() => {
     if (mouseTriggered) setMouseTriggered(false);
   }, [mouseTriggered]);
+
   const handleMouseOver = () => {
     setMouseTriggered(true);
     onSelectionChange(MAX_SUGGEST + 1);
@@ -90,8 +91,8 @@ const SuggestionBox = ({
 
 interface AttractionsProps {
   info: { name: string; id: number; address: string };
-  matchedletter: number[][];
-  exactmatchedletter: number[][];
+  matchedLetter: number[][];
+  exactMatchedLetter: number[][];
 }
 
 interface SearchBarItemProps {
@@ -105,7 +106,7 @@ interface SearchBarItemProps {
 
 const SuggestionItem = ({
   trimmedSearchValue,
-  attraction: { info, exactmatchedletter },
+  attraction: { info, exactMatchedLetter },
   selectedEl,
   onSelectionChange,
   onMouseEvent,
@@ -116,7 +117,7 @@ const SuggestionItem = ({
     onSelectionChange(order);
   };
 
-  let letterIndex = exactmatchedletter.flat();
+  let letterIndex = exactMatchedLetter.flat();
 
   return (
     <AttractionItem selectedEl={selectedEl} onMouseOver={handleMouseOver}>

@@ -8,30 +8,47 @@ import {
   MouseEvent,
   KeyboardEvent,
   FormEvent,
+  lazy,
+  Suspense,
 } from "react";
-import { SuggestionBox } from "./SuggestionBox";
-import { SearchForm } from "./style";
-import useClickScrollDetect from "../../utils/useClickScrollDetect";
-import { getfilteredAttractions } from "../../utils/functions";
+import axios from "axios";
+import { SearchForm, AttractionItemContent } from "./style";
+import useClickDetect from "../../hooks/useClickDetect";
+import { getfilteredAttractions } from "../../utils";
+import { useRecoilState } from "recoil";
+import HeaderVisibilityState from "../../recoil/HeaderState";
 import { AttractionsData } from "../../data/searchBarData";
 import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoCloseOutline as ResetIcon } from "react-icons/io5";
-
+const SuggestionBox = lazy(() =>
+  import("./SuggestionBox").then((module) => ({
+    default: module.SuggestionBox,
+  }))
+);
 const MAX_SUGGEST = 5;
+
 interface SearchBarProps {
   defaultValue: string;
 }
 const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [inputValue, setInputValue] = useState(defaultValue);
   const [selected, setSelected] = useState(-1);
-  const [searchValue, setSearchValue] = useState("");
   const [isComposing, setIsComposing] = useState(false);
-  const { ref, isVisible, setIsVisible } = useClickScrollDetect();
+  const { ref, isVisible, setIsVisible } = useClickDetect();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const searchValueRef = useRef<string>("");
+  const [showHeader, setShowHeader] = useRecoilState(HeaderVisibilityState);
 
   const { trimmedSearchValue, filteredAttractions, numOfFilteredAttractions } =
     useMemo(() => {
-      const trimmedSearchValue = searchValue
+      if (searchValueRef.current.trim() === "")
+        return {
+          trimmedSearchValue: "",
+          filteredAttractions: [],
+          numOfFilteredAttractions: 0,
+        };
+
+      const trimmedSearchValue = searchValueRef.current
         .trim()
         .replace(/[`~!@#$%^&*_|+\-=?;:'"<>\\{\\}\\[\]\\\\/]/gim, " ")
         .replace(/\s\s+/g, " ");
@@ -44,15 +61,22 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
         trimmedSearchValue,
         ...result,
       };
-    }, [searchValue]);
+    }, [searchValueRef.current]);
+
   useEffect(() => {
     if (!isVisible) setSelected(-1);
-    setSearchValue(inputValue);
+    searchValueRef.current = inputValue;
   }, [isVisible]);
+
+  useEffect(() => {
+    if (!showHeader) setIsVisible(false);
+  }, [showHeader]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue((e.target as HTMLInputElement).value);
-    startTransition(() => setSearchValue((e.target as HTMLInputElement).value));
+    startTransition(() => {
+      searchValueRef.current = (e.target as HTMLInputElement).value;
+    });
     setSelected(-1);
     e.target.value.trim() === "" ? setIsVisible(false) : setIsVisible(true);
   };
@@ -75,7 +99,7 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       setSelected((p) => (p + 1) % numOfitem);
     } else if (e.key === "ArrowUp" && selected > -1) {
       setSelected((p) => p - 1);
-      if (selected === 0) setInputValue(searchValue);
+      if (selected === 0) setInputValue(searchValueRef.current);
       e.preventDefault();
     } else if (e.key === "Enter" && selected > -1) {
     }
@@ -83,7 +107,7 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
   const handleResetIconClick = (e: MouseEvent<SVGElement>) => {
     e.stopPropagation();
     setInputValue("");
-    setSearchValue("");
+    searchValueRef.current = "";
     inputRef.current?.focus();
   };
   const handleSearchIconClick = (e: MouseEvent<SVGElement>) => {
@@ -116,17 +140,25 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       )}
       <SearchIcon className="search-icon" onClick={handleSearchIconClick} />
       {isVisible && (
-        <SuggestionBox
-          trimmedSearchValue={trimmedSearchValue}
-          filteredAttractions={filteredAttractions}
-          numOfFilteredAttractions={numOfFilteredAttractions}
-          selected={selected}
-          onInputChange={setInputValue}
-          onSelectionChange={setSelected}
-        />
+        <Suspense fallback={<Loading />}>
+          <SuggestionBox
+            trimmedSearchValue={trimmedSearchValue}
+            filteredAttractions={filteredAttractions}
+            numOfFilteredAttractions={numOfFilteredAttractions}
+            selected={selected}
+            onInputChange={setInputValue}
+            onSelectionChange={setSelected}
+          />
+        </Suspense>
       )}
     </SearchForm>
   );
 };
-
+function Loading() {
+  return (
+    <AttractionItemContent as="li" type="notice">
+      로딩중...
+    </AttractionItemContent>
+  );
+}
 export default SearchBar;

@@ -5,22 +5,19 @@ function useClickDetect() {
   const ref = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleClickOutside = (e: MouseEvent) => {
-    if (!ref.current!.contains(e.target as Node)) {
+  const handleClick = (e: MouseEvent) => {
+    if (isVisible && !ref.current!.contains(e.target as Node)) {
       setIsVisible(false);
     }
   };
-  const handleScroll = () => {
-    setIsVisible(false);
-  };
+
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener("click", handleClick);
+
     return () => {
-      document.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [isVisible]);
 
   return { ref, isVisible, setIsVisible };
 }
