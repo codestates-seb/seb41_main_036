@@ -179,7 +179,7 @@ const HeaderBody = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-
+  display: flex;
   max-width: 100%;
   padding: 0 75px;
   svg.logo {
@@ -205,8 +205,7 @@ const HeaderBodyMenu = styled.ul`
   }
 `;
 const Profile = styled.div`
-  position: absolute;
-  transform: translate(3150%, -5%);
+  margin-left: 20px;
   width: 40x;
   height: 40px;
   border-radius: 50%;
