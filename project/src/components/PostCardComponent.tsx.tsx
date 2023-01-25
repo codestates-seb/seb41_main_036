@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { BsEye } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
 import { ArrayPostType } from "../pages/Post";
+import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div<{ margin: string }>`
   margin: ${(props) => props.margin};
@@ -107,32 +108,39 @@ const PostCardComponent = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  console.log(posts);
+  const navigate = useNavigate();
   return (
     <>
       <PostContainer margin={margin}>
-        {currentPosts.map((el: any) => {
+        {currentPosts.map((post: any) => {
           return (
-            <PostCard key={el.postId} width={width}>
+            <PostCard key={post.postId} width={width}>
               <div>
-                <img src={el.picture}></img>
+                <img
+                  src={post.picture}
+                  onClick={() => navigate(`/posts/detail/${post.postId}`)}
+                ></img>
               </div>
               <div>
                 <div>
-                  <img src={el.picture}></img>
+                  <img src={post.picture}></img>
                   <div>
-                    <div>{el.username}</div>
-                    <span>{el.createdAt.slice(0, 10)}</span>
+                    <div>{post.username}</div>
+                    <span>{post.createdAt.slice(0, 10)}</span>
                   </div>
                 </div>
                 <div>
                   <BsEye></BsEye>
-                  <p>{el.views}</p>
+                  <p>{post.views}</p>
                   <AiFillHeart></AiFillHeart>
-                  <p>{el.likes}</p>
+                  <p>{post.likes}</p>
                 </div>
               </div>
-              <div>{el.postTitle}</div>
+              <div
+                onClick={() => navigate(`/posts/detail/${post.attractionId}`)}
+              >
+                {post.postTitle}
+              </div>
             </PostCard>
           );
         })}

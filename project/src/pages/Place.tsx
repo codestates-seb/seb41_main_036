@@ -173,6 +173,7 @@ const Place = () => {
                     limit={9}
                     curPage={curPage}
                     width="32%"
+                    height="240px"
                   />
                 )}
               </PlaceBox>

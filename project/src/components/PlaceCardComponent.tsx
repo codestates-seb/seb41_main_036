@@ -6,14 +6,14 @@ import { MdModeComment } from "react-icons/md";
 import { ArrayPlaceType } from "../pages/Place";
 import { useNavigate } from "react-router-dom";
 
-const PlaceCardWrapper = styled.div<{ width: string }>`
+const PlaceCardWrapper = styled.div<{ width: string; height: string }>`
   width: ${(props) => props.width};
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
   transition: all 0.3s ease;
   img {
-    height: 170px;
+    height: ${(props) => props.height};
     border-top-left-radius: var(--br-s);
     border-top-right-radius: var(--br-s);
     cursor: pointer;
@@ -83,11 +83,13 @@ const PlaceCardComponent = ({
   limit,
   curPage = 1,
   width,
+  height,
 }: {
   placesData: ArrayPlaceType;
   limit: number;
   curPage?: number;
   width: string;
+  height: string;
 }) => {
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
@@ -96,8 +98,12 @@ const PlaceCardComponent = ({
   return (
     <>
       {currentPlacesData &&
-        currentPlacesData.map((place, index) => (
-          <PlaceCardWrapper key={place.attractionId} width={width}>
+        currentPlacesData.map((place) => (
+          <PlaceCardWrapper
+            key={place.attractionId}
+            width={width}
+            height={height}
+          >
             <img
               alt={place.attractionName}
               src={place.fixedImage}

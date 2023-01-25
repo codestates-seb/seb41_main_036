@@ -25,7 +25,7 @@ function App() {
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />
             <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
-            <Route path="/post/detail/:id" element={<DetailPost />} />
+            <Route path="/posts/detail/:id" element={<DetailPost />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </RecoilRoot>

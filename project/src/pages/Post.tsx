@@ -143,7 +143,7 @@ const Post = () => {
           {postsData && (
             <PostCardComponent
               posts={postsData}
-              limit={5}
+              limit={9}
               margin="0"
               width="31%"
               curPage={curPage}
@@ -153,7 +153,7 @@ const Post = () => {
           {postsData && (
             <PaginationComponent
               props={postsData}
-              limit={5}
+              limit={9}
               curPage={curPage}
               setCurPage={setCurPage}
             />

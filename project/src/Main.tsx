@@ -96,6 +96,7 @@ function Main() {
                 curPage={1}
                 limit={4}
                 width="23.5%"
+                height="180px"
               ></PlaceCardComponent>
             )}
           </PlaceCardWrapper>

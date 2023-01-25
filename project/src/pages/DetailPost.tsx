@@ -6,6 +6,7 @@ import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import PostComment from "../components/PostComment";
 import axios from "axios";
 import Button from "../components/Button";
+import { useParams } from "react-router-dom";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
@@ -201,9 +202,10 @@ interface PostDetailType {
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
   const [comment, setComment] = useState("");
+  const { id } = useParams();
   useEffect(() => {
     axios
-      .get(`/posts/1`)
+      .get(`/posts/${id}`)
       .then((res) => setPost(res.data.data))
       .catch((err) => console.error(err));
   }, []);
