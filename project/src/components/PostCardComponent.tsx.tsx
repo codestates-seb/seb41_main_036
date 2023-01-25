@@ -5,7 +5,7 @@ import { ArrayPostType } from "../pages/Post";
 import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div<{ margin: string }>`
-  margin: ${(props) => props.margin};
+  margin-left: ${(props) => (props.margin === "0" ? "0" : props.margin)};
   display: flex;
   flex-wrap: wrap;
 `;
