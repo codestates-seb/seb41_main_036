@@ -24,12 +24,12 @@ const Footer = styled.div`
 function Main() {
   return (
     <>
-      <Header>
+      {/* <Header>
         <Header.HeaderTop />
         <Header.HeaderBody />
-      </Header>
+      </Header> */}
       {/* <HiddenHeader /> */}
-      {/* <FixedOnScrollUpHeader /> */}
+      <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
       <Body></Body>
