@@ -6,9 +6,7 @@ import {
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
 import axios from "axios";
-import { PlaceType } from "../pages/Place";
-import { useRecoilState } from "recoil";
-import { locationFilterValue } from "../recoil/state";
+import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -90,19 +88,25 @@ const SelectPost = styled.ul`
   }
 `;
 export default function LocationFilter({
-  setPlaceData,
+  setData,
+  checkedList,
+  setCheckedList,
 }: {
-  setPlaceData: Dispatch<SetStateAction<PlaceType>>;
+  checkedList: string[];
+  setCheckedList: Dispatch<SetStateAction<string[]>>;
+  setData: any;
 }) {
-  const [checkedList, setCheckedList] = useRecoilState(locationFilterValue);
-  const [openPost, setOpenPost] = useState(true);
-
+  const [openLocation, setOpenLocation] = useState(true);
+  const pageLocation = useLocation();
   useEffect(() => {
     axios
-      .post(`/attractions/filter?sort=newest`, {
+      .post(`${pageLocation.pathname}/filter?page=1&size=100&sort=newest`, {
         provinces: checkedList,
       })
-      .then((res) => setPlaceData(res.data.data))
+      .then((res) => {
+        if (pageLocation.pathname === "/attractions") setData(res.data.data);
+        if (pageLocation.pathname === "/posts") setData(res.data.data);
+      })
       .catch((err) => console.error(err));
   }, [checkedList]);
   const onCheckItem = (checked: boolean, item: string) => {
@@ -115,7 +119,7 @@ export default function LocationFilter({
   const allRemove = () => {
     setCheckedList([]);
   };
-  let Post = [
+  const Post = [
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
@@ -165,15 +169,15 @@ export default function LocationFilter({
       <SelectBox>
         <div>
           <span>지역</span>
-          <button onClick={() => setOpenPost(!openPost)}>
-            {openPost ? (
+          <button onClick={() => setOpenLocation(!openLocation)}>
+            {openLocation ? (
               <MdOutlineKeyboardArrowUp />
             ) : (
               <MdOutlineKeyboardArrowDown />
             )}
           </button>
         </div>
-        {openPost
+        {openLocation
           ? Post.map((el) => (
               <form key={el.id}>
                 <input

@@ -7,7 +7,7 @@ import { FcDownload } from "react-icons/fc";
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: #fcfcfc;
   margin-top: 20px;
 
@@ -140,8 +140,6 @@ const TagWrapper = styled.div`
     }
   }
 `;
-const url = "http://pikcha36.o-r.kr:8080/posts/imagestest4";
-
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
   const [previewList, setPreviewList] = useState<string[][]>([]); // 프리뷰 map 돌릴 값 저장용
@@ -203,6 +201,13 @@ const WritePost = () => {
       setTag("");
     }
   };
+  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axios
+      .delete("/posts/delete/5/1")
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   const handleRemovePreview = (
     e: React.MouseEvent<HTMLButtonElement>,
     idx: number
@@ -213,23 +218,32 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const tags = [tag, tag];
     const formData = new FormData();
-    formData.append("title", title);
+    formData.append("postTitle", title);
     tags.forEach((tag) => {
-      formData.append("tags", tag);
+      formData.append("postHashTags", tag);
     });
     imgFiles.forEach((img) => {
-      formData.append("imgs", img);
+      formData.append("postImageFiles", img);
     });
     content.forEach((text) => {
-      formData.append("content", text);
+      formData.append("postContents", text);
     });
+    axios
+      .post(`/posts/register/1/1`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
+
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsModal(!isModal);
   };
+
   return (
     <>
       <Container>
@@ -411,7 +425,6 @@ const Modal = ({
     }
   };
 
-  console.log(imgFiles);
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
@@ -425,6 +438,7 @@ const Modal = ({
     imgRef.current!.click();
     imgRef.current!.value = "";
   };
+
   return (
     <ModalContainer>
       <input type="file" accept="image/*" ref={imgRef} onChange={previewImg} />

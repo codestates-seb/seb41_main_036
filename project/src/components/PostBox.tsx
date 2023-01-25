@@ -1,50 +1,43 @@
 import styled from "styled-components";
 import { BsEye} from 'react-icons/bs';
 import {AiFillHeart} from 'react-icons/ai';
-import {Pagination,Page} from "./PaginationComponent";
-import { useState } from "react";
 
 
 const PostContainer = styled.div`
-  width: 80%;
+  width: 85%;
   height: 600px;
-  background-color:#f8f9fa;
-  margin: 0 12%;
+  background-color: #6d9faa;
+  margin: 0 auto;
   display:flex;
   flex-wrap: wrap;
 `;
 
 
 const PostCard = styled.div`
-  width: 22%;
-  height: 230px;
+  width: 400px;
+  height: 300px;
   background-color: #ffffff;
   margin: 10px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  :hover{
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-  }
 
   >div:nth-child(1){
     width: 100%;
-    height: 150px;
+    height: 210px;
     background-image:cover;
     >img{
       border-radius: 5px;
       margin: 5px;
       width: 97%;
-      height: 150px;
+      height: 205px;
       background-image:cover;
     }
 
   }
   >div:nth-child(2){
     width: 100%;
-    height: 50px;
-    font-size:14px;
+    height: 61px;
     clear: both;
     background-color: #ffffff;
     display: flex;
@@ -54,8 +47,8 @@ const PostCard = styled.div`
       height: 60px;
       display: flex;
       >img{
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         background-image: cover;
         border-radius: 50%;
         margin:10px 10px;
@@ -67,7 +60,7 @@ const PostCard = styled.div`
           font-weight: bold;
         }
         >span{
-          font-size: 11px;
+          font-size: 12px;
           color:grey;
         }
       }
@@ -76,7 +69,7 @@ const PostCard = styled.div`
       display: flex;
       width: 90px;
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 14px;
       color:grey;
       >p{
         margin: 0 10px 0 3px;
@@ -88,10 +81,8 @@ const PostCard = styled.div`
     height: 20px;
     background-color: white;
     margin-left: 15px;
-    margin-top: 5px;
     color:grey;
     font-weight: bold;
-    font-size: 14px;
   }
 `
 type PostData = {
@@ -108,12 +99,6 @@ type PostData = {
 
 
 const PostBox = ({postData}:any) => {
-
-  const [posts, setPosts] = useState([]); 
-  const limit = 8; // 여기 조절해서 한 페이지당 게시물 수 바꿀 수 있습니다. 
-  const [page, setPage] = useState(1); 
-  const offset = (page - 1) * limit; 
-
   return(
     <>
       <PostContainer>
@@ -140,24 +125,7 @@ const PostBox = ({postData}:any) => {
             )
           })
         }
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-        <PostCard></PostCard>
-      <Page>
-        <Pagination total={postData.length} limit={limit} page={page} setPage={setPage}></Pagination>
-      </Page>
       </PostContainer>
     </>
   )
 }
-
-export default PostBox;

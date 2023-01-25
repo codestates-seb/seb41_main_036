@@ -26,8 +26,3 @@ export const LoggedUser = atom({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
-
-export const locationFilterValue = atom<string[]>({
-  key: "locationFilterValue",
-  default: []
-});

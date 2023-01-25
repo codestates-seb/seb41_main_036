@@ -4,17 +4,18 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { locationFilterValue } from "../recoil/state";
 import PlaceCardComponent from "../components/PlaceCardComponent";
+import Loading from "../components/Loading";
+import PaginationComponent from "../components/PaginationComponent";
 
 const PlaceWrapper = styled.div`
   display: flex;
+  width: 83.5%;
+  margin: 0 auto;
 `;
 
 const LocationWrapper = styled.nav`
-  width: 20%;
-  height: 90vh;
+  min-width: 210px;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
@@ -23,16 +24,15 @@ const LocationWrapper = styled.nav`
 const PlaceContainer = styled.div`
   margin: 0 20px;
   width: 80%;
-  height: 90vh;
 `;
 
 const PlaceFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
+  margin-left: 5px;
   width: 95%;
-  height: 10%;
+  height: 50px;
 
   > span {
     font-size: var(--font-base);
@@ -41,7 +41,7 @@ const PlaceFilterContainer = styled.div`
   }
 `;
 
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
   margin: 0 10px;
   padding-bottom: 3px;
   border: none;
@@ -57,57 +57,75 @@ const FilterButton = styled.button`
 `;
 
 const PlaceBox = styled.div`
-  width: 100%;
-  height: 90%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-
-  > div {
-    min-width: 30%;
-    height: 30%;
-    border-radius: var(--br-s);
-    background-color: white;
-  }
-
-  > div > img {
-    width: 400px;
-    height: 250px;
-    border-radius: var(--br-s);
-  }
+  margin-top: 20px;
 `;
 
-export type PlaceType = {
+export interface PlaceType {
   attractionId: number;
   attractionName: string;
   fixedImage: string;
   likes: number;
   numOfPosts: number;
   saves: number;
-}[];
+}
+
+export interface PageInfoType {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface ArrayPlaceType extends Array<PlaceType> {}
 
 const Place = () => {
-  const [placeData, setPlaceData] = useState<PlaceType>([]);
-  const [checkedList] = useRecoilState(locationFilterValue);
+  const [placesData, setPlacesData] = useState<ArrayPlaceType>();
+  const [checkedList, setCheckedlist] = useState<string[]>([]);
+  const [sortClick, setSortClick] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [onFilter, setOnFliter] = useState(0);
+  const [curPage, setCurPage] = useState(1);
+
+  const sortList: { kor: string; eng: string }[] = [
+    {
+      kor: "최신순",
+      eng: "newest",
+    },
+    {
+      kor: "리뷰순",
+      eng: "posts",
+    },
+    {
+      kor: "인기순",
+      eng: "likes",
+    },
+  ];
+  const handleSort = (idx: number) => {
+    setOnFliter(idx);
+  };
   useEffect(() => {
+    setIsLoading(true);
     axios
-      .get(`/attractions`)
+      .get(`/attractions?page=1&size=100`)
       .then((res) => {
-        setPlaceData(res.data.data);
+        setIsLoading(false);
+        setPlacesData(res.data.data);
       })
       .catch((err) => console.error(err));
   }, []);
-  //선택한 지역이 []일 때 최신순, 리뷰순, 인기순 클릭 시 화면 렌더 안됨.
-  //백단에서 선택한 지역이 null일 시 page번호와 size번호로 조회해서 sort로 반환
   const handleSortPlace = (sort: string) => {
     axios
-      .post(`/attractions/filter?sort=${sort}`, {
+      .post(`/attractions/filter?page=1&size=100&sort=${sort}`, {
         provinces: checkedList,
       })
-      .then((res) => setPlaceData(res.data.data))
+      .then((res) => {
+        setPlacesData(res.data.data);
+        setSortClick(!sortClick);
+      })
       .catch((err) => console.error(err));
   };
-  console.log(placeData);
   return (
     <>
       <Header>
@@ -116,29 +134,55 @@ const Place = () => {
       </Header>
       <PlaceWrapper>
         <LocationWrapper>
-          <LocationFilter setPlaceData={setPlaceData} />
+          {placesData && (
+            <LocationFilter
+              setData={setPlacesData}
+              checkedList={checkedList}
+              setCheckedList={setCheckedlist}
+            />
+          )}
         </LocationWrapper>
         <PlaceContainer>
           <PlaceFilterContainer>
-            <span>총 {}개의 명소</span>
+            <span>총 {placesData && placesData.length}개의 명소</span>
             <div>
-              <FilterButton onClick={() => handleSortPlace("newest")}>
-                최신순
-              </FilterButton>
-              <FilterButton onClick={() => handleSortPlace("posts")}>
-                리뷰순
-              </FilterButton>
-              <FilterButton onClick={() => handleSortPlace("likes")}>
-                인기순
-              </FilterButton>
+              {sortList.map((sort, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => {
+                    handleSort(idx);
+                    handleSortPlace(sort.eng);
+                  }}
+                >
+                  {sort.kor}
+                </FilterButton>
+              ))}
             </div>
           </PlaceFilterContainer>
-          <PlaceBox>
-            {placeData &&
-              placeData.map((data, idx) => (
-                <PlaceCardComponent key={idx} data={data} />
-              ))}
-          </PlaceBox>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <PlaceBox>
+                {placesData && (
+                  <PlaceCardComponent
+                    placesData={placesData}
+                    limit={9}
+                    curPage={curPage}
+                  />
+                )}
+              </PlaceBox>
+            </>
+          )}
+          {placesData && (
+            <PaginationComponent
+              props={placesData}
+              limit={9}
+              curPage={curPage}
+              setCurPage={setCurPage}
+            />
+          )}
         </PlaceContainer>
       </PlaceWrapper>
     </>
