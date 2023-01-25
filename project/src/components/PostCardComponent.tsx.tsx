@@ -108,7 +108,7 @@ const PostCardComponent = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  console.log(posts);
+  //console.log(posts);
   return (
     <>
       <PostContainer margin={margin}>

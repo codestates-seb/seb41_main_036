@@ -275,7 +275,7 @@ const Map = () => {
   // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false)
   //현재 눌린 버튼의 값 설정
-  const [regionFilter,setRegionFilter] = useState('내 주변')
+  const [regionFilter,setRegionFilter] = useState('전체')
   //우측 상세페이지 모달창 On/Off 설정
   const [detailModal, setDetailModal] = useState(false);
 
@@ -284,7 +284,7 @@ const Map = () => {
   },[regionFilter])
 
   let Post = [
-    { id: "0", Post: "내 주변" },
+    { id: "0", Post: "전체" },
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
@@ -387,8 +387,26 @@ const Map = () => {
         </PlaceDetailModal> 
       : null}
       { detailModal ? 
-        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="750px" regionFilter = {regionFilter} ></KakaoMap> : 
-        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="350px" regionFilter = {regionFilter} ></KakaoMap>
+        <KakaoMap 
+          width="100%" 
+          height="94vh" 
+          dataList={listData} 
+          position="absolute" 
+          left="750px" 
+          regionFilter = {regionFilter} 
+          component = "map" 
+          ></KakaoMap> 
+          :
+
+          <KakaoMap 
+          width="100%" 
+          height="94vh" 
+          dataList={listData} 
+          position="absolute" 
+          left="350px" 
+          regionFilter = {regionFilter} 
+          component = "map"
+          ></KakaoMap>
         }
     </Container>
     </>

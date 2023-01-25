@@ -208,10 +208,17 @@ const PlaceDetail = (): JSX.Element => {
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
 
+  const [bookmarkSaves, setBookmarkSaves] = useState(false);
+  const [likes,setLikes] = useState(false);
+
   const { id } = useParams();
   const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
   const url2 = `http://pikcha36.o-r.kr:8080/posts/details/${id}?page=1&size=8`;
-  const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
+  //const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
+
+  const url4 = `http://localhost:3000/attractions/saves/1/1`;
+  const url5 = `http://localhost:3000/attractions/likes/1/1`;
+  
   const navigate = useNavigate();
 
   function onScroll() {
@@ -244,12 +251,38 @@ const PlaceDetail = (): JSX.Element => {
       console.log('복사 실패')
     }
   }
+  //console.log('여기',attractionData)
+
+  const handleClickBookmark = async () => { 
+
+    axios.post(url4).then((res)=>{
+      console.log(res.data.data)
+      if(res.data.data.isSaves){
+        setBookmarkSaves(true);
+        console.log(bookmarkSaves)
+      }
+    })
+  }
+
+  // 여기
+  const handleClickLikes = () => {
+    console.log('누름')
+    axios.post(url5).then((res)=>{
+      console.log(res.data.data.isVoted)
+      if(res.data.data.isVoted){
+        setLikes(res.data.data.isVoted);
+        console.log(likes)
+      }
+    })
+  }
 
   useEffect(() => {
+    //잠깐 멈춤 
     axios.all([axios.get(url), axios.get(url2)]).then(
       axios.spread((res1, res2) => {
         setAttractionData(res1.data.data);
         setPostData(res2.data.data);
+        console.log('요청중')
       })
     );
 
@@ -260,7 +293,7 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", updateScroll);
     };
-  }, [attractionData === undefined, postData === undefined]);
+  }, []);
 
 
   return (
@@ -290,14 +323,17 @@ const PlaceDetail = (): JSX.Element => {
               {" "}
               <SlNote size="16" />
             </div>
-            <div>
-              <BsBookmarkFill size="16" />
+            {/* <button onClick = {() => {setBookmarkSaves (true)} }></button> */}
+            <div onClick={()=>handleClickBookmark()}>
+              <BsBookmarkFill size="16"  fill={bookmarkSaves ? "red" : "grey"}/>
             </div>
-            <MarkerCount color={attractionData!.saves === 0 ? "red" : "grey"}>
+            <MarkerCount>
               {attractionData!.saves}
             </MarkerCount>
-            <div>
-              <AiFillHeart size="16" />
+            <div onClick = {()=>handleClickLikes()}>
+              
+              <AiFillHeart size="16" color = {likes === true ? "red" : "grey"} /> 
+
             </div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
@@ -336,6 +372,7 @@ const PlaceDetail = (): JSX.Element => {
               position="absolute"
               left="20%"
               regionFilter="null"
+              component="place"
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>
