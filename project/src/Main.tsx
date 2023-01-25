@@ -7,6 +7,7 @@ import Post from "./pages/Post";
 import { Header } from "./components/Header/index";
 import HiddenHeader from "./components/Header/HiddenHeader";
 import Carousel from "./components/Carousel";
+import Ranking from "./components/Ranking";
 
 const Body = styled.div`
   width: 83.5%;
@@ -30,6 +31,7 @@ function Main() {
       {/* <HiddenHeader /> */}
       {/* <FixedOnScrollUpHeader /> */}
       <Carousel />
+      <Ranking />
       <Body></Body>
       <Footer>footer</Footer>
     </>
