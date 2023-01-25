@@ -38,16 +38,13 @@ public class TokenController {
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {
 
-        boolean b = jwtParser.verifyToken(refresh);
-        log.info("b={}",b);
+        jwtParser.verifyToken(refresh);
         Member member = memberService.findMemberByMemberId(memberId);
-        log.info("member={}", member);
         RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
         RenewTokenDto renewTokenDto =
                 builder.memberId(member.getMemberId())
                         .email(member.getEmail())
-                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail()))
-                        .accessTokenExpiresIn(jwtGenerator.getTokenExpiration(30).getTime())
+                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail(),member.getRoles()))
                         .build();
 
         return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
