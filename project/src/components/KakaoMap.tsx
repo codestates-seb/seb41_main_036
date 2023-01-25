@@ -15,6 +15,12 @@ let info =
   <a href="www.naver.com" style="font-size:13px;text-decoration-line:none;margin-left:140px">더보기</a>
 </div>`
 
+
+// 현재위치 버튼입니다.
+let currentLocationButton = 
+`<div style="width:190px;height:90px;background-color:white;padding:5px 5px;border:1px solid grey;border-radius:5px">
+</div>`
+
   // 주소 더미 데이터
   var listData = [
     '종로구 사직로 161', 

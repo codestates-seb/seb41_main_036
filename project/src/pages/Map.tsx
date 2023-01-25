@@ -12,6 +12,7 @@ import '../index.css';
 
 const Container = styled.div`
   display: flex;
+  background-color: white;
 `
 
 const PlaceList = styled.div`
@@ -339,9 +340,9 @@ const Map = () => {
           {imgUrl.map((el, index)=>{
             return(
               <Place onClick={()=>{setDetailModal(!detailModal)}} imgUrl={el} key={index}>
-              <div>종로</div>
-              <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt> 서울 종로구 세종로</p>
-            </Place>
+                <div>종로</div>
+                <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt> 서울 종로구 세종로</p>
+              </Place>
               )
             })
           }

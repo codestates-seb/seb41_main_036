@@ -84,7 +84,7 @@ const Container = styled.div`
 `;
 const NavBar = styled.div`
   display: flex;
-  margin: 0 30%;
+  margin: 0 25%;
   width: 50%;
   height: 100px;
   background-color: white;
@@ -105,7 +105,7 @@ const NavBar = styled.div`
     font-weight: bold;
     cursor: pointer;
     :nth-child(1) {
-      margin-right: 130px;
+      margin-right: 40%;
     }
   }
 `;
