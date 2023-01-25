@@ -127,7 +127,7 @@ public class AttractionController {
     public ResponseEntity<MultiResponseDto<?>> getFilteredAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                                       @Positive @RequestParam(required = false, defaultValue = "9") int size,
                                                                       @RequestParam(required = false, defaultValue = "newest") String sort,
-                                                                      @RequestBody AttractionFilterDto filterDto) {
+                                                                      @RequestBody ProvinceFilterDto filterDto) {
         switch (sort) {
             case "newest":
                 sort = "attractionId";
@@ -160,6 +160,16 @@ public class AttractionController {
         List<Attraction> attractions = attractionPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(
                 mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
+    }
+
+    // + 명소 이름 검색 핸들러
+    @GetMapping("/search")
+    public ResponseEntity<List<?>> getSearchedAttractions(/*@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                                                      @Positive @RequestParam(required = false, defaultValue = "9") int size,
+                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,*/
+                                                                      @RequestParam("keyword") String keyword) {
+        List<Attraction> attractions = attractionService.findSearchedAttractions(keyword);
+        return new ResponseEntity<>(attractions, HttpStatus.OK);
     }
 
 

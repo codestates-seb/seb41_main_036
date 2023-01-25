@@ -83,6 +83,12 @@ public class AttractionService {
         return attractionRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public List<Attraction> findSearchedAttractions(String keyword){
+        return attractionRepository.findByAttractionNameContainingIgnoreCase(keyword);
+    }
+
+
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
         //attraction image도 같이 삭제(s3에서도 이미지파일 삭제)

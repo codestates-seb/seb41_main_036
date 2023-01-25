@@ -83,6 +83,12 @@ public class PostService {
         return postRepository.findAll(pageable);
     }
 
+    public Page<Post> findAllPostsByProvincesSort(List<String> provinces, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+
+        return postRepository.findAllByProvinceIn(provinces, pageable);
+    }
+
     public Page<Post> findAllPostsByAttractionId(long attractionId, int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 

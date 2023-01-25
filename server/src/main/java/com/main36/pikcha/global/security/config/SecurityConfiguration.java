@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                                         "/posts", "/posts/*", "/posts/**",
                                         "/comments", "comments/*").permitAll()
                                 .antMatchers("admin").hasRole("ADMIN")
-                        .requestMatchers(toH2Console()).permitAll()
+//                        .requestMatchers(toH2Console()).permitAll()
                                 .anyRequest().authenticated()
                 );
 //                .oauth2Login(oauth2 -> oauth2

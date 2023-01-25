@@ -2,6 +2,7 @@ package com.main36.pikcha.domain.post.controller;
 
 
 import com.amazonaws.AmazonServiceException;
+import com.main36.pikcha.domain.attraction.dto.ProvinceFilterDto;
 import com.main36.pikcha.domain.attraction.service.AttractionService;
 
 import com.main36.pikcha.domain.hashtag.entity.HashTag;
@@ -185,6 +186,25 @@ public class PostController {
         return new ResponseEntity<>(new MultiResponseDto<>(
                 mapper.postListToPostHomeResponseDtoList(content), allPostsBySort), HttpStatus.OK);
 
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<MultiResponseDto<?>> getFilteredPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
+                                                            @RequestParam(defaultValue = "1", required = false) @Positive int page,
+                                                            @RequestParam(defaultValue = "9", required = false) @Positive int size,
+                                                            @RequestBody ProvinceFilterDto filterDto) {
+        sort = getString(sort);
+
+        List<Post> posts;
+        Page<Post> postPage;
+        if(filterDto.getProvinces().size() == 0 ) {
+            postPage = postService.findAllPostsBySort(page - 1, size, sort);
+        }else{
+            postPage = postService.findAllPostsByProvincesSort(filterDto.getProvinces(), page - 1, size, sort);
+        }
+        posts = postPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.postListToPostHomeResponseDtoList(posts), postPage), HttpStatus.OK);
     }
 
     @GetMapping("/details/{attraction-id}")
