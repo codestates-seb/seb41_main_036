@@ -28,10 +28,8 @@ import javax.validation.constraints.Positive;
 public class MemberController {
 
     private final MemberService memberService;
-
     private final MemberMapper mapper;
     private final JwtGenerator jwtGenerator;
-
     private final JwtParser jwtParser;
 
     @PostMapping("/signup")
@@ -73,7 +71,7 @@ public class MemberController {
 
     @LoginUser
     @DeleteMapping("/users/delete/{member-id}")
-    public ResponseEntity<HttpStatus> deleteMember( Member loginUser,
+    public ResponseEntity<HttpStatus> deleteMember(Member loginUser,
                                                    @PathVariable("member-id") @Positive Long memberId) {
 
         Member member = memberService.verifyLoginIdAndMemberId(loginUser.getMemberId(), memberId);
