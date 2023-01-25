@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { ArrayPostType } from "../pages/Post";
 
 const PostContainer = styled.div<{ margin: string }>`
-  margin: ${(props) => (props.margin === "0 12%" ? "0 12%" : "0")};
+  margin-left: ${(props) => (props.margin === "0" ? "0" : props.margin)};
   display: flex;
   flex-wrap: wrap;
 `;

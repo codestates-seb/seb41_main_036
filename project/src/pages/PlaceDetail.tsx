@@ -12,7 +12,7 @@ import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent.tsx";
 import { ArrayPostType } from "./Post";
-
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -207,13 +207,13 @@ const PlaceDetail = (): JSX.Element => {
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
+
   const { id } = useParams();
   const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
   const url2 = `http://pikcha36.o-r.kr:8080/posts/details/${id}?page=1&size=8`;
   const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
   const navigate = useNavigate();
 
-  console.log(id);
   function onScroll() {
     if (window.scrollY <= 700) {
       setTimeout(function () {
@@ -236,13 +236,21 @@ const PlaceDetail = (): JSX.Element => {
     }
   };
 
+  const handleCopyClipBoard = async (text:string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('url이 성공적으로 복사되었습니다.')
+    }catch(err){
+      console.log('복사 실패')
+    }
+  }
+
   useEffect(() => {
     axios.all([axios.get(url), axios.get(url2)]).then(
       axios.spread((res1, res2) => {
         setAttractionData(res1.data.data);
         setPostData(res2.data.data);
       })
-      //.catch((err)=>console.log(err))
     );
 
     window.addEventListener("scroll", updateScroll);
@@ -265,14 +273,15 @@ const PlaceDetail = (): JSX.Element => {
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
           <FixBoxVertical inverted={fixBar < 470 ? true : false}>
-            <div
-              className="icon"
-              onClick={() => {
-                setShareOpen(!shareOpen);
-              }}
-            >
+              <div
+                className="icon"
+                onClick={() => {
+                  handleCopyClipBoard(document.location.href);
+                }}
+              >
               <BsShareFill size="15" />
             </div>
+            
             <div
               onClick={() => {
                 navigate("/write");
@@ -344,7 +353,7 @@ const PlaceDetail = (): JSX.Element => {
               <PostCardComponent
                 posts={postData}
                 limit={8}
-                margin="0 12%"
+                margin="8%"
                 width="22%"
               ></PostCardComponent>
             )}
