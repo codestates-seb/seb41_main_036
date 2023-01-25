@@ -5,6 +5,7 @@ import com.main36.pikcha.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class UserProfile {
         this.imageUrl = imageUrl;
     }
 
-    public Member toMember(String oauthId, String name, String email, String image, List<String> roles) {
-        return new Member(oauthId, name, email, imageUrl, roles);
+    public Member toMember(String oauthId, String name, String email, String image, List<String> roles, PasswordEncoder passwordEncoder) {
+        return new Member(oauthId, name, email, imageUrl, roles, passwordEncoder);
     }
 
 }

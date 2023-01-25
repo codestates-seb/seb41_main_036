@@ -48,12 +48,12 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refreshToken = jwtGenerator.generateRefreshToken(member.getEmail());
 
         ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.setHeader("Set-Cookie", String.valueOf(cookie));
 
         Gson gson = new Gson();
         LoginResponseDto of = LoginResponseDto.ofMember(member, BEARER_PREFIX + accessToken);
+        String s = gson.toJson(new DataResponseDto<>(of));
         log.info("of ={}", of);
+        log.info("s ={}", s);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
 
         redirect(request, response, member.getEmail(), member.getRoles());
@@ -80,10 +80,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
                 .host(serverName)
-                .port(3000)
+//                .port()
 //                .path("")
 //                .path("/token/oauth2")
-                .queryParams(queryParams)
+//                .queryParams(queryParams)
                 .build()
                 .toUri();
 
