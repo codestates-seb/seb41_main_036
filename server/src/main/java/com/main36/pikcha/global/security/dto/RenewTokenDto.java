@@ -1,18 +1,22 @@
 package com.main36.pikcha.global.security.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+import java.util.Date;
+
+@Getter
 public class RenewTokenDto {
 
     private Long memberId;
     private String email;
     private String accessToken;
-    private Long accessTokenExpiresIn;
+    private long accessTokenExpiresIn;
+
+    @Builder
+    public RenewTokenDto(Long memberId, String email, String accessToken, long accessTokenExpiresIn) {
+        this.memberId = memberId;
+        this.email = email;
+        this.accessToken = accessToken;
+        this.accessTokenExpiresIn = accessTokenExpiresIn;
+    }
 }

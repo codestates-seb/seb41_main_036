@@ -60,18 +60,16 @@ public class JwtGenerator {
         return calendar.getTime();
     }
 
-    public String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
-                                      Date expiration,
-                                      String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+    public String generateAccessToken(String payload) {
+        Claims claims = Jwts.claims().setSubject(payload);
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + accessTokenExpireTimeMinute);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
-                .signWith(key)
+                .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -82,7 +80,7 @@ public class JwtGenerator {
                 .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 

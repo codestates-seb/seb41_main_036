@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                                         "/comments", "comments/*").permitAll()
                                 .antMatchers("admin").hasRole("ADMIN")
 //                        .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 //                .oauth2Login(oauth2 -> oauth2
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtProvider))
