@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 declare global {
@@ -29,15 +29,18 @@ interface Map {
   dataList:string[] | string | undefined,
   position:any,
   left:string,
+  regionFilter:string,
 }
 
 
-const KakaoMap = ({width, height, dataList, position, left}:Map) =>{
+const KakaoMap = ({width, height, dataList, position, left, regionFilter }:Map) =>{
   
-  // dataList가 리스트인 경우에는 -> 
-  // data가 단일 주소 데이터인 경우에는 
+  // data가 단일 주소 데이터인 경우에는 -> PlaceDetail 컴포넌트에서 사용 
+  // dataList가 리스트인 경우에는 -> Map 컴포넌트에서 사용 
+  // - 내 위치 받아온 경우 -> 내 위치에서 구를 필터링해서 보여줌 
+  // - 내위치 받지 않거나, 필터링 select 한 경우 -> 그 장소 데이터를 필터링해서 보여줌 
 
- 
+  const [filterRegion, setFilterRegion] = useState(); // 필터링 표시 - 내 위치 / 혹은 구별 필터
 
   useEffect(()=>{
     const container = document.getElementById('map');// 지도를 담을 dom영역
@@ -84,64 +87,59 @@ const KakaoMap = ({width, height, dataList, position, left}:Map) =>{
 
 
     if (Array.isArray(dataList)){
+      // Map 컴포넌트에서 사용 
       console.log('데이터 리스트 배열입니다. ');
 
+      if(regionFilter === '내 주변'){
+        // 내위치 받아오기 예제
+        if (navigator.geolocation) {
+          console.log('내 위치를 받아오기')
+      
+          // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+          navigator.geolocation.getCurrentPosition(function(position) {
+              
+              var lat = position.coords.latitude, // 위도
+                  lon = position.coords.longitude; // 경도
+              
+              var locPosition = new window.kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                  message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+              
+              // 마커와 인포윈도우를 표시합니다
+              displayMarker(locPosition, message);
+                  
+            });
+          } 
+      }else { 
+      console.log('주변 필터링 데이터 보여주기')
 
-      // 내위치 받아오기 예제
-      if (navigator.geolocation) {
-    
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function(position) {
-            
-            var lat = position.coords.latitude, // 위도
-                lon = position.coords.longitude; // 경도
-            
-            var locPosition = new window.kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
-            
-            // 마커와 인포윈도우를 표시합니다
-            displayMarker(locPosition, message);
-                
-          });
-        
-    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-        
-        var locPosition = new window.kakao.maps.LatLng(33.450701, 126.570667),    
-            message = 'geolocation을 사용할수 없어요..'
-            
-        displayMarker(locPosition, message);
+        // 내위치 값을 받아오지 않거나, 필터링이 선택된 경우에는
+        dataList.forEach(function(addr,index){
+        geocoder.addressSearch(addr, function(result:any, status:any) {
+          // 정상적으로 검색이 완료됐으면 
+           if (status === window.kakao.maps.services.Status.OK) {
+              var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+              // 결과값으로 받은 위치를 마커로 표시합니다
+              var marker = new window.kakao.maps.Marker({
+                  map: map,
+                  position: coords
+              });
+  
+              // 인포 윈도우 설정
+              var infowindow = new window.kakao.maps.InfoWindow({
+                content: info,
+                disableAutoPan: false
+              });
+            infowindow.open(map, marker);
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+          } 
+        });  
+      })
     }
     
 
-
-
-
-      
-      // dataList.forEach(function(addr,index){
-      //   geocoder.addressSearch(addr, function(result:any, status:any) {
-      //     // 정상적으로 검색이 완료됐으면 
-      //      if (status === window.kakao.maps.services.Status.OK) {
-      //         var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-      //         // 결과값으로 받은 위치를 마커로 표시합니다
-      //         var marker = new window.kakao.maps.Marker({
-      //             map: map,
-      //             position: coords
-      //         });
-  
-      //         // 인포 윈도우 설정
-      //         var infowindow = new window.kakao.maps.InfoWindow({
-      //           content: info,
-      //           disableAutoPan: false
-      //         });
-      //       infowindow.open(map, marker);
-      //         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-      //         map.setCenter(coords);
-      //     } 
-      //   });  
-      // })
-
-
     }else{
+      // placedetail 컴포넌트에서 사용 -- 수정 금지
       console.log('단일 데이터 값 입니다. ');
       console.log(dataList)
       geocoder.addressSearch(dataList, function(result:any, status:any) {
@@ -156,14 +154,14 @@ const KakaoMap = ({width, height, dataList, position, left}:Map) =>{
     });    
     }
 
-    // Map Control
+    // Map Control - 공통 
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
     var mapTypeControl = new window.kakao.maps.MapTypeControl();
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
 
-  },[])
+  },[regionFilter])
 
   return(
     <>

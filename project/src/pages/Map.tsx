@@ -73,7 +73,9 @@ const SelectList = styled.div`
     width: 300px;
     height: 40px;
     padding: 10px 0;
-    border: 0.5px solid var(--black-500);
+    border-left: 0.5px solid var(--black-500);
+    border-bottom: 0.5px solid var(--black-500);
+    border-top: -0.9px solid var(--black-500);
     :hover{
       color: var(--purple-400);
       background-color: white;
@@ -281,6 +283,7 @@ const Map = () => {
   },[regionFilter])
 
   let Post = [
+    { id: "0", Post: "내 주변" },
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
@@ -325,7 +328,7 @@ const Map = () => {
               {
                 Post.map((el:any, index:number)=>{
                   return(
-                    <button key={index} onClick={()=>{setRegionFilter(el.Post);setDropdownView(false)}}>{el.Post}</button>
+                    <button key={index} onClick={()=>{setRegionFilter(el.Post);setDropdownView(false); console.log(regionFilter)}}>{el.Post}</button>
                   )
                 })
               }
@@ -383,8 +386,8 @@ const Map = () => {
         </PlaceDetailModal> 
       : null}
       { detailModal ? 
-        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="750px"></KakaoMap>: 
-        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="350px"></KakaoMap>
+        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="750px" regionFilter = {regionFilter} ></KakaoMap> : 
+        <KakaoMap width="100%" height="94vh" dataList={listData} position="absolute" left="350px" regionFilter = {regionFilter} ></KakaoMap>
         }
     </Container>
     </>
