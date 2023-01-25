@@ -81,9 +81,7 @@ function Main() {
 
   return (
     <>
-      <Header>
-        <FixedOnScrollUpHeader />
-      </Header>
+      <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
       <Body>
