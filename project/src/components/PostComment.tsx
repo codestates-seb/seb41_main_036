@@ -61,6 +61,16 @@ const PostCommentContainer = styled.div`
   }
 `;
 
+interface CommentType {
+  commentId: number;
+  memberId: number;
+  username: string;
+  memberPicture: string;
+  commentContent: string;
+  createdAt: string;
+  modifiedAt: string;
+}
+
 const PostManageButton = styled.button`
   min-width: 30px;
   display: flex;
@@ -73,17 +83,9 @@ const PostManageButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-const PostComment = ({
-  comment,
-}: {
-  comment: {
-    userName: string;
-    content: string;
-    createdAt: string;
-  };
-}) => {
+const PostComment = ({ comment }: { comment: CommentType }) => {
   const [commentEdit, setCommentEdit] = useState(false);
-  const [commentContent, setCommentcontent] = useState(dummy.post[0].content);
+  const [commentContent, setCommentcontent] = useState(comment.commentContent);
   const commentContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentcontent(e.target.value);
   };
@@ -92,10 +94,10 @@ const PostComment = ({
       <PostCommentContainer>
         <div>
           <div>
-            <img alt="userImg" src={dummy.post[0].userImg} />
+            <img alt="userImg" src={comment.memberPicture} />
             <div>
-              {dummy.post[0].username}
-              <span>{dummy.post[0].createdAt}</span>
+              {comment.username}
+              <span>{comment.createdAt}</span>
             </div>
           </div>
           <div>
@@ -118,7 +120,7 @@ const PostComment = ({
             ></textarea>
           </form>
         ) : (
-          <div> {dummy.post[0].content}</div>
+          <div> {comment.commentContent}</div>
         )}
       </PostCommentContainer>
     </>

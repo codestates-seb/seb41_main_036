@@ -19,6 +19,7 @@ const LocationWrapper = styled.nav`
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
+  margin-top: 10px;
 `;
 
 const PlaceContainer = styled.div`
