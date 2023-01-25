@@ -65,18 +65,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // response 토큰 설정
         ResponseCookie cookie = getResponseCookie(refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.setHeader("Set-Cookie", cookie.toString());
-        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
-
-//        setCookie(response, refreshToken);
+        response.setHeader("Set-Cookie", String.valueOf(cookie));
+//        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
 
         Gson gson = new Gson();
         LoginResponseDto of = LoginResponseDto.of(authMember, BEARER_PREFIX + accessToken);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-
-
-        //tokenProvider.refreshTokenSetHeader(refreshToken,response); // RefreshToken Header response 생성
 
     }
 
@@ -85,7 +80,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(3 * 24 * 60 * 60) // 쿠키 유효기간 설정 (3일)
                 .path("/")
-                .secure(false)
+                .secure(true)
                 .httpOnly(true)
                 .sameSite("None")
                 .build();

@@ -6,7 +6,6 @@ import com.main36.pikcha.global.security.filter.JwtVerificationFilter;
 import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.handler.*;
 import com.main36.pikcha.global.security.jwt.JwtParser;
-//import com.main36.picha.global.authorization.oauth.OAuth2MemberSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 
 @Configuration
@@ -59,13 +56,14 @@ public class SecurityConfiguration {
                                         "/",
                                         "/signup",
                                         "/login",
-                                        "/token",
+                                        "/token/refresh/**",
+                                        "/token/refresh/*",
                                         "/attractions", "/attractions/**",
                                         "/posts", "/posts/*", "/posts/**",
                                         "/comments", "comments/*").permitAll()
                                 .antMatchers("admin").hasRole("ADMIN")
 //                        .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 );
 //                .oauth2Login(oauth2 -> oauth2
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtProvider))

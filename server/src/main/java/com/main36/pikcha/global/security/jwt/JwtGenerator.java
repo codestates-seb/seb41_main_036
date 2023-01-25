@@ -60,10 +60,11 @@ public class JwtGenerator {
         return calendar.getTime();
     }
 
-    public String generateAccessToken(String payload) {
+    public String generateAccessToken(String payload, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(payload);
+        claims.put("roles", roles);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + accessTokenExpireTimeMinute);
+        Date validity = new Date(now.getTime() + 30000); // 30000이 30분을 의미함
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -73,8 +74,7 @@ public class JwtGenerator {
                 .compact();
     }
 
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+    public String generateRefreshToken(String subject, Date expiration) {
 
         return Jwts.builder()
                 .setSubject(subject)
@@ -89,8 +89,7 @@ public class JwtGenerator {
         Date accessTokenExpiresIn = getTokenExpiration(accessTokenExpireTimeMinute);
         Date refreshTokenExpiresIn = getTokenExpiration(refreshTokenExpireTimeMinute);
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", authMember.getMemberId());
+        Claims claims = Jwts.claims().setSubject(authMember.getEmail());
         claims.put("roles", authMember.getRoles());
 
         // Access Token 생성

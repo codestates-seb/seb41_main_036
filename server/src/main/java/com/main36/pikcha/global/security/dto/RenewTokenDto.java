@@ -10,13 +10,11 @@ public class RenewTokenDto {
     private Long memberId;
     private String email;
     private String accessToken;
-    private long accessTokenExpiresIn;
 
     @Builder
-    public RenewTokenDto(Long memberId, String email, String accessToken, long accessTokenExpiresIn) {
+    public RenewTokenDto(Long memberId, String email, String accessToken) {
         this.memberId = memberId;
         this.email = email;
         this.accessToken = accessToken;
-        this.accessTokenExpiresIn = accessTokenExpiresIn;
     }
 }
