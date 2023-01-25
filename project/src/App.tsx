@@ -21,7 +21,7 @@ function App() {
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
             <Route path="/attractions" element={<Place />} />
-            <Route path="/post" element={<Post />} />
+            <Route path="/posts" element={<Post />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />
             <Route path="/attractions/detail/:id" element={<PlaceDetail />} />

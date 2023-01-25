@@ -85,7 +85,7 @@ const HeaderBodyBar = ({
         </a>
         <HeaderBodyMenu>
           <li onClick={() => navigate("/attractions")}>명소</li>
-          <li onClick={() => navigate("/post")}>방문리뷰</li>
+          <li onClick={() => navigate("/posts")}>방문리뷰</li>
           <li onClick={() => navigate("/map")}>내 주변 명소 찾기</li>
         </HeaderBodyMenu>
         {searchBarOn && (
