@@ -6,8 +6,8 @@ interface AttractionsDataProps {
 }
 interface AttractionProps {
   info: AttractionsDataProps;
-  matchedletter: number[][];
-  exactmatchedletter: number[][];
+  matchedLetter: number[][];
+  exactMatchedLetter: number[][];
 }
 function getfilteredAttractions(
   AttractionsData: Array<AttractionsDataProps>,
@@ -22,16 +22,17 @@ function getfilteredAttractions(
     };
   let init: Array<AttractionProps> = [];
   const blankNumRemovedValue = trimmedSearchValue.replace(/[0-9 ]/g, "");
+
   let filteredAttractions = AttractionsData.reduce((acc, attraction) => {
     const searcher = new Hangul.Searcher(blankNumRemovedValue);
-    const matchedletter = Hangul.rangeSearch(
+    const matchedLetter = Hangul.rangeSearch(
       attraction.name,
       trimmedSearchValue
     );
 
     if (searcher.search(attraction.name.replace(/[0-9 ]/g, "")) === -1)
       return acc;
-    const exactmatchedletter = matchedletter.filter(
+    const exactMatchedLetter = matchedLetter.filter(
       (el: any) =>
         attraction.name[el[1]] === trimmedSearchValue.slice(-1) &&
         Hangul.isCompleteAll(blankNumRemovedValue)
@@ -40,26 +41,25 @@ function getfilteredAttractions(
       ...acc,
       {
         info: attraction,
-        matchedletter,
-        exactmatchedletter,
+        matchedLetter,
+        exactMatchedLetter,
       },
     ];
-  }, init).sort((a, b) => {
-    let diff = a.matchedletter[0]?.[0] - b.matchedletter[0]?.[0];
-    let exactDiff: number | null = null;
+  }, init).sort((prev, next) => {
+    let diff = prev.matchedLetter[0]?.[0] - next.matchedLetter[0]?.[0];
+    let exactDiff = null;
 
-    if (!a.exactmatchedletter.length && b.exactmatchedletter.length) return 1;
-    else if (a.exactmatchedletter.length && !b.exactmatchedletter.length)
+    if (!prev.exactMatchedLetter.length && next.exactMatchedLetter.length)
+      return 1;
+    if (prev.exactMatchedLetter.length && !next.exactMatchedLetter.length)
       return -1;
-    else if (a.exactmatchedletter.length && b.exactmatchedletter.length) {
-      exactDiff = a.exactmatchedletter[0][0] - b.exactmatchedletter[0][0];
+    if (prev.exactMatchedLetter.length && next.exactMatchedLetter.length) {
+      exactDiff = prev.exactMatchedLetter[0][0] - next.exactMatchedLetter[0][0];
     }
 
-    return exactDiff
-      ? exactDiff
-      : diff
-      ? diff
-      : a.info.name.localeCompare(b.info.name, "ko");
+    if (exactDiff) return exactDiff;
+    if (diff) return diff;
+    return prev.info.name.localeCompare(next.info.name, "ko");
   });
 
   return {
@@ -67,4 +67,23 @@ function getfilteredAttractions(
     numOfFilteredAttractions: filteredAttractions.length,
   };
 }
-export { getfilteredAttractions };
+
+const throttle = (callback: Function, delay: number, e?: MouseEvent) => {
+  let timerId: ReturnType<typeof setTimeout> | null = null;
+  return () => {
+    if (timerId) {
+      return;
+    }
+    timerId = setTimeout(() => {
+      callback(e);
+      timerId = null;
+    }, delay);
+  };
+};
+
+const delaySetter = (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+export { getfilteredAttractions, throttle, delaySetter };

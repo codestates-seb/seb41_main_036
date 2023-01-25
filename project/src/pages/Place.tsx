@@ -19,6 +19,7 @@ const LocationWrapper = styled.nav`
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
+  margin-top: 10px;
 `;
 
 const PlaceContainer = styled.div`
@@ -31,7 +32,6 @@ const PlaceFilterContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-left: 5px;
-  width: 95%;
   height: 50px;
 
   > span {
@@ -58,6 +58,7 @@ export const FilterButton = styled.button`
 
 const PlaceBox = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin-top: 20px;
 `;
@@ -115,6 +116,7 @@ const Place = () => {
       })
       .catch((err) => console.error(err));
   }, []);
+
   const handleSortPlace = (sort: string) => {
     axios
       .post(`/attractions/filter?page=1&size=100&sort=${sort}`, {
@@ -170,6 +172,8 @@ const Place = () => {
                     placesData={placesData}
                     limit={9}
                     curPage={curPage}
+                    width="32%"
+                    height="240px"
                   />
                 )}
               </PlaceBox>

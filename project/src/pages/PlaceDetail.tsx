@@ -15,6 +15,8 @@ import { ArrayPostType } from "./Post";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 
+
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -294,6 +296,7 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", updateScroll);
     };
   }, []);
+
 
 
   return (

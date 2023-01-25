@@ -1,4 +1,3 @@
-import SearchBar from "./SearchBar";
 import {
   HeaderWrapper,
   HeaderTop,
@@ -9,6 +8,7 @@ import {
   SearchBarWrapper,
   Profile,
 } from "./style";
+// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -19,17 +19,18 @@ import {
 } from "../../recoil/state";
 import axios from "axios";
 import Button from "../Button";
+import { lazy, ReactNode, MouseEventHandler } from "react";
+const SearchBar = lazy(() => import("./SearchBar"));
 
-// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
-import { ReactNode, MouseEventHandler } from "react";
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
+const isLoggedIn = true;
 
 const HeaderTopBar = () => {
   const navigate = useNavigate();
   const [isLogin, setIslogin] = useRecoilState<boolean>(LoginState);
   const [auth, setAuth] = useRecoilState<string>(AuthToken);
-  const [rafresh, setRefresh] = useRecoilState<string>(RefreshToken);
+  const [refresh, setRefresh] = useRecoilState<string>(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
 
   const onClickLogout = (
@@ -44,7 +45,6 @@ const HeaderTopBar = () => {
     setLoggedUser("");
     navigate("/");
   };
-
   return (
     <HeaderTop>
       <HeaderTopMenu>
@@ -85,7 +85,7 @@ const HeaderBodyBar = ({
         </a>
         <HeaderBodyMenu>
           <li onClick={() => navigate("/attractions")}>명소</li>
-          <li onClick={() => navigate("/post")}>방문리뷰</li>
+          <li onClick={() => navigate("/posts")}>방문리뷰</li>
           <li onClick={() => navigate("/map")}>내 주변 명소 찾기</li>
         </HeaderBodyMenu>
         {searchBarOn && (
