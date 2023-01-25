@@ -40,7 +40,7 @@ public class MemberController {
         log.info("username={}", memberPostDto.getUsername());
 
         Member member = mapper.memberPostDtoToMember(memberPostDto);
-        member.setPicture("https://drive.google.com/file/d/1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g/view?usp=sharing");
+        member.setPicture("http://drive.google.com/uc?export=view&id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g");
         Member createMember = memberService.createMember(member);
 
         return new ResponseEntity<>(

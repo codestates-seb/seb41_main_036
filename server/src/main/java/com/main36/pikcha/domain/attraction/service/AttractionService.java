@@ -77,6 +77,18 @@ public class AttractionService {
         return attractionRepository.findAllByProvinceIn(provinces, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Attraction> findAllProvincesAttractions(int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        return attractionRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Attraction> findSearchedAttractions(String keyword){
+        return attractionRepository.findByAttractionNameContainingIgnoreCase(keyword);
+    }
+
+
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
         //attraction image도 같이 삭제(s3에서도 이미지파일 삭제)

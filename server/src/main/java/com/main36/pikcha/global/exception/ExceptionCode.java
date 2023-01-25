@@ -24,6 +24,7 @@ public enum ExceptionCode {
 
     POST_NOT_FOUND(404, "Post not found"),
     POST_EXISTS(409, "Post exists"),
+    POST_IMAGE_NOT_FOUND(404, "Post Image not found"),
 
     /* JWT */
     ACCESS_TOKEN_NOT_FOUND(404,"액세스토큰을 찾을 수 없습니다."),

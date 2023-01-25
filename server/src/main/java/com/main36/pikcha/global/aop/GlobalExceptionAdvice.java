@@ -5,6 +5,7 @@ import com.main36.pikcha.global.response.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -100,6 +101,15 @@ public class GlobalExceptionAdvice {
     public ErrorResponse dataExpiredException(SizeLimitExceededException e) {
 
         final ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "File size is exceeded");
+
+        return response;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse dataIntegrityViolationException(DataIntegrityViolationException e) {
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST, "Check File Types and Names");
 
         return response;
     }

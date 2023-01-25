@@ -2,7 +2,9 @@ package com.main36.pikcha.domain.post.entity;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.comment.entity.Comment;
+import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.member.entity.Member;
+import com.main36.pikcha.domain.post_image.entity.PostImage;
 import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
 
@@ -12,34 +14,36 @@ import java.util.List;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor/*(access = AccessLevel.PROTECTED)*/
 @AllArgsConstructor
 @Builder
 @Entity
+@Setter
 public class Post extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Setter
+
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @Setter
-    @Lob
-    @Column(name = "post_content")
-    private String postContent;
 
-    @Setter
-    @Column(name = "hash_tag_content")
-    private String hashTagContent;
+    @ElementCollection
+    @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
+    @OrderColumn
+    @Column(name = "post_contents")
+    private List<String> postContents = new ArrayList<>();
 
-    @Setter
+
+    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE})
+    @JoinColumn(name = "post_id")
+    private List<HashTag> hashTags = new ArrayList<>();
+
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
     private int views;
 
 
-    @Setter
     @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
 
@@ -53,5 +57,9 @@ public class Post extends Auditable {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
+    private List<PostImage> postImages = new ArrayList<>();
 
 }

@@ -2,8 +2,10 @@ package com.main36.pikcha.domain.post.mapper;
 
 
 import com.main36.pikcha.domain.comment.dto.CommentResponseDto;
+import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.post.dto.*;
 import com.main36.pikcha.domain.post.entity.Post;
+import com.main36.pikcha.domain.post_image.entity.PostImage;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
@@ -24,8 +26,13 @@ public interface PostMapper {
         return PostResponseDto.Detail.builder()
                 .postId(post.getPostId())
                 .postTitle(post.getPostTitle())
-                .postContent(post.getPostContent())
-                .hashTagContent(post.getHashTagContent())
+                .postContents(post.getPostContents())
+                .postHashTags(post.getHashTags().stream()
+                        .map(HashTag::getHashTagContent)
+                        .collect(Collectors.toList()))
+                .postImageUrls(post.getPostImages().stream()
+                        .map(PostImage::getPostImageUrl)
+                        .collect(Collectors.toList()))
                 .attractionId(post.getAttraction().getAttractionId())
                 .attractionAddress(post.getAttraction().getAttractionAddress())
                 .attractionName(post.getAttraction().getAttractionName())
@@ -71,7 +78,7 @@ public interface PostMapper {
                 }).collect(Collectors.toList());
     }
 
-    default List<PostResponseDto.Detail> postListToPostPageResponseDtoList(List<Post> postList) {
+    /*default List<PostResponseDto.Detail> postListToPostPageResponseDtoList(List<Post> postList) {
 
         if (postList == null) {
             return null;
@@ -106,5 +113,5 @@ public interface PostMapper {
                             .modifiedAt(post.getModifiedAt())
                             .build();
                 }).collect(Collectors.toList());
-    }
+    }*/
 }

@@ -1,15 +1,19 @@
 package com.main36.pikcha.domain.post.service;
 
 
+import com.amazonaws.AmazonServiceException;
+import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.member.entity.Member;
 
 
 import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.domain.post.repository.PostRepository;
+import com.main36.pikcha.domain.post_image.entity.PostImage;
 import com.main36.pikcha.domain.post_likes.entity.PostLikes;
 import com.main36.pikcha.domain.post_likes.repository.PostLikesRepository;
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;
+import com.main36.pikcha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -18,7 +22,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,15 +45,15 @@ public class PostService {
     }
 
     public Post updatePost(Post post) {
-        Post findPost = getVerifiedPostById(post);
+/*        Post findPost = getVerifiedPostById(post);
         Optional.ofNullable(post.getPostTitle())
                 .ifPresent(findPost::setPostTitle);
-        Optional.ofNullable(post.getPostContent())
-                .ifPresent(findPost::setPostContent);
-        Optional.ofNullable(post.getHashTagContent())
-                .ifPresent(findPost::setHashTagContent);
+        Optional.ofNullable(post.getPostContents())
+                .ifPresent(findPost::setPostContents);
+        Optional.ofNullable(post.getHashTags())
+                .ifPresent(findPost::setHashTags);*/
 
-        return findPost;
+        return postRepository.save(post);
     }
 
     private Post getVerifiedPostById(Post post) {
@@ -75,8 +83,19 @@ public class PostService {
         return postRepository.findAll(pageable);
     }
 
-    public void erasePost(Post post) {
+    public Page<Post> findAllPostsByProvincesSort(List<String> provinces, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
+        return postRepository.findAllByProvinceIn(provinces, pageable);
+    }
+
+    public Page<Post> findAllPostsByAttractionId(long attractionId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+
+        return postRepository.findAllByAttractionId(attractionId, pageable);
+    }
+
+    public void erasePost(Post post) {
         Long numOfPostsSubtractOne = post.getAttraction().getNumOfPosts() - 1;
         post.getAttraction().setNumOfPosts(numOfPostsSubtractOne);
         postRepository.delete(post);

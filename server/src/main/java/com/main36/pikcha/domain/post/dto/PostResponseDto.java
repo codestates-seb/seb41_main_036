@@ -32,8 +32,9 @@ public class PostResponseDto {
     public static class Detail {
         private long postId;
         private String postTitle;
-        private String postContent;
-        private String hashTagContent;
+        private List<String> postContents;
+        private List<String> postHashTags;
+        private List<String> postImageUrls;
         private long attractionId;
         private String attractionAddress;
         private String attractionName;

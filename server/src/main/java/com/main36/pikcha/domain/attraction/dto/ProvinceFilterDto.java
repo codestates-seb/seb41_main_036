@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 // 지역 필터링 dto
-public class AttractionFilterDto {
+public class ProvinceFilterDto {
     List<String> provinces;
 }

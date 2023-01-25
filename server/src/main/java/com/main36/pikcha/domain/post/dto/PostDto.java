@@ -61,5 +61,12 @@ public class PostDto {
         private String postContent;
         private List<MultipartFile> images;
     }
+    @Data
+    public static class PostDtoFinal{
+        private String postTitle;
+        private List<String> postHashTags;
+        private List<String> postContents;
+        private List<MultipartFile> postImageFiles;
+    }
 
 }
