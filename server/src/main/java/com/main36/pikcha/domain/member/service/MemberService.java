@@ -92,6 +92,20 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    public Member findMemberByOauth2Id(String oauthId) {
+        Optional<Member> byOauthId = memberRepository.findByOauthId(oauthId);
+
+        return verifiedMemberByOauthId(oauthId);
+
+    }
+    private Member verifiedMemberByOauthId(String oauthId) {
+        Optional<Member> findMember = memberRepository.findByOauthId(oauthId);
+
+        return findMember
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+
     @Transactional(readOnly = true)
     public Member findMemberByMemberId(long memberId) {
         return verifiedMemberByMemberId(memberId);

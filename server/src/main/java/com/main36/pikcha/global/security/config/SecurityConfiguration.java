@@ -1,11 +1,16 @@
 package com.main36.pikcha.global.security.config;
 
 
+import com.main36.pikcha.domain.member.repository.MemberRepository;
+import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.global.security.filter.JwtAuthenticationFilter;
 import com.main36.pikcha.global.security.filter.JwtVerificationFilter;
 import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.handler.*;
 import com.main36.pikcha.global.security.jwt.JwtParser;
+import com.main36.pikcha.global.security.oauth.OAuth2MemberSuccessHandler;
+import com.main36.pikcha.global.security.oauth.OauthService;
+import com.main36.pikcha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +27,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtParser jwtParser;
     private final JwtGenerator jwtGenerator;
+
+    private final CustomAuthorityUtils customAuthorityUtils;
+    private final MemberService memberService;
+    private final OauthService oauthService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,7 +47,7 @@ public class SecurityConfiguration {
                 .formLogin().disable()
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin()
-
+//                .headers().frameOptions().disable() // h2 console 접속용
                 .and()
                 .cors().configurationSource(corsConfigurationSource())
 
@@ -52,24 +63,33 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigure())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                                .antMatchers(
-                                        "/",
-                                        "/signup",
-                                        "/login",
-                                        "/token/refresh/**",
-                                        "/token/refresh/*",
-                                        "/attractions", "/attractions/**",
-                                        "/posts", "/posts/*", "/posts/**",
-                                        "/comments", "comments/*").permitAll()
-                                .antMatchers("admin").hasRole("ADMIN")
-//                        .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().authenticated()
-                );
-//                .oauth2Login(oauth2 -> oauth2
+                        .antMatchers(
+                                "/",
+                                "/signup",
+                                "/login",
+                                "/token/refresh/**",
+                                "/token/refresh/*",
+                                "/attractions", "/attractions/**",
+                                "/posts", "/posts/*", "/posts/**",
+                                "/comments", "comments/*",
+                                "/oauth2/authorization/*",
+                                "/receive-token.html/**"
+                        ).permitAll()
+                        .antMatchers("admin").hasRole("ADMIN")
+                        .requestMatchers(toH2Console()).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(customAuthorityUtils, memberService, jwtGenerator))
+                        .userInfoEndpoint()
+                        .userService(oauthService));
+
+//                .successHandler(oAuth2AuthenticationSuccessHandler)
+//                .userInfoEndpoint()
+//                .userService(userOAuth2Service);
 //                        .successHandler(new OAuth2MemberSuccessHandler(jwtProvider))
-//                        .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
-//                        .userService(oAuthService)
-                // OAuth2 로그인 설정 시작점
+//                        .userInfoEndpoint()); // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
+        // OAuth2 로그인 설정 시작점
 
         return http.build();
     }

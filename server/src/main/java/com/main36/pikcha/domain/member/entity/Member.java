@@ -16,10 +16,14 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member extends Auditable {
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    private String oauthId;
     @Column(nullable = false)
     private String username;
 
@@ -50,7 +54,27 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
+    public Member(String oauthId, String name, String email, String imageUrl, List<String> roles) {
+        this(null, oauthId, name, email, imageUrl, roles);
+    }
 
+    public Member(Long id, String oauthId, String name, String email, String imageUrl, List<String> roles) {
+        this.memberId = id;
+        this.oauthId = oauthId;
+        this.username = name;
+        this.email = email;
+        this.picture = imageUrl;
+        this.roles = roles;
+
+        this.address = "";
+        this.phoneNumber = "";
+        this.password = "";
+    }
+
+    public Member update(String name, String email, String imageUrl) {
+        this.username = name;
+        this.email = email;
+        this.picture = imageUrl;
+        return this;
+    }
 }
