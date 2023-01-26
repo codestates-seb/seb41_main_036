@@ -21,11 +21,7 @@
     "hangul-js": "^0.2.6",
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
-<<<<<<< HEAD
-    "react-copy-to-clipboard": "^5.1.0",
-=======
     "react-blurhash": "^0.3.0",
->>>>>>> 9a697065c28ca5b67163d6eee672de74ccd51498
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-geocode": "^0.2.3",

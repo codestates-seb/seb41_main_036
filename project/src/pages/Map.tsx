@@ -8,6 +8,8 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { BsBookmarkPlus, BsFillChatLeftFill } from 'react-icons/bs';
 import HiddenHeader from "../components/Header/HiddenHeader";
 import '../index.css';
+import axios from "axios";
+import { DataList } from "../components/KakaoMap";
 
 
 const Container = styled.div`
@@ -121,9 +123,9 @@ const Place = styled.div<{imgUrl:string}>`
     background-size: cover;
 
     >div{
-      padding:85px 0 0 20px;
+      padding:85px 0 2px 20px;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 18px;
       color:white;
     }
     >p{
@@ -279,9 +281,40 @@ const Map = () => {
   //우측 상세페이지 모달창 On/Off 설정
   const [detailModal, setDetailModal] = useState(false);
 
+  // 현재 필터링된 데이터 목록
+  const [regionList,setRegionList] = useState<any>(undefined);
+
+  const url = 'http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=newest';
   useEffect(()=>{
 
-  },[regionFilter])
+    // 처음에 무조건 데이터를 받아옴 
+    // 그리고 요청 값 바뀔 때마다 다른 데이터를 불러와야함. 
+    
+    // 처음에 기본값을 조건으로 '전체'부분이 렌더링 되는지 확인 
+    console.log('처음 렌더링', regionFilter)
+
+    if(regionFilter === '전체'){
+      axios.post(url,
+        {
+          "provinces": []
+        }).then((res)=>{
+        setRegionList(res.data.data);
+        console.log('요청중..')
+      })
+    }else{
+      axios.post(url,
+        {
+          "provinces": [regionFilter]
+        }).then((res)=>{
+        setRegionList(res.data.data);
+        console.log('요청중..')
+      })
+    }
+
+  
+  },[regionFilter,setRegionList,regionList===undefined])
+
+  //console.log(regionList)
 
   let Post = [
     { id: "0", Post: "전체" },
@@ -337,11 +370,12 @@ const Map = () => {
           : null } 
         </DropDown>
         <PlaceComponent>
-          {imgUrl.map((el, index)=>{
+          {regionList!== undefined
+           && regionList.map((el:any, index:any)=>{
             return(
-              <Place onClick={()=>{setDetailModal(!detailModal)}} imgUrl={el} key={index}>
-                <div>종로</div>
-                <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt> 서울 종로구 세종로</p>
+              <Place onClick={()=>{setDetailModal(!detailModal)}} imgUrl={el.fixedImage} key={el.attractionId}>
+                <div>{el.attractionName}</div>
+                <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt>{el.attractionAddress}</p>
               </Place>
               )
             })
@@ -374,7 +408,7 @@ const Map = () => {
           <PlaceDetailModalMain>
             <div>방문자 포토리뷰</div>
             <PostImgContainer>
-              { imgUrl.map((el, index)=>{
+              {imgUrl && imgUrl.map((el, index)=>{
                 return(
                   <>
                    <img src={el} key={index} onClick={()=>{alert('테스트')}}></img>
@@ -390,7 +424,7 @@ const Map = () => {
         <KakaoMap 
           width="100%" 
           height="94vh" 
-          dataList={listData} 
+          dataList={regionList} 
           position="absolute" 
           left="750px" 
           regionFilter = {regionFilter} 
@@ -401,7 +435,7 @@ const Map = () => {
           <KakaoMap 
           width="100%" 
           height="94vh" 
-          dataList={listData} 
+          dataList={regionList} 
           position="absolute" 
           left="350px" 
           regionFilter = {regionFilter} 

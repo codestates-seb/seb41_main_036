@@ -28,11 +28,18 @@ let info =
 interface Map {
   width:string, 
   height:string,
-  dataList:string[] | string | undefined,
+  dataList:DataList|undefined|string,
   position:any,
   left:string,
   regionFilter:string,
   component:string,
+}
+
+export interface DataList {
+  attractionAddress: string,
+  attractionId:number,
+  attractionName:string, 
+  fixedImage:string
 }
 
 const MyPosition = styled.div`
@@ -121,6 +128,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     if (Array.isArray(dataList)){
       // Map 컴포넌트에서 사용 
       console.log('데이터 리스트 배열입니다. ');
+      console.log('받아온 데이터',dataList)
 
       if(filterOrPosition === true){
         // 내위치 받아오기 예제
