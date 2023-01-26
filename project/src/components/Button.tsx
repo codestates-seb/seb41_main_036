@@ -28,7 +28,9 @@ const ButtonForm = styled.button<ButtonProps>`
   //     background-color: ${(props) => props.hoverbackgroundcolor};
   //     color: ${(props) => props.hovercolor};
   // }
-
+display:flex;
+align-items:center;
+justify-content:center;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: var(--purple-300);

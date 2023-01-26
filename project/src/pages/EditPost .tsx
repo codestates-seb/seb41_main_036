@@ -1,9 +1,17 @@
 import axios from "axios";
-import React, { useState, useRef, SetStateAction, Dispatch } from "react";
+import React, {
+  useState,
+  useRef,
+  SetStateAction,
+  Dispatch,
+  useEffect,
+} from "react";
 import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import { PostDetailType } from "./DetailPost";
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +25,7 @@ const Container = styled.div`
     flex-direction: column;
     padding: 10px 40px;
   }
+
   input {
     padding-left: 10px;
     width: 80%;
@@ -172,22 +181,46 @@ const Header = styled.div`
     background-color: #f0f0f0;
   }
 `;
-const WritePost = () => {
-  const [title, setTitle] = useState(""); // 제목
+const EditPost = () => {
+  const [data, setData] = useState<PostDetailType>();
+  const [title, setTitle] = useState<string>(""); // 제목
   const [previewList, setPreviewList] = useState<string[][]>([]); // 프리뷰 map 돌릴 값 저장용
   const [previewText, setPreviewText] = useState("");
   const [content, setContent] = useState<string[]>([]);
   const [tag, setTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState("");
-  const [imgFiles, setImgFiles] = useState<File[]>([]);
+  const [imageUrl, setImageUrl] = useState(""); // 미리보기용 이미지 주소 1개
+  const [imgFiles, setImgFiles] = useState<any[]>([]); // 서버에 보낼 이미지 파일 리스트 - 최종
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function getPostList() {
+      await axios
+        .get(`/posts/`)
+        .then((res) => setData(res.data.data))
+        .catch((err) => console.error(err));
+    }
+    getPostList();
+
+    if (data) {
+      let array: any[] = [];
+      setTitle(data?.postTitle);
+      setTags(data?.postHashTags);
+      setImgFiles(data.postImageUrls);
+      //setImageUrl(data?.postImageUrls); // 이미지 주소 리스트
+      for (let i = 0; i < data?.postImageUrls.length!; i++) {
+        array.push([data?.postImageUrls[i], data?.postContents[i]]);
+      }
+      setPreviewList(array);
+    }
+  }, [data === undefined]);
 
   console.log(imgFiles);
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (title && title.length > 40) alert("50자 이내로 작성해주세요.");
     setTitle(e.target.value);
-    if (title.length > 40) alert("50자 이내로 작성해주세요.");
   };
 
   const TagButton = ({ tag, idx }: { tag: string; idx: number }) => {
@@ -198,7 +231,7 @@ const WritePost = () => {
 
     return (
       <TagBox>
-        <span>{tag} </span>
+        <span>{tag}</span>
         <button onClick={(e) => removeClickTagHandler(e)}>
           <svg width="14" height="14" fill="hsl(237.931, 43%, 87%)">
             <path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path>
@@ -208,19 +241,6 @@ const WritePost = () => {
     );
   };
 
-  <TagWrapper>
-    {tags.map((tag, idx) => (
-      <TagButton tag={tag} key={idx} idx={idx}></TagButton>
-    ))}
-    <input
-      type="text"
-      value={tag}
-      onKeyUp={(e) => tagMakeHandler(e)}
-      onKeyDown={(e) => noRemoveTagHandler(e)}
-      onChange={(e) => setTag(e.target.value)}
-      placeholder={tags.length ? "" : "태그를 입력해주세요!"}
-    ></input>
-  </TagWrapper>;
   const noRemoveTagHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") e.preventDefault();
   };
@@ -241,13 +261,13 @@ const WritePost = () => {
   ) => {
     e.preventDefault();
     setPreviewList(previewList.filter((el) => previewList[idx] !== el));
-    setImgFiles(imgFiles.filter((file) => imgFiles[idx] !== file));
+    setImgFiles(imgFiles.filter((file: any) => imgFiles[idx] !== file));
   };
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("postTitle", title);
+    formData.append("postTitle", title!);
     tags.forEach((tag) => {
       formData.append("postHashTags", tag);
     });
@@ -271,12 +291,12 @@ const WritePost = () => {
     e.preventDefault();
     setIsModal(!isModal);
   };
-
   return (
     <>
       <Header>
         <div>
-          <BsDot color="#6255F8" />새 포스트
+          <BsDot color="#6255F8" />
+          수정 포스트
         </div>
         <div></div>
       </Header>
@@ -284,7 +304,7 @@ const WritePost = () => {
         <form>
           <div>
             <input
-              value={title}
+              defaultValue={data?.postTitle}
               onChange={(e) => {
                 handleTitle(e);
               }}
@@ -297,21 +317,21 @@ const WritePost = () => {
               onClick={(e) => handleImageModal(e)}
             />
           </div>
-
           <TagWrapper>
-            {tags.map((tag, idx) => (
-              <TagButton tag={tag} key={idx} idx={idx}></TagButton>
-            ))}
+            {data &&
+              tags.map((tag, idx) => (
+                <TagButton tag={tag} key={idx} idx={idx}></TagButton>
+              ))}
             <input
               type="text"
               value={tag}
               onKeyUp={(e) => tagMakeHandler(e)}
               onKeyDown={(e) => noRemoveTagHandler(e)}
               onChange={(e) => setTag(e.target.value)}
-              placeholder={tags.length ? "" : "태그를 입력하세요"}
+              placeholder={data?.postHashTags.length ? "" : "태그를 입력하세요"}
             ></input>
           </TagWrapper>
-          {isModal ? (
+          {data && isModal ? (
             <Modal
               setImgFiles={setImgFiles}
               previewText={previewText}
@@ -360,7 +380,7 @@ const WritePost = () => {
   );
 };
 
-const ModalContainer = styled.form`
+const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -386,7 +406,6 @@ const ModalContainer = styled.form`
   }
 
   textarea {
-    width: 300px;
     resize: none;
     height: 150px;
     padding: 10px;
@@ -449,7 +468,7 @@ const Modal = ({
   content,
   imgFiles,
 }: {
-  setImgFiles: Dispatch<SetStateAction<File[]>>;
+  setImgFiles: Dispatch<SetStateAction<any[]>>;
   previewText: string;
   setPreviewText: Dispatch<SetStateAction<string>>;
   setPreviewList: Dispatch<SetStateAction<string[][]>>;
@@ -459,7 +478,7 @@ const Modal = ({
   setImageUrl: Dispatch<SetStateAction<string>>;
   setContent: Dispatch<SetStateAction<string[]>>;
   content: string[];
-  imgFiles: File[];
+  imgFiles: any[];
 }) => {
   const previewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -504,4 +523,4 @@ const Modal = ({
 
 //태그
 
-export default WritePost;
+export default EditPost;

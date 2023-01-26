@@ -108,7 +108,7 @@ export default function LocationFilter({
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ2MjY0MDIsImV4cCI6MTY3NDY1MTYwMn0.UNC2oAVKK-9ZGxTrMJQo5y5MNOvSLK0yzPn1l5VChZxACB0taeoqtm7DXbVYqp4HZ6k7g9UsK4o-Mie3sj4YPw",
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ2NTQxOTUsImV4cCI6MTY3NDY1NTk5NX0.IqcPKaUlNhWIiVme_WWSRJcSnY09BrxfYRlPSkT--Jr3tPDcczt5qMkCajdwLLkOu4D-czpwvdle_vzcKqwCfw",
           },
         }
       )

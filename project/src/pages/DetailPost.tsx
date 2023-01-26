@@ -6,7 +6,7 @@ import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import PostComment from "../components/PostComment";
 import axios from "axios";
 import Button from "../components/Button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
@@ -71,12 +71,13 @@ const PostContentContainer = styled.article`
   flex-direction: column;
   padding-top: 20px;
 
-  > img {
-    width: 100%;
-    height: 300px;
+  > div > div:first-child {
+    width: 1000px;
+    height: 550px;
+    margin: 0 auto;
   }
 
-  > div {
+  > div:nth-child(2) {
     margin-top: 30px;
   }
 `;
@@ -170,7 +171,7 @@ const AddComment = styled.form`
   }
 `;
 
-interface PostDetailType {
+export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
   attractionName: string;
@@ -198,11 +199,22 @@ interface PostDetailType {
   username: string;
   views: number;
 }
+// PostContent 리팩토링 예정
+// interface PostContentsType {
+//   imageURL: string;
+//   content: string;
+//   imageId: number;
+// }
+// interface ArrayPostCotentsType extends Array<PostContentsType> {}
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
   const [comment, setComment] = useState("");
+  // const [postContents, setPostContents] = useState<
+  //   ArrayPostCotentsType | PostContentsType
+  // >([]);
   const { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`/posts/${id}`)
@@ -227,6 +239,24 @@ const DetailPost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   };
+
+  let data: any[] = [];
+
+  for (let i = 0; i < post?.postImageUrls.length!; i++) {
+    data.push({
+      imageURL: post?.postImageUrls[i],
+      content: post?.postContents[i],
+      imgageId: i + 1,
+    });
+  }
+
+  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axios
+      .delete("/posts/delete/5/1")
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   return (
     <DetailPostWrapper>
       <div>
@@ -245,7 +275,11 @@ const DetailPost = () => {
           <MdPlace /> &nbsp;{post?.attractionAddress}
         </div>
         <div>
-          <button>
+          <button
+            onClick={() =>
+              navigate(`/attractions/detail/${post?.attractionId}`)
+            }
+          >
             <RxDoubleArrowLeft />
             &nbsp; 이 명소 방문 리뷰 더보기
           </button>
@@ -253,10 +287,16 @@ const DetailPost = () => {
         </div>
       </DetailPostInfo>
       <PostContentContainer>
-        <img alt={post?.postTitle} src={post?.postImageUrls[0]} />
-        <div>여기는 본문이 위치하게 될 것입니다.</div>
+        {data.map((el) => (
+          <div key={el.imageId}>
+            <div>
+              <img src={el.imageURL} alt="picture" />
+            </div>
+            <div>{el.content}</div>
+          </div>
+        ))}
         <div>
-          <TagsButton>#tags</TagsButton>
+          <TagsButton></TagsButton>
         </div>
         <PostContentBottom>
           <div>
@@ -279,10 +319,6 @@ const DetailPost = () => {
           </div>
         </PostContentBottom>
       </PostContentContainer>
-      {post &&
-        post.comments.map((comment) => (
-          <PostComment key={comment.commentId} comment={comment}></PostComment>
-        ))}
       <AddComment>
         <h3>댓글 남기기</h3>
         <div>
