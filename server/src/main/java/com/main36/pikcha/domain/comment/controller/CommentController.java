@@ -5,8 +5,10 @@ import com.main36.pikcha.domain.comment.dto.CommentResponseDto;
 import com.main36.pikcha.domain.comment.entity.Comment;
 import com.main36.pikcha.domain.comment.mapper.CommentMapper;
 import com.main36.pikcha.domain.comment.service.CommentService;
+import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.domain.post.service.PostService;
+import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.security.jwt.JwtParser;
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.response.MultiResponseDto;
@@ -34,9 +36,10 @@ public class CommentController {
     private final PostService postService;
     private final CommentMapper mapper;
 
-    @PostMapping("/upload/{post-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> postComment(@PathVariable("post-id") @Positive long postId,
-                                                          @PathVariable("member-id") @Positive long memberId,
+    @LoginUser
+    @PostMapping("/upload/{post-id}")
+    public ResponseEntity<DataResponseDto<?>> postComment(Member loginUser,
+                                                          @PathVariable("post-id") @Positive long postId,
                                                           @RequestBody @Valid CommentDto.Post commentPostDto) {
         Comment.CommentBuilder commentBuilder = Comment.builder();
 
@@ -44,7 +47,7 @@ public class CommentController {
                 commentService.createComment(
                         commentBuilder
                                 .commentContent(commentPostDto.getCommentContent())
-                                .member(memberService.findMemberByMemberId(memberId))
+                                .member(loginUser)
                                 .post(postService.findPost(postId))
                                 .build()
                 );
@@ -54,11 +57,12 @@ public class CommentController {
         return new ResponseEntity<>(new DataResponseDto<>(commentResponseDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{comment-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> patchComment(@PathVariable("comment-id") @Positive long commentId,
-                                                           @PathVariable("member-id") @Positive long memberId,
+    @LoginUser
+    @PatchMapping("/edit/{comment-id}")
+    public ResponseEntity<DataResponseDto<?>> patchComment(Member loginUser,
+                                                           @PathVariable("comment-id") @Positive long commentId,
                                                            @RequestBody @Valid CommentDto.Patch commentPatchDto) {
-        Comment comment = commentService.verifyClientId(memberId, commentId);
+        Comment comment = commentService.verifyClientId(loginUser.getMemberId(), commentId);
         comment.setCommentContent(commentPatchDto.getCommentContent());
 
         CommentResponseDto commentResponseDto = mapper.commentToCommentResponseDto(comment);
@@ -84,10 +88,11 @@ public class CommentController {
         return ResponseEntity.ok(new MultiResponseDto<>(commentResponseDtos, commentPage));
     }
 
-    @DeleteMapping("/delete/{comment-id}/{member-id}")
-    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("comment-id") @Positive long commentId,
-                                                    @PathVariable("member-id") @Positive long memberId) {
-        Comment comment = commentService.verifyClientId(memberId, commentId);
+    @LoginUser
+    @DeleteMapping("/delete/{comment-id}")
+    public ResponseEntity<HttpStatus> deleteComment(Member loginUser,
+                                                    @PathVariable("comment-id") @Positive long commentId) {
+        Comment comment = commentService.verifyClientId(loginUser.getMemberId(), commentId);
         commentService.deleteComment(comment);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
