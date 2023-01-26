@@ -109,7 +109,6 @@ public class PostController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
-
     @PatchMapping("/edit/{post-id}/{member-id}")
     public ResponseEntity<DataResponseDto<?>> editPost(@PathVariable("post-id") @Positive long postId,
                                                        @PathVariable("member-id") @Positive long memberId,
@@ -161,7 +160,7 @@ public class PostController {
 
     }
 
-    @GetMapping(value = {"/{post-id}", "/{post-id}/{member-id}"})
+    @GetMapping(value = {"/details/{post-id}", "/details/{post-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
                                                       @PathVariable("member-id") Optional<Long> memberId) {
         Post post = postService.findPost(postId);

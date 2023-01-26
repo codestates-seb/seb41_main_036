@@ -97,7 +97,7 @@ public class JwtParser {
             throw new TokenUnsupported();
         } catch (IllegalArgumentException e) {
             log.trace("JWT claims string is empty trace: {}", e);
-            throw new TokenEmpty();
+            throw new TokenIllegalArgument();
         }
     }
 
@@ -113,13 +113,13 @@ public class JwtParser {
             throw new TokenMalformed();
         } catch (ExpiredJwtException e) {
             log.trace("trace Expired JWT token trace: {}", e);
-            throw new RefreshExpired();
+            throw new TokenRefreshExpired();
         } catch (UnsupportedJwtException e) {
             log.trace("Unsupported JWT token trace: {}", e);
             throw new TokenUnsupported();
         } catch (IllegalArgumentException e) {
             log.trace("JWT claims string is empty trace: {}", e);
-            throw new TokenEmpty();
+            throw new TokenIllegalArgument();
         }
     }
 
