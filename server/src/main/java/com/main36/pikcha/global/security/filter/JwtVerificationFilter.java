@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -41,6 +40,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/home",
                     "/attractions",
                     "/posts",
+                    "/token/refresh",
                     "/oauth2/authorization/google",
                     "/oauth2/authorization/kakao"
             );
@@ -63,7 +63,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             String jwt = getAccessToken(request);
             log.info("jwt = ==== {}", jwt);
-            if (StringUtils.hasText(jwt) && jwtParser.verifyToken(jwt)) {
+            if (StringUtils.hasText(jwt) && jwtParser.verifyAccessToken(jwt)) {
                 Authentication authentication = jwtGenerator.getAuthentication(jwt);
                 log.info("# Token verification success !");
                 SecurityContextHolder.getContext().setAuthentication(authentication);

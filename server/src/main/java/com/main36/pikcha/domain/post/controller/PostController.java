@@ -109,7 +109,6 @@ public class PostController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
-
     @PatchMapping("/edit/{post-id}/{member-id}")
     public ResponseEntity<DataResponseDto<?>> editPost(@PathVariable("post-id") @Positive long postId,
                                                        @PathVariable("member-id") @Positive long memberId,

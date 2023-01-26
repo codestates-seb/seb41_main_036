@@ -64,7 +64,8 @@ public class JwtGenerator {
         Claims claims = Jwts.claims().setSubject(payload);
         claims.put("roles", roles);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 30000); // 30000이 30분을 의미함
+        //TODO: 시간 변경할것
+        Date validity = new Date(now.getTime() + 30 * 60 * 1000); // 단위 100ns 0.1ms -> 30분
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -76,7 +77,8 @@ public class JwtGenerator {
 
     public String generateRefreshToken(String payload) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 420000); // 420000은 420분을 의미함
+        //TODO: 시간 변경할것
+        Date validity = new Date(now.getTime() + 420 * 60 * 1000); // 420분
         return Jwts.builder()
                 .setSubject(payload)
                 .setIssuedAt(Calendar.getInstance().getTime())
@@ -104,7 +106,7 @@ public class JwtGenerator {
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setSubject(authMember.getEmail())
+                .setSubject(authMember.getMemberId().toString())
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)

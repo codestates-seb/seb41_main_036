@@ -1,35 +1,24 @@
 package com.main36.pikcha.global.security.controller;
 
-import com.amazonaws.Response;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
-import com.main36.pikcha.global.aop.LoginUser;
-import com.main36.pikcha.global.aop.LoginUserEmail;
+import com.main36.pikcha.global.exception.BusinessLogicException;
+import com.main36.pikcha.global.exception.ExceptionCode;
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.security.dto.RenewTokenDto;
-import com.main36.pikcha.global.security.dto.TokenDto;
 import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.jwt.JwtParser;
-import com.main36.pikcha.global.security.userdetails.AuthMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.prefs.PreferenceChangeEvent;
-
-import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEARER_PREFIX;
-
 @Slf4j
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/token")
+
 public class TokenController {
 
     private final JwtGenerator jwtGenerator;
@@ -50,11 +39,15 @@ public class TokenController {
 //        return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
 //    }
 
-    @GetMapping("/refresh/{member-id}")
+    @GetMapping("/token/refresh/{member-id}")
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {
+        log.info("refresh= {}", refresh);
+        if (refresh.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
+        }
 
-        jwtParser.verifyToken(refresh);
+        jwtParser.verifyRefreshToken(refresh);
         Member member = memberService.findMemberByMemberId(memberId);
         RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
         RenewTokenDto renewTokenDto =
@@ -65,4 +58,24 @@ public class TokenController {
 
         return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
     }
+
+//    @LoginUser
+//    @GetMapping("/token/refresh")
+//    public ResponseEntity<?> findCookie(Member loginUser,
+//                                        @CookieValue(value = "refreshToken") String refresh) {
+//        log.info("refresh= {}", refresh);
+//        if (refresh.isEmpty()) {
+//            throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
+//        }
+//
+//        jwtParser.verifyToken(refresh);
+//        RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
+//        RenewTokenDto renewTokenDto =
+//                builder.memberId(loginUser.getMemberId())
+//                        .email(loginUser.getEmail())
+//                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(loginUser.getEmail(), loginUser.getRoles()))
+//                        .build();
+//
+//        return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
+//    }
 }
