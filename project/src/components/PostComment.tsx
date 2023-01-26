@@ -13,37 +13,29 @@ const PostCommentContainer = styled.div`
     border-radius: var(--br-l);
     margin-right: 10px;
   }
-
   > div > div:first-child {
     display: flex;
   }
-
   > div > div:first-child > div {
     display: flex;
     flex-direction: column;
   }
-
   > div > div:first-child > div > span {
     font-size: var(--font-xxs);
   }
-
   > div > div:last-child {
     display: flex;
   }
-
   > form {
     width: 100%;
   }
-
   > div:last-child {
     padding: 20px 40px;
     border-bottom: 1px solid var(--black-600);
   }
-
   > form {
     padding: 20px 40px;
   }
-
   > form > textarea {
     width: 100%;
     height: 100px;
@@ -53,7 +45,6 @@ const PostCommentContainer = styled.div`
     border-radius: var(--br-m);
     border-color: var(--purple-300);
     font-size: var(--font-base);
-
     &:focus {
       outline-color: var(--purple-400);
       box-shadow: 0 0 6px var(--purple-300);

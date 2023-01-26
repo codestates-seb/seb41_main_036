@@ -27,7 +27,6 @@ const GlobalStyle = createGlobalStyle`
 const ImageBox = styled.div`
   width: 100%;
   height: 300px;
-
   > img {
     width: 100%;
     height: 100%;
@@ -39,7 +38,6 @@ const Container = styled.div`
   height: 85vh;
   background-color: white;
   margin: 0 auto;
-
   > hr {
     width: 300px;
     background: var(--purple-400);
@@ -90,13 +88,11 @@ const NavBar = styled.div`
   width: 50%;
   height: 100px;
   background-color: white;
-
   .active {
     color: var(--purple-400);
     font-weight: bold;
     border-bottom: 1px solid var(--purple-400);
   }
-
   > button {
     background-color: white;
     width: 300px;
@@ -177,7 +173,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     :nth-child(5) {
       margin-top: 10px;
     }
-
     :hover {
       color: var(--purple-400);
     }

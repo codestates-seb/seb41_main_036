@@ -11,7 +11,6 @@ import { useNavigate, useParams } from "react-router-dom";
 const DetailPostWrapper = styled.div`
   width: 83.5%;
   margin: 0 auto;
-
   > div:first-child {
     display: flex;
     justify-content: flex-end;
@@ -37,7 +36,6 @@ const DetailPostTitle = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
-
   > h2 {
     width: 50%;
     text-align: center;
@@ -50,7 +48,6 @@ const DetailPostInfo = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 2em;
-
   > div:last-child {
     width: 100%;
     display: flex;
@@ -58,7 +55,6 @@ const DetailPostInfo = styled.div`
     padding: 0 20px;
     font-size: var(--font-sm);
   }
-
   > div:last-child > button {
     border: none;
     background-color: transparent;
@@ -70,13 +66,11 @@ const PostContentContainer = styled.article`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-
   > div > div:first-child {
     width: 1000px;
     height: 550px;
     margin: 0 auto;
   }
-
   > div:nth-child(2) {
     margin-top: 30px;
   }
@@ -93,7 +87,6 @@ const TagsButton = styled.button`
   font-weight: var(--fw-bold);
   box-shadow: 0 0 5px var(--purple-200);
   border-radius: var(--br-s);
-
   &:hover {
     background-color: var(--purple-300);
     color: var(--purple-tag);
@@ -107,26 +100,22 @@ const PostContentBottom = styled.div`
   align-items: center;
   padding: 5em 0;
   border-bottom: 1px solid var(--black-600);
-
   > div > img {
     width: 30px;
     height: 30px;
     border-radius: var(--br-l);
     margin-right: 10px;
   }
-
   > div:first-child {
     display: flex;
     align-items: center;
     font-weight: var(--fw-bold);
   }
-
   > div:last-child {
     width: 100px;
     display: flex;
     justify-content: space-around;
   }
-
   > div > div {
     display: flex;
     flex-direction: column;
@@ -134,7 +123,6 @@ const PostContentBottom = styled.div`
     color: var(--black-700);
     cursor: pointer;
   }
-
   > div > div > span {
     font-size: var(--font-xs);
     color: var(--black-900);
@@ -144,12 +132,10 @@ const PostContentBottom = styled.div`
 const AddComment = styled.form`
   margin-top: 20px;
   width: 100%;
-
   > div {
     margin-top: 20px;
     display: flex;
   }
-
   > div > img {
     width: 40px;
     height: 40px;
@@ -163,7 +149,6 @@ const AddComment = styled.form`
     border-radius: var(--br-m);
     resize: none;
   }
-
   button {
     position: relative;
     top: 8em;

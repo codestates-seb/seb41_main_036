@@ -11,23 +11,12 @@ interface ButtonProps {
   hoverbackgroundcolor?: string;
   hovercolor?: string;
   text?: string;
+  type?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const ButtonForm = styled.button<ButtonProps>`
-  // width: ${(props) => props.width};
-  //    height: ${(props) => props.height};
-  //  background-color: ${(props) => props.backgroundcolor};
-  //   border-radius: 30px;
-  //   border: ${(props) => props.border};
-  //   color: ${(props) => props.color};
-  //   cursor: pointer;
-  //   font-weight: var(--fw-bold);
-  //  font-size: ${(props) => props.fontsize};
-  //  &:hover {
-  //     background-color: ${(props) => props.hoverbackgroundcolor};
-  //     color: ${(props) => props.hovercolor};
-  // }
+const VioletButton = styled.button<ButtonProps>`
+
 display:flex;
 align-items:center;
 justify-content:center;
@@ -46,64 +35,115 @@ justify-content:center;
   }
 `;
 
+const WhiteButton = styled.button<ButtonProps>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  background-color: var(--purple-300);
+  border-radius: var(--br-l);
+  border: 1px solid white;
+  color: white;
+  font-weight: var(--fw-bold);
+  font-size: ${(props) => props.fontsize};
+  cursor: pointer;
+  &:hover {
+    background-color: white;
+    color: var(--purple-300);
+  }
+`;
+const GrayButton = styled.button<ButtonProps>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  background-color: var(--black-300);
+  border-radius: var(--br-l);
+  border: none;
+  color: var(--black-650);
+  font-weight: var(--fw-bold);
+  font-size: ${(props) => props.fontsize};
+  cursor: pointer;
+  &:hover {
+    background-color: var(--black-400);
+    color: var(--black-650);
+  }
+`;
+
+const NoneButton = styled.button<ButtonProps>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  background-color: var(--black-250);
+  border-radius: var(--br-l);
+  border: none;
+  font-weight: 400;
+  color: var(--black-900);
+  font-size: var(--font-sx);
+  cursor: pointer;
+`;
+
+
 const Button = ({
   width,
   height,
-  backgroundcolor,
-  border,
-  color,
   fontsize,
-  hoverbackgroundcolor,
   hovercolor,
   text,
+  type,
   onClick,
 }: ButtonProps) => {
   return (
-    <ButtonForm
-      width={width}
-      height={height}
-      backgroundcolor={backgroundcolor}
-      border={border}
-      color={color}
-      fontsize={fontsize}
-      hoverbackgroundcolor={hoverbackgroundcolor}
-      hovercolor={hovercolor}
-      onClick={onClick}
-    >
-      {text}
-    </ButtonForm>
+    <>
+      {type === "violet" ? (
+        <VioletButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          hovercolor={hovercolor}
+          onClick={onClick}
+        >
+          {text}
+        </VioletButton>
+      ) : (
+        <></>
+      )}
+      {type === "white" ? (
+        <WhiteButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          hovercolor={hovercolor}
+          onClick={onClick}
+        >
+          {text}
+        </WhiteButton>
+      ) : (
+        <></>
+      )}
+      {type === "gray" ? (
+        <GrayButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          hovercolor={hovercolor}
+          onClick={onClick}
+        >
+          {text}
+        </GrayButton>
+      ) : (
+        <></>
+      )}
+            {type === "none" ? (
+        <NoneButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          onClick={onClick}
+        >
+          {text}
+        </NoneButton>
+      ) : (
+        <></>
+      )}
+
+    </>
   );
 };
 
 export default Button;
-
-// ButtonForm.defaultProps ={
-//     backgroundcolor: "red",
-//     hovercolor: "yellow",
-//     hoverbackgroundcolor: "blue",
-//     color: "green",
-//     fontsize: "15px",
-//     border: "22px pink solid",
-
-// }
-
-/*  버튼 사용 시 
-import ButtonForm from '위치'  // 선언
-    <ButtonForm width="180px" height='60px' backgroundcolor='var(--purple-300)' border='0px white' color='white' fontsize='24px' hoverbackgroundcolor='var(--purple-400)' text='버튼내용'></ButtonForm>
-
-    또는
-
-    <ButtonForm 
-    width="180px" 
-    height='60px' 
-    backgroundcolor='var(--purple-300)' 
-    border='0px white' 
-    color='white' 
-    fontsize='24px' 
-    hoverbackgroundcolor='var(--purple-400)' 
-    hovercolor='white'
-    text='버튼 내용'></ButtonForm>
-
-    순서대로 넓이 길이 배경색 외곽선 글자색 글씨크기 호버배경색 호버글씨색 버튼내용
-    필요 없는 변수(스타일)은 빼도 이상없이 동작
-*/

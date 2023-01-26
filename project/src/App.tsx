@@ -14,6 +14,11 @@ import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
 
 function App() {
+
+  if(localStorage.getItem("loginStatus") === null){
+    localStorage.setItem("loginStatus", "false")
+  }
+
   return (
     <div className="App">
       <BrowserRouter>

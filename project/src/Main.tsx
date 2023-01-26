@@ -123,3 +123,159 @@ function Main() {
 }
 
 export default Main;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import axios from "./utils/axiosinstance"
+// import { useRecoilState } from "recoil";
+// import {
+//   LoginState,
+//   AuthToken,
+//   LoggedUser,
+// } from "./recoil/state";
+
+
+
+
+
+// const [isLogin, setIslogin] = useRecoilState(LoginState);
+// const [auth, setAuth] = useRecoilState(AuthToken);
+// const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
+
+
+// const onClickBtn= () => {
+
+//   const memberId = localStorage.getItem("memberId")
+//   axios
+//   .post(`/comments/upload/1`, 
+//   {
+//     commentContent: "1분테스트 16",
+//   },{
+//     headers:{ 
+//       "Content-Type": "application/json",
+//     }
+//   }
+
+//   // .get(`token/refresh/${memberId}`
+
+
+//   )
+//   .then((res) => {
+
+//       console.log(res)  
+//       console.log("댓글등록")
+
+//   })
+//   .catch((err)=>console.error(err))
+
+// }
+
+
+// <button onClick={onClickBtn}>버튼버튼</button>
+

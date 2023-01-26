@@ -29,3 +29,14 @@ yarn-error.log*
 #cache
 /node_modules/.cache/default-development/0.pack
 
+# eslint cache
+.eslintcache
+
+/node_modules
+node_modules/
+node_modules
+/node_modules/
+/.pnp
+.pnp.js
+dist/*
+*.log

@@ -14,13 +14,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   LoginState,
   AuthToken,
-  RefreshToken,
   LoggedUser,
 } from "../../recoil/state";
 import axios from "axios";
-import Button from "../Button";
+import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler } from "react";
+
 const SearchBar = lazy(() => import("./SearchBar"));
+// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
@@ -28,36 +29,62 @@ const isLoggedIn = true;
 
 const HeaderTopBar = () => {
   const navigate = useNavigate();
-  const [isLogin, setIslogin] = useRecoilState<boolean>(LoginState);
+  const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState<string>(AuthToken);
-  const [refresh, setRefresh] = useRecoilState<string>(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
+
+  const localLogin = localStorage.getItem("loginStatus")
+  if(typeof localLogin === "string"){
+    setIslogin(JSON.parse(localLogin))
+    }
 
   const onClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     setIslogin(false);
-    axios.defaults.headers.common["authorization"] = "";
-    axios.defaults.headers.common["refreshtoken"] = "";
     setAuth("");
-    setRefresh("");
-    setLoggedUser("");
-    navigate("/");
+    setLoggedUser("")
+    axios.defaults.headers.common["Authorization"] = null
+    localStorage.removeItem("Authorization")
+    localStorage.setItem("loginStatus", "false")
+    localStorage.removeItem("memberId")
+    navigate('/')
   };
+
   return (
     <HeaderTop>
       <HeaderTopMenu>
         {isLogin ? (
           <>
-            <li>마이페이지</li>
             <li>
-              <button onClick={onClickLogout}>로그아웃</button>
+            <ButtonForm
+          width="70px"
+          height="1px"
+          text="마이페이지"
+          type="none"
+        ></ButtonForm>
+            </li>
+            <li>
+            <ButtonForm
+          width="50px"
+          height="1px"
+          text="로그아웃"
+          type="none"
+          onClick={onClickLogout}
+        ></ButtonForm>
             </li>
           </>
         ) : (
           <li>
-            <button onClick={() => navigate("/login")}>로그인/회원가입</button>
+            <ButtonForm
+          width="100px"
+          height="1px"
+          text="로그인 / 회원가입"
+          type="none"
+          onClick={()=>navigate('/login')}
+        ></ButtonForm>
+
           </li>
         )}
       </HeaderTopMenu>
