@@ -17,6 +17,7 @@ import com.main36.pikcha.domain.post.service.PostService;
 
 import com.main36.pikcha.domain.post_image.entity.PostImage;
 import com.main36.pikcha.domain.post_image.service.PostImageService;
+import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.config.S3Service;
 
 
@@ -55,9 +56,10 @@ public class PostController {
     private final PostImageService postImageService;
 
 
-    @PostMapping("/register/{attraction-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> registerPost2(@PathVariable("attraction-id") @Positive long attractionId,
-                                                           @PathVariable("member-id") @Positive long memberId,
+    @LoginUser
+    @PostMapping("/register/{attraction-id}")
+    public ResponseEntity<DataResponseDto<?>> registerPost2(Member loginUser,
+                                                            @PathVariable("attraction-id") @Positive long attractionId,
                                                            PostDto.PostDtoFinal postDto) {
         Post post = new Post();
 
@@ -97,7 +99,7 @@ public class PostController {
         post.setPostContents(postContentList);
         post.setPostImages(postImageList);
         post.setAttraction(attractionService.findAttraction(attractionId));
-        post.setMember(memberService.findMemberByMemberId(memberId));
+        post.setMember(loginUser);
         post.setComments(new ArrayList<>());
 
         Post createdPost = postService.createPost(post);
@@ -115,6 +117,8 @@ public class PostController {
                                                        @PathVariable("member-id") @Positive long memberId,
                                                        PostDto.PostDtoFinal postPatchDto) {
         Post findPost = postService.findPostNoneSetView(postId);
+
+
 
         // 수정할 포스트 캡션, 해시태그, 이미지 전체 삭제
         findPost.getPostContents().clear();
@@ -204,7 +208,7 @@ public class PostController {
                 mapper.postListToPostHomeResponseDtoList(posts), postPage), HttpStatus.OK);
     }
 
-    @GetMapping("/details/{attraction-id}")
+    @GetMapping("/{attraction-id}")
     public ResponseEntity<MultiResponseDto<?>> getPostsByAttractionDetailsPage(@PathVariable("attraction-id") long attractionId,
                                                                           @RequestParam(defaultValue = "newest", required = false) String sort,
                                                             @RequestParam(defaultValue = "1", required = false) @Positive int page,
@@ -218,11 +222,12 @@ public class PostController {
 
     }
 
-    @DeleteMapping("/delete/{post-id}/{member-id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId,
-                                                 @PathVariable("member-id") @Positive long memberId) {
+    @LoginUser
+    @DeleteMapping("/delete/{post-id}")
+    public ResponseEntity<HttpStatus> deletePost(Member loginUser,
+                                                 @PathVariable("post-id") long postId) {
         String dirName = "images";
-        Post post = postService.verifyClientId(memberId, postId);
+        Post post = postService.verifyClientId(loginUser.getMemberId(), postId);
         // CascadeType.REMOVE 라서 객체는 지울 필요 없고, s3에서 이미지만 지우면 된다
         postImageService.deleteOnlyS3Images(post.getPostImages());
 
@@ -247,11 +252,12 @@ public class PostController {
     }
 
     // 포스트 좋아요!
-    @PostMapping("/likes/{post-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> votePost(@PathVariable("post-id") @Positive long postId,
-                                                       @PathVariable("member-id") @Positive long memberId) {
+    @LoginUser
+    @PostMapping("/likes/{post-id}")
+    public ResponseEntity<DataResponseDto<?>> votePost(Member loginUser,
+                                                       @PathVariable("post-id") @Positive long postId) {
         // 회원 정보를 받아온다
-        Member member = memberService.findMemberByMemberId(memberId);
+        Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
 
         // 포스트 정보를 찾는다
         Post post = postService.findPostNoneSetView(postId);
