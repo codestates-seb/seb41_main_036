@@ -11,7 +11,6 @@ interface ButtonProps {
   hoverbackgroundcolor?: string;
   hovercolor?: string;
   text?: string;
-<<<<<<< HEAD
   type?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -48,72 +47,6 @@ const WhiteButton = styled.button<ButtonProps>`
     color: var(--purple-300);
   }
 `;
-=======
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}
-
-const ButtonForm = styled.button<ButtonProps>`
-   // width: ${(props) => props.width};
-//    height: ${(props) => props.height};
-  //  background-color: ${(props) => props.backgroundcolor};
- //   border-radius: 30px;
- //   border: ${(props) => props.border};
- //   color: ${(props) => props.color};
- //   cursor: pointer;
- //   font-weight: var(--fw-bold);
-  //  font-size: ${(props) => props.fontsize};
-  //  &:hover {
-   //     background-color: ${(props) => props.hoverbackgroundcolor};
-   //     color: ${(props) => props.hovercolor};
-   // }
-`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  background-color: var(--purple-300);
-  border-radius: var(--br-l);
-  border: none;
-  color: white;
-  font-weight: var(--fw-bold);
-  font-size: ${(props) => props.fontsize};
-  cursor: pointer;
-  &:hover {
-    background-color: var(--purple-400);
-    color: ${(props) => props.hovercolor};
-  }
-`;
-
-const Button = ({
-  width,
-  height,
-  backgroundcolor,
-  border,
-  color,
-  fontsize,
-  hoverbackgroundcolor,
-  hovercolor,
-  text,
-  onClick,
-}: ButtonProps) => {
-  return (
-    <ButtonForm
-      width={width}
-      height={height}
-      backgroundcolor={backgroundcolor}
-      border={border}
-      color={color}
-      fontsize={fontsize}
-      hoverbackgroundcolor={hoverbackgroundcolor}
-      hovercolor={hovercolor}
-      onClick={onClick}
-    >
-      {text}
-    </ButtonForm>
-  );
-};
-
-export default Button;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-
 const GrayButton = styled.button<ButtonProps>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};

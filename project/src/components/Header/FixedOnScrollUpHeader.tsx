@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Header } from ".";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const FixedHeaderOnScrollUp = () => {
   const pageOffsetRef = useRef<number | null>(null);
   const [showHeader, setShowHeader] = useState(true);

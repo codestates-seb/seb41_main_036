@@ -2,7 +2,10 @@ import { useState, useRef } from "react";
 import { Header } from ".";
 import { IoIosArrowDown as ArrowDownIcon } from "react-icons/io";
 import { HiddenHeaderBodyWrapper, HiddenHeaderTopWrapper } from "./style";
+<<<<<<< HEAD
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const HiddenHeader = () => {
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
   const [isVisible, setIsVisible] = useState(false);

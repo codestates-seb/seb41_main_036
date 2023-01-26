@@ -62,6 +62,7 @@ const PostCommentContainer = styled.div`
 `;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 interface CommentType {
   commentId: number;
   memberId: number;
@@ -72,6 +73,8 @@ interface CommentType {
   modifiedAt: string;
 }
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const PostManageButton = styled.button`
@@ -87,9 +90,15 @@ const PostManageButton = styled.button`
   cursor: pointer;
 `;
 <<<<<<< HEAD
+<<<<<<< HEAD
 const PostComment = ({ comment }: { comment: CommentType }) => {
   const [commentEdit, setCommentEdit] = useState(false);
   const [commentContent, setCommentcontent] = useState(comment.commentContent);
+=======
+const PostComment = () => {
+  const [commentEdit, setCommentEdit] = useState(false);
+  const [commentContent, setCommentcontent] = useState(dummy.post[0].content);
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 const PostComment = () => {
   const [commentEdit, setCommentEdit] = useState(false);
@@ -104,15 +113,21 @@ const PostComment = () => {
         <div>
           <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <img alt="userImg" src={comment.memberPicture} />
             <div>
               {comment.username}
               <span>{comment.createdAt}</span>
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
             <img alt="userImg" src={dummy.post[0].userImg} />
             <div>
               {dummy.post[0].username}
               <span>{dummy.post[0].createdAt}</span>
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
             </div>
           </div>
@@ -137,7 +152,11 @@ const PostComment = () => {
           </form>
         ) : (
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div> {comment.commentContent}</div>
+=======
+          <div> {dummy.post[0].content}</div>
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
           <div> {dummy.post[0].content}</div>
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f

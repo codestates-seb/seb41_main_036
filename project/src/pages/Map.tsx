@@ -8,6 +8,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkPlus, BsFillChatLeftFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
+<<<<<<< HEAD
 import '../index.css';
 
 const Container = styled.div`
@@ -16,6 +17,12 @@ const Container = styled.div`
   background-color: white;
 `
 =======
+`;
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
+
+const Container = styled.div`
+  display: flex;
 `;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
@@ -79,10 +86,15 @@ const SelectList = styled.div`
     height: 40px;
     padding: 10px 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
     border-left: 0.5px solid var(--black-500);
     border-bottom: 0.5px solid var(--black-500);
     border-top: -0.9px solid var(--black-500);
     :hover{
+=======
+    border: 0.5px solid var(--black-500);
+    :hover {
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
     border: 0.5px solid var(--black-500);
     :hover {
@@ -276,11 +288,14 @@ const Map = () => {
     "https://a.cdn-hotels.com/gdcs/production43/d333/469e9780-6653-4879-a396-cea7714fc209.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     "https://a.cdn-hotels.com/gdcs/production90/d1936/e6925d65-cc4b-4605-8bd4-debb712fe764.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "https://a.cdn-hotels.com/gdcs/production167/d282/bf00d54a-0bb2-487e-8fbb-2ce495d3113b.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     "https://a.cdn-hotels.com/gdcs/production41/d1748/0b5fab45-59f0-4574-8ac3-d19fb1778e2e.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     
   ]
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     "https://a.cdn-hotels.com/gdcs/production34/d1467/24a50358-70c4-4f8e-8b0e-a87a4c3c9d6a.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     "https://a.cdn-hotels.com/gdcs/production83/d933/8daa96c3-245c-40be-a43a-e1d9c079dbf8.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     "https://a.cdn-hotels.com/gdcs/production34/d1158/023da96d-32b2-4e9a-9f89-027267e196f2.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
@@ -289,13 +304,20 @@ const Map = () => {
     "https://a.cdn-hotels.com/gdcs/production52/d667/87129ebe-2cc7-42c6-bf31-32fbb06574eb.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     "https://a.cdn-hotels.com/gdcs/production172/d698/73d6b117-c0d8-45d0-85c8-5fef62ad919b.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
   ];
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
   // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false);
   //현재 눌린 버튼의 값 설정
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [regionFilter,setRegionFilter] = useState('전체')
+=======
+  const [regionFilter, setRegionFilter] = useState("강동구");
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
   const [regionFilter, setRegionFilter] = useState("강동구");
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -305,7 +327,10 @@ const Map = () => {
   useEffect(() => {}, [regionFilter]);
 
   let Post = [
+<<<<<<< HEAD
     { id: "0", Post: "전체" },
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
@@ -335,6 +360,7 @@ const Map = () => {
 
   return (
     <>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <HiddenHeader></HiddenHeader>
     <Container>
@@ -431,6 +457,8 @@ const Map = () => {
         }
     </Container>
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       <HiddenHeader></HiddenHeader>
       <Container>
         <PlaceList>
@@ -555,6 +583,9 @@ const Map = () => {
           ></KakaoMap>
         )}
       </Container>
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     </>
   );

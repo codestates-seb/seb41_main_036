@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
@@ -19,6 +20,9 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 =======
 import KakaoMap from "../components/KakaoMap";
+=======
+import KakaoMap from "../components/KakaoMap";
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import React, { useState, useRef, useEffect } from "react";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { SlNote } from "react-icons/sl";
@@ -34,6 +38,9 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { Header } from "../components/Header";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import "../index.css";
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const GlobalStyle = createGlobalStyle`
@@ -45,6 +52,10 @@ const GlobalStyle = createGlobalStyle`
 
 const ImageBox = styled.div`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -59,7 +70,11 @@ const ImageBox = styled.div`
 `;
 const Container = styled.div`
   width: 100%;
+<<<<<<< HEAD
   height: 85vh;
+=======
+  height: 80vh;
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   background-color: white;
   margin: 0 auto;
 
@@ -77,6 +92,7 @@ const Container = styled.div`
   }
   > p {
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 60%;
     text-align: left;
     padding: 10px;
@@ -86,6 +102,11 @@ const Container = styled.div`
     text-align: left;
     padding: 10px;
     display: block;
+=======
+    text-align: left;
+    padding: 10px;
+    display: block;
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     width: 60%;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     height: 80px;
@@ -99,8 +120,11 @@ const Container = styled.div`
   }
   > div {
 <<<<<<< HEAD
+<<<<<<< HEAD
     display: block;
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     width: 180px;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     height: 40px;
@@ -108,9 +132,15 @@ const Container = styled.div`
     text-align: center;
     & div {
 <<<<<<< HEAD
+<<<<<<< HEAD
       text-align: center;
       width: 15px;
       height: 20px;
+=======
+      width: 15px;
+      height: 20px;
+      margin: 0px 10px 0 10px;
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
       width: 15px;
       height: 20px;
@@ -125,6 +155,10 @@ const Container = styled.div`
   }
 `;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+// 버튼 내비게이션바
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 // 버튼 내비게이션바
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -152,8 +186,11 @@ const NavBar = styled.div`
     cursor: pointer;
     :nth-child(1) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       margin-right: 40%;
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       margin-right: 130px;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     }
@@ -178,9 +215,12 @@ const PostHeader = styled.div`
     font-size: 30px;
     white-space: nowrap;
 <<<<<<< HEAD
+<<<<<<< HEAD
     /* margin-right: 5%; */
     margin: 25px 0 20px 7%;
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     margin-right: 5%;
     margin-bottom: 20px;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -203,7 +243,10 @@ const PostHeader = styled.div`
   }
 `;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const PostBox = styled.div`
   width: 85%;
@@ -211,6 +254,9 @@ const PostBox = styled.div`
   background-color: #6d9faa;
   margin: 0 auto;
 `;
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const FixBoxVertical = styled.div<{ inverted: boolean }>`
@@ -227,7 +273,11 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
   position: ${(props) => (props.inverted ? "fixed" : "absolute")};
   left: ${(props) => (props.inverted ? "87%" : "87%")};
 <<<<<<< HEAD
+<<<<<<< HEAD
   top: ${(props) => (props.inverted ? "60%" : "1010px")};
+=======
+  top: ${(props) => (props.inverted ? "60%" : "1050px")};
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
   top: ${(props) => (props.inverted ? "60%" : "1050px")};
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -256,6 +306,7 @@ const MarkerCount = styled.p`
   font-size: 13px;
   margin: 2px auto;
 `;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 type PlaceData = {
@@ -271,6 +322,9 @@ type PlaceData = {
 };
 
 =======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
+
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
@@ -304,6 +358,7 @@ const PlaceDetail = (): JSX.Element => {
   const updateScroll = () => {
     setFixBar(window.scrollY || document.documentElement.scrollTop);
   };
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   const handleView = (setting: string) => {
@@ -363,6 +418,10 @@ const PlaceDetail = (): JSX.Element => {
 
   useEffect(() => {
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
+
+  useEffect(() => {
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     window.addEventListener("scroll", updateScroll);
     window.addEventListener("scroll", onScroll);
 
@@ -371,6 +430,7 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", updateScroll);
     };
 <<<<<<< HEAD
+<<<<<<< HEAD
   }, []);
 
 
@@ -378,6 +438,10 @@ const PlaceDetail = (): JSX.Element => {
 =======
   }, [fixBar]);
 
+=======
+  }, [fixBar]);
+
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const handleView = (setting: string) => {
     setView(setting);
     if (view === "info") {
@@ -388,11 +452,15 @@ const PlaceDetail = (): JSX.Element => {
     }
   };
 
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <>
       <FixedOnScrollUpHeader />
       <GlobalStyle />
+<<<<<<< HEAD
 <<<<<<< HEAD
       {attractionData !== undefined ? (
         <>
@@ -494,6 +562,8 @@ const PlaceDetail = (): JSX.Element => {
         <div>Loading ... </div>
       )}
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       <ImageBox>
         <img
           src="https://images-ext-1.discordapp.net/external/UtUblHy4eFpjTRa-PmoWfhKJ6bmsNVznQ3A_uHnhlxg/%3Fixlib%3Drb-4.0.3%26ixid%3DMnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8%26auto%3Dformat%26fit%3Dcrop%26w%3D1528%26q%3D80/https/images.unsplash.com/photo-1546417404-73e80b4a749b"
@@ -573,6 +643,9 @@ const PlaceDetail = (): JSX.Element => {
         <PostBox>{/* 이곳에 post 컴포넌트 */}</PostBox>
       </Post>
       {/* <PaginationComponent></PaginationComponent> */}
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     </>
   );

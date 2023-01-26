@@ -8,10 +8,16 @@ import Post from './pages/Post';
 import Map from './pages/Map';
 import WritePost from "./pages/WritePost";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import PlaceDetail from "./pages/PlaceDetail";
 import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
+=======
+import PlaceDetail from './pages/PlaceDetail';
+import { RecoilRoot } from 'recoil';
+
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 import PlaceDetail from './pages/PlaceDetail';
 import { RecoilRoot } from 'recoil';
@@ -26,6 +32,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Routes>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
@@ -39,6 +46,8 @@ function App() {
           </Routes>
 
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       <RecoilRoot>
         <Routes>
           <Route path='/login' element={<LoginSign />}></Route>

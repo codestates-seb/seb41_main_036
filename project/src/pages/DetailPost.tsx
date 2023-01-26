@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
@@ -13,6 +14,8 @@ const DetailPostWrapper = styled.div`
   width: 83.5%;
   margin: 0 auto;
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import React from "react";
 import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
@@ -23,6 +26,9 @@ import PostComment from "../components/PostComment";
 
 const DetailPostWrapper = styled.div`
   width: 100%;
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
   > div:first-child {
@@ -176,6 +182,7 @@ const AddComment = styled.form`
     resize: none;
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   button {
     position: relative;
@@ -245,6 +252,10 @@ const DetailPost = () => {
 `;
 const DetailPost = () => {
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
+`;
+const DetailPost = () => {
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <DetailPostWrapper>
       <div>
@@ -257,17 +268,23 @@ const DetailPost = () => {
       </div>
       <DetailPostTitle>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <h2>{post?.postTitle}</h2>
       </DetailPostTitle>
       <DetailPostInfo>
         <div>
           <MdPlace /> &nbsp;{post?.attractionAddress}
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         <h2>{dummy.post[0].title}</h2>
       </DetailPostTitle>
       <DetailPostInfo>
         <div>
           <MdPlace /> &nbsp;종로구 사직로 161
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         </div>
         <div>
@@ -276,17 +293,23 @@ const DetailPost = () => {
             &nbsp; 이 명소 방문 리뷰 더보기
           </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <span>{post?.createdAt}</span>
         </div>
       </DetailPostInfo>
       <PostContentContainer>
         <img alt={post?.postTitle} src={post?.postImageUrls[0]} />
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           <span>2021.01.01</span>
         </div>
       </DetailPostInfo>
       <PostContentContainer>
         <img alt={dummy.post[0].title} src={dummy.post[0].img} />
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         <div>여기는 본문이 위치하게 될 것입니다.</div>
         <div>
@@ -295,8 +318,13 @@ const DetailPost = () => {
         <PostContentBottom>
           <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <img alt="userImg" src={post?.picture} />
             {post?.username}님의 포스트
+=======
+            <img alt="userImg" src={dummy.post[0].userImg} />
+            {dummy.post[0].username}님의 포스트
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
             <img alt="userImg" src={dummy.post[0].userImg} />
             {dummy.post[0].username}님의 포스트
@@ -310,22 +338,29 @@ const DetailPost = () => {
             <div>
               <AiFillEye />
 <<<<<<< HEAD
+<<<<<<< HEAD
               <span>{post?.views}</span>
             </div>
             <div>
               <AiFillHeart />
               <span>{post?.likes}</span>
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
               <span>{dummy.post[0].viewCount}</span>
             </div>
             <div>
               <AiFillHeart />
               <span>{dummy.post[0].recommend}</span>
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
             </div>
           </div>
         </PostContentBottom>
       </PostContentContainer>
+<<<<<<< HEAD
 <<<<<<< HEAD
       {post &&
         post.comments.map((comment) => (
@@ -346,6 +381,8 @@ const DetailPost = () => {
             onClick={(e) => handleCommentSubmit(e)}
           />
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       <PostComment />
       <PostComment />
       <PostComment />
@@ -354,6 +391,9 @@ const DetailPost = () => {
         <div>
           <img src={dummy.post[0].userImg} alt="userImg" />
           <textarea></textarea>
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         </div>
       </AddComment>

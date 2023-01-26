@@ -8,7 +8,11 @@ const Container = styled.div`
   display: flex;
   width: 100%;
 <<<<<<< HEAD
+<<<<<<< HEAD
   height: 100vh;
+=======
+  height: 100%;
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
   height: 100%;
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -145,6 +149,11 @@ const TagWrapper = styled.div`
   }
 `;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+const url = "http://pikcha36.o-r.kr:8080/posts/imagestest4";
+
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 const url = "http://pikcha36.o-r.kr:8080/posts/imagestest4";
 
@@ -211,6 +220,7 @@ const WritePost = () => {
     }
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
@@ -218,6 +228,8 @@ const WritePost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const handleRemovePreview = (
@@ -232,6 +244,7 @@ const WritePost = () => {
     e.preventDefault();
     const formData = new FormData();
 <<<<<<< HEAD
+<<<<<<< HEAD
     formData.append("postTitle", title);
     tags.forEach((tag) => {
       formData.append("postHashTags", tag);
@@ -245,6 +258,8 @@ const WritePost = () => {
     axios
       .post(`/posts/register/1/1`, formData, {
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     formData.append("title", title);
     tags.forEach((tag) => {
       formData.append("tags", tag);
@@ -252,6 +267,9 @@ const WritePost = () => {
 
     axios
       .post(url, formData, {
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         headers: {
           "Content-Type": "multipart/form-data",
@@ -260,21 +278,30 @@ const WritePost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
 <<<<<<< HEAD
+<<<<<<< HEAD
   };
 
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
     for (let key of formData.values()) {
       console.log(key);
     }
   };
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsModal(!isModal);
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
@@ -294,7 +321,10 @@ const WritePost = () => {
               height="40px"
               text="이미지 등록"
 <<<<<<< HEAD
+<<<<<<< HEAD
               type="violet"
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
               onClick={(e) => handleImageModal(e)}
@@ -339,7 +369,10 @@ const WritePost = () => {
               width="100px"
               height="40px"
 <<<<<<< HEAD
+<<<<<<< HEAD
               type="violet"
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
               text="포스트 등록"
@@ -467,6 +500,10 @@ const Modal = ({
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  console.log(imgFiles);
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
   console.log(imgFiles);
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
@@ -484,7 +521,10 @@ const Modal = ({
     imgRef.current!.value = "";
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 =======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (

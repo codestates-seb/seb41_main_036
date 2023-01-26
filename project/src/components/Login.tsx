@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
+<<<<<<< HEAD
 import Axios from "axios";
 import DaumPostcode from "react-daum-postcode";
+=======
+import axios from "axios";
+import DaumPostcode from "react-daum-postcode";
+import Ouaths from "./Ouaths";
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
@@ -256,12 +262,21 @@ const Login = () => {
         if (res.status === 200) {
           console.log("레스 : ", res) 
         console.log("로그인성공");
+<<<<<<< HEAD
         setIslogin(true);
         setAuth(accessToken);
         setLoggedUser(loginemail);
         localStorage.setItem("loginStatus", "true ")
           localStorage.setItem("authorization", `${accessToken}`)
           localStorage.setItem("memberId",memberId)
+=======
+        console.log(res);
+
+          setIslogin(true);
+          setAuth(authorization);
+          setRefresh(refreshtoken);
+          setLoggedUser(loginemail);
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           navigate("/");
         }
       })
@@ -327,6 +342,7 @@ const Login = () => {
     console.log(param);
   };
 
+<<<<<<< HEAD
   const kakaologin = () => {
     window.location.href =
     "http://localhost:8090/oauth2/authorization/kakao"
@@ -336,6 +352,8 @@ const Login = () => {
     console.log(param);
   };
 
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <Wrapper>
       {openPostcode && (
@@ -358,6 +376,12 @@ const Login = () => {
       )}
       
       <Logincontainer overlay={overlays}>
+<<<<<<< HEAD
+=======
+        <GButton onClick={GoogleHandler}>묵은지</GButton>
+        <GButton onClick={googlelogin}>묵은지</GButton>
+        <Ouaths />
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>
@@ -408,7 +432,10 @@ const Login = () => {
           height="60px"
           fontsize="24px"
           text="로그인"
+<<<<<<< HEAD
           type="violet"
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           onClick={onClickLogin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
@@ -501,7 +528,10 @@ const Login = () => {
           height="60px"
           fontsize="24px"
           text="회원가입"
+<<<<<<< HEAD
           type="violet"
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           onClick={onClickSignin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>

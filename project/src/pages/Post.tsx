@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 =======
 import React, { useState } from "react";
@@ -11,6 +12,14 @@ import PostCardComponent from "../components/PostCardComponent.tsx";
 import axios from "axios";
 import PaginationComponent from "../components/PaginationComponent";
 =======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
+import React, { useState } from "react";
+import styled from "styled-components";
+import LocationFilter from "../components/LocationFilter";
+import dummy from "../dummyData.json";
+import { AiFillHeart, AiFillEye } from "react-icons/ai";
+import { Header } from "../components/Header";
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const PostWrapper = styled.div`
@@ -122,6 +131,7 @@ const Post = () => {
       <PostWrapper>
         <LocationWrapper>
 <<<<<<< HEAD
+<<<<<<< HEAD
           {postsData && (
             <LocationFilter
               setData={setPostsData}
@@ -145,6 +155,8 @@ const Post = () => {
                 >
                   {sort.kor}
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           <LocationFilter />
         </LocationWrapper>
         <PostContainer>
@@ -158,11 +170,15 @@ const Post = () => {
                   onClick={() => filtering(idx)}
                 >
                   {filter}
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
                 </FilterButton>
               ))}
             </div>
           </PostFilterContainer>
+<<<<<<< HEAD
 <<<<<<< HEAD
           {postsData && (
             <PostCardComponent
@@ -183,6 +199,8 @@ const Post = () => {
             />
           )}
 =======
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
           <PostBox>
             {dummy.post.map((el) => (
               <div key={el.locationId}>
@@ -214,6 +232,9 @@ const Post = () => {
               </div>
             ))}
           </PostBox>
+<<<<<<< HEAD
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+=======
 >>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         </PostContainer>
       </PostWrapper>
