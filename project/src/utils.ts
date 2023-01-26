@@ -32,11 +32,7 @@ function getfilteredAttractions(
 
     if (searcher.search(attraction.name.replace(/[0-9 ]/g, "")) === -1)
       return acc;
-<<<<<<< HEAD:project/src/utils.ts
     const exactMatchedLetter = matchedLetter.filter(
-=======
-    const exactmatchedletter = matchedletter.filter(
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f:project/src/utils/functions.tsx
       (el: any) =>
         attraction.name[el[1]] === trimmedSearchValue.slice(-1) &&
         Hangul.isCompleteAll(blankNumRemovedValue)
@@ -49,15 +45,9 @@ function getfilteredAttractions(
         exactMatchedLetter,
       },
     ];
-<<<<<<< HEAD:project/src/utils.ts
   }, init).sort((prev, next) => {
     let diff = prev.matchedLetter[0]?.[0] - next.matchedLetter[0]?.[0];
     let exactDiff = null;
-=======
-  }, init).sort((a, b) => {
-    let diff = a.matchedletter[0]?.[0] - b.matchedletter[0]?.[0];
-    let exactDiff: number | null = null;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f:project/src/utils/functions.tsx
 
     if (!prev.exactMatchedLetter.length && next.exactMatchedLetter.length)
       return 1;

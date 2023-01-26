@@ -8,7 +8,6 @@ import {
   MouseEvent,
   KeyboardEvent,
   FormEvent,
-<<<<<<< HEAD
   lazy,
   Suspense,
 } from "react";
@@ -28,23 +27,10 @@ const SuggestionBox = lazy(() =>
 );
 const MAX_SUGGEST = 5;
 
-=======
-} from "react";
-import { SuggestionBox } from "./SuggestionBox";
-import { SearchForm } from "./style";
-import useClickScrollDetect from "../../utils/useClickScrollDetect";
-import { getfilteredAttractions } from "../../utils/functions";
-import { AttractionsData } from "../../data/searchBarData";
-import { FiSearch as SearchIcon } from "react-icons/fi";
-import { IoCloseOutline as ResetIcon } from "react-icons/io5";
-
-const MAX_SUGGEST = 5;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 interface SearchBarProps {
   defaultValue: string;
 }
 const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
-<<<<<<< HEAD
   const [inputValue, setInputValue] = useState(defaultValue);
   const [selected, setSelected] = useState(-1);
   const [isComposing, setIsComposing] = useState(false);
@@ -63,18 +49,6 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
         };
 
       const trimmedSearchValue = searchValueRef.current
-=======
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [inputValue, setInputValue] = useState(defaultValue);
-  const [selected, setSelected] = useState(-1);
-  const [searchValue, setSearchValue] = useState("");
-  const [isComposing, setIsComposing] = useState(false);
-  const { ref, isVisible, setIsVisible } = useClickScrollDetect();
-
-  const { trimmedSearchValue, filteredAttractions, numOfFilteredAttractions } =
-    useMemo(() => {
-      const trimmedSearchValue = searchValue
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         .trim()
         .replace(/[`~!@#$%^&*_|+\-=?;:'"<>\\{\\}\\[\]\\\\/]/gim, " ")
         .replace(/\s\s+/g, " ");
@@ -87,7 +61,6 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
         trimmedSearchValue,
         ...result,
       };
-<<<<<<< HEAD
     }, [searchValueRef.current]);
 
   useEffect(() => {
@@ -104,17 +77,6 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
     startTransition(() => {
       searchValueRef.current = (e.target as HTMLInputElement).value;
     });
-=======
-    }, [searchValue]);
-  useEffect(() => {
-    if (!isVisible) setSelected(-1);
-    setSearchValue(inputValue);
-  }, [isVisible]);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue((e.target as HTMLInputElement).value);
-    startTransition(() => setSearchValue((e.target as HTMLInputElement).value));
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     setSelected(-1);
     e.target.value.trim() === "" ? setIsVisible(false) : setIsVisible(true);
   };
@@ -137,11 +99,7 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       setSelected((p) => (p + 1) % numOfitem);
     } else if (e.key === "ArrowUp" && selected > -1) {
       setSelected((p) => p - 1);
-<<<<<<< HEAD
       if (selected === 0) setInputValue(searchValueRef.current);
-=======
-      if (selected === 0) setInputValue(searchValue);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       e.preventDefault();
     } else if (e.key === "Enter" && selected > -1) {
     }
@@ -149,11 +107,7 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
   const handleResetIconClick = (e: MouseEvent<SVGElement>) => {
     e.stopPropagation();
     setInputValue("");
-<<<<<<< HEAD
     searchValueRef.current = "";
-=======
-    setSearchValue("");
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     inputRef.current?.focus();
   };
   const handleSearchIconClick = (e: MouseEvent<SVGElement>) => {
@@ -186,7 +140,6 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       )}
       <SearchIcon className="search-icon" onClick={handleSearchIconClick} />
       {isVisible && (
-<<<<<<< HEAD
         <Suspense fallback={<Loading />}>
           <SuggestionBox
             trimmedSearchValue={trimmedSearchValue}
@@ -197,21 +150,10 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
             onSelectionChange={setSelected}
           />
         </Suspense>
-=======
-        <SuggestionBox
-          trimmedSearchValue={trimmedSearchValue}
-          filteredAttractions={filteredAttractions}
-          numOfFilteredAttractions={numOfFilteredAttractions}
-          selected={selected}
-          onInputChange={setInputValue}
-          onSelectionChange={setSelected}
-        />
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
       )}
     </SearchForm>
   );
 };
-<<<<<<< HEAD
 function Loading() {
   return (
     <AttractionItemContent as="li" type="notice">
@@ -219,7 +161,4 @@ function Loading() {
     </AttractionItemContent>
   );
 }
-=======
-
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 export default SearchBar;

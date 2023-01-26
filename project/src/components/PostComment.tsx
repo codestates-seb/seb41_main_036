@@ -13,37 +13,29 @@ const PostCommentContainer = styled.div`
     border-radius: var(--br-l);
     margin-right: 10px;
   }
-
   > div > div:first-child {
     display: flex;
   }
-
   > div > div:first-child > div {
     display: flex;
     flex-direction: column;
   }
-
   > div > div:first-child > div > span {
     font-size: var(--font-xxs);
   }
-
   > div > div:last-child {
     display: flex;
   }
-
   > form {
     width: 100%;
   }
-
   > div:last-child {
     padding: 20px 40px;
     border-bottom: 1px solid var(--black-600);
   }
-
   > form {
     padding: 20px 40px;
   }
-
   > form > textarea {
     width: 100%;
     height: 100px;
@@ -53,7 +45,6 @@ const PostCommentContainer = styled.div`
     border-radius: var(--br-m);
     border-color: var(--purple-300);
     font-size: var(--font-base);
-
     &:focus {
       outline-color: var(--purple-400);
       box-shadow: 0 0 6px var(--purple-300);
@@ -61,8 +52,6 @@ const PostCommentContainer = styled.div`
   }
 `;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 interface CommentType {
   commentId: number;
   memberId: number;
@@ -73,10 +62,6 @@ interface CommentType {
   modifiedAt: string;
 }
 
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const PostManageButton = styled.button`
   min-width: 30px;
   display: flex;
@@ -89,21 +74,9 @@ const PostManageButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-<<<<<<< HEAD
-<<<<<<< HEAD
 const PostComment = ({ comment }: { comment: CommentType }) => {
   const [commentEdit, setCommentEdit] = useState(false);
   const [commentContent, setCommentcontent] = useState(comment.commentContent);
-=======
-const PostComment = () => {
-  const [commentEdit, setCommentEdit] = useState(false);
-  const [commentContent, setCommentcontent] = useState(dummy.post[0].content);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-const PostComment = () => {
-  const [commentEdit, setCommentEdit] = useState(false);
-  const [commentContent, setCommentcontent] = useState(dummy.post[0].content);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const commentContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentcontent(e.target.value);
   };
@@ -112,23 +85,10 @@ const PostComment = () => {
       <PostCommentContainer>
         <div>
           <div>
-<<<<<<< HEAD
-<<<<<<< HEAD
             <img alt="userImg" src={comment.memberPicture} />
             <div>
               {comment.username}
               <span>{comment.createdAt}</span>
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-            <img alt="userImg" src={dummy.post[0].userImg} />
-            <div>
-              {dummy.post[0].username}
-              <span>{dummy.post[0].createdAt}</span>
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
             </div>
           </div>
           <div>
@@ -151,15 +111,7 @@ const PostComment = () => {
             ></textarea>
           </form>
         ) : (
-<<<<<<< HEAD
-<<<<<<< HEAD
           <div> {comment.commentContent}</div>
-=======
-          <div> {dummy.post[0].content}</div>
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-          <div> {dummy.post[0].content}</div>
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         )}
       </PostCommentContainer>
     </>

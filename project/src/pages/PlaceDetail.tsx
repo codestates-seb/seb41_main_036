@@ -1,6 +1,4 @@
 import styled, { createGlobalStyle } from "styled-components";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
@@ -18,30 +16,6 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 
 
-=======
-import KakaoMap from "../components/KakaoMap";
-=======
-import KakaoMap from "../components/KakaoMap";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-import React, { useState, useRef, useEffect } from "react";
-import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
-import { SlNote } from "react-icons/sl";
-import {
-  AiFillHeart,
-  AiFillFacebook,
-  AiOutlineTwitter,
-  AiOutlineInstagram,
-} from "react-icons/ai";
-import { IoMdShareAlt } from "react-icons/io";
-import { FaMapMarkerAlt } from "react-icons/fa";
-// import PaginationComponent from "../components/PaginationComponent";
-import { Header } from "../components/Header";
-import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
-import "../index.css";
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -51,17 +25,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const ImageBox = styled.div`
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   width: 100%;
   height: 300px;
-
   > img {
     width: 100%;
     height: 100%;
@@ -70,14 +35,9 @@ const ImageBox = styled.div`
 `;
 const Container = styled.div`
   width: 100%;
-<<<<<<< HEAD
   height: 85vh;
-=======
-  height: 80vh;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   background-color: white;
   margin: 0 auto;
-
   > hr {
     width: 300px;
     background: var(--purple-400);
@@ -91,24 +51,11 @@ const Container = styled.div`
     text-align: center;
   }
   > p {
-<<<<<<< HEAD
-<<<<<<< HEAD
     width: 60%;
     text-align: left;
     padding: 10px;
     display: block;
     text-align: center;
-=======
-    text-align: left;
-    padding: 10px;
-    display: block;
-=======
-    text-align: left;
-    padding: 10px;
-    display: block;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-    width: 60%;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     height: 80px;
     margin: 0 auto;
     font-size: 18px;
@@ -119,33 +66,14 @@ const Container = styled.div`
     font-size: 22px;
   }
   > div {
-<<<<<<< HEAD
-<<<<<<< HEAD
     display: block;
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-    width: 180px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     height: 40px;
     margin: 10px auto;
     text-align: center;
     & div {
-<<<<<<< HEAD
-<<<<<<< HEAD
       text-align: center;
       width: 15px;
       height: 20px;
-=======
-      width: 15px;
-      height: 20px;
-      margin: 0px 10px 0 10px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-      width: 15px;
-      height: 20px;
-      margin: 0px 10px 0 10px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     }
   }
   .active {
@@ -154,27 +82,17 @@ const Container = styled.div`
     border-bottom: 1px solid var(--purple-400);
   }
 `;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-// 버튼 내비게이션바
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-// 버튼 내비게이션바
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const NavBar = styled.div`
   display: flex;
   margin: 0 25%;
   width: 50%;
   height: 100px;
   background-color: white;
-
   .active {
     color: var(--purple-400);
     font-weight: bold;
     border-bottom: 1px solid var(--purple-400);
   }
-
   > button {
     background-color: white;
     width: 300px;
@@ -185,14 +103,7 @@ const NavBar = styled.div`
     font-weight: bold;
     cursor: pointer;
     :nth-child(1) {
-<<<<<<< HEAD
-<<<<<<< HEAD
       margin-right: 40%;
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-      margin-right: 130px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     }
   }
 `;
@@ -214,16 +125,8 @@ const PostHeader = styled.div`
     height: 40px;
     font-size: 30px;
     white-space: nowrap;
-<<<<<<< HEAD
-<<<<<<< HEAD
     /* margin-right: 5%; */
     margin: 25px 0 20px 7%;
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-    margin-right: 5%;
-    margin-bottom: 20px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   }
   > button {
     width: 164px;
@@ -242,22 +145,6 @@ const PostHeader = styled.div`
     }
   }
 `;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-
-const PostBox = styled.div`
-  width: 85%;
-  height: 600px;
-  background-color: #6d9faa;
-  margin: 0 auto;
-`;
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const FixBoxVertical = styled.div<{ inverted: boolean }>`
   box-sizing: content-box;
@@ -272,15 +159,7 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
   box-shadow: 0px 0px 21px rgba(180, 180, 180, 0.25);
   position: ${(props) => (props.inverted ? "fixed" : "absolute")};
   left: ${(props) => (props.inverted ? "87%" : "87%")};
-<<<<<<< HEAD
-<<<<<<< HEAD
   top: ${(props) => (props.inverted ? "60%" : "1010px")};
-=======
-  top: ${(props) => (props.inverted ? "60%" : "1050px")};
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-  top: ${(props) => (props.inverted ? "60%" : "1050px")};
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   > div {
     cursor: pointer;
     margin-left: 11px;
@@ -294,7 +173,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     :nth-child(5) {
       margin-top: 10px;
     }
-
     :hover {
       color: var(--purple-400);
     }
@@ -306,9 +184,7 @@ const MarkerCount = styled.p`
   font-size: 13px;
   margin: 2px auto;
 `;
-<<<<<<< HEAD
 
-<<<<<<< HEAD
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -321,11 +197,6 @@ type PlaceData = {
   saves: number | undefined;
 };
 
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
@@ -358,8 +229,6 @@ const PlaceDetail = (): JSX.Element => {
   const updateScroll = () => {
     setFixBar(window.scrollY || document.documentElement.scrollTop);
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   const handleView = (setting: string) => {
     setView(setting);
@@ -414,14 +283,6 @@ const PlaceDetail = (): JSX.Element => {
       })
     );
 
-=======
-
-  useEffect(() => {
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-
-  useEffect(() => {
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     window.addEventListener("scroll", updateScroll);
     window.addEventListener("scroll", onScroll);
 
@@ -429,39 +290,14 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", updateScroll);
     };
-<<<<<<< HEAD
-<<<<<<< HEAD
   }, []);
 
 
 
-=======
-  }, [fixBar]);
-
-=======
-  }, [fixBar]);
-
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-  const handleView = (setting: string) => {
-    setView(setting);
-    if (view === "info") {
-      scrollRefContent?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <>
       <FixedOnScrollUpHeader />
       <GlobalStyle />
-<<<<<<< HEAD
-<<<<<<< HEAD
       {attractionData !== undefined ? (
         <>
           <ImageBox>
@@ -561,92 +397,6 @@ const PlaceDetail = (): JSX.Element => {
       ) : (
         <div>Loading ... </div>
       )}
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-      <ImageBox>
-        <img
-          src="https://images-ext-1.discordapp.net/external/UtUblHy4eFpjTRa-PmoWfhKJ6bmsNVznQ3A_uHnhlxg/%3Fixlib%3Drb-4.0.3%26ixid%3DMnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8%26auto%3Dformat%26fit%3Dcrop%26w%3D1528%26q%3D80/https/images.unsplash.com/photo-1546417404-73e80b4a749b"
-          alt="배경이미지"
-        ></img>
-      </ImageBox>
-      <FixBoxVertical inverted={fixBar < 520 ? true : false}>
-        <div
-          className="icon"
-          onClick={() => {
-            setShareOpen(!shareOpen);
-          }}
-        >
-          <BsShareFill size="15" />
-        </div>
-        <div>
-          {" "}
-          <SlNote size="16" />
-        </div>
-        <div>
-          <BsBookmarkFill size="16" />
-        </div>
-        <MarkerCount>12</MarkerCount>
-        <div>
-          <AiFillHeart size="16" />
-        </div>
-        <MarkerCount>91</MarkerCount>
-      </FixBoxVertical>
-      <NavBar>
-        <button
-          className={view === "info" ? "active" : ""}
-          onClick={() => {
-            handleView("info");
-          }}
-        >
-          상세페이지
-        </button>
-        <button
-          className={view === "post" ? "active" : ""}
-          onClick={() => {
-            handleView("post");
-          }}
-        >
-          포스트
-        </button>
-      </NavBar>
-      <Container>
-        <h2>경복궁</h2>
-        <p>
-          경복궁은 조선 왕조 제일의 법궁입니다.. 북으로 북악산을 기대어 자리
-          잡았고 정문인 광화문 앞으로는 넓은 육조거리(지금의 세종로)가 펼쳐져,
-          왕도인 한양(서울) 도시 계획의 중심이기도 합니다. 1395년 태조 이성계가
-          창건하였고, 1592년 임진 왜란으로 불타 없어졌다가, 고종 때인 1867년
-          중건 되었습니다. 흥선대원군이 주도한 중건된 경복궁은 500여 동의
-          건물들이 미로같이 빼곡히 들어선 웅장한 모습 이었습니다.
-        </p>
-        <h3>위치 안내</h3>
-        <div>
-          <div>
-            <FaMapMarkerAlt color="grey" size="19"></FaMapMarkerAlt>
-          </div>
-          <p>종로구 사직로 161</p>
-        </div>
-        <KakaoMap
-          width="730px"
-          height="300px"
-          dataList={["1,2"]}
-          position="absolute"
-          left="20%"
-        ></KakaoMap>
-      </Container>
-      <Post ref={scrollRefContent}>
-        <PostHeader>
-          <h2>포스트</h2>
-          <button>포스트 작성</button>
-        </PostHeader>
-        <PostBox>{/* 이곳에 post 컴포넌트 */}</PostBox>
-      </Post>
-      {/* <PaginationComponent></PaginationComponent> */}
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     </>
   );
 };

@@ -7,18 +7,9 @@ import { FcDownload } from "react-icons/fc";
 const Container = styled.div`
   display: flex;
   width: 100%;
-<<<<<<< HEAD
-<<<<<<< HEAD
   height: 100vh;
-=======
-  height: 100%;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-  height: 100%;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   background-color: #fcfcfc;
   margin-top: 20px;
-
   > form {
     width: 45%;
     display: flex;
@@ -56,10 +47,8 @@ const PreviewContainer = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: #f0f0f0;
-
   div:first-child {
     background-color: #fcfcfc;
-
     h2 {
       margin-top: 5px;
       height: 44px;
@@ -71,18 +60,15 @@ const PreviewContainer = styled.div`
 const Preview = styled.div`
   display: flex;
   flex-direction: column;
-
   > img {
     background-size: cover;
     background-color: white;
     margin: 0 auto;
   }
-
   > div {
     display: flex;
     justify-content: space-between;
     margin: 10px 0 0 20px;
-
     > p {
       padding: 10px;
       font-size: 16px;
@@ -111,17 +97,14 @@ const TagBox = styled.span`
   border-radius: var(--br-s);
   margin: 0 10px;
   font-size: var(--font-xs);
-
   &:hover {
     background-color: var(--purple-300);
     color: var(--purple-tag);
   }
-
   button {
     border: none;
     background-color: transparent;
   }
-
   svg {
     padding-top: 3px;
   }
@@ -133,7 +116,6 @@ const TagWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-
   > input {
     width: 200px;
     padding-left: 10px;
@@ -141,23 +123,12 @@ const TagWrapper = styled.div`
     height: 30px;
     outline: none;
     color: black;
-
     &::placeholder {
       font-size: 20px;
       font-weight: var(--fw-m);
     }
   }
 `;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-const url = "http://pikcha36.o-r.kr:8080/posts/imagestest4";
-
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-const url = "http://pikcha36.o-r.kr:8080/posts/imagestest4";
-
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
   const [previewList, setPreviewList] = useState<string[][]>([]); // 프리뷰 map 돌릴 값 저장용
@@ -219,8 +190,6 @@ const WritePost = () => {
       setTag("");
     }
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
@@ -228,10 +197,6 @@ const WritePost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const handleRemovePreview = (
     e: React.MouseEvent<HTMLButtonElement>,
     idx: number
@@ -243,8 +208,6 @@ const WritePost = () => {
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
-<<<<<<< HEAD
-<<<<<<< HEAD
     formData.append("postTitle", title);
     tags.forEach((tag) => {
       formData.append("postHashTags", tag);
@@ -257,53 +220,19 @@ const WritePost = () => {
     });
     axios
       .post(`/posts/register/1/1`, formData, {
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-    formData.append("title", title);
-    tags.forEach((tag) => {
-      formData.append("tags", tag);
-    });
-
-    axios
-      .post(url, formData, {
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
-<<<<<<< HEAD
-<<<<<<< HEAD
   };
 
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-
-    for (let key of formData.values()) {
-      console.log(key);
-    }
-  };
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsModal(!isModal);
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <>
       <Container>
@@ -320,13 +249,6 @@ const WritePost = () => {
               width="100px"
               height="40px"
               text="이미지 등록"
-<<<<<<< HEAD
-<<<<<<< HEAD
-              type="violet"
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
               onClick={(e) => handleImageModal(e)}
             />
           </div>
@@ -368,13 +290,6 @@ const WritePost = () => {
               onClick={(e) => handleSubmit(e)}
               width="100px"
               height="40px"
-<<<<<<< HEAD
-<<<<<<< HEAD
-              type="violet"
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
               text="포스트 등록"
             />
           </div>
@@ -409,26 +324,22 @@ const ModalContainer = styled.form`
   border-radius: 10px;
   // background-color: aqua;
   border: 1px solid var(--purple-400);
-
   input {
     color: var(--purple-400);
     border: none;
     background-color: transparent;
     display: none;
   }
-
   textarea {
     resize: none;
     height: 150px;
     padding: 10px;
     border-radius: var(--br-m);
     border-color: var(--black-500);
-
     &:focus {
       box-shadow: 0 0 10px var(--purple-400);
     }
   }
-
   button {
     display: flex;
     align-items: center;
@@ -441,18 +352,15 @@ const ModalContainer = styled.form`
     color: var(--purple-400);
     font-weight: var(--fw-bold);
     cursor: pointer;
-
     &:hover {
       color: var(--purple-300);
       background-color: var(--purple-200);
     }
   }
-
   svg {
     width: 25px;
     height: 50px;
   }
-
   button:last-child {
     padding-top: 30px;
     background-color: transparent;
@@ -499,14 +407,6 @@ const Modal = ({
     }
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  console.log(imgFiles);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-  console.log(imgFiles);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
@@ -520,13 +420,7 @@ const Modal = ({
     imgRef.current!.click();
     imgRef.current!.value = "";
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   return (
     <ModalContainer>
       <input type="file" accept="image/*" ref={imgRef} onChange={previewImg} />

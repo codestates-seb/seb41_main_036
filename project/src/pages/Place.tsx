@@ -1,25 +1,12 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import React, { useEffect } from "react";
-=======
-import React from "react";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-import React from "react";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import { useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-<<<<<<< HEAD
 import { Header } from "../components/Header";
 import axios from "axios";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
 import PaginationComponent from "../components/PaginationComponent";
-=======
-import { MdModeComment } from "react-icons/md";
-import { Header } from "../components/Header";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -46,7 +33,6 @@ const PlaceFilterContainer = styled.div`
   align-items: center;
   margin-left: 5px;
   height: 50px;
-
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
@@ -62,7 +48,6 @@ export const FilterButton = styled.button`
   color: var(--black-900);
   font-weight: var(--fw-bold);
   cursor: pointer;
-
   &.active {
     color: var(--purple-400);
     border-bottom: 1px solid black;
@@ -143,7 +128,6 @@ const Place = () => {
   };
   return (
     <>
-<<<<<<< HEAD
       <Header>
         <Header.HeaderTop />
         <Header.HeaderBody />
@@ -203,53 +187,6 @@ const Place = () => {
           )}
         </PlaceContainer>
       </PlaceWrapper>
-=======
-    <Header>
-      <Header.HeaderTop />
-      <Header.HeaderBody />
-    </Header>
-    <PlaceWrapper>
-      <LocationWrapper>
-        <LocationFilter />
-      </LocationWrapper>
-      <PlaceContainer>
-        <PlaceFilterContainer>
-          <span>총 {dummy.place.length}개의 명소</span>
-          <div>
-            {filter.map((filter, idx) => (
-              <FilterButton
-                className={onFilter === idx ? "active" : ""}
-                key={idx}
-                onClick={() => filtering(idx)}
-              >
-                {filter}
-              </FilterButton>
-            ))}
-          </div>
-        </PlaceFilterContainer>
-        <PlaceBox>
-          {dummy.place.map((el) => (
-            <div key={el.locationId}>
-              <img alt={el.title} src={el.img}></img>
-              <PlaceInfo>
-                <div className="info-title">
-                  {el.title}
-                  <div className="info-bookmark-recommend">
-                    <BsFillBookmarkFill className="bookmark" /> {el.bookmark}
-                    <AiFillHeart className="recommend" /> {el.recommend}
-                  </div>
-                </div>
-                <div className="info-reviewCount">
-                  <MdModeComment className="reviewCount" /> 포스트{" "}
-                  {el.reviewCount}
-                </div>
-              </PlaceInfo>
-            </div>
-          ))}
-        </PlaceBox>
-      </PlaceContainer>
-    </PlaceWrapper>
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     </>
   );
 };

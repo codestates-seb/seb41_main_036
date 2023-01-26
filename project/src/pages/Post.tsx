@@ -1,26 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
-=======
-import React, { useState } from "react";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
-<<<<<<< HEAD
 import PostCardComponent from "../components/PostCardComponent.tsx";
 import axios from "axios";
 import PaginationComponent from "../components/PaginationComponent";
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
-import React, { useState } from "react";
-import styled from "styled-components";
-import LocationFilter from "../components/LocationFilter";
-import dummy from "../dummyData.json";
-import { AiFillHeart, AiFillEye } from "react-icons/ai";
-import { Header } from "../components/Header";
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const PostWrapper = styled.div`
   display: flex;
@@ -47,7 +31,6 @@ const PostFilterContainer = styled.div`
   margin-left: 20px;
   width: 95%;
   height: 50px;
-
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
@@ -63,7 +46,6 @@ const FilterButton = styled.button`
   color: var(--black-900);
   font-weight: var(--fw-bold);
   cursor: pointer;
-
   &.active {
     color: var(--purple-400);
     border-bottom: 1px solid black;
@@ -130,8 +112,6 @@ const Post = () => {
       </Header>
       <PostWrapper>
         <LocationWrapper>
-<<<<<<< HEAD
-<<<<<<< HEAD
           {postsData && (
             <LocationFilter
               setData={setPostsData}
@@ -154,32 +134,10 @@ const Post = () => {
                   }}
                 >
                   {sort.kor}
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-          <LocationFilter />
-        </LocationWrapper>
-        <PostContainer>
-          <PostFilterContainer>
-            <span>총 {dummy.post.length}개의 방문 리뷰</span>
-            <div>
-              {filter.map((filter, idx) => (
-                <FilterButton
-                  className={onFilter === idx ? "active" : ""}
-                  key={idx}
-                  onClick={() => filtering(idx)}
-                >
-                  {filter}
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
                 </FilterButton>
               ))}
             </div>
           </PostFilterContainer>
-<<<<<<< HEAD
-<<<<<<< HEAD
           {postsData && (
             <PostCardComponent
               posts={postsData}
@@ -198,44 +156,6 @@ const Post = () => {
               setCurPage={setCurPage}
             />
           )}
-=======
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-          <PostBox>
-            {dummy.post.map((el) => (
-              <div key={el.locationId}>
-                <img alt={el.title} src={el.img} />
-                <PostInfo>
-                  <div className="info-header">
-                    <div className="info-user">
-                      <img
-                        alt={el.title}
-                        src={el.userImg}
-                        className="user-img"
-                      />
-                      <div className="info-username-createdAt">
-                        <span className="username">{el.username}</span>
-                        <span className="createdAt">{el.createdAt}</span>
-                      </div>
-                    </div>
-                    <div className="info-view-recommend">
-                      <AiFillEye className="view" />
-                      &nbsp;
-                      {el.viewCount}
-                      <AiFillHeart className="recommend" />
-                      &nbsp;
-                      {el.recommend}
-                    </div>
-                  </div>
-                  <div className="info-title">{el.title}</div>
-                </PostInfo>
-              </div>
-            ))}
-          </PostBox>
-<<<<<<< HEAD
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
         </PostContainer>
       </PostWrapper>
     </>

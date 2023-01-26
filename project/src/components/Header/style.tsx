@@ -17,19 +17,10 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
   padding: 3px 3px 5px;
   box-shadow: ${(props) =>
     props.isVisible ? "0px 0px 10px 5px rgba(225,225,225,0.2)" : "none"};
-<<<<<<< HEAD
   input {
     font-family: "Pretendard Variable";
     font-size: var(--font-sm);
     padding: 10px 60px 10px 12px;
-=======
-  border: 1px solid var(--black-200);
-
-  input {
-    font-family: "Pretendard Variable";
-    font-size: var(--font-sm);
-    padding: 10px 35px 10px 12px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
     border: 0;
     border-radius: ${(props) => (props.isVisible ? "0" : "var(--br-m)")};
     border-bottom: ${(props) =>
@@ -43,7 +34,6 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
     &:hover {
       cursor: text;
     }
-
     &::placeholder {
       font-size: var(--font-sm);
       color: ${(props) =>
@@ -147,7 +137,6 @@ const AttractionItemContent = styled.div<{
       : props.type === "notice"
       ? "14px"
       : "2px"};
-
   cursor: ${(props) => (props.type === "notice" ? "default" : "pointer")};
   &:hover {
     color: ${(props) =>
@@ -163,16 +152,9 @@ const HeaderTop = styled.div`
   justify-content: flex-end;
   z-index: var(--zi-four);
   position: relative;
-<<<<<<< HEAD
   width: 100%;
   max-width: 100%;
   padding: 0 75px;
-=======
-  width: 80rem;
-  max-width: 100%;
-  padding: 0 20px;
-  margin: 0 auto;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 `;
 const HeaderTopMenu = styled.ul`
   position: relative;
@@ -185,29 +167,19 @@ const HeaderTopMenu = styled.ul`
     height: 100%;
     list-style: none;
     color: var(--black-900);
-<<<<<<< HEAD
     button {
       border: 0;
       background-color: transparent;
     }
-=======
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   }
 `;
 const HeaderBody = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-<<<<<<< HEAD
   display: flex;
   max-width: 100%;
   padding: 0 75px;
-=======
-  width: 80rem;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   svg.logo {
     width: 200px;
   }
@@ -231,12 +203,7 @@ const HeaderBodyMenu = styled.ul`
   }
 `;
 const Profile = styled.div`
-<<<<<<< HEAD
   margin-left: 20px;
-=======
-  position: absolute;
-  transform: translate(3150%, -5%);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   width: 40x;
   height: 40px;
   border-radius: 50%;
@@ -249,31 +216,17 @@ const Profile = styled.div`
   }
 `;
 const HeaderWrapper = styled.header<{ isVisible: boolean }>`
-<<<<<<< HEAD
   background-color: white;
-=======
-  background-color: var(--black-250);
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   flex-direction: column;
   position: sticky;
   z-index: var(--zi-five);
   top: ${(props) => (props.isVisible ? "0" : "-104px")};
   display: flex;
-<<<<<<< HEAD
   transition: all 0.7s cubic-bezier(0.3, 1, 0.65, 1);
   will-change: auto;
 `;
 const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
   width: 100%;
-
-=======
-  margin: 0 auto;
-  transition: all 0.7s cubic-bezier(0.3, 1, 0.65, 1);
-  will-change: top;
-`;
-const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
-  width: 100%;
->>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
   background-color: ${(props) =>
     props.backgroundOn ? "white" : "transparent"};
 `;
@@ -294,7 +247,6 @@ const HeaderUnMountEffect = keyframes`
     transform:translate(0%,-42px);
     
   }
-
 `;
 const HiddenHeaderBodyWrapper = styled.header<{
   isVisible: boolean;
