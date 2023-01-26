@@ -11,6 +11,7 @@ import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.domain.post.dto.PostResponseDto;
 import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.domain.post.service.PostService;
+import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.security.jwt.JwtParser;
 
 import com.main36.pikcha.global.response.DataResponseDto;
@@ -237,11 +238,12 @@ public class AttractionController {
     }
 
     // 7. 명소 좋아요!
-    @PostMapping("/likes/{attraction-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> voteAttraction(@PathVariable("attraction-id") @Positive long attractionId,
-                                                             @PathVariable("member-id") @Positive long memberId) {
+    @LoginUser
+    @PostMapping("/likes/{attraction-id}")
+    public ResponseEntity<DataResponseDto<?>> voteAttraction(Member loginUser,
+                                                             @PathVariable("attraction-id") @Positive long attractionId) {
         // 회원 정보를 받아온다
-        Member member = memberService.findMemberByMemberId(memberId);
+        Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);
@@ -256,11 +258,12 @@ public class AttractionController {
     }
 
     // 8. 명소 즐겨찾기
-    @PostMapping("/saves/{attraction-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> saveAttraction(@PathVariable("attraction-id") @Positive long attractionId,
-                                                             @PathVariable("member-id") @Positive long memberId) {
+    @LoginUser
+    @PostMapping("/saves/{attraction-id}")
+    public ResponseEntity<DataResponseDto<?>> saveAttraction(Member loginUser,
+                                                             @PathVariable("attraction-id") @Positive long attractionId) {
 
-        Member member = memberService.findMemberByMemberId(memberId);
+        Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
 
         // 명소 정보를 찾는다
         Attraction attraction = attractionService.findAttraction(attractionId);
@@ -274,7 +277,7 @@ public class AttractionController {
 
     // map 상세 페이지
     @GetMapping(value = {"/mapdetails/{attraction-id}", "/mapdetails/{attraction-id}/{member-id}"})
-    public ResponseEntity getMapDetails(@PathVariable(value = "member-id", required = false) Optional<Long> memberId,
+    public ResponseEntity getMapDetails(@PathVariable(value = "member-id", required = false) Long memberId,
                                         @PathVariable("attraction-id") @Positive long attractionId) {
         Attraction attraction = attractionService.findAttraction(attractionId);
         List<Post> postList = attraction.getPosts();
@@ -282,6 +285,8 @@ public class AttractionController {
                 = AttractionMapsDetailResponseDto.builder()
                 .attractionName(attraction.getAttractionName())
                 .attractionAddress(attraction.getAttractionAddress())
+                .fixedImage(attraction.getFixedImage())
+                .numOfPosts(attraction.getNumOfPosts())
                 .likes(attraction.getLikes())
                 .saves(attraction.getSaves())
                 .build();
@@ -296,12 +301,12 @@ public class AttractionController {
                     });
                 });
         response.setPostIdAndUrls(mapResponses);
-        if (memberId.isEmpty()) {
+        if (memberId == null) {
             response.setIsVoted(false);
             response.setIsSaved(false);
         } else {
-            response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
-            response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
+            response.setIsVoted(attractionService.isVoted(memberId, attractionId));
+            response.setIsSaved(attractionService.isSaved(memberId, attractionId));
         }
 
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);

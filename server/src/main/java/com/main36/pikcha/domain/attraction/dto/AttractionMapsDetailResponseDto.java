@@ -11,16 +11,21 @@ import java.util.List;
 public class AttractionMapsDetailResponseDto {
     private String attractionName;
     private String attractionAddress;
-    private long likes;
+    private String fixedImage;
+    private Long numOfPosts;
+    private Long likes;
     private Boolean isVoted;
-    private long saves;
+    private Long saves;
     private Boolean isSaved;
     private List<PostResponseDto.MapsImageUrlResponse> postIdAndUrls;
 
+
     @Builder
-    public AttractionMapsDetailResponseDto(String attractionName, String attractionAddress, long likes, long saves) {
+    public AttractionMapsDetailResponseDto(String attractionName, String attractionAddress, String fixedImage, Long numOfPosts, Long likes, Long saves) {
         this.attractionName = attractionName;
         this.attractionAddress = attractionAddress;
+        this.fixedImage = fixedImage;
+        this.numOfPosts = numOfPosts;
         this.likes = likes;
         this.saves = saves;
     }
