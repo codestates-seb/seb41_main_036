@@ -7,7 +7,6 @@ public enum ExceptionCode {
     MEMBER_NOT_ALLOW(405, "That Member doesn't have authority"),
     MEMBER_EXISTS(409, "Member exists"),
     USER_IS_NOT_EQUAL(400, "Client is not equal memberId"),
-
     ATTRACTION_NOT_FOUND(404, "Attraction not found"),
     ATTRACTION_EXISTS(409, "Attraction exists"),
 
@@ -27,9 +26,11 @@ public enum ExceptionCode {
     POST_IMAGE_NOT_FOUND(404, "Post Image not found"),
 
     /* JWT */
-    ACCESS_TOKEN_NOT_FOUND(404,"액세스토큰을 찾을 수 없습니다."),
+    ACCESS_TOKEN_NOT_FOUND(404,"AccessToken can not be found"),
     TOKEN_EXPIRED(400, "Token Expired"),
+    REFRESH_TOKEN_EXPIRED(400, "RefreshToken Expired"),
     TOKEN_INVALID(400, "Token Invalid"),
+    TOKEN_EMPTY(404, "Token not found"),
     TOKEN_SIGNATURE_INVALID(400, "Token Signature Invalid"),
     TOKEN_MALFORMED(400, "Token Malformed"),
     TOKEN_UNSUPPORTED(400, "Token Unsupported"),
