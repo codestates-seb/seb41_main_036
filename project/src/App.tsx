@@ -13,6 +13,11 @@ import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
 
 function App() {
+
+  if(localStorage.getItem("loginStatus") === null){
+    localStorage.setItem("loginStatus", "false")
+  }
+
   return (
     <div className="App">
       <BrowserRouter>

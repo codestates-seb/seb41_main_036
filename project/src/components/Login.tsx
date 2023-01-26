@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
 import Axios from "axios";
+import axios from "../utils/axiosinstance"
 import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
-import axios from "../utils/axiosinstance"
 
 interface TextProps {
   fontSize: string;
@@ -243,6 +243,7 @@ const Login = () => {
     e.preventDefault();
     if (loginemailErr || loginpasswordErr) {
       alert("로그인 양식을 지켜주세요.");
+      return 
     }
 
     return axios
@@ -251,17 +252,16 @@ const Login = () => {
         password: loginpassword,
       })
       .then((res) => {
-        // const { authorization } = res.headers;
         const {memberId, accessToken} = res.data.data;
         if (res.status === 200) {
-          console.log("레스 : ", res) 
         console.log("로그인성공");
         setIslogin(true);
         setAuth(accessToken);
         setLoggedUser(loginemail);
         localStorage.setItem("loginStatus", "true ")
-          localStorage.setItem("authorization", `${accessToken}`)
+          localStorage.setItem("Authorization", `${accessToken}`)
           localStorage.setItem("memberId",memberId)
+          axios.defaults.headers.common["Authorization"] = accessToken
           navigate("/");
         }
       })
@@ -277,6 +277,7 @@ const Login = () => {
     e.preventDefault();
     if (signemailErr || signpasswordErr || phonenumberErr) {
       alert("회원가입 양식을 제대로 채워주세요.");
+      return 
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios

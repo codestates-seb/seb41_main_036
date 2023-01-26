@@ -32,6 +32,11 @@ const HeaderTopBar = () => {
   const [auth, setAuth] = useRecoilState<string>(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
 
+  const localLogin = localStorage.getItem("loginStatus")
+  if(typeof localLogin === "string"){
+    setIslogin(JSON.parse(localLogin))
+    }
+
   const onClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -39,7 +44,8 @@ const HeaderTopBar = () => {
     setIslogin(false);
     setAuth("");
     setLoggedUser("")
-    localStorage.removeItem("authorization")
+    axios.defaults.headers.common["Authorization"] = null
+    localStorage.removeItem("Authorization")
     localStorage.setItem("loginStatus", "false")
     localStorage.removeItem("memberId")
     navigate('/')
