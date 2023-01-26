@@ -74,6 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Gson gson = new Gson();
         LoginResponseDto of = LoginResponseDto.ofAuthMember(authMember, BEARER_PREFIX + accessToken);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
+
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
     }
