@@ -8,65 +8,22 @@ import java.util.List;
 
 public class PostDto {
     @Data
-    public static class Post {
-        @NotBlank(message = "제목을 입력해주세요.")
-        private String postTitle;
-        private String postContent;
-        private String hashTagContent;
-    }
-
-    @Data
-    public static class Patch {
-
-        private Long postId;
-        @NotBlank(message = "제목을 입력해주세요.")
-        private String postTitle;
-        private String postContent;
-
-        //TODO: 정규표현식 적용 -> []
-        private String hashTagContent;
-
-    }
-
-    @Data
-    public static class ImageTest{
-        private MultipartFile image;
-    }
-
-    @Data
-    public static class ImageTest2{
-        private String postTitle;
-        private String postContent;
-        private MultipartFile image;
-    }
-    @Data
-    public static class ImageTest3{
-        private String postContent;
-        private MultipartFile image;
-    }
-
-    @Data
-    public static class ImageTest4{
-        private String postTitle;
-        private String postContent;
-    }
-
-    @Data
-    public static class ImageTest5{
-        private List<MultipartFile> images;
-    }
-    @Data
-    public static class ImageTest6{
-        private String postTitle;
-        private String postContent;
-        private List<MultipartFile> images;
-    }
-    @Data
-    public static class PostDtoFinal{
+    public static class Post{
         private String postTitle;
         private List<String> postHashTags;
         private List<String> postContents;
         private List<MultipartFile> postImageFiles;
     }
+
+    @Data
+    public static class Patch{
+        private String postTitle;
+        private List<String> postHashTags;
+        private List<String> postContents;
+        private List<MultipartFile> postImageFiles;
+        private List<String> deleteUrls;
+    }
+
+
 
 }

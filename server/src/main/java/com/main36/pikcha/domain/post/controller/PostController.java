@@ -58,7 +58,7 @@ public class PostController {
     @PostMapping("/register/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> registerPost2(Member loginUser,
                                                             @PathVariable("attraction-id") @Positive long attractionId,
-                                                           PostDto.PostDtoFinal postDto) {
+                                                           PostDto.Post postDto) {
         Post post = new Post();
 
         // 포스트 제목 설정
@@ -109,56 +109,93 @@ public class PostController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{post-id}/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> editPost(@PathVariable("post-id") @Positive long postId,
-                                                       @PathVariable("member-id") @Positive long memberId,
-                                                       PostDto.PostDtoFinal postPatchDto) {
-        Post findPost = postService.findPostNoneSetView(postId);
+    @LoginUser
+    @PatchMapping("/edit/{post-id}")
+    public ResponseEntity patchPosts(PostDto.Patch patchDto,
+                                     Member loginUser,
+                                     @PathVariable("post-id") @Positive Long postId){
+        Post findPost = verifiedById(loginUser.getMemberId(), postId);
 
-
-
-        // 수정할 포스트 캡션, 해시태그, 이미지 전체 삭제
-        findPost.getPostContents().clear();
-        findPost.getPostImages().clear();
-        postImageService.deletePostImages(findPost.getPostImages());
-        findPost.getHashTags().clear();
-        hashTagService.deleteHashTags(findPost.getHashTags());
-
-        // 포스트 제목 설정
-        findPost.setPostTitle(postPatchDto.getPostTitle());
-
-        // 해시태그 데이터 생성 후 추가
-        if(postPatchDto.getPostHashTags() != null) {
-            for(String hashtag: postPatchDto.getPostHashTags()) {
-                HashTag newHashTag = new HashTag();
-                newHashTag.setHashTagContent(hashtag);
-                HashTag created = hashTagService.createHashTag(newHashTag);
-                findPost.getHashTags().add(created);
+        // 1. 포스트 제목 변경점 수정 (완료)
+        if(patchDto.getPostTitle() != null){
+            if(!patchDto.getPostTitle().equals(findPost.getPostTitle())){
+                // 받은 제목이 원래 제목과 다르다면 수정
+                findPost.setPostTitle(patchDto.getPostTitle());
             }
         }
-        // 캡션 추가
-        if(postPatchDto.getPostContents() != null) {
-            for(String postContent: postPatchDto.getPostContents()) {
-                findPost.getPostContents().add(postContent);
+
+        // 2. 해시태그 변경점 수정
+        if(patchDto.getPostHashTags() != null) {
+            // 원래 있던 해시태그 중에
+            List<HashTag> removed = new ArrayList<>();
+            for(HashTag hashTag : findPost.getHashTags()){
+                // patchDto에 이 해시태그가 없다면
+                if(!patchDto.getPostHashTags().contains(hashTag.getHashTagContent())){
+                    // 해시태그 삭제
+                    removed.add(hashTag);
+                }
+            }
+            findPost.getHashTags().removeAll(removed);
+//            hashTagService.deleteHashTags(removed, findPost.getPostId());
+            // patchDto에서
+            for(String hashTag : patchDto.getPostHashTags()){
+                // 새로운 해시태그가 있다면
+                if(hashTagService.findHashTag(hashTag).isEmpty()) {
+                    // 해시태그 생성
+                    HashTag newTag = new HashTag();
+                    newTag.setHashTagContent(hashTag);
+                    // post에 추가
+                    findPost.getHashTags().add(hashTagService.createHashTag(newTag));
+                    // ★ 업데이트를 날려야 하나? ★
+                }
             }
         }
-        // 이미지 추가
-        if(postPatchDto.getPostImageFiles()!= null) {
-            for(MultipartFile file : postPatchDto.getPostImageFiles()) {
+
+        // 3. 포스트 캡션 수정
+        if(patchDto.getPostContents() != null) {
+            // 원래 있던 캡션 중에
+            List<String> removed = new ArrayList<>();
+            for(String content : findPost.getPostContents()){
+                // patchDto에 이 캡션이 없다면
+                if(!patchDto.getPostContents().contains(content)){
+                    // content 삭제
+                    removed.add(content);
+                }
+            }
+            findPost.getPostContents().removeAll(removed);
+            // patchDto에서
+            for(String content : patchDto.getPostContents()){
+                // 새로운 content가 있다면
+                if(!findPost.getPostContents().contains(content)){
+                    // content 추가
+                    findPost.getPostContents().add(content);
+                }
+            }
+        }
+
+        // 4. 포스트 이미지 수정 (완료)
+        if(patchDto.getDeleteUrls() != null) {
+            // deleteUrls 에 있는 주소로 s3와 데이터베이스에서 삭제
+            postImageService.deletePostImagesByUrls(patchDto.getDeleteUrls());
+        }
+
+        // 5. 포스트 이미지 새로 등록 (완료)
+        if(patchDto.getPostImageFiles()!= null) {
+            for(MultipartFile file : patchDto.getPostImageFiles()) {
                 try{
-                    PostImage postImage = postImageService.createPostImage(file);
-                    findPost.getPostImages().add(postImage);
+                    findPost.getPostImages().add(postImageService.createPostImage(file));
                 }catch(AmazonServiceException | IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        Post createdPost = postService.updatePost(findPost);
-        PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(createdPost);
-        response.setIsVoted(postService.isVoted(memberId, postId));
-        return ResponseEntity.ok(new DataResponseDto<>(response));
 
+        // 6. 포스트 업데이트 (완료)
+        postService.updatePost(findPost);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
+
 
     @GetMapping(value = {"/details/{post-id}", "/details/{post-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
@@ -270,21 +307,9 @@ public class PostController {
     }
     private Post verifiedById(long memberId, long postId) {
         Post post = postService.findPostNoneSetView(postId);
-
         if (!post.getMember().getMemberId().equals(memberId)) {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
-
         return post;
-    }
-    
-    @PatchMapping
-    public ResponseEntity patchPosts(HttpServletRequest request){
-        Set<String> keySet = request.getParameterMap().keySet();
-        for(String key: keySet) {
-            log.info(key + ": " + request.getParameter(key));
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

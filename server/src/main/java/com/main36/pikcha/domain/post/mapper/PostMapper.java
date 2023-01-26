@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PostMapper {
 
-    Post postPatchDtoToPost(PostDto.Patch postPatchDto);
-
     default PostResponseDto.Detail postToPostDetailResponseDto(Post post) {
 
         if (post == null) {

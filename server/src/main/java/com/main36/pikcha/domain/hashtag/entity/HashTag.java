@@ -22,7 +22,7 @@ public class HashTag extends Auditable {
     @Column(name = "hashtag_content")
     private String hashTagContent;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Post post;*/
+    private Post post;
 }

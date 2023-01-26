@@ -36,7 +36,7 @@ public class Post extends Auditable {
     private List<String> postContents = new ArrayList<>();
 
 
-    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private List<HashTag> hashTags = new ArrayList<>();
 
