@@ -36,7 +36,7 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: http://pikcha36.o-r.kr/login/oauth2/code/kakao
             #            redirect-uri: http://localhost:8080
             authorization-grant-type: authorization_code
             client-authentication-method: POST
@@ -71,7 +71,7 @@ mail:
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 1
+  access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 
 cloud:

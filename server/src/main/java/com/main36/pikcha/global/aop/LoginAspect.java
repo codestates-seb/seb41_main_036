@@ -2,6 +2,8 @@ package com.main36.pikcha.global.aop;
 
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
+import com.main36.pikcha.global.exception.BusinessLogicException;
+import com.main36.pikcha.global.exception.ExceptionCode;
 import com.main36.pikcha.global.security.jwt.JwtParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,24 +30,32 @@ public class LoginAspect {
     private final MemberService memberService;
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUserEmail)")
-    public Object getUserEmail(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object getUserEmail(ProceedingJoinPoint joinPoint) {
 
         HttpServletRequest request = ((ServletRequestAttributes) requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         Object[] args = joinPoint.getArgs();
         String email = jwtParser.getLoginUserEmail(request);
         args[0] = email;
 
-        return joinPoint.proceed(args);
+        try {
+            return joinPoint.proceed(args);
+        } catch (Throwable e) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
+        }
     }
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUser)")
-    public Object getUser(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object getUser(ProceedingJoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         Object[] args = joinPoint.getArgs();
         Member loginUser = memberService.getLoginMember(request);
         args[0] = loginUser;
 
-        return joinPoint.proceed(args);
+        try {
+            return joinPoint.proceed(args);
+        } catch (Throwable e) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
+        }
     }
 }

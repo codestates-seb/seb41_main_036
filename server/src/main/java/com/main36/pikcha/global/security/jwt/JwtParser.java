@@ -1,5 +1,7 @@
 package com.main36.pikcha.global.security.jwt;
 
+import com.main36.pikcha.global.exception.BusinessLogicException;
+import com.main36.pikcha.global.exception.ExceptionCode;
 import com.main36.pikcha.global.security.jwt.exception.*;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -63,13 +65,21 @@ public class JwtParser {
     }
 
     public String getLoginUserEmail(HttpServletRequest request) {
+        log.info("token= {}", request.getHeader("Authorization"));
+        if (request.getHeader("Authorization") == null) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
+        }
+
         String authorization = request.getHeader("Authorization");
-        String accessToken = authorization.substring(7);
+        log.info("authorization= {}", authorization);
+        // try-catch
+        String accessToken = authorization.substring(7); // 500 error
+        verifyAccessToken(accessToken);
 
         return getBody(accessToken).get("sub").toString();
     }
 
-    public boolean verifyToken(String token) {
+    public boolean verifyAccessToken(String token) {
         try {
             getBody(token);
             return true;
@@ -91,14 +101,35 @@ public class JwtParser {
         }
     }
 
+    public boolean verifyRefreshToken(String token) {
+        try {
+            getBody(token);
+            return true;
+        } catch (SignatureException e) {
+            log.trace("Invalid JWT signature trace: {}", e);
+            throw new TokenSignatureInvalid();
+        } catch (MalformedJwtException e) {
+            log.trace("Invalid JWT token trace: {}", e);
+            throw new TokenMalformed();
+        } catch (ExpiredJwtException e) {
+            log.trace("trace Expired JWT token trace: {}", e);
+            throw new RefreshExpired();
+        } catch (UnsupportedJwtException e) {
+            log.trace("Unsupported JWT token trace: {}", e);
+            throw new TokenUnsupported();
+        } catch (IllegalArgumentException e) {
+            log.trace("JWT claims string is empty trace: {}", e);
+            throw new TokenEmpty();
+        }
+    }
 
-    private Claims getBody(String accessToken) {
+    private Claims getBody(String token) {
         // TODO: 예외 처리 필요 키값이 이상할때!
         return Jwts.
                 parserBuilder().
                 setSigningKey(key)
                 .build()
-                .parseClaimsJws(accessToken)
+                .parseClaimsJws(token)
                 .getBody();
     }
 

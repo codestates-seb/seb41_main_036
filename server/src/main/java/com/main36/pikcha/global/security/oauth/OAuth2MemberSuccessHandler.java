@@ -75,12 +75,12 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 //        queryParams.add("access_token", accessToken);
 //        queryParams.add("refresh_token", refreshToken);
         String serverName = request.getServerName();
-
+        log.info("serverName = {}", serverName);
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host(serverName)
-//                .port()
+                .port(3000)
 //                .path("")
 //                .path("/token/oauth2")
 //                .queryParams(queryParams)
