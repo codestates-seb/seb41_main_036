@@ -4,7 +4,7 @@ import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.comment.entity.Comment;
 import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.member.entity.Member;
-import com.main36.pikcha.domain.post_image.entity.PostImage;
+import com.main36.pikcha.domain.image.entity.PostImage;
 import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
 

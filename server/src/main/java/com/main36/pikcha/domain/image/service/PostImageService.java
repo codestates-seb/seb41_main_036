@@ -1,7 +1,7 @@
-package com.main36.pikcha.domain.post_image.service;
+package com.main36.pikcha.domain.image.service;
 
-import com.main36.pikcha.domain.post_image.entity.PostImage;
-import com.main36.pikcha.domain.post_image.repository.PostImageRepository;
+import com.main36.pikcha.domain.image.entity.PostImage;
+import com.main36.pikcha.domain.image.repository.PostImageRepository;
 import com.main36.pikcha.global.config.S3Service;
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;

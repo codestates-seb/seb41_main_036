@@ -1,7 +1,7 @@
-package com.main36.pikcha.domain.attraction_likes.repository;
+package com.main36.pikcha.domain.like.repository;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
-import com.main36.pikcha.domain.attraction_likes.entity.AttractionLikes;
+import com.main36.pikcha.domain.like.entity.AttractionLikes;
 import com.main36.pikcha.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

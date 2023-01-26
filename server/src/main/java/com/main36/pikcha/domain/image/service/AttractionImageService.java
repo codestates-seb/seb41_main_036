@@ -1,7 +1,7 @@
-package com.main36.pikcha.domain.attraction_file.service;
+package com.main36.pikcha.domain.image.service;
 
-import com.main36.pikcha.domain.attraction_file.entity.AttractionImage;
-import com.main36.pikcha.domain.attraction_file.repository.AttractionImageRepository;
+import com.main36.pikcha.domain.image.entity.AttractionImage;
+import com.main36.pikcha.domain.image.repository.AttractionImageRepository;
 import com.main36.pikcha.global.config.S3Service;
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;

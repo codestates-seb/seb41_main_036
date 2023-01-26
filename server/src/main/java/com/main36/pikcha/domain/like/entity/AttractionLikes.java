@@ -1,4 +1,4 @@
-package com.main36.pikcha.domain.attraction_likes.entity;
+package com.main36.pikcha.domain.like.entity;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.member.entity.Member;
