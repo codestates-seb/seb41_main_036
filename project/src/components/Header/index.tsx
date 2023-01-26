@@ -25,6 +25,7 @@ const SearchBar = lazy(() => import("./SearchBar"));
 
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
+const isLoggedIn = true;
 
 const HeaderTopBar = () => {
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ const HeaderTopBar = () => {
           type="none"
           onClick={()=>navigate('/login')}
         ></ButtonForm>
+
           </li>
         )}
       </HeaderTopMenu>
@@ -109,9 +111,9 @@ const HeaderBodyBar = ({
           <div style={{ width: "200px", height: "70px" }} />
         </a>
         <HeaderBodyMenu>
-          <li onClick={()=>navigate('/place')}>명소</li>
-          <li onClick={()=>navigate('/post')}>방문리뷰</li>
-          <li onClick={()=>navigate('/map')}>내 주변 명소 찾기</li>
+          <li onClick={() => navigate("/attractions")}>명소</li>
+          <li onClick={() => navigate("/posts")}>방문리뷰</li>
+          <li onClick={() => navigate("/map")}>내 주변 명소 찾기</li>
         </HeaderBodyMenu>
         {searchBarOn && (
           <SearchBarWrapper>

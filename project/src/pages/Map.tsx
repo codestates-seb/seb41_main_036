@@ -62,9 +62,11 @@ const SelectList = styled.div`
   position: relative;
   top:0;
   border-collapse: collapse;
+
 ::-webkit-scrollbar {
   display: none;
 }
+
   >button{
     cursor: pointer;
     font-weight: 500;
@@ -92,6 +94,7 @@ const PlaceComponent = styled.div`
   overflow-y:scroll;
   overflow-x: hidden;
   -ms-overflow-style: none;
+
   //뺄지말지 나중에 결정 
   /* ::-webkit-scrollbar {
   display: none;
@@ -116,6 +119,7 @@ const Place = styled.div<{imgUrl:string}>`
             rgba(20, 20, 20, 0.25) 100%
       ), url(${props => props.imgUrl});
     background-size: cover;
+
     >div{
       padding:85px 0 0 20px;
       font-weight: bold;
@@ -137,6 +141,7 @@ const PlaceDetailModal = styled.div`
   height: 90vh;
   border-right: 7px solid #e4dcdc ;
   border-left: 1px solid #e4dcdc;
+
 `
 
 const PlaceDetailModalHeader = styled.div`
@@ -195,6 +200,7 @@ const PlaceDetailModalHeader = styled.div`
       margin: 4px 0 0 15px;
       font-weight: 600;
     }
+
     >div:nth-child(5){
       display: flex;
       color:#919191;
@@ -209,6 +215,7 @@ const PlaceDetailModalHeader = styled.div`
     }
     
     >div:nth-child(6){
+
       font-size: 15px;
       font-weight: bold;
       margin: 20px 0 0 17px;
@@ -225,6 +232,7 @@ const PlaceDetailModalMain = styled.div`
   width: 100%;
   height: 485px;
   border-top: 1px solid #e4dcdc;
+
   >div:nth-child(1){
     font-size: 15px;
     font-weight: 700;
@@ -237,6 +245,7 @@ const PostImgContainer = styled.div`
   height: 430px;
   margin: 0 auto;
   overflow: scroll;
+
   >img{
     width: 48%;
     margin: 0 2px;

@@ -11,6 +11,7 @@ import PlaceDetail from "./pages/PlaceDetail";
 import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
+import EditPost from "./pages/EditPost ";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
             <Route path="/posts/detail/:id" element={<DetailPost />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/edit/:id" element={<EditPost />} />
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

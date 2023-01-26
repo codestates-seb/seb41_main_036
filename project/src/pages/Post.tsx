@@ -31,6 +31,7 @@ const PostFilterContainer = styled.div`
   margin-left: 20px;
   width: 95%;
   height: 50px;
+
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
@@ -46,6 +47,7 @@ const FilterButton = styled.button`
   color: var(--black-900);
   font-weight: var(--fw-bold);
   cursor: pointer;
+
   &.active {
     color: var(--purple-400);
     border-bottom: 1px solid black;

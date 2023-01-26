@@ -33,6 +33,7 @@ const PlaceFilterContainer = styled.div`
   align-items: center;
   margin-left: 5px;
   height: 50px;
+
   > span {
     font-size: var(--font-base);
     color: var(--black-800);
@@ -48,6 +49,7 @@ export const FilterButton = styled.button`
   color: var(--black-900);
   font-weight: var(--fw-bold);
   cursor: pointer;
+
   &.active {
     color: var(--purple-400);
     border-bottom: 1px solid black;

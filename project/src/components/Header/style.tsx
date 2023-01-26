@@ -227,6 +227,7 @@ const HeaderWrapper = styled.header<{ isVisible: boolean }>`
 `;
 const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
   width: 100%;
+
   background-color: ${(props) =>
     props.backgroundOn ? "white" : "transparent"};
 `;

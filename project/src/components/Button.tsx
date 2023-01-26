@@ -17,6 +17,9 @@ interface ButtonProps {
 
 const VioletButton = styled.button<ButtonProps>`
 
+display:flex;
+align-items:center;
+justify-content:center;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: var(--purple-300);
