@@ -5,11 +5,10 @@ import com.main36.pikcha.domain.comment.dto.CommentResponseDto;
 import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.post.dto.*;
 import com.main36.pikcha.domain.post.entity.Post;
-import com.main36.pikcha.domain.post_image.entity.PostImage;
+import com.main36.pikcha.domain.image.entity.PostImage;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

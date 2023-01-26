@@ -2,9 +2,9 @@ package com.main36.pikcha.domain.attraction.service;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.attraction.repository.AttractionRepository;
-import com.main36.pikcha.domain.attraction_file.service.AttractionImageService;
-import com.main36.pikcha.domain.attraction_likes.entity.AttractionLikes;
-import com.main36.pikcha.domain.attraction_likes.repository.AttractionLikesRepository;
+import com.main36.pikcha.domain.image.service.AttractionImageService;
+import com.main36.pikcha.domain.like.entity.AttractionLikes;
+import com.main36.pikcha.domain.like.repository.AttractionLikesRepository;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.save.entity.Save;
 import com.main36.pikcha.domain.save.repository.SaveRepository;

@@ -1,10 +1,7 @@
-package com.main36.pikcha.domain.post_image.repository;
+package com.main36.pikcha.domain.image.repository;
 
-import com.main36.pikcha.domain.post_image.entity.PostImage;
+import com.main36.pikcha.domain.image.entity.PostImage;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 
 public interface PostImageRepository extends JpaRepository<PostImage, Long> {

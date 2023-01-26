@@ -1,4 +1,4 @@
-package com.main36.pikcha.domain.post_image.entity;
+package com.main36.pikcha.domain.image.entity;
 
 import com.main36.pikcha.domain.post.entity.Post;
 import lombok.Getter;

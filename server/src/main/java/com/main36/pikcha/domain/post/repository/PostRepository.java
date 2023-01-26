@@ -1,8 +1,6 @@
 package com.main36.pikcha.domain.post.repository;
 
-import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.post.entity.Post;
-import com.main36.pikcha.domain.post_image.entity.PostImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

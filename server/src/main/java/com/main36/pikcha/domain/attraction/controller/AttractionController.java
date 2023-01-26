@@ -5,14 +5,12 @@ import com.main36.pikcha.domain.attraction.dto.*;
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.attraction.mapper.AttractionMapper;
 import com.main36.pikcha.domain.attraction.service.AttractionService;
-import com.main36.pikcha.domain.attraction_file.service.AttractionImageService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.domain.post.dto.PostResponseDto;
 import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.domain.post.service.PostService;
 import com.main36.pikcha.global.aop.LoginUser;
-import com.main36.pikcha.global.security.jwt.JwtParser;
 
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.response.MultiResponseDto;
@@ -26,8 +24,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 
@@ -228,9 +224,8 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
 
-
     // 6. 명소를 아예 삭제하는 요청을 처리하는 핸들러
-    @DeleteMapping("/{attraction-id}")
+    @DeleteMapping("/delete/{attraction-id}")
     public ResponseEntity<HttpStatus> deleteAttraction(@PathVariable("attraction-id") @Positive long attractionId) {
         attractionService.deleteAttraction(attractionId);
 

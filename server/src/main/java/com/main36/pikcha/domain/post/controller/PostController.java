@@ -15,10 +15,9 @@ import com.main36.pikcha.domain.post.mapper.PostMapper;
 import com.main36.pikcha.domain.post.service.PostService;
 
 
-import com.main36.pikcha.domain.post_image.entity.PostImage;
-import com.main36.pikcha.domain.post_image.service.PostImageService;
+import com.main36.pikcha.domain.image.entity.PostImage;
+import com.main36.pikcha.domain.image.service.PostImageService;
 import com.main36.pikcha.global.aop.LoginUser;
-import com.main36.pikcha.global.config.S3Service;
 
 
 import com.main36.pikcha.global.exception.BusinessLogicException;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import java.io.IOException;

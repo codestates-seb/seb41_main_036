@@ -1,6 +1,6 @@
-package com.main36.pikcha.domain.attraction_file.repository;
+package com.main36.pikcha.domain.image.repository;
 
-import com.main36.pikcha.domain.attraction_file.entity.AttractionImage;
+import com.main36.pikcha.domain.image.entity.AttractionImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

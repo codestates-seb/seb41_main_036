@@ -1,4 +1,4 @@
-package com.main36.pikcha.domain.attraction_file.entity;
+package com.main36.pikcha.domain.image.entity;
 
 import lombok.*;
 
