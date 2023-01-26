@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import KakaoMap from "../components/KakaoMap";
-import dummy from "../dummyData.json";
+import  { regionDummy } from '../regionDummyData';
 import { useState, useEffect } from "react";
 import { RiArrowDropDownLine} from 'react-icons/ri';
 import { FaMapMarkerAlt } from 'react-icons/fa'; 
@@ -10,6 +10,7 @@ import HiddenHeader from "../components/Header/HiddenHeader";
 import '../index.css';
 import axios from "axios";
 import { DataList } from "../components/KakaoMap";
+
 
 
 const Container = styled.div`
@@ -181,9 +182,11 @@ const PlaceDetailModalHeader = styled.div`
     }
     >div:nth-child(3){
       display: flex;
-      width: 200px;
+      width: 325px;
       height: 30px;
       >h2{
+        //width:250px;
+        background-color: #fbf8ba;
         margin-left: 15px;
         font-weight: 700;
       }
@@ -256,23 +259,23 @@ const PostImgContainer = styled.div`
 
 const Map = () => {
 
-    // 주소 더미 데이터
-    var listData = [
-      '종로구 사직로 161', 
-      '종로구 세종대로 198',
-      '종로구 세종대로 209', 
-      '종로구 세종대로 175'
-  ];
+  //   // 주소 더미 데이터
+  //   var listData = [
+  //     '종로구 사직로 161', 
+  //     '종로구 세종대로 198',
+  //     '종로구 세종대로 209', 
+  //     '종로구 세종대로 175'
+  // ];
 
-  // 이미지 더미데이터
-  var imgUrl = [
-    "https://a.cdn-hotels.com/gdcs/production123/d477/f88c6cdb-3e47-45f5-bfd7-d3775d1f3bcc.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    "https://a.cdn-hotels.com/gdcs/production43/d333/469e9780-6653-4879-a396-cea7714fc209.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    "https://a.cdn-hotels.com/gdcs/production90/d1936/e6925d65-cc4b-4605-8bd4-debb712fe764.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    "https://a.cdn-hotels.com/gdcs/production167/d282/bf00d54a-0bb2-487e-8fbb-2ce495d3113b.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    "https://a.cdn-hotels.com/gdcs/production41/d1748/0b5fab45-59f0-4574-8ac3-d19fb1778e2e.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
+  // // 이미지 더미데이터
+  // var imgUrl = [
+  //   "https://a.cdn-hotels.com/gdcs/production123/d477/f88c6cdb-3e47-45f5-bfd7-d3775d1f3bcc.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
+  //   "https://a.cdn-hotels.com/gdcs/production43/d333/469e9780-6653-4879-a396-cea7714fc209.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
+  //   "https://a.cdn-hotels.com/gdcs/production90/d1936/e6925d65-cc4b-4605-8bd4-debb712fe764.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
+  //   "https://a.cdn-hotels.com/gdcs/production167/d282/bf00d54a-0bb2-487e-8fbb-2ce495d3113b.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
+  //   "https://a.cdn-hotels.com/gdcs/production41/d1748/0b5fab45-59f0-4574-8ac3-d19fb1778e2e.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
     
-  ]
+  // ]
 
   // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false)
@@ -284,22 +287,32 @@ const Map = () => {
   // 현재 필터링된 데이터 목록
   const [regionList,setRegionList] = useState<any>(undefined);
 
+  // 현재 눌린 명소의 값을 저장
+  const [modalData, setModalData] = useState<any>('');
+
+  // 현재 눌린 명소의 아이디를 저장
+  const [modalDataId, setModalDataId] = useState<number>(1);
+
+
+  // 카카오맵에 전체 마커로 찍을 데이터 저장용 
+  const [wholeData, setWholeData] = useState<any>(); 
+
   const url = 'http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=newest';
+  //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
   useEffect(()=>{
 
     // 처음에 무조건 데이터를 받아옴 
     // 그리고 요청 값 바뀔 때마다 다른 데이터를 불러와야함. 
-    
-    // 처음에 기본값을 조건으로 '전체'부분이 렌더링 되는지 확인 
-    console.log('처음 렌더링', regionFilter)
+  
 
+    // 필터링용 데이터 받아오기 
     if(regionFilter === '전체'){
       axios.post(url,
         {
           "provinces": []
         }).then((res)=>{
         setRegionList(res.data.data);
-        console.log('요청중..')
+        setWholeData(res.data.data)
       })
     }else{
       axios.post(url,
@@ -311,40 +324,18 @@ const Map = () => {
       })
     }
 
-  
-  },[regionFilter,setRegionList,regionList===undefined])
+    console.log('전체 데이터----', wholeData)
+    console.log('전체 데이터----', regionList)
 
-  //console.log(regionList)
+  },[])
 
-  let Post = [
-    { id: "0", Post: "전체" },
-    { id: "1", Post: "강남구" },
-    { id: "2", Post: "강동구" },
-    { id: "3", Post: "강북구" },
-    { id: "4", Post: "강서구" },
-    { id: "5", Post: "관악구" },
-    { id: "6", Post: "광진구" },
-    { id: "7", Post: "구로구" },
-    { id: "8", Post: "금천구" },
-    { id: "9", Post: "노원구" },
-    { id: "10", Post: "도봉구" },
-    { id: "11", Post: "동대문구" },
-    { id: "12", Post: "동작구" },
-    { id: "13", Post: "마포구" },
-    { id: "14", Post: "서대문구" },
-    { id: "15", Post: "서초구" },
-    { id: "16", Post: "성동구" },
-    { id: "17", Post: "성북구" },
-    { id: "18", Post: "성송파구" },
-    { id: "19", Post: "양천구" },
-    { id: "20", Post: "영등포구" },
-    { id: "21", Post: "용산구" },
-    { id: "22", Post: "은평구" },
-    { id: "23", Post: "종로구" },
-    { id: "24", Post: "중구" },
-    { id: "25", Post: "중량구" },
-  ];
 
+  const handleModalData = (dataUrl:string) => {
+    // 모달창 데이터 받아오기 
+    axios.get(`http://pikcha36.o-r.kr:8080/attractions/mapdetails/${dataUrl}`)
+    .then((res)=>{setModalData(res.data.data); console.log('모달데이터',modalData)})
+    // 받아온 데이터를 모달창에 뿌리기 
+  }
 
   return(
     <>
@@ -360,9 +351,9 @@ const Map = () => {
           { dropdownView ? 
             <SelectList>
               {
-                Post.map((el:any, index:number)=>{
+                regionDummy.map((el:any, index:number)=>{
                   return(
-                    <button key={index} onClick={()=>{setRegionFilter(el.Post);setDropdownView(false); console.log(regionFilter)}}>{el.Post}</button>
+                    <button key={el.id} onClick={()=>{setRegionFilter(el.Post); console.log(regionFilter)}}>{el.Post}</button>
                   )
                 })
               }
@@ -373,7 +364,7 @@ const Map = () => {
           {regionList!== undefined
            && regionList.map((el:any, index:any)=>{
             return(
-              <Place onClick={()=>{setDetailModal(!detailModal)}} imgUrl={el.fixedImage} key={el.attractionId}>
+              <Place onClick={()=>{setDetailModal(true); handleModalData(el.attractionId); console.log('모달 데이터 아이디',modalDataId)}} imgUrl={el.fixedImage} key={el.attractionId}>
                 <div>{el.attractionName}</div>
                 <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt>{el.attractionAddress}</p>
               </Place>
@@ -386,21 +377,21 @@ const Map = () => {
         <PlaceDetailModal>
           <PlaceDetailModalHeader>
             <div> 
-              <img src="https://a.cdn-hotels.com/gdcs/production123/d477/f88c6cdb-3e47-45f5-bfd7-d3775d1f3bcc.jpg?impolicy=fcrop&w=1600&h=1066&q=medium"></img>
+              <img src={modalData.fixedImage}></img>
             </div>
             <div>
               <p>서울 명소</p>
-              <div><AiOutlineHeart color="#969696"></AiOutlineHeart><p>32</p></div>
-              <div><BsBookmarkPlus color="#969696"></BsBookmarkPlus><p>21</p></div>
+              <div><AiOutlineHeart color="#969696"></AiOutlineHeart><p>{modalData.likes}</p></div>
+              <div><BsBookmarkPlus color="#969696"></BsBookmarkPlus><p>{modalData.saves}</p></div>
             </div>
             <div>
-              <h2>종로</h2>
+              <h2>{modalData.attractionName}</h2>
               <a href="www.google.com">더보기</a>
             </div>
-            <p>서울 종로구 사직로 161</p>
+            <p>{modalData.attractionAddress}</p>
             <div>
               <div><BsFillChatLeftFill size="13"></BsFillChatLeftFill></div>
-              <p> 32개의 리뷰</p>
+              <p>{modalData && modalData.numOfPosts}개의 리뷰</p>
             </div>
             <div>#야경 #야경이 아름다운 곳 </div>
             <span onClick={()=>setDetailModal(false)}>{'<<<'}</span>
@@ -408,14 +399,15 @@ const Map = () => {
           <PlaceDetailModalMain>
             <div>방문자 포토리뷰</div>
             <PostImgContainer>
-              {imgUrl && imgUrl.map((el, index)=>{
+              {modalData.numOfPosts > 1 ? 
+               modalData.postIdAndUrls.map((el:any, index:any)=>{
                 return(
                   <>
-                   <img src={el} key={index} onClick={()=>{alert('테스트')}}></img>
+                   <img src={el.imageUrls} key={index} onClick={()=>{alert('테스트')}}></img>
                   </>
                   )
                 })
-              }
+              : <div>등록된 포토리뷰가 없습니다</div>}
             </PostImgContainer>
           </PlaceDetailModalMain>
         </PlaceDetailModal> 
@@ -429,6 +421,7 @@ const Map = () => {
           left="750px" 
           regionFilter = {regionFilter} 
           component = "map" 
+          dataset = {wholeData}
           ></KakaoMap> 
           :
 
@@ -440,6 +433,7 @@ const Map = () => {
           left="350px" 
           regionFilter = {regionFilter} 
           component = "map"
+          dataset = {wholeData}
           ></KakaoMap>
         }
     </Container>

@@ -215,7 +215,7 @@ const PlaceDetail = (): JSX.Element => {
 
   const { id } = useParams();
   const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/details/${id}?page=1&size=8`;
+  const url2 = `http://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=9`;
   //const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
 
   const url4 = `http://localhost:3000/attractions/saves/1/1`;
@@ -376,6 +376,7 @@ const PlaceDetail = (): JSX.Element => {
               left="20%"
               regionFilter="null"
               component="place"
+              dataset = ''
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>
