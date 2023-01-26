@@ -8,6 +8,7 @@ import com.main36.pikcha.global.security.dto.TokenDto;
 import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.userdetails.AuthMember;
 import com.main36.pikcha.global.response.DataResponseDto;
+import com.main36.pikcha.global.utils.CookieUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,7 +48,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         return authenticationManager.authenticate(authenticationToken);
+
     }
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
@@ -58,56 +60,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // Detail 문제로 -> 삽입 x
         AuthMember authMember = (AuthMember) authResult.getPrincipal();
+        log.info("authMember= {}", authMember);
         TokenDto tokenDto = jwtGenerator.generateTokenDto(authMember);
         String accessToken = tokenDto.getAccessToken(); // accessToken 만들기
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
 
         // response 토큰 설정
-        ResponseCookie cookie = getResponseCookie(refreshToken);
+        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setHeader("Set-Cookie", String.valueOf(cookie));
 //        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
 
         Gson gson = new Gson();
-        LoginResponseDto of = LoginResponseDto.of(authMember, BEARER_PREFIX + accessToken);
+        LoginResponseDto of = LoginResponseDto.ofAuthMember(authMember, BEARER_PREFIX + accessToken);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
     }
 
-    private static ResponseCookie getResponseCookie(String refreshToken) {
 
-        return ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(3 * 24 * 60 * 60) // 쿠키 유효기간 설정 (3일)
-                .path("/")
-                .secure(true)
-                .httpOnly(true)
-                .sameSite("None")
-                .build();
-    }
-
-//    private static void setCookie(HttpServletResponse response, String refreshToken) {
-//
-//        Cookie cookie = new Cookie("name", refreshToken);
-//        cookie.setMaxAge(3 * 24 * 60 * 60);
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(false); // 문제점!
-//        response.addCookie(cookie);
-//    }
-
-    public String getCookie(HttpServletRequest req){
-        Cookie[] cookies=req.getCookies(); // 모든 쿠키 가져오기
-        if(cookies!=null){
-            for (Cookie c : cookies) {
-                String name = c.getName(); // 쿠키 이름 가져오기
-                String value = c.getValue(); // 쿠키 값 가져오기
-                if (name.equals("refreshToken")) {
-                    return value;
-                }
-            }
-        }
-        return null;
-    }
 
 }

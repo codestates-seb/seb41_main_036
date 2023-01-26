@@ -2,12 +2,6 @@ spring:
   main:
     allow-circular-references: true
 
-  cache:
-    type: redis
-  redis:
-    host: localhost
-    port: 6379
-
   servlet:
     multipart:
       max-file-size: 2MB  # 2MB 제한
@@ -35,11 +29,24 @@ spring:
       client:
         registration:
           google:
-            clientId: ${G_CLIENT_ID} # 구글 API콘솔로 발급받은 ID
-            clientSecret: ${G_CLIENT_SECRET} # 구글 API콘솔로 발급받은 SECRET
+            clientId: ${G_CLIENT_ID}
+            clientSecret: ${G_CLIENT_SECRET}
             scope:
               - email
               - profile
+
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: http://pikcha36.o-r.kr:8080/login/oauth2/code/kakao
+            #            redirect-uri: http://localhost:8080
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
 
 logging:
   level:

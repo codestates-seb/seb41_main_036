@@ -74,12 +74,13 @@ public class JwtGenerator {
                 .compact();
     }
 
-    public String generateRefreshToken(String subject, Date expiration) {
-
+    public String generateRefreshToken(String payload) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + 420000); // 420000은 420분을 의미함
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(payload)
                 .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
+                .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }

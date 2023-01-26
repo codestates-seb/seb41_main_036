@@ -1,5 +1,6 @@
 package com.main36.pikcha.global.security.controller;
 
+import com.amazonaws.Response;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.global.aop.LoginUser;
@@ -28,13 +29,28 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @RestController
 @Validated
 @RequiredArgsConstructor
+@RequestMapping("/token")
 public class TokenController {
 
     private final JwtGenerator jwtGenerator;
     private final JwtParser jwtParser;
     private final MemberService memberService;
 
-    @GetMapping("/token/refresh/{member-id}")
+
+//    @GetMapping("/oauth2")
+//    public ResponseEntity<?> getOauth2Token() {
+//
+//        RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
+//        RenewTokenDto renewTokenDto =
+//                builder.memberId(member.getMemberId())
+//                        .email(member.getEmail())
+//                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles()))
+//                        .build();
+//
+//        return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
+//    }
+
+    @GetMapping("/refresh/{member-id}")
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {
 
@@ -44,7 +60,7 @@ public class TokenController {
         RenewTokenDto renewTokenDto =
                 builder.memberId(member.getMemberId())
                         .email(member.getEmail())
-                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail(),member.getRoles()))
+                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles()))
                         .build();
 
         return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));

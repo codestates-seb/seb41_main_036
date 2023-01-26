@@ -41,7 +41,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/home",
                     "/attractions",
                     "/posts",
-                    "/oauth2/authorization/google"
+                    "/oauth2/authorization/google",
+                    "/oauth2/authorization/kakao"
             );
 
     //TODO: kakao oauth2
