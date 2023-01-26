@@ -22,7 +22,10 @@
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
+<<<<<<< HEAD
     "react-copy-to-clipboard": "^5.1.0",
+=======
+>>>>>>> 8253c65e1b96e24d373a7fc80e4f9595aa115de4
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-geocode": "^0.2.3",
