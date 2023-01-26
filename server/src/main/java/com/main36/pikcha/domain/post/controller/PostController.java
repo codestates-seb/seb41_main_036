@@ -38,10 +38,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Validated
@@ -276,6 +273,15 @@ public class PostController {
         }
 
         return post;
+    }
+    
+    @PatchMapping
+    public ResponseEntity patchPosts(HttpServletRequest request){
+        Set<String> keySet = request.getParameterMap().keySet();
+        for(String key: keySet) {
+            log.info(key + ": " + request.getParameter(key));
+        }
 
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
