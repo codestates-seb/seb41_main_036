@@ -106,10 +106,10 @@ const PostBox = ({postData}:any) => {
           postData.map((el:any)=>{
             return(
               <PostCard key={el.postId}>
-                <div><img src={el.picture}></img></div>
+                <div><img src={el.picture} alt="" /></div>
                 <div>
                   <div>
-                    <img src={el.picture}></img>
+                    <img src={el.picture} alt=""/>
                       <div>
                         <div>{el.username}</div>
                         <span>{(el.createdAt).slice(0,10)}</span>

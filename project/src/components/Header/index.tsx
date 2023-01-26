@@ -25,7 +25,6 @@ const SearchBar = lazy(() => import("./SearchBar"));
 
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
-const isLoggedIn = true;
 
 const HeaderTopBar = () => {
   const navigate = useNavigate();

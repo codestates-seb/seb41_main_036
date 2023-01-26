@@ -117,13 +117,13 @@ const PostCardComponent = ({
             <PostCard key={post.postId} width={width}>
               <div>
                 <img
-                  src={post.picture}
+                  src={post.picture} alt=""
                   onClick={() => navigate(`/posts/detail/${post.postId}`)}
                 ></img>
               </div>
               <div>
                 <div>
-                  <img src={post.picture}></img>
+                  <img src={post.picture} alt=""/>
                   <div>
                     <div>{post.username}</div>
                     <span>{post.createdAt.slice(0, 10)}</span>
