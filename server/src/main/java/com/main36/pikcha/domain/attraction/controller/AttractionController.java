@@ -8,12 +8,16 @@ import com.main36.pikcha.domain.attraction.service.AttractionService;
 import com.main36.pikcha.domain.attraction_file.service.AttractionImageService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
+import com.main36.pikcha.domain.post.dto.PostResponseDto;
+import com.main36.pikcha.domain.post.entity.Post;
+import com.main36.pikcha.domain.post.service.PostService;
 import com.main36.pikcha.global.security.jwt.JwtParser;
 
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.response.MultiResponseDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 
@@ -32,12 +38,12 @@ import java.util.Optional;
 @RequestMapping("/attractions")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class AttractionController {
 
     private final AttractionService attractionService;
     private final AttractionMapper mapper;
-    private final AttractionImageService imageService;
-    private final JwtParser jwtParser;
+    private final PostService postService;
     private final MemberService memberService;
 
 
@@ -151,6 +157,35 @@ public class AttractionController {
                 mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
 
+    // 지도에 지역구로 명소 표시 :  명소의 id, 이름, 주소, 사진url
+    @PostMapping("/maps")
+    public ResponseEntity<MultiResponseDto<?>> getMapsAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                                                      @Positive @RequestParam(required = false, defaultValue = "100") int size,
+                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,
+                                                                      @RequestBody ProvinceFilterDto filterDto) {
+        switch (sort) {
+            case "newest":
+                sort = "attractionId";
+                break;
+            case "posts":
+                sort = "numOfPosts";
+                break;
+            case "likes":
+                sort = "likes";
+                break;
+        }
+        List<Attraction> attractions;
+        Page<Attraction> attractionPage;
+        if(filterDto.getProvinces().size() == 0 ) {
+            attractionPage = attractionService.findAllProvincesAttractions(page - 1, size, sort);
+        }else{
+            attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
+        }
+        attractions = attractionPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.attractionsToAttractionMapsResponseDtos(attractions), attractionPage), HttpStatus.OK);
+    }
+
     // 5. 명소 Id를 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수
     @GetMapping
@@ -163,13 +198,33 @@ public class AttractionController {
     }
 
     // + 명소 이름 검색 핸들러
-    @GetMapping("/search")
-    public ResponseEntity<List<?>> getSearchedAttractions(/*@Positive @RequestParam(required = false, defaultValue = "1") int page,
+    @PostMapping("/search")
+    public ResponseEntity<MultiResponseDto<?>> getSearchedAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                                       @Positive @RequestParam(required = false, defaultValue = "9") int size,
-                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,*/
-                                                                      @RequestParam("keyword") String keyword) {
-        List<Attraction> attractions = attractionService.findSearchedAttractions(keyword);
-        return new ResponseEntity<>(attractions, HttpStatus.OK);
+                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,
+                                                                      @RequestParam("keyword") String keyword,
+                                                          @RequestBody ProvinceFilterDto filterDto) {
+        switch (sort) {
+            case "newest":
+                sort = "attractionId";
+                break;
+            case "posts":
+                sort = "numOfPosts";
+                break;
+            case "likes":
+                sort = "likes";
+                break;
+        }
+        List<Attraction> attractions;
+        Page<Attraction> attractionPage;
+        if(filterDto.getProvinces().size() == 0 ) {
+            attractionPage = attractionService.findAllSearchedAttractions(keyword, page - 1, size, sort);
+        }else{
+            attractionPage = attractionService.findFilteredSearchedAttractions(filterDto.getProvinces(), keyword ,page - 1, size, sort);
+        }
+        attractions = attractionPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.attractionsToAttractionResponseDtos(attractions), attractionPage), HttpStatus.OK);
     }
 
 
@@ -217,4 +272,38 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
+    // map 상세 페이지
+    @GetMapping(value = {"/mapdetails/{attraction-id}", "/mapdetails/{attraction-id}/{member-id}"})
+    public ResponseEntity getMapDetails(@PathVariable(value = "member-id", required = false) Optional<Long> memberId,
+                                        @PathVariable("attraction-id") @Positive long attractionId) {
+        Attraction attraction = attractionService.findAttraction(attractionId);
+        List<Post> postList = attraction.getPosts();
+        AttractionMapsDetailResponseDto response
+                = AttractionMapsDetailResponseDto.builder()
+                .attractionName(attraction.getAttractionName())
+                .attractionAddress(attraction.getAttractionAddress())
+                .likes(attraction.getLikes())
+                .saves(attraction.getSaves())
+                .build();
+        List<PostResponseDto.MapsImageUrlResponse> mapResponses = new ArrayList<>();
+        postList.stream()
+                .forEach(post -> {
+                    post.getPostImages().stream().forEach(postImage -> {
+                        PostResponseDto.MapsImageUrlResponse element = new PostResponseDto.MapsImageUrlResponse();
+                        element.setPostId(post.getPostId());
+                        element.setImageUrls(postImage.getPostImageUrl());
+                        mapResponses.add(element);
+                    });
+                });
+        response.setPostIdAndUrls(mapResponses);
+        if (memberId.isEmpty()) {
+            response.setIsVoted(false);
+            response.setIsSaved(false);
+        } else {
+            response.setIsVoted(attractionService.isVoted(memberId.get(), attractionId));
+            response.setIsSaved(attractionService.isSaved(memberId.get(), attractionId));
+        }
+
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+    }
 }

@@ -95,6 +95,10 @@ public class PostService {
         return postRepository.findAllByAttractionId(attractionId, pageable);
     }
 
+    public List<Post> findAllPostsByAttractionIdMaps(long attractionId){
+        return postRepository.findAllByAttractionId(attractionId);
+    }
+
     public void erasePost(Post post) {
         Long numOfPostsSubtractOne = post.getAttraction().getNumOfPosts() - 1;
         post.getAttraction().setNumOfPosts(numOfPostsSubtractOne);

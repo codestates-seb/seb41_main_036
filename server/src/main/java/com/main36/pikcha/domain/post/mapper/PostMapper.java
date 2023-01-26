@@ -9,6 +9,7 @@ import com.main36.pikcha.domain.post_image.entity.PostImage;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +78,23 @@ public interface PostMapper {
                             .build();
                 }).collect(Collectors.toList());
     }
+    /*default PostResponseDto.MapsImageUrlResponse postsToPostMapsResponseDto(List<Post> postList){
+        if(postList == null) {
+            return null;
+        }
+
+        PostResponseDto.MapsImageUrlResponse response = new PostResponseDto.MapsImageUrlResponse();
+        response.setImageUrls(new ArrayList<>());
+
+        postList.forEach(post -> {
+                post.getPostImages()
+                        .stream()
+                        .forEach(postImage -> {
+                            response.getImageUrls().add(postImage.getPostImageUrl());
+                        });
+            });
+        return response;
+    }*/
 
     /*default List<PostResponseDto.Detail> postListToPostPageResponseDtoList(List<Post> postList) {
 

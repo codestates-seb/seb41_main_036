@@ -38,10 +38,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Validated
@@ -221,18 +218,6 @@ public class PostController {
 
     }
 
-    /*@GetMapping()
-    public ResponseEntity<MultiResponseDto<?>> getAllPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
-                                                           @RequestParam(defaultValue = "1", required = false) @Positive int page,
-                                                           @RequestParam(defaultValue = "9", required = false) @Positive int size) {
-        sort = getString(sort);
-        Page<Post> postsByNewestByPage = postService.findAllPostsBySort(page - 1, size, sort);
-        List<Post> postsByNewest = postsByNewestByPage.getContent();
-
-        return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.postListToPostPageResponseDtoList(postsByNewest), postsByNewestByPage), HttpStatus.OK);
-    }*/
-
     @DeleteMapping("/delete/{post-id}/{member-id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("post-id") long postId,
                                                  @PathVariable("member-id") @Positive long memberId) {
@@ -288,6 +273,15 @@ public class PostController {
         }
 
         return post;
+    }
+    
+    @PatchMapping
+    public ResponseEntity patchPosts(HttpServletRequest request){
+        Set<String> keySet = request.getParameterMap().keySet();
+        for(String key: keySet) {
+            log.info(key + ": " + request.getParameter(key));
+        }
 
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
