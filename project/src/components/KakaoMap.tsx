@@ -16,6 +16,11 @@ let info =
   <a href="www.naver.com" style="font-size:13px;text-decoration-line:none;margin-left:130px">더보기</a>
 </div>`
 
+let info2 = 
+`
+  <div>여기</div>
+`
+
 
   // 주소 더미 데이터
   var listData = [
@@ -84,7 +89,9 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     const map = new window.kakao.maps.Map(container,options);
     var geocoder = new window.kakao.maps.services.Geocoder();
 
-    console.log('이거 왜 안들어감?',dataset)
+    console.log('이거 왜 안들어감?',dataList)
+    console.log(component, '곰')
+    
 
     if (Array.isArray(dataList)){
       // Map 컴포넌트에서 사용  --무조건 전체 목록 마커 넣어야함 
@@ -99,8 +106,8 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
         // 그리고 누른 곳 장소 가져와서 그곳의 위치로 이동시킴. 
 
 
-        listData.forEach(function(addr,index){
-        geocoder.addressSearch(addr, function(result:any, status:any) {
+        dataset.forEach(function(addr:any,index:any){
+        geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
           // 정상적으로 검색이 완료됐으면 
            if (status === window.kakao.maps.services.Status.OK) {
               var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
@@ -112,9 +119,15 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
   
               // 인포 윈도우 설정
               var infowindow = new window.kakao.maps.InfoWindow({
-                content: info,
+                content: 
+                  `<div style="width:180px;height:110px;background-color:white;padding:5px 5px;border:none;border-radius:5px">
+                  <h3 style="color:#6255F8; width:100%;height:30px;background-color:#faf7df;line-height:30px">${addr.attractionName}</h3>
+                  <h3 style="font-size:13px;color:#393939;font-weight:400;padding:6px 0" > 주소 : ${addr.attractionAddress}</h3>
+                  <a href="www.naver.com" style="font-size:11px;text-decoration-line:none;margin-left:130px">더보기</a>
+                </div>`,
                 disableAutoPan: false
               });
+
             infowindow.open(map, marker);
               // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
               map.setCenter(coords);
