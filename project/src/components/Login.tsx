@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ButtonForm from "../components/Button";
-import axios, { AxiosRequestConfig } from "axios";
+import ButtonForm from "./Button";
+import Axios from "axios";
 import DaumPostcode from "react-daum-postcode";
-import Ouaths from "../pages/Ouaths";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {
-  LoginState,
-  AuthToken,
-  RefreshToken,
-  LoggedUser,
-} from "../recoil/state";
+import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+import axios from "../utils/axiosinstance"
 
 interface TextProps {
   fontSize: string;
@@ -32,7 +27,7 @@ const Wrapper = styled.section`
   align-items: center;
   border-radius: 30px;
 `;
-const Logincontainer = styled.div<OverlayProps>`
+const Signincontainer = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -48,7 +43,7 @@ const Logincontainer = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
-const Signincontainer = styled.div<OverlayProps>`
+const Logincontainer = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -64,7 +59,7 @@ const Signincontainer = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
-const Leftoverlay = styled.div<OverlayProps>`
+const Rightoverlay = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -82,10 +77,9 @@ const Leftoverlay = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
-const Rightoverlay = styled.div<OverlayProps>`
+const Leftoverlay = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
-
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -190,7 +184,6 @@ const Login = () => {
 
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
-  const [rafresh, setRefresh] = useRecoilState(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
 
   const navigate = useNavigate();
@@ -253,20 +246,22 @@ const Login = () => {
     }
 
     return axios
-      .post(process.env.REACT_APP_DB_HOST + "/users/login", {
+      .post(process.env.REACT_APP_DB_HOST + "/login", {
         username: loginemail,
         password: loginpassword,
       })
       .then((res) => {
-        const { authorization, refreshtoken } = res.headers;
+        // const { authorization } = res.headers;
+        const {memberId, accessToken} = res.data.data;
         if (res.status === 200) {
-          axios.defaults.headers.common["authorization"] = authorization;
-          axios.defaults.headers.common["refreshtoken"] = refreshtoken;
+          console.log("레스 : ", res) 
         console.log("로그인성공");
-          setIslogin(true);
-          setAuth(authorization);
-          setRefresh(refreshtoken);
-          setLoggedUser(loginemail);
+        setIslogin(true);
+        setAuth(accessToken);
+        setLoggedUser(loginemail);
+        localStorage.setItem("loginStatus", "true ")
+          localStorage.setItem("authorization", `${accessToken}`)
+          localStorage.setItem("memberId",memberId)
           navigate("/");
         }
       })
@@ -285,7 +280,7 @@ const Login = () => {
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
-        .post(process.env.REACT_APP_DB_HOST + "/users/signup", {
+        .post(process.env.REACT_APP_DB_HOST + "/signup", {
           email: signemail,
           password: signpassword,
           phoneNumber: phonenumber,
@@ -308,74 +303,6 @@ const Login = () => {
     }
   };
 
-  const onClickLogout = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    // e.preventDefault();
-    // return axios
-    // .post("/users/logout", {
-    //     email: ";;",
-    // })
-    // .then((res) => {
-    //     if (res.status === 201) {
-    // axios.defaults.headers.common["authorization"] = null;
-    // axios.defaults.headers.common["refreshtoken"] = null;
-    //         setIslogin(false);
-    //         setAuth(null);
-    //         setRefresh(null);
-    //         navigate("/login");
-    //       }
-    // })
-    // .catch((err) => console.error(err));
-  };
-
-  const Loginhandler = () => {
-    // axios
-    // .post("/users/login", {
-    //     username: loginemail,
-    //     password: loginpassword,
-    // })
-    // .then((res) => {
-    //     console.log(res)
-    //     // navigate("/");
-    // })
-    // .catch((err)=>console.error(err))
-    // setIslogin(!isLogin)
-    // setAuth("어우")
-    // setRefresh("리프")
-
-    axios.defaults.headers.common["Authorization"] = "어스";
-    axios.defaults.headers.common["Refresh"] = "리프";
-
-    setIslogin(true);
-    setAuth(loginemail);
-    setRefresh(loginpassword);
-    setLoggedUser(loginemail);
-
-    // localStorage.setItem("userId", loginemail);
-    // localStorage.setItem("authorizationToken(이메일)", loginemail );
-    // localStorage.setItem("refreshToken(패스워드)", loginpassword);
-    navigate("/");
-  };
-
-  const Signuphandler = () => {
-    axios
-      .post("/users/signup", {
-        email: signemail,
-        password: signpassword,
-        phoneNumber: phonenumber,
-        address: address,
-        username: username,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("리스폰스: ", res);
-        console.log("리스폰스헤더", res.headers);
-        navigate("/");
-      })
-      .catch((err) => console.error(err));
-  };
-
   const GoogleHandler = () => {
     axios
       // .post("/login/oauth2/code/google", {
@@ -393,56 +320,21 @@ const Login = () => {
 
   const googlelogin = () => {
     window.location.href =
-      "oauth2/authorization/google";
+      "http://localhost:8090/oauth2/authorization/google";
     const query = window.location.search;
     console.log("이게무야2", query);
     const param = new URLSearchParams(query);
     console.log(param);
   };
 
-  //회원가입은
-  //상태가 200으로 오면
-
-  // 일반 로그인 상태 관리 로직
-  // recoil과 sessionStorage 이용. recoil에는 토큰, 로그인 상태값이 들어갈것임
-  // 이메일, 패스워드를 서버에 보냄
-  //로그인 성공 (res.status = 200) => res.headers.AT, res.headers.RT에서 토큰값을 받아와 sessionStorage에 각각 저장 및 sessionStorage에 userid저장
-  //마찬가지로 recoil의 상태에도 토큰 및 로그인상태 저장
-  //성공 시 usenavigate를 이용해 / (메인페이지일듯?) 으로 이동
-
-  //페이지를 새로고침 할때 마다 session에 userid값이 존재하는지 확인, 확인하면 recoil에 로그인 상태 및 세션에 있는 토큰 상태 저장
-  //이를 통해 로그인 헤더상태 유지
-
-  //다른 페이지에서 로그인 되어야 가능한 행위들을 할 때 세션에 있는 토큰값들을 받아와서 실어 보낸 뒤 응답 받음
-  //멘토님이 주신 코드를 보면 axios 공통헤더에 토큰을 넣어둠
-
-  //찾아볼것) 리코일은 새로고침해도 상태가 유지되는가? 다른 프로젝트는 리코일만 써서 루트페이지에서 로그인상태유지.
-  //백단에서 로그인 상태정보를 관리해주나? 어떤 프로젝트는 res.data.initiallogin 값을 쓰긴함. 이것을 쓰는걸수도
-  //localstorage는 브라우저가 꺼져도 상태를 유지해주는데 세션을 쓸지 이것을 쓸지
-
-  //로그아웃 시 recoil의 로그인상태, 토큰값 초기화 및 세션의 id 및 토큰값도 초기화
-  //서버의 /logout에 요청을 보내서 로그아웃을 알림
-  //비로그인시 헤더로변경
-  //메인페이지로 usenavigate 하면 될듯
-
-  //구글이 문제..
-  //client ID를 백단것을 써야하나?
-
-  //수정할 것들
-  //1. 주소 검색 모달창
-  //2. 회원가입 버튼을 누르거나 로그인 버튼을 누를 시 input내용삭제? 아니면 그냥 새로고침으로 퉁치기 => 경고문으로 대체 및 네비게이트
-  //3. 브라우저 창 크기가 줄어도 css 안망가지게 (헤더나 푸터 침범 등) =>  최소 크기를 설정 또는 position fix 등 css 만지기
-  //4. 주소 입력 컴포넌트 분리하고싶다..
-  //5. porps로 상태를 내리면 랜더링이 어떻게 되는가? 찾아보기
-  //6. 유효성검사 더 신중히 닉네임은 어떤식으로 검사? 중복 닉네임 가능 등?
-  //  => 중복된 계정이거나 그러면 res.status가 다르게 올테니 경고창을 다르게 표시 및 새로고침
-
-  //현재 로직
-  // 로그인 성공 시 로그인상태, token을 recoil 및 localStorage에 저장
-  // import로 recoilState 및 recoilValue 등을 선언 후 값 사용.
-  // const islogin = useRecoilValue(LoginState)
-  // const authToken = useRecoilValue(AuthToken)
-  // const refreshToken = useRecoilValue(RefreshToken)
+  const kakaologin = () => {
+    window.location.href =
+    "http://localhost:8090/oauth2/authorization/kakao"
+        const query = window.location.search;
+    console.log("이게무야2", query);
+    const param = new URLSearchParams(query);
+    console.log(param);
+  };
 
   return (
     <Wrapper>
@@ -464,16 +356,21 @@ const Login = () => {
           <CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
         </>
       )}
+      
       <Logincontainer overlay={overlays}>
-        <GButton onClick={GoogleHandler}>묵은지</GButton>
-        <GButton onClick={googlelogin}>묵은지</GButton>
-
-        <Ouaths />
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
+        <button onClick={kakaologin}>카카</button>
+        <button onClick={googlelogin}>구글</button>
+
+
+
         <GButton>G</GButton>
+
+
+
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
         </TextStyle>
@@ -509,14 +406,10 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="0px white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="var(--purple-400)"
           text="로그인"
-          onClick={Loginhandler}
-        //   onClick={onClickLogin}
+          type="violet"
+          onClick={onClickLogin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
@@ -606,13 +499,9 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="0px white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="var(--purple-400)"
           text="회원가입"
-          // onClick={Signuphandler}
+          type="violet"
           onClick={onClickSignin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
@@ -644,13 +533,9 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="1px solid white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="white"
-          hovercolor="var(--purple-300)"
           text="로그인"
+          type="white"
           onClick={onClickBtn}
         ></ButtonForm>
       </Leftoverlay>
@@ -678,12 +563,8 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="1px solid white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="white"
-          hovercolor="var(--purple-300)"
+          type="white"
           text="회원가입"
           onClick={onClickBtn}
         ></ButtonForm>

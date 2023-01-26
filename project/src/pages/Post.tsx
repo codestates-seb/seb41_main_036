@@ -1,34 +1,43 @@
-import { useState } from "react";
+<<<<<<< HEAD
+import React, { useEffect, useState } from "react";
+=======
+import React, { useState } from "react";
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-import dummy from "../dummyData.json";
-import { AiFillHeart, AiFillEye } from "react-icons/ai";
+import { Header } from "../components/Header";
+<<<<<<< HEAD
+import PostCardComponent from "../components/PostCardComponent.tsx";
+import axios from "axios";
+import PaginationComponent from "../components/PaginationComponent";
+=======
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 
 const PostWrapper = styled.div`
   display: flex;
+  width: 83.5%;
+  margin: 0 auto;
 `;
 
 const LocationWrapper = styled.nav`
-  width: 17%;
-  height: 90vh;
+  min-width: 210px;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
+  margin-top: 10px;
 `;
 
 const PostContainer = styled.div`
-  margin: 0 20px;
   width: 80%;
-  height: 90vh;
 `;
 
 const PostFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
+  margin-left: 20px;
   width: 95%;
-  height: 10%;
+  height: 50px;
 
   > span {
     font-size: var(--font-base);
@@ -52,152 +61,163 @@ const FilterButton = styled.button`
   }
 `;
 
-const PostBox = styled.div`
-  width: 100%;
-  height: 90%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+export interface PostType {
+  postId: number;
+  postTitle: string;
+  memberId: number;
+  username: string;
+  picture: string | string[];
+  createdAt: string;
+  likes: number;
+  modifiedAt: number;
+  views: number;
+}
 
-  > div {
-    min-width: 30%;
-    height: 32%;
-    border-radius: var(--br-s);
-    background-color: white;
-  }
-
-  > div > img {
-    width: 100%;
-    height: 65%;
-    border-radius: var(--br-s);
-  }
-`;
-const PostInfo = styled.div`
-  font-size: var(--font-base);
-  font-weight: var(--fw-bold);
-  display: flex;
-  flex-direction: column;
-
-  .user-img {
-    width: 30px;
-    height: 30px;
-    border-radius: var(--br-l);
-  }
-  > div {
-    padding: 3px 10px;
-  }
-  .info-header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .info-view-recommend {
-    display: flex;
-    align-items: center;
-    padding-bottom: 10px;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-midium);
-  }
-
-  .view {
-    color: var(--black-800);
-    font-size: var(--font-base);
-  }
-
-  .recommend {
-    margin-left: 5px;
-    color: var(--pink-heart);
-  }
-
-  .info-reviewCount {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-reg);
-  }
-
-  .reviewCount {
-    color: var(--black-600);
-  }
-
-  .info-user {
-    display: flex;
-    align-items: center;
-  }
-
-  .info-username-createdAt {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    font-size: var(--font-base);
-  }
-
-  .createdAt {
-    font-size: var(--font-xxs);
-    color: var(--black-600);
-  }
-
-  .info-title {
-    font-size: var(--font-xs);
-    color: var(--black-700);
-  }
-`;
+export interface ArrayPostType extends Array<PostType> {}
 const Post = () => {
-  let filter: string[] = ["최신순", "추천순", "리뷰순"];
+  const [postsData, setPostsData] = useState<ArrayPostType>();
+  const [curPage, setCurPage] = useState(1);
+  const [checkedList, setCheckedlist] = useState<string[]>([]);
   const [onFilter, setOnFliter] = useState(0);
-  const filtering = (idx: number) => {
+
+  useEffect(() => {
+    axios
+      .get(`/posts/home`)
+      .then((res) => {
+        setPostsData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  const handleSortPlace = (sort: string) => {
+    axios
+      .post(`/posts/filter?size=100&sort=${sort}`, {
+        provinces: checkedList,
+      })
+      .then((res) => setPostsData(res.data.data))
+      .catch((err) => console.error(err));
+  };
+  const handleSort = (idx: number) => {
     setOnFliter(idx);
   };
-
+  const sortList: { kor: string; eng: string }[] = [
+    {
+      kor: "최신순",
+      eng: "newest",
+    },
+    {
+      kor: "인기순",
+      eng: "likes",
+    },
+    {
+      kor: "조회순",
+      eng: "views",
+    },
+  ];
   return (
-    <PostWrapper>
-      <LocationWrapper>
-        <LocationFilter />
-      </LocationWrapper>
-      <PostContainer>
-        <PostFilterContainer>
-          <span>총 {dummy.post.length}개의 방문 리뷰</span>
-          <div>
-            {filter.map((filter, idx) => (
-              <FilterButton
-                className={onFilter === idx ? "active" : ""}
-                key={idx}
-                onClick={() => filtering(idx)}
-              >
-                {filter}
-              </FilterButton>
-            ))}
-          </div>
-        </PostFilterContainer>
-        <PostBox>
-          {dummy.post.map((el) => (
-            <div key={el.locationId}>
-              <img alt={el.title} src={el.img} />
-              <PostInfo>
-                <div className="info-header">
-                  <div className="info-user">
-                    <img alt={el.title} src={el.userImg} className="user-img" />
-                    <div className="info-username-createdAt">
-                      <span className="username">{el.username}</span>
-                      <span className="createdAt">{el.createdAt}</span>
+    <>
+      <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header>
+      <PostWrapper>
+        <LocationWrapper>
+<<<<<<< HEAD
+          {postsData && (
+            <LocationFilter
+              setData={setPostsData}
+              checkedList={checkedList}
+              setCheckedList={setCheckedlist}
+            />
+          )}
+        </LocationWrapper>
+        <PostContainer>
+          <PostFilterContainer>
+            <span>총 {postsData?.length}개의 방문 리뷰</span>
+            <div>
+              {sortList.map((sort, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => {
+                    handleSort(idx);
+                    handleSortPlace(sort.eng);
+                  }}
+                >
+                  {sort.kor}
+=======
+          <LocationFilter />
+        </LocationWrapper>
+        <PostContainer>
+          <PostFilterContainer>
+            <span>총 {dummy.post.length}개의 방문 리뷰</span>
+            <div>
+              {filter.map((filter, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => filtering(idx)}
+                >
+                  {filter}
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+                </FilterButton>
+              ))}
+            </div>
+          </PostFilterContainer>
+<<<<<<< HEAD
+          {postsData && (
+            <PostCardComponent
+              posts={postsData}
+              limit={9}
+              margin="0"
+              width="31%"
+              curPage={curPage}
+            />
+          )}
+
+          {postsData && (
+            <PaginationComponent
+              props={postsData}
+              limit={9}
+              curPage={curPage}
+              setCurPage={setCurPage}
+            />
+          )}
+=======
+          <PostBox>
+            {dummy.post.map((el) => (
+              <div key={el.locationId}>
+                <img alt={el.title} src={el.img} />
+                <PostInfo>
+                  <div className="info-header">
+                    <div className="info-user">
+                      <img
+                        alt={el.title}
+                        src={el.userImg}
+                        className="user-img"
+                      />
+                      <div className="info-username-createdAt">
+                        <span className="username">{el.username}</span>
+                        <span className="createdAt">{el.createdAt}</span>
+                      </div>
+                    </div>
+                    <div className="info-view-recommend">
+                      <AiFillEye className="view" />
+                      &nbsp;
+                      {el.viewCount}
+                      <AiFillHeart className="recommend" />
+                      &nbsp;
+                      {el.recommend}
                     </div>
                   </div>
-                  <div className="info-view-recommend">
-                    <AiFillEye className="view" />
-                    &nbsp;
-                    {el.viewCount}
-                    <AiFillHeart className="recommend" />
-                    &nbsp;
-                    {el.recommend}
-                  </div>
-                </div>
-                <div className="info-title">{el.title}</div>
-              </PostInfo>
-            </div>
-          ))}
-        </PostBox>
-      </PostContainer>
-    </PostWrapper>
+                  <div className="info-title">{el.title}</div>
+                </PostInfo>
+              </div>
+            ))}
+          </PostBox>
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
+        </PostContainer>
+      </PostWrapper>
+    </>
   );
 };
 

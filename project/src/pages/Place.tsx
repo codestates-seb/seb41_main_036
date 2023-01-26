@@ -1,36 +1,42 @@
+<<<<<<< HEAD
+import React, { useEffect } from "react";
+=======
+import React from "react";
+>>>>>>> f22c72ca01f31001cbc1f954051d1a14eac5230f
 import { useState } from "react";
-import dummy from "../dummyData.json";
-import { AiFillHeart } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
-import { MdModeComment } from "react-icons/md";
+import { Header } from "../components/Header";
+import axios from "axios";
+import PlaceCardComponent from "../components/PlaceCardComponent";
+import Loading from "../components/Loading";
+import PaginationComponent from "../components/PaginationComponent";
 
 const PlaceWrapper = styled.div`
   display: flex;
+  width: 83.5%;
+  margin: 0 auto;
 `;
 
 const LocationWrapper = styled.nav`
-  width: 20%;
-  height: 90vh;
+  min-width: 210px;
   border-radius: var(--br-m);
   overflow: hidden;
   overflow-y: scroll;
+  margin-top: 10px;
 `;
 
 const PlaceContainer = styled.div`
   margin: 0 20px;
   width: 80%;
-  height: 90vh;
 `;
 
 const PlaceFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30px;
-  width: 95%;
-  height: 10%;
+  margin-left: 5px;
+  height: 50px;
 
   > span {
     font-size: var(--font-base);
@@ -39,7 +45,7 @@ const PlaceFilterContainer = styled.div`
   }
 `;
 
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
   margin: 0 10px;
   padding-bottom: 3px;
   border: none;
@@ -55,114 +61,139 @@ const FilterButton = styled.button`
 `;
 
 const PlaceBox = styled.div`
-  width: 100%;
-  height: 90%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-
-  > div {
-    min-width: 30%;
-    height: 30%;
-    border-radius: var(--br-s);
-    background-color: white;
-  }
-
-  > div > img {
-    width: 100%;
-    height: 70%;
-    border-radius: var(--br-s);
-  }
+  margin-top: 20px;
 `;
-const PlaceInfo = styled.div`
-  font-size: var(--font-base);
-  font-weight: var(--fw-bold);
-  display: flex;
-  flex-direction: column;
 
-  > div {
-    padding: 3px;
-  }
-  .info-title {
-    display: flex;
-    justify-content: space-between;
-  }
+export interface PlaceType {
+  attractionId: number;
+  attractionName: string;
+  fixedImage: string;
+  likes: number;
+  numOfPosts: number;
+  saves: number;
+}
 
-  .info-bookmark-recommend {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-midium);
-  }
+export interface PageInfoType {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
 
-  .bookmark {
-    color: var(--black-800);
-  }
+export interface ArrayPlaceType extends Array<PlaceType> {}
 
-  .recommend {
-    margin-left: 5px;
-    color: var(--pink-heart);
-  }
-
-  .info-reviewCount {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-xs);
-    font-weight: var(--fw-reg);
-  }
-  .reviewCount {
-    color: var(--black-600);
-  }
-`;
 const Place = () => {
-  let filter: string[] = ["최신순", "추천순", "리뷰순"];
+  const [placesData, setPlacesData] = useState<ArrayPlaceType>();
+  const [checkedList, setCheckedlist] = useState<string[]>([]);
+  const [sortClick, setSortClick] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
-  const filtering = (idx: number) => {
+  const [curPage, setCurPage] = useState(1);
+
+  const sortList: { kor: string; eng: string }[] = [
+    {
+      kor: "최신순",
+      eng: "newest",
+    },
+    {
+      kor: "리뷰순",
+      eng: "posts",
+    },
+    {
+      kor: "인기순",
+      eng: "likes",
+    },
+  ];
+  const handleSort = (idx: number) => {
     setOnFliter(idx);
   };
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`/attractions?page=1&size=100`)
+      .then((res) => {
+        setIsLoading(false);
+        setPlacesData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
+  const handleSortPlace = (sort: string) => {
+    axios
+      .post(`/attractions/filter?page=1&size=100&sort=${sort}`, {
+        provinces: checkedList,
+      })
+      .then((res) => {
+        setPlacesData(res.data.data);
+        setSortClick(!sortClick);
+      })
+      .catch((err) => console.error(err));
+  };
   return (
-    <PlaceWrapper>
-      <LocationWrapper>
-        <LocationFilter />
-      </LocationWrapper>
-      <PlaceContainer>
-        <PlaceFilterContainer>
-          <span>총 {dummy.place.length}개의 명소</span>
-          <div>
-            {filter.map((filter, idx) => (
-              <FilterButton
-                className={onFilter === idx ? "active" : ""}
-                key={idx}
-                onClick={() => filtering(idx)}
-              >
-                {filter}
-              </FilterButton>
-            ))}
-          </div>
-        </PlaceFilterContainer>
-        <PlaceBox>
-          {dummy.place.map((el) => (
-            <div key={el.locationId}>
-              <img alt={el.title} src={el.img}></img>
-              <PlaceInfo>
-                <div className="info-title">
-                  {el.title}
-                  <div className="info-bookmark-recommend">
-                    <BsFillBookmarkFill className="bookmark" /> {el.bookmark}
-                    <AiFillHeart className="recommend" /> {el.recommend}
-                  </div>
-                </div>
-                <div className="info-reviewCount">
-                  <MdModeComment className="reviewCount" /> 포스트{" "}
-                  {el.reviewCount}
-                </div>
-              </PlaceInfo>
+    <>
+      <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header>
+      <PlaceWrapper>
+        <LocationWrapper>
+          {placesData && (
+            <LocationFilter
+              setData={setPlacesData}
+              checkedList={checkedList}
+              setCheckedList={setCheckedlist}
+            />
+          )}
+        </LocationWrapper>
+        <PlaceContainer>
+          <PlaceFilterContainer>
+            <span>총 {placesData && placesData.length}개의 명소</span>
+            <div>
+              {sortList.map((sort, idx) => (
+                <FilterButton
+                  className={onFilter === idx ? "active" : ""}
+                  key={idx}
+                  onClick={() => {
+                    handleSort(idx);
+                    handleSortPlace(sort.eng);
+                  }}
+                >
+                  {sort.kor}
+                </FilterButton>
+              ))}
             </div>
-          ))}
-        </PlaceBox>
-      </PlaceContainer>
-    </PlaceWrapper>
+          </PlaceFilterContainer>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <PlaceBox>
+                {placesData && (
+                  <PlaceCardComponent
+                    placesData={placesData}
+                    limit={9}
+                    curPage={curPage}
+                    width="32%"
+                    height="240px"
+                  />
+                )}
+              </PlaceBox>
+            </>
+          )}
+          {placesData && (
+            <PaginationComponent
+              props={placesData}
+              limit={9}
+              curPage={curPage}
+              setCurPage={setCurPage}
+            />
+          )}
+        </PlaceContainer>
+      </PlaceWrapper>
+    </>
   );
 };
 

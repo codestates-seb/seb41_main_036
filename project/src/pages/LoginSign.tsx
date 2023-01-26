@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import Login from '../components/Login';
+import FixedOnScrollUpHeader from "../components/Header/HiddenHeader";
+import { Header } from "../components/Header/index";
+
+
 // import GoogleLogIn from '../components/GoogleLogin';
-
-
-const Header = styled.div`
-  width: 100%;
-  background-color: pink;
-  height: 157px;
-`;
 
 const Body = styled.div`
   width: 83.5%;
@@ -21,15 +18,13 @@ const Footer = styled.div`
   height: 157px;
 `;
 
-
-
 function LoginSign() {
-
-
   
   return (
     <>
-    <Header>header헤더</Header>
+          <Header>
+        <Header.HeaderBody />
+      </Header>
     <Body> 
       <Login />
     </Body>

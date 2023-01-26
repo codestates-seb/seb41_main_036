@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -85,9 +87,37 @@ const SelectPost = styled.ul`
     color: var(--black-600);
   }
 `;
-export default function LocationFilter() {
-  const [checkedList, setCheckedList] = React.useState([] as string[]);
-  const [openPost, setOpenPost] = useState(true);
+export default function LocationFilter({
+  setData,
+  checkedList,
+  setCheckedList,
+}: {
+  checkedList: string[];
+  setCheckedList: Dispatch<SetStateAction<string[]>>;
+  setData: any;
+}) {
+  const [openLocation, setOpenLocation] = useState(true);
+  const pageLocation = useLocation();
+  useEffect(() => {
+    axios
+      .post(
+        `${pageLocation.pathname}/filter?page=1&size=100&sort=newest`,
+        {
+          provinces: checkedList,
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ2MjY0MDIsImV4cCI6MTY3NDY1MTYwMn0.UNC2oAVKK-9ZGxTrMJQo5y5MNOvSLK0yzPn1l5VChZxACB0taeoqtm7DXbVYqp4HZ6k7g9UsK4o-Mie3sj4YPw",
+          },
+        }
+      )
+      .then((res) => {
+        if (pageLocation.pathname === "/attractions") setData(res.data.data);
+        if (pageLocation.pathname === "/posts") setData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, [checkedList]);
   const onCheckItem = (checked: boolean, item: string) => {
     if (checked) return setCheckedList([...checkedList, item]);
     else return setCheckedList(checkedList.filter((el) => el !== item));
@@ -98,7 +128,7 @@ export default function LocationFilter() {
   const allRemove = () => {
     setCheckedList([]);
   };
-  let Post = [
+  const Post = [
     { id: "1", Post: "강남구" },
     { id: "2", Post: "강동구" },
     { id: "3", Post: "강북구" },
@@ -148,15 +178,15 @@ export default function LocationFilter() {
       <SelectBox>
         <div>
           <span>지역</span>
-          <button onClick={() => setOpenPost(!openPost)}>
-            {openPost ? (
+          <button onClick={() => setOpenLocation(!openLocation)}>
+            {openLocation ? (
               <MdOutlineKeyboardArrowUp />
             ) : (
               <MdOutlineKeyboardArrowDown />
             )}
           </button>
         </div>
-        {openPost
+        {openLocation
           ? Post.map((el) => (
               <form key={el.id}>
                 <input
