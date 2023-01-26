@@ -213,7 +213,6 @@ const PlaceDetail = (): JSX.Element => {
   const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
   const navigate = useNavigate();
 
-  console.log(id);
   function onScroll() {
     if (window.scrollY <= 700) {
       setTimeout(function () {
