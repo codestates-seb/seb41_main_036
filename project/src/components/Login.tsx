@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
 
-
 interface TextProps {
   fontSize: string;
   color: string;
@@ -309,10 +308,12 @@ const Login = () => {
   };
 
   const googleLogin = () => {
-    window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
   };
   const kakaoLogin = () => {
-    window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
 
   return (

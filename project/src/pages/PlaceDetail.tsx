@@ -398,10 +398,10 @@ const PlaceDetail = (): JSX.Element => {
               left="20%"
               regionFilter="null"
               component="place"
-              dataset = ''
-              modalData ='ex'
-              setFilterOrPosition='11'
-              filterOrPosition='11'
+              dataset=""
+              modalData="ex"
+              setFilterOrPosition="11"
+              filterOrPosition="11"
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>

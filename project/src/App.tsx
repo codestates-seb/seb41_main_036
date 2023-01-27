@@ -12,7 +12,7 @@ import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
-import Oauth from "./pages/Oauth"
+import Oauth from "./pages/Oauth";
 
 function App() {
   if (localStorage.getItem("loginStatus") === null) {

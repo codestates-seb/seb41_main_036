@@ -57,8 +57,8 @@ const DetailPostInfo = styled.div`
   margin-top: 2em;
   margin-bottom: 100px;
   div:first-child {
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
     color: var(--black-800);
   }
   > div:last-child {

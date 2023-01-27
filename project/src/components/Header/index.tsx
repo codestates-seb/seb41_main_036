@@ -103,7 +103,10 @@ const HeaderBodyBar = ({
   return (
     <HeaderBodyWrapper backgroundOn={backgroundOn}>
       <HeaderBody>
-        <a href="/" style={{height: "70px",display:"flex",alignItems:"center"}}>
+        <a
+          href="/"
+          style={{ height: "70px", display: "flex", alignItems: "center" }}
+        >
           <img
             src={process.env.PUBLIC_URL + "/logo.png"}
             alt="logo"
