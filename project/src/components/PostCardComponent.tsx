@@ -59,6 +59,7 @@ const PostCard = styled.div<{ width: string }>`
         object-fit: cover;
       }
       > div {
+      
         > div {
           color: #323232;
           font-weight: bold;

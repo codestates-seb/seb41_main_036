@@ -15,14 +15,13 @@ export const AuthToken = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const RefreshToken = atom({
-  key: "RefreshToken",
-  default: null,
-  effects_UNSTABLE: [persistAtom],
-});
-
 export const LoggedUser = atom({
   key: "LoggedUser",
   default: null,
   effects_UNSTABLE: [persistAtom],
+});
+
+export const MemberId = atom({
+  key: "MemberId",
+  default: Number(localStorage.getItem("memberId")),
 });

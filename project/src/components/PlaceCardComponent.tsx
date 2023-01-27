@@ -6,7 +6,7 @@ import { MdModeComment } from "react-icons/md";
 import { ArrayPlaceType } from "../pages/Place";
 import { useNavigate } from "react-router-dom";
 
-const PlaceCardWrapper = styled.div<{ width: string }>`
+const PlaceCardWrapper = styled.div<{ width: string; height: string }>`
   width: ${(props) => props.width};
   height: 100%;
   max-width: 330px;
@@ -87,9 +87,11 @@ const PlaceCardInfoContainer = styled.div`
 const PlaceCardComponent = ({
   placesData,
   width,
+  height,
 }: {
   placesData: ArrayPlaceType;
   width: string;
+  height: string;
 }) => {
   const navigate = useNavigate();
   return (

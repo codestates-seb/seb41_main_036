@@ -143,7 +143,6 @@ export default function LocationFilter({
   setCurPage: Dispatch<SetStateAction<number>>;
 }) {
   const [openLocation, setOpenLocation] = useState(true);
-
   const onCheckItem = (checked: boolean, item: string) => {
     setCurPage(1);
     if (checked) return setCheckedList([...checkedList, item]);
