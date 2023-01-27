@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
@@ -125,7 +125,7 @@ const Place = () => {
     if (searchValue && !isLoading) {
       axios
         .post(
-          `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           { provinces: checkedList }
         )
         .then((res) => {
@@ -137,7 +137,7 @@ const Place = () => {
     } else if (!isLoading) {
       axios
         .post(
-          `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           {
             provinces: checkedList,
           }
@@ -159,8 +159,8 @@ const Place = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     const URL = searchValue
-      ? `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
-      : `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+      ? `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
+      : `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
 
     axios
       .post(URL, {

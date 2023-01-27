@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import React, {
   useState,
   useRef,
@@ -10,8 +10,9 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PostDetailType } from "./DetailPost";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 const Container = styled.div`
   display: flex;
@@ -193,7 +194,7 @@ const EditPost = () => {
   const [imgFiles, setImgFiles] = useState<any[]>([]); // 서버에 보낼 이미지 파일 리스트 - 최종
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
-  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getPostList() {
@@ -298,7 +299,9 @@ const EditPost = () => {
           <BsDot color="#6255F8" />
           수정 포스트
         </div>
-        <div></div>
+        <div onClick={() => navigate(-1)}>
+          <IoArrowBackSharp />
+        </div>
       </Header>
       <Container>
         <form>

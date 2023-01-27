@@ -111,7 +111,7 @@ const NavBar = styled.div`
 const Post = styled.div`
   background: #f8f9fa;
   width: 100%;
-  height: 900px;
+  height: 500px;
 `;
 
 const PostHeader = styled.div`

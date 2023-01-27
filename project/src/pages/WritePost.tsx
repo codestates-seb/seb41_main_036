@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
 
 const Container = styled.div`
@@ -191,6 +191,7 @@ const WritePost = () => {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
+  const { id } = useParams();
   const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -253,28 +254,31 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("postTitle", title);
-    tags.forEach((tag) => {
-      formData.append("postHashTags", tag);
-    });
-    imgFiles.forEach((img) => {
-      formData.append("postImageFiles", img);
-    });
-    content.forEach((text) => {
-      formData.append("postContents", text);
-    });
-    axios
-      .post(`/posts/register/1`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        navigate(-1);
-      })
-      .catch((err) => console.error(err));
+    if (title === "") alert("제목을 입력해주세요");
+    if (title) {
+      const formData = new FormData();
+      formData.append("postTitle", title);
+      tags.forEach((tag) => {
+        formData.append("postHashTags", tag);
+      });
+      imgFiles.forEach((img) => {
+        formData.append("postImageFiles", img);
+      });
+      content.forEach((text) => {
+        formData.append("postContents", text);
+      });
+      axios
+        .post(`/posts/register/1`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          navigate(`/posts/detail/${res.data.data.postId}`);
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -495,9 +499,9 @@ const Modal = ({
 }) => {
   const previewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     let file = e.target.files![0];
-    const sizeCheck = 2 * 1024 * 1024;
+    const sizeCheck = 5 * 1024 * 1024;
     if (file && file.size > sizeCheck) {
-      alert("2MB 이하의 크기의 파일을 선택해주세요.");
+      alert("5MB 이하의 크기의 파일을 선택해주세요.");
     } else {
       setImageUrl(URL.createObjectURL(file));
       setImgFile(file);
@@ -552,7 +556,5 @@ const Modal = ({
     </>
   );
 };
-
-//태그
 
 export default WritePost;
