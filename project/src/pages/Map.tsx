@@ -311,6 +311,8 @@ const Map = () => {
 
   const url = 'http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=posts';
   //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
+  const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
+
   useEffect(()=>{
 
     // 처음에 무조건 데이터를 받아옴 
@@ -376,7 +378,14 @@ const Map = () => {
           {regionList!== undefined
            && regionList.map((el:any, index:any)=>{
             return(
-              <Place onClick={()=>{setDetailModal(true); handleModalData(el.attractionId); setModalDataId(el.attractionId); console.log('모달 데이터 아이디',modalDataId)}} imgUrl={el.fixedImage} key={el.attractionId}>
+              <Place onClick={()=>{
+                setDetailModal(true); 
+                handleModalData(el.attractionId); 
+                setModalDataId(el.attractionId); 
+                console.log('모달 데이터 아이디',modalDataId)
+                setFilterOrPosition(false)
+                }} 
+                imgUrl={el.fixedImage} key={el.attractionId}>
                 <div>{el.attractionName}</div>
                 <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt>{el.attractionAddress}</p>
               </Place>
@@ -437,6 +446,8 @@ const Map = () => {
           component = "map" 
           dataset = {wholeData}
           modalData = {modalData}
+          filterOrPosition = {filterOrPosition}
+          setFilterOrPosition={setFilterOrPosition}
           ></KakaoMap> 
           :
 
@@ -450,6 +461,8 @@ const Map = () => {
           component = "map"
           dataset = {wholeData}
           modalData = {modalData}
+          filterOrPosition = {filterOrPosition}
+          setFilterOrPosition={setFilterOrPosition}
           ></KakaoMap>
         }
     </Container>

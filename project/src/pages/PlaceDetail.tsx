@@ -373,6 +373,8 @@ const PlaceDetail = (): JSX.Element => {
               component="place"
               dataset = ''
               modalData ='ex'
+              setFilterOrPosition='11'
+              filterOrPosition='11'
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>

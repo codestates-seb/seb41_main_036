@@ -25,14 +25,16 @@ interface Map {
   regionFilter:string,
   component:string,
   dataset:any,
-  modalData:any
+  modalData:any,
+  filterOrPosition:any,
+  setFilterOrPosition:any
 }
 
 export interface DataList {
   attractionAddress: string,
   attractionId:number,
   attractionName:string, 
-  fixedImage:string
+  fixedImage:string,
 }
 
 const MyPosition = styled.div`
@@ -56,10 +58,12 @@ const MyPosition = styled.div`
 `
 
 
-const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData }:Map) =>{
-  const [filterOrPosition, setFilterOrPosition] = useState(false);
+const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData ,filterOrPosition, setFilterOrPosition}:Map) =>{
+  //const [filterOrPosition, setFilterOrPosition] = useState(false);
   // false 일때는 필터링, 
   // true일때는 내위치
+
+  // 여기
 
   useEffect(()=>{
     const container = document.getElementById('map');// 지도를 담을 dom영역
@@ -82,6 +86,76 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
         // 내위치 받아오기 예제
         if (navigator.geolocation) {
           console.log('내 위치를 받아오기')
+
+          // 주변 데이터 보여주기 위해서 값 불러오기 
+          console.log('리스트 데이터',dataset)
+          dataset.forEach(function(addr:any,index:number){
+            geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
+              // 정상적으로 검색이 완료됐으면 
+               if (status === window.kakao.maps.services.Status.OK) {
+                  var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                  // 결과값으로 받은 위치를 마커로 표시합니다
+                  var marker = new window.kakao.maps.Marker({
+                      map: map,
+                      position: coords
+                  });
+      
+                  // 인포 윈도우 설정
+                  var infowindow = new window.kakao.maps.InfoWindow({
+                    content: 
+                    `<div 
+                      style="
+                        width:180px;
+                        height:110px;
+                        background-color:white;
+                        padding:5px 5px;
+                        border:none;
+                        position:relative;
+                        left:-1px;
+                        text-align:center;
+                        top:-1px;
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+                        border-radius:2px">
+                    <h3 
+                      style="
+                      color:#6255F8; 
+                      width:100%;
+                      height:30px;
+                      background-color:#faf7df;
+                      line-height:30px">
+                      ${addr.attractionName}
+                    </h3>
+                    <h3 style="
+                      font-size:12px;
+                      color:#515151;
+                      font-weight:500;
+                      padding:8px 0">
+                      ${addr.attractionAddress}
+                      </h3>
+                    <a href="/attractions/detail/${addr.attractionId}" 
+                      style="
+                        font-size:11px;
+                        text-decoration-line:none;
+                        font-weight:600;
+                        margin-left:130px">
+                      더보기
+                    </a>
+                  </div>`,
+                    disableAutoPan: false
+                  });
+                infowindow.open(map, marker);
+                  // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                  map.setCenter(coords);
+              } 
+            });  
+          })
+
+
+
+
+
+
+
       
           // GeoLocation을 이용해서 접속 위치를 얻어옵니다
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -93,6 +167,10 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                 map.setCenter(locPosition);
             });
           } 
+
+
+
+
         }else { 
         console.log('주변 필터링 데이터 보여주기')
         console.log('아이디',modalData.attractionId)
@@ -156,6 +234,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
 
                 //map.setCenter(coords);
               map.panTo(placePosition);
+              map.relayout();
             }
           })
         }
