@@ -26,7 +26,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
-            <Route path="/attractions" element={<Place />} />
+            <Route path="/attractions" element={<Place />}>
+              <Route path="search" element={<Place />} />
+            </Route>
             <Route path="/posts" element={<Post />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />

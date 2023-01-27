@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import FixedOnScrollUpHeader from "./components/Header/FixedOnScrollUpHeader";
 import { ArrayPlaceType } from "./pages/Place";
 import { ArrayPostType } from "./pages/Post";
@@ -9,14 +9,26 @@ import PlaceCardComponent from "./components/PlaceCardComponent";
 import Carousel from "./components/Carousel";
 import Ranking from "./components/Ranking";
 import { Link } from "react-router-dom";
+import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
 import { Header } from "./components/Header";
 import HiddenHeader from "./components/Header/HiddenHeader";
 import Modal from "./components/Modal";
 
+const GoRight = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(3px);
+  }
+`;
+
 const Body = styled.div`
   width: 83.5%;
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
+  padding: 20px 30px;
+  background-color: hsl(222, 24%, 98%);
 `;
 
 const Footer = styled.div`
@@ -26,7 +38,7 @@ const Footer = styled.div`
 `;
 
 const MainSubTitle = styled.h3`
-  font-size: var(--font-xxl);
+  font-size: var(--font-xl);
   color: var(--black-900);
   width: 100%;
   margin: 30px 20px 20px 0px;
@@ -40,10 +52,9 @@ const ViewsPlaceContainer = styled.div`
 
 const ViewsPostContainer = styled.div`
   width: 100%;
-  height: 90vh;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  justify-content: space-between;
   //border: 1px solid black;
   > p {
     cursor: pointer;
@@ -54,6 +65,23 @@ const ViewsPostContainer = styled.div`
 const MoreLink = styled.div`
   display: flex;
   justify-content: flex-end;
+  padding: 20px 0;
+  a {
+    display: flex;
+    align-items: center;
+    font-size: var(--font-sm);
+  }
+  svg {
+    width: 18px;
+    height: 18px;
+    padding-left: 5px;
+    color: var(--purple-300);
+  }
+  &:hover {
+    svg {
+      animation: ${GoRight} 0.2s ease 4 alternate;
+    }
+  }
 `;
 const PlaceCardWrapper = styled.div`
   width: 100%;
@@ -78,8 +106,6 @@ function Main() {
     );
   }, []);
 
-  console.log(attractionData, postData);
-
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -92,30 +118,27 @@ function Main() {
             {attractionData && (
               <PlaceCardComponent
                 placesData={attractionData}
-                curPage={1}
-                limit={4}
-                width="23.5%"
-                height="180px"
+                width="24%"
               ></PlaceCardComponent>
             )}
           </PlaceCardWrapper>
           <MoreLink>
-            <Link to={"/attractions"}>더 많은 명소 둘러보기</Link>
+            <Link to={"/attractions"}>
+              더 많은 명소 둘러보기
+              <DoubleArrowIcon />
+            </Link>
           </MoreLink>
         </ViewsPlaceContainer>
         <MainSubTitle>가장 많이 본 포스트</MainSubTitle>
         <ViewsPostContainer>
           {postData && (
-            <PostCardComponent
-              posts={postData}
-              limit={8}
-              margin="0"
-              width="22%"
-            />
+            <PostCardComponent posts={postData} margin="0" width="24%" />
           )}
         </ViewsPostContainer>
         <MoreLink>
-          <Link to={"/posts"}>더 많은 포스트 확인하기</Link>
+          <Link to={"/posts"}>
+            더 많은 포스트 확인하기 <DoubleArrowIcon />
+          </Link>
         </MoreLink>
       </Body>
       {/* <Footer>footer</Footer> */}

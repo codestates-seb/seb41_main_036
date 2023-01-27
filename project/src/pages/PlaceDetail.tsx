@@ -412,8 +412,7 @@ const PlaceDetail = (): JSX.Element => {
             {postData && (
               <PostCardComponent
                 posts={postData}
-                limit={8}
-                margin="8%"
+                margin="0 12%"
                 width="22%"
               ></PostCardComponent>
             )}

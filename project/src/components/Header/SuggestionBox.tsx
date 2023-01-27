@@ -13,6 +13,7 @@ import {
 } from "./style";
 import { TbArrowUpRight as ShortcutIcon } from "react-icons/tb";
 import { BiLocationPlus as SearchMoreIcon } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 const MAX_SUGGEST = 5;
 
@@ -121,7 +122,7 @@ const SuggestionItem = ({
 
   return (
     <AttractionItem selectedEl={selectedEl} onMouseOver={handleMouseOver}>
-      <a href="https://www.naver.com">
+      <Link to={`/attractions/detail/${info.id}`}>
         <AttractionItemContent type="name">
           {letterIndex.map((el, i, arr) => {
             let formerIndex = i === 0 ? 0 : arr[i - 1] + 1;
@@ -136,7 +137,7 @@ const SuggestionItem = ({
         <AttractionItemContent type="address">
           {info.address}
         </AttractionItemContent>
-      </a>
+      </Link>
       <ShortcutIcon />
     </AttractionItem>
   );
