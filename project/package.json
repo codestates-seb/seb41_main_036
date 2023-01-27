@@ -8,18 +8,10 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.11",
-    "@types/react": "^18.0.26",
-    "@types/react-copy-to-clipboard": "^5.0.4",
-    "@types/react-dom": "^18.0.10",
-    "@types/react-modal": "^3.13.1",
-    "@types/styled-react-modal": "^1.2.2",
     "aws-sdk": "^2.1296.0",
     "axios": "^1.2.4",
     "blurhash": "^2.0.4",
     "hangul-js": "^0.2.6",
-    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
     "react-copy-to-clipboard": "^5.1.0",
@@ -62,8 +54,16 @@
     ]
   },
   "devDependencies": {
+    "http-proxy-middleware": "^2.0.6",
     "@types/styled-components": "^5.1.26",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.11",
+    "@types/react": "^18.0.26",
+    "@types/react-copy-to-clipboard": "^5.0.4",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-modal": "^3.13.1",
+    "@types/styled-react-modal": "^1.2.2"
   },
   "proxy" : "http://pikcha36.o-r.kr:8080"
 }

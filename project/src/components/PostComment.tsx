@@ -87,7 +87,6 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
       .catch((err) => console.error(err));
   };
 
-  console.log(comment);
   const modifiedComment = () => {
     axios
       .patch(`/comments/edit/${commentId}`, {
