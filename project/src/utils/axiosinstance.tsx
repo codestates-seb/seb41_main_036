@@ -4,9 +4,13 @@ const axios = Axios.create({
 });
 
 axios.interceptors.request.use(
-  (config) => {
-    // const accessToken = localStorage.getItem("Authorization");
-    // axios.defaults.headers.common["Authorization"] = accessToken;
+  (config) => { 
+    const originalRequest = config;
+    const accessToken = localStorage.getItem("Authorization");
+    axios.defaults.headers.common["Authorization"] = accessToken;
+    originalRequest.headers.Authorization = accessToken;
+    console.log("리퀘인")
+    // return originalRequest;
     return config;
   },
   (error) => {
@@ -39,6 +43,20 @@ axios.interceptors.response.use(
         localStorage.setItem("loginStatus", "true")
         return axios(originalRequest);
     } 
+    if (status === 404 && error.response.data.message === "Token not found") {
+      const originalRequest = config;
+          axios.defaults.headers.common["Authorization"] = null;
+          const memberId = localStorage.getItem("memberId");
+          const { data } = await axios.get(`/token/refresh/${memberId}`);
+          console.log("리프데이터 : ", data)
+          const accessToken = data.data.accessToken;
+          console.log("어쏘 : ", accessToken)
+          localStorage.setItem("Authorization", `${accessToken}`);
+          originalRequest.headers.Authorization = accessToken;
+          axios.defaults.headers.common["Authorization"] = accessToken;
+          localStorage.setItem("loginStatus", "true")
+          return axios(originalRequest);
+      } 
     if (status === 400 && error.response.data.message === "RefreshToken Expired"){
       localStorage.setItem("loginStatus", "false")
       localStorage.removeItem("memberId")

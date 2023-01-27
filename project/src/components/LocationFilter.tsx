@@ -5,7 +5,9 @@ import {
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
-import axios from "axios";
+import Axios from "axios";
+import axios from "../utils/axiosinstance";
+
 import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`

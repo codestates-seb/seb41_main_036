@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiTwotoneHome } from "react-icons/ai";
 import { MdModeComment } from "react-icons/md";
@@ -7,6 +7,9 @@ import { TfiPencil } from "react-icons/tfi";
 import Button from "../components/Button";
 import { BsEye } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
+import axios from "../utils/axiosinstance";
+import Axios from "axios";
+
 const MyPageWrapper = styled.div`
   height: 100vh;
   display: flex;
@@ -179,6 +182,46 @@ const MyPageTabBarMenu = styled.button`
 
 const MyPage = () => {
   const [tab, setTab] = useState(0);
+
+  const [address, setAddress] = useState();
+  const [email, setEmail] = useState();
+  const [phonenumber, setPhonenumber] = useState();
+  const [username, setUsername] = useState();
+  const [picture, setPicture] = useState();
+  const [posts, setPosts] = useState();
+  const [saves, setSaves] = useState()
+
+  const memberId = localStorage.getItem("memberId")
+
+  useEffect(() =>  {
+    axios.get(`/users/profile/${memberId}`)
+    .then((res) => {
+      const {address, email, phoneNumber, username, picture, posts, saves } = res.data.data;
+      console.log(res.data.data)
+      setAddress(address)
+      setPhonenumber(phoneNumber)
+      setEmail(email)
+      setUsername(username)
+      setPicture(picture)
+      setPosts(posts)
+      setSaves(saves)
+
+    })
+    .catch((err) => console.error(err));
+
+  } ,[]
+  )
+
+  const onClickButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    console.log(address)
+    console.log(email)
+    console.log(username)
+    console.log(phonenumber)
+  }
+
+
+
   const MyPageMyPostCard = () => {
     return (
       <>
@@ -294,14 +337,15 @@ const MyPage = () => {
           <form>
             <img src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g" alt="" />
             <div>
-              개구리 뒷다리 <TfiPencil />
+              {username} <TfiPencil />
             </div>
             <div>초보 여행자</div>
+            <button onClick={onClickButton}>12312312</button>
             <div>
-              <FaMapMarkerAlt /> 서울시 동작구
+              <FaMapMarkerAlt /> {address}
             </div>
-            <div>abcdefg@gmail.com</div>
-            <div>010-1234-5678</div>
+            <div>{email}</div>
+            <div>{phonenumber}</div>
             <Button width="100px" height="40px" text="회원 탈퇴" />
           </form>
         </MyPageUserInfo>

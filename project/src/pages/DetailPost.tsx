@@ -4,9 +4,14 @@ import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import PostComment from "../components/PostComment";
-import axios from "axios";
+import Axios from "axios";
+import axios from "../utils/axiosinstance";
+
 import Button from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../recoil/state";
+import Modal from "../components/Modal";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
@@ -184,6 +189,18 @@ export interface PostDetailType {
   username: string;
   views: number;
 }
+
+export interface CommentType {
+  commentId: number;
+  memberId: number;
+  username: string;
+  memberPicture: string;
+  commentContent: string;
+  createdAt: string;
+  modifiedAt: string;
+}
+
+export interface ArrayCommentType extends Array<CommentType> {}
 // PostContent 리팩토링 예정
 // interface PostContentsType {
 //   imageURL: string;
@@ -191,40 +208,39 @@ export interface PostDetailType {
 //   imageId: number;
 // }
 // interface ArrayPostCotentsType extends Array<PostContentsType> {}
+// const [postContents, setPostContents] = useState<
+//   ArrayPostCotentsType | PostContentsType
+// >([]);
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
+  const [postComments, setPostComments] = useState<ArrayCommentType>();
   const [comment, setComment] = useState("");
-  // const [postContents, setPostContents] = useState<
-  //   ArrayPostCotentsType | PostContentsType
-  // >([]);
+  const [isLogin] = useRecoilState(LoginState);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
+  const memberId = localStorage.getItem("memberId");
+
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`/posts/${id}`)
+      .get(`/posts/details/${id}`)
       .then((res) => setPost(res.data.data))
       .catch((err) => console.error(err));
-  }, []);
+    setPostComments(post?.comments);
+  }, [post === undefined]);
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
       .post(
-        `/comments/upload/1/1`,
+        `/comments/upload/${id}`,
         {
           commentContent: comment,
         },
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ1OTAzMTEsImV4cCI6MTY3NDYxNTUxMX0.4RtI8-nDeiPOkSizHb84n6I8uv-4k2Mty9fSQbA_vweYAO4PInCQkDapISGzVTERnwEi2oWwCSTSoY-QpOdc_w",
-          },
-        }
       )
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   };
-
   let data: any[] = [];
 
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
@@ -234,7 +250,6 @@ const DetailPost = () => {
       imgageId: i + 1,
     });
   }
-
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
@@ -242,8 +257,14 @@ const DetailPost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+
+  const handleCommentWrite = () => {
+    if (!isLogin) setIsModalVisible(true);
+  };
+
   return (
     <DetailPostWrapper>
+      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <div>
         <PostManageButton>
           <MdModeEdit /> 수정
@@ -304,6 +325,10 @@ const DetailPost = () => {
           </div>
         </PostContentBottom>
       </PostContentContainer>
+      {postComments &&
+        postComments.map((comment, idx) => (
+          <PostComment key={idx} comment={comment} />
+        ))}
       <AddComment>
         <h3>댓글 남기기</h3>
         <div>
@@ -311,8 +336,10 @@ const DetailPost = () => {
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            onClick={handleCommentWrite}
           />
           <Button
+            type="violet"
             width="80px"
             height="35px"
             text="등록"

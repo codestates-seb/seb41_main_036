@@ -78,7 +78,7 @@ const ContainerButton = styled.div`
 `
 
 
-const Modal = ():JSX.Element => {
+const Modal = ({setIsModalVisible}:any ):JSX.Element => {
   return (
   <>
     <ModalBackground>
