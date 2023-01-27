@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
-import axios from "axios";
+import Axios from "axios";
+import axios from "../utils/axiosinstance"
 import DaumPostcode from "react-daum-postcode";
-import Ouaths from "./Ouaths";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {
-  LoginState,
-  AuthToken,
-  RefreshToken,
-  LoggedUser,
-} from "../recoil/state";
+import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+
 
 interface TextProps {
   fontSize: string;
@@ -32,7 +28,7 @@ const Wrapper = styled.section`
   align-items: center;
   border-radius: 30px;
 `;
-const Logincontainer = styled.div<OverlayProps>`
+const Signincontainer = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -48,7 +44,7 @@ const Logincontainer = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
-const Signincontainer = styled.div<OverlayProps>`
+const Logincontainer = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -64,7 +60,7 @@ const Signincontainer = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
-const Leftoverlay = styled.div<OverlayProps>`
+const Rightoverlay = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
   border-radius: ${(props) =>
@@ -82,10 +78,9 @@ const Leftoverlay = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
-const Rightoverlay = styled.div<OverlayProps>`
+const Leftoverlay = styled.div<OverlayProps>`
   width: 40%;
   height: 100%;
-
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -190,7 +185,6 @@ const Login = () => {
 
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
-  const [rafresh, setRefresh] = useRecoilState(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
 
   const navigate = useNavigate();
@@ -250,6 +244,7 @@ const Login = () => {
     e.preventDefault();
     if (loginemailErr || loginpasswordErr) {
       alert("로그인 양식을 지켜주세요.");
+      return 
     }
 
     return axios
@@ -258,17 +253,16 @@ const Login = () => {
         password: loginpassword,
       })
       .then((res) => {
-        const { authorization, refreshtoken } = res.headers;
+        const {memberId, accessToken} = res.data.data;
         if (res.status === 200) {
-          axios.defaults.headers.common["authorization"] = authorization;
-          axios.defaults.headers.common["refreshtoken"] = refreshtoken;
         console.log("로그인성공");
-        console.log(res);
-
-          setIslogin(true);
-          setAuth(authorization);
-          setRefresh(refreshtoken);
-          setLoggedUser(loginemail);
+        setIslogin(true);
+        setAuth(accessToken);
+        setLoggedUser(loginemail);
+        localStorage.setItem("loginStatus", "true ")
+          localStorage.setItem("Authorization", `${accessToken}`)
+          localStorage.setItem("memberId",memberId)
+          axios.defaults.headers.common["Authorization"] = accessToken
           navigate("/");
         }
       })
@@ -284,6 +278,7 @@ const Login = () => {
     e.preventDefault();
     if (signemailErr || signpasswordErr || phonenumberErr) {
       alert("회원가입 양식을 제대로 채워주세요.");
+      return 
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
@@ -310,29 +305,12 @@ const Login = () => {
     }
   };
 
-  const GoogleHandler = () => {
-    axios
-      // .post("/login/oauth2/code/google", {
-      //     username: loginemail,
-      //     password: loginpassword,
-      // })
-      .get("oauth2/authorization/google", {
-        // headers: {
-        //     "Content-Type" : "application/x-www-form-urlencoded"
-        // }
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-  };
-
-  const googlelogin = () => {
-    window.location.href =
-      "oauth2/authorization/google";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
-  };
+    const googleLogin = () => {
+      window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
+    };
+    const kakaologin = () => {
+      window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
+    };
 
   return (
     <Wrapper>
@@ -354,15 +332,15 @@ const Login = () => {
           <CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
         </>
       )}
+      
       <Logincontainer overlay={overlays}>
-        <GButton onClick={GoogleHandler}>묵은지</GButton>
-        <GButton onClick={googlelogin}>묵은지</GButton>
-        <Ouaths />
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <GButton>G</GButton>
+        <button onClick={kakaologin}>카카2</button>
+        <button onClick={googleLogin}>구글3</button>
+        <GButton onClick={googleLogin}>G</GButton>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
         </TextStyle>
@@ -398,12 +376,9 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="0px white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="var(--purple-400)"
           text="로그인"
+          type="violet"
           onClick={onClickLogin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
@@ -494,12 +469,9 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="0px white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="var(--purple-400)"
           text="회원가입"
+          type="violet"
           onClick={onClickSignin}
         ></ButtonForm>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
@@ -531,13 +503,9 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="1px solid white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="white"
-          hovercolor="var(--purple-300)"
           text="로그인"
+          type="white"
           onClick={onClickBtn}
         ></ButtonForm>
       </Leftoverlay>
@@ -565,12 +533,8 @@ const Login = () => {
         <ButtonForm
           width="180px"
           height="60px"
-          backgroundcolor="var(--purple-300)"
-          border="1px solid white"
-          color="white"
           fontsize="24px"
-          hoverbackgroundcolor="white"
-          hovercolor="var(--purple-300)"
+          type="white"
           text="회원가입"
           onClick={onClickBtn}
         ></ButtonForm>

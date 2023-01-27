@@ -34,7 +34,6 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
     &:hover {
       cursor: text;
     }
-
     &::placeholder {
       font-size: var(--font-sm);
       color: ${(props) =>
@@ -138,7 +137,6 @@ const AttractionItemContent = styled.div<{
       : props.type === "notice"
       ? "14px"
       : "2px"};
-
   cursor: ${(props) => (props.type === "notice" ? "default" : "pointer")};
   &:hover {
     color: ${(props) =>
@@ -250,7 +248,6 @@ const HeaderUnMountEffect = keyframes`
     transform:translate(0%,-42px);
     
   }
-
 `;
 const HiddenHeaderBodyWrapper = styled.header<{
   isVisible: boolean;
