@@ -100,18 +100,9 @@ export default function LocationFilter({
   const pageLocation = useLocation();
   useEffect(() => {
     axios
-      .post(
-        `${pageLocation.pathname}/filter?page=1&size=100&sort=newest`,
-        {
-          provinces: checkedList,
-        },
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ2NTQxOTUsImV4cCI6MTY3NDY1NTk5NX0.IqcPKaUlNhWIiVme_WWSRJcSnY09BrxfYRlPSkT--Jr3tPDcczt5qMkCajdwLLkOu4D-czpwvdle_vzcKqwCfw",
-          },
-        }
-      )
+      .post(`${pageLocation.pathname}/filter?page=1&size=100&sort=newest`, {
+        provinces: checkedList,
+      })
       .then((res) => {
         if (pageLocation.pathname === "/attractions") setData(res.data.data);
         if (pageLocation.pathname === "/posts") setData(res.data.data);

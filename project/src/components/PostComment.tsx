@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import dummy from "../dummyData.json";
+import { CommentType } from "../pages/DetailPost";
+import { MemberId } from "../recoil/state";
+import axios from "../utils/axiosinstance";
+
 const PostCommentContainer = styled.div`
   margin-top: 20px;
   > div {
@@ -52,16 +56,6 @@ const PostCommentContainer = styled.div`
   }
 `;
 
-interface CommentType {
-  commentId: number;
-  memberId: number;
-  username: string;
-  memberPicture: string;
-  commentContent: string;
-  createdAt: string;
-  modifiedAt: string;
-}
-
 const PostManageButton = styled.button`
   min-width: 30px;
   display: flex;
@@ -75,10 +69,35 @@ const PostManageButton = styled.button`
   cursor: pointer;
 `;
 const PostComment = ({ comment }: { comment: CommentType }) => {
-  const [commentEdit, setCommentEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [commentContent, setCommentcontent] = useState(comment.commentContent);
+  const [memberId] = useRecoilState(MemberId);
   const commentContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentcontent(e.target.value);
+  };
+  const commentId = comment.commentId;
+  console.log(memberId);
+  const deleteComment = () => {
+    axios
+      .delete(`/comments/delete/${commentId}`)
+      .then((res) => {
+        console.log(res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.error(err));
+  };
+
+  console.log(comment);
+  const modifiedComment = () => {
+    axios
+      .patch(`/comments/edit/${commentId}`, {
+        commentContent: commentContent,
+      })
+      .then((res) => {
+        console.log(res);
+        setIsEdit(!isEdit);
+      })
+      .catch((err) => console.error(err));
   };
   return (
     <>
@@ -91,19 +110,23 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
               <span>{comment.createdAt}</span>
             </div>
           </div>
-          <div>
-            {commentEdit ? (
-              <PostManageButton>완료</PostManageButton>
-            ) : (
-              <PostManageButton onClick={() => setCommentEdit(!commentEdit)}>
-                수정
-              </PostManageButton>
-            )}
+          {memberId === comment.memberId ? (
+            <div>
+              {isEdit ? (
+                <PostManageButton onClick={modifiedComment}>
+                  완료
+                </PostManageButton>
+              ) : (
+                <PostManageButton onClick={() => setIsEdit(!isEdit)}>
+                  수정
+                </PostManageButton>
+              )}
 
-            <PostManageButton>삭제</PostManageButton>
-          </div>
+              <PostManageButton onClick={deleteComment}>삭제</PostManageButton>
+            </div>
+          ) : null}
         </div>
-        {commentEdit ? (
+        {isEdit ? (
           <form>
             <textarea
               value={commentContent}
