@@ -327,7 +327,7 @@ const Map = () => {
     console.log('전체 데이터----', wholeData)
     console.log('전체 데이터----', regionList)
 
-  },[])
+  },[regionFilter,setDropdownView])
 
 
   const handleModalData = (dataUrl:string) => {
@@ -353,7 +353,7 @@ const Map = () => {
               {
                 regionDummy.map((el:any, index:number)=>{
                   return(
-                    <button key={el.id} onClick={()=>{setRegionFilter(el.Post); console.log(regionFilter)}}>{el.Post}</button>
+                    <button key={el.id} onClick={()=>{setRegionFilter(el.Post); console.log(regionFilter); setDropdownView(false)}}>{el.Post}</button>
                   )
                 })
               }
@@ -422,6 +422,7 @@ const Map = () => {
           regionFilter = {regionFilter} 
           component = "map" 
           dataset = {wholeData}
+          modalData = {modalData}
           ></KakaoMap> 
           :
 
@@ -434,6 +435,7 @@ const Map = () => {
           regionFilter = {regionFilter} 
           component = "map"
           dataset = {wholeData}
+          modalData = {modalData}
           ></KakaoMap>
         }
     </Container>

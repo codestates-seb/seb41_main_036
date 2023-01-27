@@ -39,6 +39,7 @@ interface Map {
   regionFilter:string,
   component:string,
   dataset:any
+  modalData:any
 }
 
 export interface DataList {
@@ -69,12 +70,10 @@ const MyPosition = styled.div`
 `
 
 
-const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset }:Map) =>{
+const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData }:Map) =>{
   const [filterOrPosition, setFilterOrPosition] = useState(false);
   // false 일때는 필터링, 
   // true일때는 내위치
-
-  //const [wholeData, setWholeData] = useState<any>();
 
   useEffect(()=>{
     const container = document.getElementById('map');// 지도를 담을 dom영역
@@ -89,13 +88,16 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     // 기본 주소 객체 생성 
     const map = new window.kakao.maps.Map(container,options);
     var geocoder = new window.kakao.maps.services.Geocoder();
-
-    console.log(' 고양이', typeof(dataList))
-
+    //var geocoder = new window.kakao.maps.services.Geocoder();
     
-    if (component === 'map'){
-      console.log('데이터 리스트 배열입니다. ');
 
+
+    // map 페이지에서 사용 
+    if (component === 'map'){
+      console.log('데이터 리스트 배열입니다.----------------');
+      console.log('모달데이터',modalData.attractionAddress)
+
+      // 전체 마커를 기본으로 설정합니다. 
       if(dataset!==undefined){
         dataset.forEach(function(addr:any,index:any){
           geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
@@ -118,37 +120,56 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                   </div>`,
                   disableAutoPan: false
                 });
-  
-              infowindow.open(map, marker);
-                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                map.setCenter(coords);
+                
+                // 인포윈도우 표시
+                infowindow.open(map, marker);
+
+                //map.setCenter(coords);
+
+              
+
             } 
-          });  
-        })
+          }
+          );  
+        },
+        
+        )
       }
         
 
-      // if(filterOrPosition === true){
-      //   // 내위치 받아오기 예제
-      //   if (navigator.geolocation) {
-      //     console.log('내 위치를 받아오기')
+      if(filterOrPosition === true){
+        // 내위치 받아오기 예제
+        if (navigator.geolocation) {
+          console.log('내 위치를 받아오기')
       
-      //     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      //     navigator.geolocation.getCurrentPosition(function(position) {
+          // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+          navigator.geolocation.getCurrentPosition(function(position) {
               
-      //         var lat = position.coords.latitude, // 위도
-      //             lon = position.coords.longitude; // 경도
+              var lat = position.coords.latitude, // 위도
+                  lon = position.coords.longitude; // 경도
               
-      //          var locPosition = new window.kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-      //           map.setCenter(locPosition);
-      //       });
-      //     } 
-      //   }else { 
-      //   console.log('주변 필터링 데이터 보여주기')
-      //   //console.log(d)
-      //   }
+               var locPosition = new window.kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                map.setCenter(locPosition);
+            });
+          } 
+        }else { 
+        console.log('주변 필터링 데이터 보여주기')
+                // 모달데이터를 클릭한 곳으로 위치를 이동시킵니다. 
+          geocoder.addressSearch(modalData.attractionAddress, function(result:any, status:any){
+            if (status === window.kakao.maps.services.Status.OK){
+              console.log('좌표 검색 완료',result[0].y, result[0].x)
+              var placePosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+              map.setCenter(placePosition);
+            }
+          })
+        }
     }
     
+
+
+
+
+
 
     // placedetail 컴포넌트에서 사용 -- 수정 금지
     if(component === 'place'){
@@ -173,7 +194,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
-  },[filterOrPosition,dataset=== undefined])
+  },[filterOrPosition,dataset=== undefined, modalData])
 
     //document.getElementsByClassName(class)
   

@@ -377,6 +377,7 @@ const PlaceDetail = (): JSX.Element => {
               regionFilter="null"
               component="place"
               dataset = ''
+              modalData ='ex'
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>
