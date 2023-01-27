@@ -1,6 +1,7 @@
 package com.main36.pikcha.domain.post.service;
 
 
+import com.main36.pikcha.domain.image.service.PostImageService;
 import com.main36.pikcha.domain.member.entity.Member;
 
 
@@ -29,6 +30,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostLikesRepository postLikesRepository;
+    private final PostImageService postImageService;
 
     public Post createPost(Post post) {
         Long numOfPostsPlusOne = post.getAttraction().getNumOfPosts() + 1;
