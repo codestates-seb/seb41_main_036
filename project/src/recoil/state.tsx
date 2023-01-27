@@ -1,7 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
-
 const { persistAtom } = recoilPersist();
 
 export const LoginState = atom({
@@ -22,8 +21,7 @@ export const LoggedUser = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const memberId = atom({
-  key: "memberId",
-  default: undefined,
-  effects_UNSTABLE: [persistAtom],
+export const MemberId = atom({
+  key: "MemberId",
+  default: Number(localStorage.getItem("memberId")),
 });
