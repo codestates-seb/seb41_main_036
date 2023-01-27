@@ -10,6 +10,7 @@ import HiddenHeader from "../components/Header/HiddenHeader";
 import '../index.css';
 import axios from "axios";
 import { DataList } from "../components/KakaoMap";
+import {GiTalk} from 'react-icons/gi';
 
 
 
@@ -97,11 +98,6 @@ const PlaceComponent = styled.div`
   overflow-y:scroll;
   overflow-x: hidden;
   -ms-overflow-style: none;
-
-  //뺄지말지 나중에 결정 
-  /* ::-webkit-scrollbar {
-  display: none;
-} */
 `
 const Place = styled.div<{imgUrl:string}>`
     background-color: skyblue;
@@ -176,7 +172,7 @@ const PlaceDetailModalHeader = styled.div`
       }
       & p{
         font-size: 10px;
-        margin-left: 3px;
+        margin-left: 5px;
         color:#373737;
       }
     }
@@ -189,6 +185,7 @@ const PlaceDetailModalHeader = styled.div`
         background-color: #fbf8ba;
         margin-left: 15px;
         font-weight: 700;
+        margin-bottom: 5px;
       }
       >a{
         font-size: 13px;
@@ -201,7 +198,7 @@ const PlaceDetailModalHeader = styled.div`
     }
     >p:nth-child(4){
       color:#555555;
-      font-size: 15px;
+      font-size: 14px;
       margin: 4px 0 0 15px;
       font-weight: 600;
     }
@@ -216,6 +213,7 @@ const PlaceDetailModalHeader = styled.div`
       }
       >p{
         font-size: 12px;
+        font-weight: 500;
       }
     }
     
@@ -224,7 +222,7 @@ const PlaceDetailModalHeader = styled.div`
       font-size: 15px;
       font-weight: bold;
       margin: 20px 0 0 17px;
-      color:#555555;
+      color:#2e3776;
     }
     >span{
         color:#555555;
@@ -242,6 +240,7 @@ const PlaceDetailModalMain = styled.div`
     font-size: 15px;
     font-weight: 700;
     margin: 25px 0 10px 20px;
+    color: #393939;
   }
 `
 
@@ -257,25 +256,20 @@ const PostImgContainer = styled.div`
   }
 `
 
+const PostNone = styled.div`
+  padding: 10px;
+  width: 300px;
+  height: 100px;
+  font-size: 13px;
+  color:grey;
+  display: flex;
+  >div{
+    margin-right: 5px;
+  }
+  //background-color:red;
+`
+
 const Map = () => {
-
-  //   // 주소 더미 데이터
-  //   var listData = [
-  //     '종로구 사직로 161', 
-  //     '종로구 세종대로 198',
-  //     '종로구 세종대로 209', 
-  //     '종로구 세종대로 175'
-  // ];
-
-  // // 이미지 더미데이터
-  // var imgUrl = [
-  //   "https://a.cdn-hotels.com/gdcs/production123/d477/f88c6cdb-3e47-45f5-bfd7-d3775d1f3bcc.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-  //   "https://a.cdn-hotels.com/gdcs/production43/d333/469e9780-6653-4879-a396-cea7714fc209.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-  //   "https://a.cdn-hotels.com/gdcs/production90/d1936/e6925d65-cc4b-4605-8bd4-debb712fe764.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-  //   "https://a.cdn-hotels.com/gdcs/production167/d282/bf00d54a-0bb2-487e-8fbb-2ce495d3113b.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-  //   "https://a.cdn-hotels.com/gdcs/production41/d1748/0b5fab45-59f0-4574-8ac3-d19fb1778e2e.jpg?impolicy=fcrop&w=1600&h=1066&q=medium",
-    
-  // ]
 
   // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false)
@@ -297,8 +291,28 @@ const Map = () => {
   // 카카오맵에 전체 마커로 찍을 데이터 저장용 
   const [wholeData, setWholeData] = useState<any>(); 
 
-  const url = 'http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=newest';
+
+  const tags = [
+    '#가족 여행지',
+    '#야경이 아름다운 곳',
+    '#여름 여행지',
+    '#체험 학습',
+    '#겨울 여행 추천',
+    '#야경이 아름다운 곳',
+    '#가을 여행지',
+    '#친구와 방문하기 좋은 곳',
+    '#연인과 함께',
+    '#가을에 방문하기 좋은 곳',
+    '#테마 거리',
+    
+  ]
+
+
+
+  const url = 'http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=posts';
   //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
+  const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
+
   useEffect(()=>{
 
     // 처음에 무조건 데이터를 받아옴 
@@ -327,7 +341,7 @@ const Map = () => {
     console.log('전체 데이터----', wholeData)
     console.log('전체 데이터----', regionList)
 
-  },[])
+  },[regionFilter,setDropdownView])
 
 
   const handleModalData = (dataUrl:string) => {
@@ -353,7 +367,7 @@ const Map = () => {
               {
                 regionDummy.map((el:any, index:number)=>{
                   return(
-                    <button key={el.id} onClick={()=>{setRegionFilter(el.Post); console.log(regionFilter)}}>{el.Post}</button>
+                    <button key={el.id} onClick={()=>{setRegionFilter(el.Post); console.log(regionFilter); setDropdownView(false)}}>{el.Post}</button>
                   )
                 })
               }
@@ -364,7 +378,14 @@ const Map = () => {
           {regionList!== undefined
            && regionList.map((el:any, index:any)=>{
             return(
-              <Place onClick={()=>{setDetailModal(true); handleModalData(el.attractionId); console.log('모달 데이터 아이디',modalDataId)}} imgUrl={el.fixedImage} key={el.attractionId}>
+              <Place onClick={()=>{
+                setDetailModal(true); 
+                handleModalData(el.attractionId); 
+                setModalDataId(el.attractionId); 
+                console.log('모달 데이터 아이디',modalDataId)
+                setFilterOrPosition(false)
+                }} 
+                imgUrl={el.fixedImage} key={el.attractionId}>
                 <div>{el.attractionName}</div>
                 <p><FaMapMarkerAlt size="10"></FaMapMarkerAlt>{el.attractionAddress}</p>
               </Place>
@@ -386,14 +407,14 @@ const Map = () => {
             </div>
             <div>
               <h2>{modalData.attractionName}</h2>
-              <a href="www.google.com">더보기</a>
+              <a href={'/attractions/detail/' + modalData.attractionId} >더보기</a>
             </div>
             <p>{modalData.attractionAddress}</p>
             <div>
               <div><BsFillChatLeftFill size="13"></BsFillChatLeftFill></div>
               <p>{modalData && modalData.numOfPosts}개의 리뷰</p>
             </div>
-            <div>#야경 #야경이 아름다운 곳 </div>
+            <div>{tags[(modalData.attractionId % tags.length)]} {tags[((modalData.attractionId -1) % tags.length)]} </div>
             <span onClick={()=>setDetailModal(false)}>{'<<<'}</span>
           </PlaceDetailModalHeader>
           <PlaceDetailModalMain>
@@ -407,7 +428,9 @@ const Map = () => {
                   </>
                   )
                 })
-              : <div>등록된 포토리뷰가 없습니다</div>}
+              : <PostNone>
+                <div><GiTalk size="19"></GiTalk></div>
+                등록된 포토리뷰가 없습니다.</PostNone>}
             </PostImgContainer>
           </PlaceDetailModalMain>
         </PlaceDetailModal> 
@@ -422,6 +445,9 @@ const Map = () => {
           regionFilter = {regionFilter} 
           component = "map" 
           dataset = {wholeData}
+          modalData = {modalData}
+          filterOrPosition = {filterOrPosition}
+          setFilterOrPosition={setFilterOrPosition}
           ></KakaoMap> 
           :
 
@@ -434,6 +460,9 @@ const Map = () => {
           regionFilter = {regionFilter} 
           component = "map"
           dataset = {wholeData}
+          modalData = {modalData}
+          filterOrPosition = {filterOrPosition}
+          setFilterOrPosition={setFilterOrPosition}
           ></KakaoMap>
         }
     </Container>

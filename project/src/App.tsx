@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import "./App.css";
-import Main from "./Main";
+import Main from "./pages/Main";
 import LoginSign from "./pages/LoginSign";
 import Place from "./pages/Place";
 import Post from "./pages/Post";
@@ -15,9 +15,8 @@ import EditPost from "./pages/EditPost ";
 import Oauth from "./pages/Oauth"
 
 function App() {
-
-  if(localStorage.getItem("loginStatus") === null){
-    localStorage.setItem("loginStatus", "false")
+  if (localStorage.getItem("loginStatus") === null) {
+    localStorage.setItem("loginStatus", "false");
   }
 
   return (
@@ -27,7 +26,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
-            <Route path="/attractions" element={<Place />} />
+            <Route path="/attractions" element={<Place />}>
+              <Route path="search" element={<Place />} />
+            </Route>
             <Route path="/posts" element={<Post />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />

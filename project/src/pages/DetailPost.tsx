@@ -10,8 +10,9 @@ import axios from "../utils/axiosinstance";
 import Button from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { LoginState } from "../recoil/state";
+import { LoginState, MemberId } from "../recoil/state";
 import Modal from "../components/Modal";
+import { Header } from "../components/Header";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
@@ -36,6 +37,7 @@ const PostManageButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
+
 const DetailPostTitle = styled.div`
   width: 100%;
   display: flex;
@@ -211,38 +213,43 @@ export interface ArrayCommentType extends Array<CommentType> {}
 // const [postContents, setPostContents] = useState<
 //   ArrayPostCotentsType | PostContentsType
 // >([]);
+// const [postContents, setPostContents] = useState<
+//   ArrayPostCotentsType | PostContentsType
+// >([]);
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
-  const [postComments, setPostComments] = useState<ArrayCommentType>();
   const [comment, setComment] = useState("");
-  const [isLogin] = useRecoilState(LoginState);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [postContents, setPostContents] = useState<
+  //   ArrayPostCotentsType | PostContentsType
+  // >([]);
   const { id } = useParams();
-  const memberId = localStorage.getItem("memberId");
-
   const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`/posts/details/${id}`)
       .then((res) => setPost(res.data.data))
       .catch((err) => console.error(err));
-    setPostComments(post?.comments);
-  }, [post === undefined]);
+  }, []);
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
       .post(
-        `/comments/upload/${id}`,
+        `/comments/upload/1/1`,
         {
           commentContent: comment,
         },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ1OTAzMTEsImV4cCI6MTY3NDYxNTUxMX0.4RtI8-nDeiPOkSizHb84n6I8uv-4k2Mty9fSQbA_vweYAO4PInCQkDapISGzVTERnwEi2oWwCSTSoY-QpOdc_w",
+          },
+        }
       )
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   };
   let data: any[] = [];
-
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
     data.push({
       imageURL: post?.postImageUrls[i],
@@ -257,14 +264,8 @@ const DetailPost = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
-
-  const handleCommentWrite = () => {
-    if (!isLogin) setIsModalVisible(true);
-  };
-
   return (
     <DetailPostWrapper>
-      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <div>
         <PostManageButton>
           <MdModeEdit /> 수정
@@ -325,10 +326,6 @@ const DetailPost = () => {
           </div>
         </PostContentBottom>
       </PostContentContainer>
-      {postComments &&
-        postComments.map((comment, idx) => (
-          <PostComment key={idx} comment={comment} />
-        ))}
       <AddComment>
         <h3>댓글 남기기</h3>
         <div>
@@ -336,10 +333,8 @@ const DetailPost = () => {
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            onClick={handleCommentWrite}
           />
           <Button
-            type="violet"
             width="80px"
             height="35px"
             text="등록"

@@ -8,18 +8,22 @@ import { useNavigate } from "react-router-dom";
 
 const PlaceCardWrapper = styled.div<{ width: string; height: string }>`
   width: ${(props) => props.width};
+  height: 100%;
+  max-width: 330px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0, 0, 0.6, 1);
+  border-radius: var(--br-m);
+  box-shadow: 0px 0px 8px rgb(0 0 0 / 8%);
   img {
-    height: ${(props) => props.height};
+    aspect-ratio: 16/9;
+    min-height: 80%;
     border-top-left-radius: var(--br-s);
     border-top-right-radius: var(--br-s);
     cursor: pointer;
   }
   :hover {
-    box-shadow: 0px 0px 15px 1px rgba(173, 173, 173, 0.2);
+    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.05);
     border-radius: var(--br-m);
     transform: translateY(-2px);
   }
@@ -29,6 +33,7 @@ const PlaceCardInfoContainer = styled.div`
   background-color: white;
   padding: 0 15px;
   min-height: 60px;
+  height: 20%;
   border-bottom-left-radius: var(--br-m);
   border-bottom-right-radius: var(--br-m);
 
@@ -36,16 +41,16 @@ const PlaceCardInfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 3px;
     font-weight: var(--fw-bold);
-
+    color: var(--black-900);
     div:nth-child(1) {
       font-size: var(--font-sm);
       cursor: pointer;
     }
 
     div {
-      padding-bottom: 3px;
+      padding: 6px 0 3px 0;
     }
     span {
       display: flex;
@@ -54,9 +59,10 @@ const PlaceCardInfoContainer = styled.div`
       font-size: var(--font-sm);
 
       svg {
-        width: 17px;
-        height: 17px;
-        padding: 0 3px;
+        width: 12px;
+        height: 12px;
+        margin: 0 6px 0 6px;
+        color: var(--black-700);
       }
     }
 
@@ -64,9 +70,9 @@ const PlaceCardInfoContainer = styled.div`
       color: var(--black-800);
       svg {
         color: var(--pink-heart);
-        width: 21px;
-        height: 21px;
-        padding: 0 3px;
+        width: 15px;
+        height: 15px;
+        margin: 0 6px 0 6px;
       }
     }
   }
@@ -80,30 +86,19 @@ const PlaceCardInfoContainer = styled.div`
 
 const PlaceCardComponent = ({
   placesData,
-  limit,
-  curPage = 1,
   width,
   height,
 }: {
   placesData: ArrayPlaceType;
-  limit: number;
-  curPage?: number;
   width: string;
   height: string;
 }) => {
-  const indexOfLastPost = curPage * limit;
-  const indexOfFirstPost = indexOfLastPost - limit;
-  const currentPlacesData = placesData.slice(indexOfFirstPost, indexOfLastPost);
   const navigate = useNavigate();
   return (
     <>
-      {currentPlacesData &&
-        currentPlacesData.map((place) => (
-          <PlaceCardWrapper
-            key={place.attractionId}
-            width={width}
-            height={height}
-          >
+      {placesData &&
+        placesData.map((place, index) => (
+          <PlaceCardWrapper key={place.attractionId} width={width}>
             <img
               alt={place.attractionName}
               src={place.fixedImage}

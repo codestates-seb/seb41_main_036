@@ -215,11 +215,15 @@ const Profile = styled.div`
     object-fit: cover;
   }
 `;
-const HeaderWrapper = styled.header<{ isVisible: boolean }>`
-  background-color: white;
+const HeaderWrapper = styled.header<{
+  isVisible: boolean;
+  headerColor?: string;
+}>`
+  background-color: ${(props) =>
+    props.headerColor ? props.headerColor : "white"};
   flex-direction: column;
   position: sticky;
-  z-index: var(--zi-five);
+  z-index: var(--zi-four);
   top: ${(props) => (props.isVisible ? "0" : "-104px")};
   display: flex;
   transition: all 0.7s cubic-bezier(0.3, 1, 0.65, 1);

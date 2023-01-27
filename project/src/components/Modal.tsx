@@ -1,7 +1,8 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FcInfo } from 'react-icons/fc';
-import '../index.css';
+import styled from "styled-components";
+import { FcInfo } from "react-icons/fc";
+import "../index.css";
+import { Dispatch, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -10,6 +11,7 @@ const ModalBackground = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(126, 133, 137, 0.8);
+  z-index: 1000;
 `;
 const Container = styled.div`
   width: 380px;
@@ -26,38 +28,35 @@ const Container = styled.div`
 `;
 
 const ContainerInfo = styled.div`
-    width:100%;
-    height: 110px;
-    display: flex;
-    background-color: #F9FAFB;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    >div:nth-child(1){
-      margin: 20px 0 10px 20px;
-    }
-    >div:nth-child(2){
-      padding: 13px;
-      margin-top: 10px;
-    }
-    & h3{
-      font-size: 15px;
-      color:  var(--black-900);
-    }
-    & p{
-      margin-top: 10px;
-      font-size: 13px;
-      display: block;
-      color: var(--black-700);
-      font-weight: 600;
-    }
-`
+  width: 100%;
+  height: 110px;
+  display: flex;
+  background-color: #f9fafb;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  > div:nth-child(1) {
+    margin: 20px 0 10px 20px;
+  }
+  > div:nth-child(2) {
+    padding: 5px 15px;
+    margin-top: 10px;
+  }
+
+  & p {
+    margin-top: 10px;
+    font-size: 13px;
+    display: block;
+    color: var(--black-700);
+    font-weight: 600;
+  }
+`;
 
 const ContainerButton = styled.div`
   height: 70px;
   background-color: #e9e9e9;
   border-bottom-left-radius: 9px;
   border-bottom-right-radius: 9px;
-  >button{
+  > button {
     font-weight: 600;
     background-color: white;
     cursor: pointer;
@@ -67,16 +66,15 @@ const ContainerButton = styled.div`
     border: 1px solid var(--black-600);
     border-radius: 3px;
     margin-right: 5px;
-    :nth-child(1){
+    :nth-child(1) {
       margin-left: 250px;
     }
-    :hover{
-      background-color: #3F8EF1;
-      color:white;
+    :hover {
+      background-color: #3f8ef1;
+      color: white;
     }
   }
-`
-
+`;
 
 const Modal = ({setIsModalVisible}:any ):JSX.Element => {
   return (

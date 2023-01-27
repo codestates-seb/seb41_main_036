@@ -12,6 +12,8 @@ axios.interceptors.request.use(
     console.log("리퀘인")
     // return originalRequest;
     return config;
+
+
   },
   (error) => {
     console.log("request error", error);
