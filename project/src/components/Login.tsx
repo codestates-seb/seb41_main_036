@@ -185,6 +185,7 @@ const Login = () => {
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
+  const [memberIddata, setMemberId] = useRecoilState(memberId);
 
   const navigate = useNavigate();
 
@@ -270,7 +271,6 @@ const Login = () => {
         alert("회원이 아닙니다.");
       });
   };
-
   const onClickSignin = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -281,19 +281,23 @@ const Login = () => {
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
-        .post(process.env.REACT_APP_DB_HOST + "/signup", {
-          email: signemail,
-          password: signpassword,
-          phoneNumber: phonenumber,
-          address: address,
-          username: username,
-        },{
-            withCredentials:true,
-        },)
+        .post(
+          process.env.REACT_APP_DB_HOST + "/signup",
+          {
+            email: signemail,
+            password: signpassword,
+            phoneNumber: phonenumber,
+            address: address,
+            username: username,
+          },
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
-            console.log(res);
+          console.log(res);
           if (res.status === 201) {
-            console.log("회원가입 성공")
+            console.log("회원가입 성공");
             navigate("/login");
           }
         })

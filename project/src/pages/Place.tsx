@@ -109,7 +109,7 @@ const Place = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`/attractions?page=1&size=100`)
+      .get(`/attractions?page=1&size=102`)
       .then((res) => {
         setIsLoading(false);
         setPlacesData(res.data.data);
