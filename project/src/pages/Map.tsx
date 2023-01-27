@@ -494,7 +494,7 @@ const Map = () => {
         ) : null}
         {detailModal ? (
           <KakaoMap
-            width="100%"
+            width="71%"
             height="94vh"
             dataList={regionList}
             position="absolute"
