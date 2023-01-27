@@ -26,19 +26,6 @@ public class TokenController {
     private final MemberService memberService;
 
 
-//    @GetMapping("/oauth2")
-//    public ResponseEntity<?> getOauth2Token() {
-//
-//        RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
-//        RenewTokenDto renewTokenDto =
-//                builder.memberId(member.getMemberId())
-//                        .email(member.getEmail())
-//                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles()))
-//                        .build();
-//
-//        return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
-//    }
-
     @GetMapping("/token/refresh/{member-id}")
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {

@@ -44,48 +44,59 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                                         Authentication authentication) throws IOException, ServletException {
 
         Member member = memberService.findMemberByOauth2Id(authentication.getName());
-        String accessToken = jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles());
-        String refreshToken = jwtGenerator.generateRefreshToken(member.getEmail());
+//        log.info("member ={}", member);
+//        String accessToken = BEARER_PREFIX + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles());
+//        log.info("accessToken ={}", accessToken);
+//        String refreshToken = jwtGenerator.generateRefreshToken(member.getMemberId().toString());
+//        log.info("refreshToken ={}", refreshToken);
+//        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+//        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
+//        response.setHeader("Set-Cookie", String.valueOf(cookie));
+//        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
+//        Gson gson = new Gson();
+//        LoginResponseDto of = LoginResponseDto.ofMember(member, BEARER_PREFIX + accessToken);
+//        String s = gson.toJson(new DataResponseDto<>(of));
+//        log.info("of ={}", of);
+//        log.info("s ={}", s);
+//        response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
 
-        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
-
-        Gson gson = new Gson();
-        LoginResponseDto of = LoginResponseDto.ofMember(member, BEARER_PREFIX + accessToken);
-        String s = gson.toJson(new DataResponseDto<>(of));
-        log.info("of ={}", of);
-        log.info("s ={}", s);
-        response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
-
-        redirect(request, response, member.getEmail(), member.getRoles());
+        redirect(request, response, member.getEmail(), member.getMemberId(),member.getRoles());
     }
 
     private void redirect(HttpServletRequest request,
                           HttpServletResponse response,
                           String username,
+                          Long memberId,
                           List<String> authorities) throws IOException {
 //
-//        String accessToken = jwtGenerator.generateAccessToken(username, authorities);
-//        String refreshToken = jwtGenerator.generateRefreshToken(username);
-        String uri = createURI(request).toString();
+        String accessToken = jwtGenerator.generateAccessToken(username, authorities);
+        String refreshToken = jwtGenerator.generateRefreshToken(username);
+        String uri = createURI(request, accessToken, memberId).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    private URI createURI(HttpServletRequest request) {
+    private URI createURI(HttpServletRequest request, String accessToken, Long memberId) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-//        queryParams.add("access_token", accessToken);
+        queryParams.add("accessToken", accessToken);
+        queryParams.add("id", memberId.toString());
 //        queryParams.add("refresh_token", refreshToken);
         String serverName = request.getServerName();
         log.info("serverName = {}", serverName);
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host(serverName)
-                .port(3000)
-//                .path("")
-//                .path("/token/oauth2")
-//                .queryParams(queryParams)
+                .host("localhost")
+                .port("3000")
+                .path("/oauth")
+//                .host("serverName") // 배포 후 사용
+//                .path("/oauth") // 배포 후 사용
+                .queryParams(queryParams)
                 .build()
                 .toUri();
 
+//        http://localhost:3000/oauth2/redirect/"+token
+        // 리다이렉트에는 바디를 확인 할 수 없음
+        // -> 컨트롤러를 활용
+        // -> 쿼리파람으로
     }
 }
