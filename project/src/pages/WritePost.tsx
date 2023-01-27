@@ -5,6 +5,7 @@ import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const Container = styled.div`
     font-size: 25px;
     color: var(--black-200);
     font-weight: var(--fw-bold);
+    background-color: #fcfcfc;
     &:focus {
       border-color: transparent;
     }
@@ -171,6 +173,10 @@ const Header = styled.div`
   > div:nth-child(2) {
     width: 55%;
     background-color: #f0f0f0;
+    padding: 20px;
+    text-align: right;
+    font-size: 20px;
+    cursor: pointer;
   }
 `;
 const WritePost = () => {
@@ -181,6 +187,7 @@ const WritePost = () => {
   const [tag, setTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [imgFile, setImgFile] = useState<any>();
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
@@ -281,7 +288,9 @@ const WritePost = () => {
         <div>
           <BsDot color="#6255F8" />새 포스트
         </div>
-        <div></div>
+        <div onClick={() => navigate(-1)}>
+          <IoArrowBackSharp />
+        </div>
       </Header>
       <Container>
         <form>
@@ -328,6 +337,8 @@ const WritePost = () => {
               setContent={setContent}
               content={content}
               imgFiles={imgFiles}
+              imgFile={imgFile}
+              setImgFile={setImgFile}
             />
           ) : null}
         </form>
@@ -365,7 +376,7 @@ const WritePost = () => {
   );
 };
 
-const ModalContainer = styled.form`
+const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -441,6 +452,18 @@ const AddButton = styled.button`
   width: 30px;
   height: 30px;
 `;
+
+const SelectImageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > img {
+    width: 200px;
+    height: 200px;
+  }
+`;
 const Modal = ({
   setImgFiles,
   previewText,
@@ -453,6 +476,8 @@ const Modal = ({
   setContent,
   content,
   imgFiles,
+  imgFile,
+  setImgFile,
 }: {
   setImgFiles: Dispatch<SetStateAction<File[]>>;
   previewText: string;
@@ -465,29 +490,32 @@ const Modal = ({
   setContent: Dispatch<SetStateAction<string[]>>;
   content: string[];
   imgFiles: File[];
+  imgFile: File;
+  setImgFile: Dispatch<SetStateAction<File>>;
 }) => {
   const previewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
+    let file = e.target.files![0];
     const sizeCheck = 2 * 1024 * 1024;
     if (file && file.size > sizeCheck) {
       alert("2MB 이하의 크기의 파일을 선택해주세요.");
     } else {
       setImageUrl(URL.createObjectURL(file));
-      setImgFiles([...imgFiles, file]);
+      setImgFile(file);
     }
   };
 
+  console.log(imgFile);
+  console.log(imgFiles);
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
     if (imageUrl === "") alert("이미지를 등록해주세요.");
-    if (previewText === "") {
-      alert("설명을 등록해주세요.");
-    } else {
+    if (previewText === "") alert("설명을 등록해주세요.");
+    if (imageUrl && previewText) {
       setPreviewText("");
       setPreviewList([...previewList, previews]);
       setContent([...content, previewText]);
-      imgRef.current!.value = "";
+      setImgFiles([...imgFiles, imgFile]);
     }
   };
   const handleFileUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -496,19 +524,32 @@ const Modal = ({
   };
 
   return (
-    <ModalContainer>
-      <input type="file" accept="image/*" ref={imgRef} onChange={previewImg} />
-      <button onClick={(e) => handleFileUpload(e)}>
-        <span>이미지 업로드</span>
-        <UploadIcon className="upload-icon" />
-      </button>
-      <textarea
-        value={previewText}
-        onChange={(e) => setPreviewText(e.target.value)}
-        placeholder="사진에 대해 설명해주세요!"
-      />
-      <AddButton onClick={(e) => addPreview(e)}>추가하기</AddButton>
-    </ModalContainer>
+    <>
+      {imageUrl && (
+        <SelectImageContainer>
+          선택한 이미지
+          <img src={imageUrl} alt="preview" />
+        </SelectImageContainer>
+      )}
+      <ModalContainer>
+        <input
+          type="file"
+          accept="image/*"
+          ref={imgRef}
+          onChange={previewImg}
+        />
+        <button onClick={(e) => handleFileUpload(e)}>
+          <span>이미지 업로드</span>
+          <UploadIcon className="upload-icon" />
+        </button>
+        <textarea
+          value={previewText}
+          onChange={(e) => setPreviewText(e.target.value)}
+          placeholder="사진에 대해 설명해주세요!"
+        />
+        <AddButton onClick={(e) => addPreview(e)}>추가하기</AddButton>
+      </ModalContainer>
+    </>
   );
 };
 
