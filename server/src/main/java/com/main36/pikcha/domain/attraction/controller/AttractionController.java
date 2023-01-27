@@ -127,8 +127,8 @@ public class AttractionController {
 
     // 4. 찾는 '구' 리스트를 받아 명소 Id 기준으로 명소 여러개의 정보 요청을 처리하는 핸들러
     // 반환하는 정보 : 명소 정보(id, 이름, 이미지 주소), 좋아요 수, 즐겨찾기 수(아직 구현안됨)
-    @PostMapping(value = {"/filter","/filter/{member-id}"})
-    public ResponseEntity<MultiResponseDto<?>> getFilteredAttractions(@PathVariable("member-id") Long memberId,
+    @PostMapping(value = {"/filter", "/filter/{member-id}"})
+    public ResponseEntity<MultiResponseDto<?>> getFilteredAttractions(@PathVariable("member-id") Optional<Long> memberId,
                                                                       @Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                                       @Positive @RequestParam(required = false, defaultValue = "9") int size,
                                                                       @RequestParam(required = false, defaultValue = "newest") String sort,
@@ -146,28 +146,27 @@ public class AttractionController {
         }
         List<Attraction> attractions = new ArrayList<>();
         Page<Attraction> attractionPage;
-        if(filterDto.getProvinces().size() == 0 ) {
+        if (filterDto.getProvinces().size() == 0) {
             attractionPage = attractionService.findAllProvincesAttractions(page - 1, size, sort);
-        }else{
+        } else {
             attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
         }
         attractions = attractionPage.getContent();
-        if(memberId.equals(null)) {
+        if (memberId.isEmpty()) {
             return new ResponseEntity<>(new MultiResponseDto<>(
                     guestMapping(attractions), attractionPage), HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(new MultiResponseDto<>(
-                    loginMapping(attractions, memberId), attractionPage), HttpStatus.OK);
+                    loginMapping(attractions, memberId.get()), attractionPage), HttpStatus.OK);
         }
     }
 
     // 지도에 지역구로 명소 표시 :  명소의 id, 이름, 주소, 사진url
     @PostMapping("/maps")
     public ResponseEntity<MultiResponseDto<?>> getMapsAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
-                                                                      @Positive @RequestParam(required = false, defaultValue = "100") int size,
-                                                                      @RequestParam(required = false, defaultValue = "newest") String sort,
-                                                                      @RequestBody ProvinceFilterDto filterDto) {
+                                                                  @Positive @RequestParam(required = false, defaultValue = "100") int size,
+                                                                  @RequestParam(required = false, defaultValue = "newest") String sort,
+                                                                  @RequestBody ProvinceFilterDto filterDto) {
         switch (sort) {
             case "newest":
                 sort = "attractionId";
@@ -181,9 +180,9 @@ public class AttractionController {
         }
         List<Attraction> attractions;
         Page<Attraction> attractionPage;
-        if(filterDto.getProvinces().size() == 0 ) {
+        if (filterDto.getProvinces().size() == 0) {
             attractionPage = attractionService.findAllProvincesAttractions(page - 1, size, sort);
-        }else{
+        } else {
             attractionPage = attractionService.findFilteredAttractions(filterDto.getProvinces(), page - 1, size, sort);
         }
         attractions = attractionPage.getContent();
@@ -200,11 +199,10 @@ public class AttractionController {
         log.info("memberId ={}", memberId);
         Page<Attraction> attractionPage = attractionService.findAttractions(page - 1, size);
         List<Attraction> attractions = attractionPage.getContent();
-        if(memberId.isEmpty()) {
+        if (memberId.isEmpty()) {
             return new ResponseEntity<>(new MultiResponseDto<>(
                     guestMapping(attractions), attractionPage), HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(new MultiResponseDto<>(
                     loginMapping(attractions, memberId.get()), attractionPage), HttpStatus.OK);
         }
@@ -212,13 +210,13 @@ public class AttractionController {
     }
 
     // + 명소 이름 검색 핸들러
-    @PostMapping(value = {"/search","/search/{member-id}"})
+    @PostMapping(value = {"/search", "/search/{member-id}"})
     public ResponseEntity<MultiResponseDto<?>> getSearchedAttractions(@PathVariable("member-id") Optional<Long> memberId,
                                                                       @Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                                       @Positive @RequestParam(required = false, defaultValue = "9") int size,
                                                                       @RequestParam(required = false, defaultValue = "newest") String sort,
                                                                       @RequestParam("keyword") String keyword,
-                                                          @RequestBody ProvinceFilterDto filterDto) {
+                                                                      @RequestBody ProvinceFilterDto filterDto) {
         switch (sort) {
             case "newest":
                 sort = "attractionId";
@@ -232,17 +230,16 @@ public class AttractionController {
         }
         List<Attraction> attractions;
         Page<Attraction> attractionPage;
-        if(filterDto.getProvinces().size() == 0 ) {
+        if (filterDto.getProvinces().size() == 0) {
             attractionPage = attractionService.findAllSearchedAttractions(keyword, page - 1, size, sort);
-        }else{
-            attractionPage = attractionService.findFilteredSearchedAttractions(filterDto.getProvinces(), keyword ,page - 1, size, sort);
+        } else {
+            attractionPage = attractionService.findFilteredSearchedAttractions(filterDto.getProvinces(), keyword, page - 1, size, sort);
         }
         attractions = attractionPage.getContent();
-        if(memberId.isEmpty()) {
+        if (memberId.isEmpty()) {
             return new ResponseEntity<>(new MultiResponseDto<>(
                     guestMapping(attractions), attractionPage), HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(new MultiResponseDto<>(
                     loginMapping(attractions, memberId.get()), attractionPage), HttpStatus.OK);
         }
@@ -334,7 +331,7 @@ public class AttractionController {
 
     private List<AttractionResponseDto> loginMapping(List<Attraction> attractionList, long memberId) {
         return attractionList.stream()
-                .map(attraction-> AttractionResponseDto.builder()
+                .map(attraction -> AttractionResponseDto.builder()
                         .attractionId(attraction.getAttractionId())
                         .attractionName(attraction.getAttractionName())
                         .fixedImage(attraction.getFixedImage())
@@ -349,7 +346,7 @@ public class AttractionController {
 
     private List<AttractionResponseDto> guestMapping(List<Attraction> attractionList) {
         return attractionList.stream()
-                .map(attraction-> AttractionResponseDto.builder()
+                .map(attraction -> AttractionResponseDto.builder()
                         .attractionId(attraction.getAttractionId())
                         .attractionName(attraction.getAttractionName())
                         .fixedImage(attraction.getFixedImage())
