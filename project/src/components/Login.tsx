@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
 import Axios from "axios";
-import axios from "../utils/axiosinstance"
+import axios from "../utils/axiosinstance";
 import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -185,7 +185,6 @@ const Login = () => {
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-  const [memberIddata, setMemberId] = useRecoilState(memberId);
 
   const navigate = useNavigate();
 
@@ -244,7 +243,7 @@ const Login = () => {
     e.preventDefault();
     if (loginemailErr || loginpasswordErr) {
       alert("로그인 양식을 지켜주세요.");
-      return 
+      return;
     }
 
     return axios
@@ -253,16 +252,16 @@ const Login = () => {
         password: loginpassword,
       })
       .then((res) => {
-        const {memberId, accessToken} = res.data.data;
+        const { memberId, accessToken } = res.data.data;
         if (res.status === 200) {
-        console.log("로그인성공");
-        setIslogin(true);
-        setAuth(accessToken);
-        setLoggedUser(loginemail);
-        localStorage.setItem("loginStatus", "true ")
-          localStorage.setItem("Authorization", `${accessToken}`)
-          localStorage.setItem("memberId",memberId)
-          axios.defaults.headers.common["Authorization"] = accessToken
+          console.log("로그인성공");
+          setIslogin(true);
+          setAuth(accessToken);
+          setLoggedUser(loginemail);
+          localStorage.setItem("loginStatus", "true ");
+          localStorage.setItem("Authorization", `${accessToken}`);
+          localStorage.setItem("memberId", memberId);
+          axios.defaults.headers.common["Authorization"] = accessToken;
           navigate("/");
         }
       })
@@ -277,7 +276,7 @@ const Login = () => {
     e.preventDefault();
     if (signemailErr || signpasswordErr || phonenumberErr) {
       alert("회원가입 양식을 제대로 채워주세요.");
-      return 
+      return;
     }
     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
       return axios
@@ -324,8 +323,7 @@ const Login = () => {
   };
 
   const googlelogin = () => {
-    window.location.href =
-      "http://localhost:8090/oauth2/authorization/google";
+    window.location.href = "http://localhost:8090/oauth2/authorization/google";
     const query = window.location.search;
     console.log("이게무야2", query);
     const param = new URLSearchParams(query);
@@ -333,9 +331,8 @@ const Login = () => {
   };
 
   const kakaologin = () => {
-    window.location.href =
-    "http://localhost:8090/oauth2/authorization/kakao"
-        const query = window.location.search;
+    window.location.href = "http://localhost:8090/oauth2/authorization/kakao";
+    const query = window.location.search;
     console.log("이게무야2", query);
     const param = new URLSearchParams(query);
     console.log(param);
@@ -361,7 +358,7 @@ const Login = () => {
           <CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
         </>
       )}
-      
+
       <Logincontainer overlay={overlays}>
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
@@ -370,11 +367,7 @@ const Login = () => {
         <button onClick={kakaologin}>카카</button>
         <button onClick={googlelogin}>구글</button>
 
-
-
         <GButton>G</GButton>
-
-
 
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
