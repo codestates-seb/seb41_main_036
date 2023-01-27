@@ -8,15 +8,6 @@ declare global {
   }
 }
 
-// 안내창 커스텀입니다. 
-let info = 
-`<div style="width:180px;height:90px;background-color:white;padding:5px 5px;border:none;border-radius:5px">
-  <h3 style="color:#6255F8; width:100%;height:30px;background-color:#faf7df;line-height:30px">광화문</h3>
-  <h3 style="font-size:13px;color:#393939;font-weight:400;padding:6px 0" > 주소 : 종로구 사직로 161</h3>
-  <a href="www.naver.com" style="font-size:13px;text-decoration-line:none;margin-left:130px">더보기</a>
-</div>`
-
-
   // 주소 더미 데이터
   var listData = [
     '종로구 사직로 161', 
@@ -33,7 +24,8 @@ interface Map {
   left:string,
   regionFilter:string,
   component:string,
-  dataset:any
+  dataset:any,
+  modalData:any
 }
 
 export interface DataList {
@@ -64,11 +56,10 @@ const MyPosition = styled.div`
 `
 
 
-const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset }:Map) =>{
+const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData }:Map) =>{
   const [filterOrPosition, setFilterOrPosition] = useState(false);
   // false 일때는 필터링, 
   // true일때는 내위치
-
 
   useEffect(()=>{
     const container = document.getElementById('map');// 지도를 담을 dom영역
@@ -83,44 +74,9 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     // 기본 주소 객체 생성 
     const map = new window.kakao.maps.Map(container,options);
     var geocoder = new window.kakao.maps.services.Geocoder();
-
-    console.log('이거 왜 안들어감?',dataset)
-
-    if (Array.isArray(dataList)){
-      // Map 컴포넌트에서 사용  --무조건 전체 목록 마커 넣어야함 
-
-      console.log('데이터 리스트 배열입니다. ');
-      console.log('받아온 데이터',dataList)
-
-      // 받아온 전체 데이터인지 확인 
-      console.log('마커용 데이터',dataset)
-
-       // 배열인 경우에는 무조건 마커를 다 찍음  - 이거 
-        // 그리고 누른 곳 장소 가져와서 그곳의 위치로 이동시킴. 
-
-
-        listData.forEach(function(addr,index){
-        geocoder.addressSearch(addr, function(result:any, status:any) {
-          // 정상적으로 검색이 완료됐으면 
-           if (status === window.kakao.maps.services.Status.OK) {
-              var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-              // 결과값으로 받은 위치를 마커로 표시합니다
-              var marker = new window.kakao.maps.Marker({
-                  map: map,
-                  position: coords
-              });
-  
-              // 인포 윈도우 설정
-              var infowindow = new window.kakao.maps.InfoWindow({
-                content: info,
-                disableAutoPan: false
-              });
-            infowindow.open(map, marker);
-              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-              map.setCenter(coords);
-          } 
-        });  
-      })
+    
+    // map 페이지에서 사용 
+    if (component === 'map'){
 
       if(filterOrPosition === true){
         // 내위치 받아오기 예제
@@ -139,14 +95,74 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
           } 
         }else { 
         console.log('주변 필터링 데이터 보여주기')
-        //console.log(d)
-        }
+        console.log('아이디',modalData.attractionId)
+                // 모달데이터를 클릭한 곳으로 위치를 이동시킵니다. 
+          geocoder.addressSearch(modalData.attractionAddress, function(result:any, status:any){
+            if (status === window.kakao.maps.services.Status.OK){
+              console.log('좌표 검색 완료',result[0].y, result[0].x)
+              var placePosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+              // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new window.kakao.maps.Marker({
+                    map: map,
+                    position:  placePosition,
+                });
     
+                // 인포 윈도우 설정
+                var infowindow = new window.kakao.maps.InfoWindow({
+                  content: 
+                    `<div 
+                      style="
+                        width:180px;
+                        height:110px;
+                        background-color:white;
+                        padding:5px 5px;
+                        border:none;
+                        position:relative;
+                        left:-1px;
+                        text-align:center;
+                        top:-1px;
+                        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+                        border-radius:2px">
+                    <h3 
+                      style="
+                      color:#6255F8; 
+                      width:100%;
+                      height:30px;
+                      background-color:#faf7df;
+                      line-height:30px">
+                      ${modalData.attractionName}
+                    </h3>
+                    <h3 style="
+                      font-size:12px;
+                      color:#515151;
+                      font-weight:500;
+                      padding:8px 0">
+                      ${modalData.attractionAddress}
+                      </h3>
+                    <a href="/attractions/detail/${modalData.attractionId}" 
+                      style="
+                        font-size:11px;
+                        text-decoration-line:none;
+                        font-weight:600;
+                        margin-left:130px">
+                      더보기
+                    </a>
+                  </div>`,
+                  disableAutoPan: false
+                });
+                
+                // 인포윈도우 표시
+                infowindow.open(map, marker);
 
-    }else{
-      // placedetail 컴포넌트에서 사용 -- 수정 금지
-      console.log('단일 데이터 값 입니다. ');
-      console.log(dataList)
+                //map.setCenter(coords);
+              map.panTo(placePosition);
+            }
+          })
+        }
+    }
+    
+    // placedetail 컴포넌트에서 사용 -- 수정 금지
+    if(component === 'place'){
       geocoder.addressSearch(dataList, function(result:any, status:any) {
          if (status === window.kakao.maps.services.Status.OK) {    
             var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
@@ -165,7 +181,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
-  },[filterOrPosition])
+  },[filterOrPosition,dataset=== undefined, modalData])
 
     //document.getElementsByClassName(class)
   
@@ -187,7 +203,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
           onClick={()=>{
             setFilterOrPosition(!filterOrPosition)
           }}>
-          {filterOrPosition ? "위치 검색 OFF": "내 주변 검색"}
+          {filterOrPosition ? "실시간 위치 OFF": "실시간 위치"}
         </MyPosition>
         : null}
     </div>

@@ -12,6 +12,7 @@ import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
+import Oauth from "./pages/Oauth"
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/posts/detail/:id" element={<DetailPost />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/edit/:id" element={<EditPost />} />
+            <Route path="/oauth" element={<Oauth />} />
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

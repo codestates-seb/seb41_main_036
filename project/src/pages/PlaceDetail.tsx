@@ -201,7 +201,7 @@ const dummyBookmarks = [10, 13, 20, 50, 60, 81, 90];
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
-  const [shareOpen, setShareOpen] = useState(false);
+  //const [shareOpen, setShareOpen] = useState(false);
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
@@ -398,7 +398,8 @@ const PlaceDetail = (): JSX.Element => {
               left="20%"
               regionFilter="null"
               component="place"
-              dataset=""
+              dataset = ''
+              modalData ='ex'
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>

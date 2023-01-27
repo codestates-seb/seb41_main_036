@@ -7,7 +7,6 @@ axios.interceptors.request.use(
   (config) => {
     // const accessToken = localStorage.getItem("Authorization");
     // axios.defaults.headers.common["Authorization"] = accessToken;
-
     return config;
   },
   (error) => {
@@ -27,7 +26,7 @@ axios.interceptors.response.use(
       response: { status },
     } = error;
     if (status === 400 && error.response.data.message === "Token Expired") {
-        const originalRequest = config;
+    const originalRequest = config;
         axios.defaults.headers.common["Authorization"] = null;
         const memberId = localStorage.getItem("memberId");
         const { data } = await axios.get(`/token/refresh/${memberId}`);
@@ -54,10 +53,6 @@ axios.interceptors.response.use(
       alert("로그인 시간 만료.")
       window.location.replace("/login")
     }
-    if(status === 403){
-
-    }
-
     console.log("response error", error);
     return Promise.reject(error);
   }
