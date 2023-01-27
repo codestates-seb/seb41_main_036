@@ -11,6 +11,7 @@ import Ranking from "./components/Ranking";
 import { Link } from "react-router-dom";
 import { Header } from "./components/Header";
 import HiddenHeader from "./components/Header/HiddenHeader";
+import Modal from "./components/Modal";
 
 const Body = styled.div`
   width: 83.5%;
