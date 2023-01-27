@@ -96,6 +96,10 @@ public class PostController {
         post.setHashTags(hashTagList);
         post.setPostContents(postContentList);
         post.setPostImages(postImageList);
+
+         // post.setPostImages(postImageList);
+        //  PostImages.setPost(post)
+
         post.setAttraction(attractionService.findAttraction(attractionId));
         post.setMember(loginUser);
         post.setComments(new ArrayList<>());

@@ -1,9 +1,14 @@
 package com.main36.pikcha.domain.member.dto;
 
+import com.main36.pikcha.domain.post.dto.PostDto;
+import com.main36.pikcha.domain.post.dto.PostResponseDto;
+import com.main36.pikcha.domain.save.dto.SaveResponseDto;
+import com.main36.pikcha.domain.save.entity.Save;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MemberResponseDto {
 
@@ -31,6 +36,9 @@ public class MemberResponseDto {
         private String email;
         private int totalMyPosts;
         private int totalMySaves;
+        private List<PostResponseDto.Profile> posts;
+        private List<SaveResponseDto> saves;
+        // TODO: save
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 

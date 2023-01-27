@@ -2,6 +2,7 @@ package com.main36.pikcha.domain.member.controller;
 
 
 import com.main36.pikcha.domain.member.dto.MemberDto;
+import com.main36.pikcha.domain.member.dto.MemberResponseDto;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.mapper.MemberMapper;
 import com.main36.pikcha.domain.member.service.MemberService;
@@ -61,8 +62,8 @@ public class MemberController {
 
     @LoginUser
     @GetMapping("/users/profile/{member-id}")
-    public ResponseEntity<DataResponseDto<?>> getMemberProfile(Member loginUser,
-                                                               @PathVariable("member-id") @Positive Long memberId) {
+    public ResponseEntity<DataResponseDto<MemberResponseDto.Profile>> getMemberProfile(Member loginUser,
+                                                                                       @PathVariable("member-id") @Positive Long memberId) {
         Member member = memberService.verifyLoginIdAndMemberId(loginUser.getMemberId(), memberId);
 
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToProfileHomeDto(member)),

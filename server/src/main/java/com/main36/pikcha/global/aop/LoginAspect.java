@@ -39,7 +39,7 @@ public class LoginAspect {
 
         return joinPoint.proceed(args);
 
-    }
+}
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUser)")
     public Object getUser(ProceedingJoinPoint joinPoint) throws Throwable {

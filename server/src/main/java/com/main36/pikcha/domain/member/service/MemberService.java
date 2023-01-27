@@ -91,7 +91,7 @@ public class MemberService {
         return findMember
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
-
+    @Transactional(readOnly = true)
     public Member findMemberByOauth2Id(String oauthId) {
         Optional<Member> byOauthId = memberRepository.findByOauthId(oauthId);
 
