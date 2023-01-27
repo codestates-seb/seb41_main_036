@@ -30,32 +30,25 @@ public class LoginAspect {
     private final MemberService memberService;
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUserEmail)")
-    public Object getUserEmail(ProceedingJoinPoint joinPoint) {
+    public Object getUserEmail(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         Object[] args = joinPoint.getArgs();
         String email = jwtParser.getLoginUserEmail(request);
         args[0] = email;
 
-        try {
-            return joinPoint.proceed(args);
-        } catch (Throwable e) {
-            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
-        }
+        return joinPoint.proceed(args);
+
     }
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUser)")
-    public Object getUser(ProceedingJoinPoint joinPoint) {
+    public Object getUser(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         Object[] args = joinPoint.getArgs();
         Member loginUser = memberService.getLoginMember(request);
         args[0] = loginUser;
 
-        try {
-            return joinPoint.proceed(args);
-        } catch (Throwable e) {
-            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
-        }
+        return joinPoint.proceed(args);
     }
 }

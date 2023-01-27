@@ -64,7 +64,7 @@ public class CommentController {
                                                            @RequestBody @Valid CommentDto.Patch commentPatchDto) {
         Comment comment = commentService.verifyClientId(loginUser.getMemberId(), commentId);
         comment.setCommentContent(commentPatchDto.getCommentContent());
-
+        commentService.updateComment(comment);
         CommentResponseDto commentResponseDto = mapper.commentToCommentResponseDto(comment);
 
         return ResponseEntity.ok(new DataResponseDto<>(commentResponseDto));

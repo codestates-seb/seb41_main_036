@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class AttractionMapsDetailResponseDto {
+    private Long attractionId;
     private String attractionName;
     private String attractionAddress;
     private String fixedImage;
@@ -21,7 +22,8 @@ public class AttractionMapsDetailResponseDto {
 
 
     @Builder
-    public AttractionMapsDetailResponseDto(String attractionName, String attractionAddress, String fixedImage, Long numOfPosts, Long likes, Long saves) {
+    public AttractionMapsDetailResponseDto(Long attractionId, String attractionName, String attractionAddress, String fixedImage, Long numOfPosts, Long likes, Long saves) {
+        this.attractionId = attractionId;
         this.attractionName = attractionName;
         this.attractionAddress = attractionAddress;
         this.fixedImage = fixedImage;
