@@ -10,10 +10,8 @@ import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
 import "../index.css";
 import axios from "axios";
-import PostCardComponent from "../components/PostCardComponent.tsx";
+import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-
-
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -254,7 +252,6 @@ const PlaceDetail = (): JSX.Element => {
     };
   }, [attractionData === undefined, postData === undefined]);
 
-
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -343,7 +340,6 @@ const PlaceDetail = (): JSX.Element => {
             {postData && (
               <PostCardComponent
                 posts={postData}
-                limit={8}
                 margin="0 12%"
                 width="22%"
               ></PostCardComponent>

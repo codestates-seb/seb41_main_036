@@ -5,11 +5,11 @@ const RankingWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 120px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   background-color: white;
 `;
 const MainRankingWrapper = styled.ul`
-  max-width: 785px;
+  max-width: 700px;
   width: 80%;
   height: 55px;
   border-radius: 50px;
@@ -39,16 +39,16 @@ const RankingItemWrapper = styled.div<{ startAnimation: boolean }>`
   flex: 1 1 auto;
   transition: ${(props) => (props.startAnimation ? "all 0.7s ease" : "none")};
   transform: ${(props) =>
-    props.startAnimation ? "translateY(-60px)" : "none"};
+    props.startAnimation ? "translateY(-62px)" : "none"};
 `;
 const RankingItem = styled.li`
-  transform: translateY(50px);
+  transform: translateY(52px);
   display: flex;
   margin-bottom: 40px;
 `;
 const RankingItemContent = styled.span<{
   currentRank?: boolean;
-  name?: boolean;
+  attractionName?: boolean;
   address?: boolean;
   rankOrder?: boolean;
 }>`
@@ -62,9 +62,11 @@ const RankingItemContent = styled.span<{
       font-size: var(--font-sm);
     `}
   ${(props) =>
-    props.name &&
+    props.attractionName &&
     css`
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-bold);
+      font-size: var(--font-md);
+      color: var(--black-900);
       padding-top: 1px;
       margin-right: 15px;
     `}
@@ -91,6 +93,11 @@ const RankingItemContent = styled.span<{
     width: 17px;
   }
 `;
+const CurrentTimeSpan = styled.span`
+  font-size: var(--font-xs);
+  color: var(--black-700);
+  margin-left: 20px;
+`;
 export {
   RankingWrapper,
   RankingItemWrapper,
@@ -98,4 +105,5 @@ export {
   RankingTitle,
   RankingItem,
   RankingItemContent,
+  CurrentTimeSpan,
 };

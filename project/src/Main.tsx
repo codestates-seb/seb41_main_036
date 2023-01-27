@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import FixedOnScrollUpHeader from "./components/Header/FixedOnScrollUpHeader";
 import { ArrayPlaceType } from "./pages/Place";
 import { ArrayPostType } from "./pages/Post";
-import PostCardComponent from "./components/PostCardComponent.tsx";
+import PostCardComponent from "./components/PostCardComponent";
 import PlaceCardComponent from "./components/PlaceCardComponent";
 import Carousel from "./components/Carousel";
 import Ranking from "./components/Ranking";
