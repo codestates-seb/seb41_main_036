@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
-import Axios from "axios";
 import axios from "../utils/axiosinstance";
 import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +94,7 @@ const Leftoverlay = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
-const GButton = styled.button`
+const OauthButton = styled.button`
   width: 50px;
   height: 50px;
   border: 0px;
@@ -105,6 +104,18 @@ const GButton = styled.button`
   font-size: 20px;
   &:hover {
     background-color: var(--purple-400);
+  }
+`;
+const OauthButton2 = styled.button`
+  width: 50px;
+  height: 50px;
+  border: 0px;
+  background-color: #FFE90A;
+  border-radius: 30px;
+  color: black;
+  font-size: 20px;
+  &:hover {
+    background-color: #FFD240;
   }
 `;
 const InputStyle = styled.input`
@@ -262,7 +273,7 @@ const Login = () => {
           localStorage.setItem("Authorization", `${accessToken}`);
           localStorage.setItem("memberId", memberId);
           axios.defaults.headers.common["Authorization"] = accessToken;
-          navigate("/");
+          navigate(-1);
         }
       })
       .catch((err) => {
@@ -297,7 +308,7 @@ const Login = () => {
           console.log(res);
           if (res.status === 201) {
             console.log("회원가입 성공");
-            navigate("/login");
+            window.location.replace("/login")
           }
         })
         .catch((err) => {
@@ -342,10 +353,11 @@ const Login = () => {
           로그인
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-
+{/* 
         <button onClick={kakaoLogin}>카카</button>
-        <button onClick={googleLogin}>구글</button>
-        <GButton>G</GButton>
+        <button onClick={googleLogin}>구글</button> */}
+        <OauthButton onClick={googleLogin} >G</OauthButton>
+        <OauthButton2 onClick={kakaoLogin} >K</OauthButton2>
 
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
@@ -394,10 +406,12 @@ const Login = () => {
       </Logincontainer>
       <Signincontainer overlay={overlays}>
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
-          회원가입
+          회원가입 
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <GButton>G</GButton>
+        <OauthButton onClick={googleLogin}>G</OauthButton>
+        <OauthButton2 onClick={kakaoLogin}>K</OauthButton2>
+
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 가입하기
         </TextStyle>
