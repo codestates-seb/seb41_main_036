@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { SearchForm, AttractionItemContent } from "./style";
 import useClickDetect from "../../hooks/useClickDetect";
-import { getfilteredAttractions } from "../../utils";
+import { getfilteredAttractions } from "../../utils/utils";
 import { useRecoilState } from "recoil";
 import HeaderVisibilityState from "../../recoil/HeaderState";
 import { AttractionsData } from "../../data/searchBarData";

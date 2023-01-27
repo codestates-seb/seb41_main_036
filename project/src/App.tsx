@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import "./App.css";
-import Main from "./Main";
+import Main from "./pages/Main";
 import LoginSign from "./pages/LoginSign";
 import Place from "./pages/Place";
 import Post from "./pages/Post";
@@ -14,9 +14,8 @@ import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
 
 function App() {
-
-  if(localStorage.getItem("loginStatus") === null){
-    localStorage.setItem("loginStatus", "false")
+  if (localStorage.getItem("loginStatus") === null) {
+    localStorage.setItem("loginStatus", "false");
   }
 
   return (
