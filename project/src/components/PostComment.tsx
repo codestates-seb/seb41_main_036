@@ -110,7 +110,7 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
               <span>{comment.createdAt}</span>
             </div>
           </div>
-          {memberId === comment.memberId ? (
+          {memberId === comment.memberId || memberId === 1 ? (
             <div>
               {isEdit ? (
                 <PostManageButton onClick={modifiedComment}>

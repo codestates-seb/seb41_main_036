@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { AiFillHeart, AiFillEye as EyeIcon } from "react-icons/ai";
 import { ArrayPostType } from "../pages/Post";
+import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div<{ margin: string }>`
   margin: ${(props) => props.margin};
@@ -8,6 +9,10 @@ const PostContainer = styled.div<{ margin: string }>`
   flex-wrap: wrap;
   gap: 25px 1.3%;
   width: 100%;
+
+  div:last-child {
+    cursor: pointer;
+  }
 `;
 
 const PostCard = styled.div<{ width: string }>`
@@ -36,6 +41,7 @@ const PostCard = styled.div<{ width: string }>`
       width: 100%;
       padding: 5px;
       object-fit: cover;
+      cursor: pointer;
     }
   }
   > div:nth-child(2) {
@@ -59,7 +65,6 @@ const PostCard = styled.div<{ width: string }>`
         object-fit: cover;
       }
       > div {
-      
         > div {
           color: #323232;
           font-weight: bold;
@@ -116,31 +121,38 @@ const PostCardComponent = ({
   margin: string;
   width: string;
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <PostContainer margin={margin}>
-        {posts.map((el: any) => {
+        {posts.map((post: any) => {
           return (
-            <PostCard key={el.postId} width={width}>
+            <PostCard key={post.postId} width={width}>
               <div>
-                <img src={el.picture}></img>
+                <img
+                  src={post.pictureUrl}
+                  onClick={() => navigate(`/posts/detail/${post.postId}`)}
+                  alt={post.attractionsTitle}
+                ></img>
               </div>
               <div>
                 <div>
-                  <img src={el.picture}></img>
+                  <img src={post.memberPicture}></img>
                   <div>
-                    <div>{el.username}</div>
-                    <span>{el.createdAt.slice(0, 10)}</span>
+                    <div>{post.username}</div>
+                    <span>{post.createdAt.slice(0, 10)}</span>
                   </div>
                 </div>
                 <div>
                   <EyeIcon className="eye-icon" />
-                  <p>{el.views}</p>
+                  <p>{post.views}</p>
                   <AiFillHeart className="heart-icon"></AiFillHeart>
-                  <p>{el.likes}</p>
+                  <p>{post.likes}</p>
                 </div>
               </div>
-              <div>{el.postTitle}</div>
+              <div onClick={() => navigate(`/posts/detail/${post.postId}`)}>
+                {post.postTitle}
+              </div>
             </PostCard>
           );
         })}

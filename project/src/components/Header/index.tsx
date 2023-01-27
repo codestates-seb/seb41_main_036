@@ -9,13 +9,10 @@ import {
   Profile,
 } from "./style";
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
+// import logo from "../../../data/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  LoginState,
-  AuthToken,
-  LoggedUser,
-} from "../../recoil/state";
+import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
 import axios from "axios";
 import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler } from "react";
@@ -33,10 +30,10 @@ const HeaderTopBar = () => {
   // const [refresh, setRefresh] = useRecoilState<string>(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
 
-  const localLogin = localStorage.getItem("loginStatus")
-  if(typeof localLogin === "string"){
-    setIslogin(JSON.parse(localLogin))
-    }
+  const localLogin = localStorage.getItem("loginStatus");
+  if (typeof localLogin === "string") {
+    setIslogin(JSON.parse(localLogin));
+  }
 
   const onClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -44,12 +41,12 @@ const HeaderTopBar = () => {
     e.preventDefault();
     setIslogin(false);
     setAuth("");
-    setLoggedUser("")
-    axios.defaults.headers.common["Authorization"] = null
-    localStorage.removeItem("Authorization")
-    localStorage.setItem("loginStatus", "false")
-    localStorage.removeItem("memberId")
-    navigate('/')
+    setLoggedUser("");
+    axios.defaults.headers.common["Authorization"] = null;
+    localStorage.removeItem("Authorization");
+    localStorage.setItem("loginStatus", "false");
+    localStorage.removeItem("memberId");
+    navigate("/");
   };
 
   return (
@@ -58,33 +55,32 @@ const HeaderTopBar = () => {
         {isLogin ? (
           <>
             <li>
-            <ButtonForm
-          width="70px"
-          height="1px"
-          text="마이페이지"
-          type="none"
-        ></ButtonForm>
+              <ButtonForm
+                width="70px"
+                height="1px"
+                text="마이페이지"
+                type="none"
+              ></ButtonForm>
             </li>
             <li>
-            <ButtonForm
-          width="50px"
-          height="1px"
-          text="로그아웃"
-          type="none"
-          onClick={onClickLogout}
-        ></ButtonForm>
+              <ButtonForm
+                width="50px"
+                height="1px"
+                text="로그아웃"
+                type="none"
+                onClick={onClickLogout}
+              ></ButtonForm>
             </li>
           </>
         ) : (
           <li>
             <ButtonForm
-          width="100px"
-          height="1px"
-          text="로그인 / 회원가입"
-          type="none"
-          onClick={()=>navigate('/login')}
-        ></ButtonForm>
-
+              width="100px"
+              height="1px"
+              text="로그인 / 회원가입"
+              type="none"
+              onClick={() => navigate("/login")}
+            ></ButtonForm>
           </li>
         )}
       </HeaderTopMenu>
@@ -107,8 +103,16 @@ const HeaderBodyBar = ({
   return (
     <HeaderBodyWrapper backgroundOn={backgroundOn}>
       <HeaderBody>
-        <a href="/">
-          <div style={{ width: "200px", height: "70px" }} />
+        <a href="/" style={{height: "70px",display:"flex",alignItems:"center"}}>
+          <img
+            src={process.env.PUBLIC_URL + "/logo.png"}
+            alt="logo"
+            style={{
+              width: "180px",
+              height: "30px",
+              backgroundSize: "cover",
+            }}
+          />
         </a>
         <HeaderBodyMenu>
           <li onClick={() => navigate("/attractions")}>명소</li>

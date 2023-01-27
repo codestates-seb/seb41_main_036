@@ -1,18 +1,10 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import { RiCloseLine } from "react-icons/ri";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -78,6 +70,11 @@ const SelectBox = styled.div`
   form > input {
     margin-right: 10px;
     accent-color: var(--purple-300);
+  }
+
+  label {
+    color: var(--black-700);
+    font-weight: var(--fw-bold);
   }
 `;
 
