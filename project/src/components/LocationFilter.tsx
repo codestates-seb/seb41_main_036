@@ -74,7 +74,7 @@ const SelectBox = styled.div`
 
   label {
     color: var(--black-700);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-medium);
   }
 `;
 

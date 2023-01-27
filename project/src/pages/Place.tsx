@@ -179,6 +179,7 @@ const Place = () => {
         <Header.HeaderTop />
         <Header.HeaderBody
           defaultValue={searchValue ? searchValue : undefined}
+          selectedMenu={0}
         />
       </Header>
       <PlaceWrapper>

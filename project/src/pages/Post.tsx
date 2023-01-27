@@ -130,9 +130,9 @@ const Post = () => {
   return (
     <>
       <div style={{ display: "fixed" }}>
-        <Header>
+        <Header headerColor="var(--grey-background)">
           <Header.HeaderTop />
-          <Header.HeaderBody />
+          <Header.HeaderBody selectedMenu={1} />
         </Header>
       </div>
       <PostWrapper>

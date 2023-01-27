@@ -54,6 +54,7 @@ body {
   --fw-bold: 700;
   --fw-medium: 500;
   --fw-reg: 400;
+  --grey-background: rgb(249, 249, 251);
 }
 
 li {
