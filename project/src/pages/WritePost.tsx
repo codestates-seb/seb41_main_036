@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import React, { useState, useRef, SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
 import ButtonForm from "../components/Button";
@@ -258,7 +258,7 @@ const WritePost = () => {
       formData.append("postContents", text);
     });
     axios
-      .post(`/posts/register/1/1`, formData, {
+      .post(`/posts/register/1`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -291,6 +291,7 @@ const WritePost = () => {
               placeholder="제목을 입력하세요"
             ></input>
             <ButtonForm
+              type="violet"
               width="100px"
               height="40px"
               text="이미지 등록"
@@ -331,6 +332,7 @@ const WritePost = () => {
           <div>
             <h2>{title}</h2>
             <ButtonForm
+              type="violet"
               onClick={(e) => handleSubmit(e)}
               width="100px"
               height="40px"
