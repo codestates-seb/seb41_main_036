@@ -55,4 +55,16 @@ public class PostResponseDto {
 
     }
 
+    @Data
+    @Builder
+    public static class Profile {
+
+        private Long postId;
+        private String postTitle;
+        private String pictureUrl;
+        private int views;
+        private int likes;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
 }

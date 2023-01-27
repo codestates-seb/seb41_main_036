@@ -1,12 +1,14 @@
 package com.main36.pikcha.domain.image.entity;
 
 import com.main36.pikcha.domain.post.entity.Post;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class PostImage {
@@ -19,4 +21,8 @@ public class PostImage {
 
     @Column(nullable = false)
     private String postImageUrl;
+
+//    @ManyToOne
+//    @JoinColumn(name = "post_id")
+//    private Post post;
 }
