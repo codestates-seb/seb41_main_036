@@ -250,6 +250,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                 position: coords
             });
             map.setCenter(coords);
+            //map.setCenter(latlng);
         } 
     });    
     }

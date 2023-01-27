@@ -5,8 +5,10 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(
   (config) => {
-    // const accessToken = localStorage.getItem("Authorization");
-    // axios.defaults.headers.common["Authorization"] = accessToken;
+    const originalRequest = config;     
+    const accessToken = localStorage.getItem("Authorization");     
+    axios.defaults.headers.common["Authorization"] = accessToken;     
+    console.log("리퀘인")     
     return config;
   },
   (error) => {
@@ -46,13 +48,13 @@ axios.interceptors.response.use(
       alert("로그인 시간 만료.")
       window.location.replace("/login")
     }
-    if (status === 500){
-      localStorage.setItem("loginStatus", "false")
-      localStorage.removeItem("memberId")
-      localStorage.removeItem("Authorization")
-      alert("로그인 시간 만료.")
-      window.location.replace("/login")
-    }
+    // if (status === 500){
+    //   localStorage.setItem("loginStatus", "false")
+    //   localStorage.removeItem("memberId")
+    //   localStorage.removeItem("Authorization")
+    //   alert("로그인 시간 만료.")
+    //   window.location.replace("/login")
+    // }
     console.log("response error", error);
     return Promise.reject(error);
   }

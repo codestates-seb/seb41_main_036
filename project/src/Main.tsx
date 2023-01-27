@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FixedOnScrollUpHeader from "./components/Header/FixedOnScrollUpHeader";
 import { ArrayPlaceType } from "./pages/Place";
 import { ArrayPostType } from "./pages/Post";
-import PostCardComponent from "./components/PostCardComponent.tsx";
+import PostCardComponent from "./components/PostCardComponent";
 import PlaceCardComponent from "./components/PlaceCardComponent";
 import Carousel from "./components/Carousel";
 import Ranking from "./components/Ranking";
@@ -125,114 +125,6 @@ function Main() {
 
 export default Main;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import axios from "./utils/axiosinstance"
 // import { useRecoilState } from "recoil";
 // import {
@@ -241,35 +133,29 @@ export default Main;
 //   LoggedUser,
 // } from "./recoil/state";
 
-
-
-
-
 // const [isLogin, setIslogin] = useRecoilState(LoginState);
 // const [auth, setAuth] = useRecoilState(AuthToken);
 // const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
 
 // const onClickBtn= () => {
 
 //   const memberId = localStorage.getItem("memberId")
 //   axios
-//   .post(`/comments/upload/1`, 
+//   .post(`/comments/upload/1`,
 //   {
 //     commentContent: "1분테스트 16",
 //   },{
-//     headers:{ 
+//     headers:{
 //       "Content-Type": "application/json",
 //     }
 //   }
 
 //   // .get(`token/refresh/${memberId}`
 
-
 //   )
 //   .then((res) => {
 
-//       console.log(res)  
+//       console.log(res)
 //       console.log("댓글등록")
 
 //   })
@@ -277,6 +163,4 @@ export default Main;
 
 // }
 
-
 // <button onClick={onClickBtn}>버튼버튼</button>
-
