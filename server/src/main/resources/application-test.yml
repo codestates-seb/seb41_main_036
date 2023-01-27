@@ -36,7 +36,7 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://pikcha36.o-r.kr/login/oauth2/code/kakao
+            redirect-uri: http://pikcha36.o-r.kr:8080/login/oauth2/code/kakao
             #            redirect-uri: http://localhost:8080
             authorization-grant-type: authorization_code
             client-authentication-method: POST
