@@ -2,6 +2,7 @@ package com.main36.pikcha.domain.attraction.mapper;
 
 import com.main36.pikcha.domain.attraction.dto.*;
 import com.main36.pikcha.domain.attraction.entity.Attraction;
+import com.main36.pikcha.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -23,7 +24,6 @@ public interface AttractionMapper {
                 .build();
     }
 
-    List<AttractionResponseDto> attractionsToAttractionResponseDtos(List<Attraction> attractions);
 
     List<AttractionMapsResponseDto> attractionsToAttractionMapsResponseDtos(List<Attraction> attractions);
 }

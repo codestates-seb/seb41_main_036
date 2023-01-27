@@ -24,10 +24,8 @@ public class Post extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-
     @Column(name = "post_title", nullable = false)
     private String postTitle;
-
 
     @ElementCollection
     @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
@@ -35,14 +33,12 @@ public class Post extends Auditable {
     @Column(name = "post_contents")
     private List<String> postContents = new ArrayList<>();
 
-
     @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private List<HashTag> hashTags = new ArrayList<>();
 
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
     private int views;
-
 
     @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
     private int likes;
@@ -55,7 +51,7 @@ public class Post extends Auditable {
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
