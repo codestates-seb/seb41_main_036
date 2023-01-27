@@ -11,7 +11,7 @@ import {
   lazy,
   Suspense,
 } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { SearchForm, AttractionItemContent } from "./style";
 import useClickDetect from "../../hooks/useClickDetect";
 import { getfilteredAttractions } from "../../utils";
@@ -31,6 +31,7 @@ interface SearchBarProps {
   defaultValue: string;
 }
 const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState(defaultValue);
   const [selected, setSelected] = useState(-1);
   const [isComposing, setIsComposing] = useState(false);
@@ -99,9 +100,12 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       setSelected((p) => (p + 1) % numOfitem);
     } else if (e.key === "ArrowUp" && selected > -1) {
       setSelected((p) => p - 1);
+
       if (selected === 0) setInputValue(searchValueRef.current);
       e.preventDefault();
-    } else if (e.key === "Enter" && selected > -1) {
+    } else if (e.key === "Enter" && trimmedSearchValue !== "") {
+      setIsVisible(false);
+      navigate(`/attractions/search?keyword=${inputValue.replace(/\s/g, "+")}`);
     }
   };
   const handleResetIconClick = (e: MouseEvent<SVGElement>) => {

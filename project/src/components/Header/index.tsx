@@ -107,18 +107,21 @@ interface HeaderMainProps {
   mouseOverHandler?: MouseEventHandler<HTMLElement>;
   mouseOutHandler?: MouseEventHandler<HTMLElement>;
   isVisible?: boolean;
+  headerColor?: string;
 }
 const HeaderMain = ({
   children,
   mouseOverHandler,
   mouseOutHandler,
   isVisible = true,
+  headerColor,
 }: HeaderMainProps) => {
   return (
     <HeaderWrapper
       onMouseEnter={mouseOverHandler}
       onMouseLeave={mouseOutHandler}
       isVisible={isVisible}
+      headerColor={headerColor}
     >
       {children}
     </HeaderWrapper>
