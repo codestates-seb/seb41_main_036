@@ -13,6 +13,8 @@ public class AttractionResponseDto {
     private String attractionName;
     private String fixedImage;
     private Long numOfPosts;
+    private Boolean isVoted;
+    private Boolean isSaved;
     private Long likes;
     private Long saves;
 //    private Long postNumber;

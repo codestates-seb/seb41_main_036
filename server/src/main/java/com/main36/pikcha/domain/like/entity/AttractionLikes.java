@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -18,7 +19,6 @@ public class AttractionLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attractionLikesId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
