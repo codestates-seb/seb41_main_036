@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   CarouselItemContainer,
   CarouselTextWrapper,
@@ -13,9 +14,9 @@ interface CarouselContentProps {
   data: {
     img: string;
     id: number;
+    attractionId: number | undefined;
     title: string;
     subtitle: string;
-    link: string;
     color: string;
     blur_hash: string;
     location: string;
@@ -28,14 +29,16 @@ const CarouselContent = memo(
     const {
       img: imgUrl,
       id,
+      attractionId,
       title,
       subtitle,
-      link,
       color,
       blur_hash,
       location,
     } = data;
-
+    const URL = attractionId
+      ? `/attractions/detail/${attractionId}`
+      : `/attractions`;
     const handleImgLoad = () => {
       setImgLoaded(true);
     };
@@ -61,10 +64,10 @@ const CarouselContent = memo(
           >
             <h2>{title}</h2>
             <h3>{subtitle}</h3>
-            <a href={link}>
+            <Link to={URL}>
               더 보러가기
               <RightArrowIcon className="right-arrow" />
-            </a>
+            </Link>
           </LeftCarouselTextWrapper>
           <RightCarouselTextWrapper
             isTransitionEnd={isTransitionEnd}

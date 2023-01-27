@@ -18,6 +18,12 @@ const DetailPostWrapper = styled.div`
   margin: 0 auto;
 `;
 
+const PostMangeButtnContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2em;
+`;
+
 const PostManageButton = styled.button`
   min-width: 30px;
   display: flex;
@@ -39,6 +45,7 @@ const DetailPostTitle = styled.div`
   > h2 {
     width: 50%;
     text-align: center;
+    font-size: var(--font-xxl);
   }
 `;
 
@@ -48,7 +55,12 @@ const DetailPostInfo = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 2em;
-  margin-bottom: 5em;
+  margin-bottom: 100px;
+  div:first-child {
+    display: flex;
+    align-items: center;
+    color: var(--black-800);
+  }
   > div:last-child {
     width: 100%;
     display: flex;
@@ -67,14 +79,29 @@ const PostContentContainer = styled.article`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  > div > div:first-child {
-    width: 1000px;
-  }
+  justify-content: center;
+  margin: 0 auto;
+  width: 70%;
+
   > div:nth-child(2) {
     margin-top: 30px;
   }
+
+  img {
+    width: 100%;
+    margin: 0 auto;
+  }
 `;
 
+const PostContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  > div:nth-child(2) {
+    margin: 5em 0;
+  }
+`;
 const TagsButton = styled.button`
   padding: 7px 10px;
   height: 30px;
@@ -260,7 +287,7 @@ const DetailPost = () => {
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .delete("/posts/delete/5/1")
+      .delete(`/posts/delete/${id}`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -268,7 +295,7 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-
+  console.log(post);
   return (
     <>
       <Header>
@@ -277,15 +304,15 @@ const DetailPost = () => {
       </Header>
       <DetailPostWrapper>
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
-        {post && post.postId === memberId ? (
-          <div>
+        {(post && post.postId === memberId) || memberId === 1 ? (
+          <PostMangeButtnContainer>
             <PostManageButton>
               <MdModeEdit /> 수정
             </PostManageButton>
-            <PostManageButton>
+            <PostManageButton onClick={deleteHandler}>
               <MdDelete /> 삭제
             </PostManageButton>
-          </div>
+          </PostMangeButtnContainer>
         ) : null}
         <DetailPostTitle>
           <h2>{post?.postTitle}</h2>
@@ -303,18 +330,20 @@ const DetailPost = () => {
               <RxDoubleArrowLeft />
               &nbsp; 이 명소 방문 리뷰 더보기
             </button>
-            <span>{post?.createdAt}</span>
+            <span>{post?.createdAt.slice(0, 10)}</span>
           </div>
         </DetailPostInfo>
         <PostContentContainer>
-          {data.map((el) => (
-            <div key={el.imageId}>
-              <div>
-                <img src={el.imageURL} alt="picture" />
+          <PostContentBox>
+            {data.map((el) => (
+              <div key={el.imageId}>
+                <div>
+                  <img src={el.imageURL} alt="picture" />
+                </div>
+                <div>{el.content}</div>
               </div>
-              <div>{el.content}</div>
-            </div>
-          ))}
+            ))}
+          </PostContentBox>
           <div>
             {post &&
               post?.postHashTags.map((tag, idx) => (

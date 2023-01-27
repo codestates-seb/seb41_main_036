@@ -11,5 +11,5 @@ li {
 .App {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: rgb(249, 249, 251);
 }

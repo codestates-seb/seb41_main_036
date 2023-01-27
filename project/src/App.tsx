@@ -12,7 +12,7 @@ import { RecoilRoot } from "recoil";
 import DetailPost from "./pages/DetailPost";
 import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
-import Oauth from "./pages/Oauth"
+import Oauth from "./pages/Oauth";
 
 function App() {
   if (localStorage.getItem("loginStatus") === null) {
@@ -26,7 +26,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
-            <Route path="/attractions" element={<Place />} />
+            <Route path="/attractions" element={<Place />}>
+              <Route path="search" element={<Place />} />
+            </Route>
             <Route path="/posts" element={<Post />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/map" element={<Map />} />

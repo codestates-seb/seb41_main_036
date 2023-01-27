@@ -7,6 +7,7 @@ import {
   RankingTitle,
   RankingItemWrapper,
   RankingItemContent,
+  CurrentTimeSpan,
 } from "./style";
 import rankingData from "../../data/RankingData";
 import { RxDoubleArrowUp as DoubleUpIcon } from "react-icons/rx";
@@ -15,12 +16,29 @@ import {
   TiArrowSortedDown as DownIcon,
 } from "react-icons/ti";
 import { BsDash as DashIcon } from "react-icons/bs";
+import axios from "axios";
+interface optionsType {
+  dateStyle: "medium";
+  timeStyle: "short";
+}
+const options: optionsType = {
+  dateStyle: "medium",
+  timeStyle: "short",
+};
 const Ranking = () => {
   const [currentAttraction, setCurrentAttraction] = useState(0);
   const [startAnimation, setStartAnimation] = useState(false);
   const timerIdRef = useRef<NodeJS.Timeout | null>(null);
   const newRankingData = [...rankingData, ...rankingData.slice(0, 1)];
+  const currentTime = new Intl.DateTimeFormat("ko", options).format(new Date());
   useEffect(() => {
+    // axios
+
+    //   .post(
+    //     `http://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=10&sort=likes`,
+    //     { provinces: [] }
+    //   )
+    //   .then((res) => console.log(res.data.data));
     timerIdRef.current = setInterval(() => {
       setStartAnimation(true);
       setTimeout(() => {
@@ -45,7 +63,9 @@ const Ranking = () => {
                 <RankingItemContent currentRank>
                   {el.currentRank}
                 </RankingItemContent>
-                <RankingItemContent name>{el.name}</RankingItemContent>
+                <RankingItemContent attractionName>
+                  {el.name}
+                </RankingItemContent>
                 <RankingItemContent address>{el.address}</RankingItemContent>
                 <RankingItemContent rankOrder>
                   <ArrowIconGenerator difference={el.rankOrder} />
@@ -54,6 +74,7 @@ const Ranking = () => {
             ))}
         </RankingItemWrapper>
       </MainRankingWrapper>
+      <CurrentTimeSpan>{`${currentTime} 기준`}</CurrentTimeSpan>
     </RankingWrapper>
   );
 };

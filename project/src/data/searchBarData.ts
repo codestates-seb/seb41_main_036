@@ -115,7 +115,7 @@ const AttractionsData: Array<AttractionsProps> = [
     address: "노원구 동일로 1238",
   },
   {
-    name: "서울시립 과학관",
+    name: "서울시립과학관",
     id: 23,
     address: "노원구 한글비석로 160 지하1층, 1~3층",
   },

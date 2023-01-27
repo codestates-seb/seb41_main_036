@@ -1,28 +1,31 @@
 import styled from "styled-components";
-import { BsEye } from "react-icons/bs";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiFillEye as EyeIcon } from "react-icons/ai";
 import { ArrayPostType } from "../pages/Post";
 import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div<{ margin: string }>`
-  margin-left: ${(props) => (props.margin === "0" ? "0" : props.margin)};
+  margin: ${(props) => props.margin};
   display: flex;
   flex-wrap: wrap;
+  gap: 25px 1.3%;
+  width: 100%;
+
+  div:last-child {
+    cursor: pointer;
+  }
 `;
 
 const PostCard = styled.div<{ width: string }>`
   width: ${(props) => props.width};
   height: 230px;
   background-color: #ffffff;
-  margin: 10px;
   display: flex;
   flex-direction: column;
   border-radius: var(--br-m);
-  transition: all 0.3s ease;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 5px 24px;
-
+  transition: all 0.3s cubic-bezier(0, 0, 0.6, 1);
+  box-shadow: 0px 0px 8px rgb(0 0 0 / 8%);
   :hover {
-    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.05);
     transform: translateY(-3px);
   }
 
@@ -32,11 +35,13 @@ const PostCard = styled.div<{ width: string }>`
     height: 150px;
 
     > img {
+      aspect-ratio: 4/3;
       border-top-left-radius: var(--br-m);
       border-top-right-radius: var(--br-m);
       width: 100%;
       padding: 5px;
-      background-image: cover;
+      object-fit: cover;
+      cursor: pointer;
     }
   }
   > div:nth-child(2) {
@@ -45,6 +50,7 @@ const PostCard = styled.div<{ width: string }>`
     clear: both;
     background-color: #ffffff;
     display: flex;
+    padding-top: 5px;
 
     > div:nth-child(1) {
       width: 80%;
@@ -52,13 +58,13 @@ const PostCard = styled.div<{ width: string }>`
       display: flex;
       > img {
         height: 40px;
+        width: 40px;
         background-image: cover;
         border-radius: 50%;
-        margin: 10px;
+        margin: 0 10px;
         object-fit: cover;
       }
       > div {
-        margin-top: 10px;
         > div {
           color: #323232;
           font-weight: bold;
@@ -72,12 +78,12 @@ const PostCard = styled.div<{ width: string }>`
     > div:nth-child(2) {
       display: flex;
       align-items: center;
-      margin-top: 10px;
       font-size: 13px;
-      color: grey;
-      padding-bottom: 21px;
+      color: var(--black-900);
+      padding: 0 10px 21px 0;
       > p {
-        margin: 0 15px 0 6px;
+        margin: 0 9px 0 6px;
+        font-weight: var(--fw-bold);
       }
     }
   }
@@ -85,61 +91,66 @@ const PostCard = styled.div<{ width: string }>`
     height: 20px;
     background-color: white;
     margin-left: 15px;
-    margin-top: 5px;
+    margin-top: 3px;
     color: grey;
-    font-weight: bold;
+    font-weight: var(--fw-medium);
     font-size: 14px;
+  }
+  /* ::after {
+    content: "";
+    flex-grow: 0;
+    width: 25%;
+  } */
+  svg.eye-icon {
+    width: 17px;
+    height: 17px;
+  }
+  svg.heart-icon {
+    width: 15px;
+    height: 15px;
+    color: var(--pink-heart);
   }
 `;
 
 const PostCardComponent = ({
   posts,
-  limit,
   margin,
   width,
-  curPage = 1,
 }: {
   posts: ArrayPostType;
-  limit: number;
   margin: string;
   width: string;
-  curPage?: number;
 }) => {
-  const indexOfLastPost = curPage * limit;
-  const indexOfFirstPost = indexOfLastPost - limit;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   const navigate = useNavigate();
-  console.log(currentPosts);
   return (
     <>
       <PostContainer margin={margin}>
-        {currentPosts.map((post: any) => {
+        {posts.map((post: any) => {
           return (
             <PostCard key={post.postId} width={width}>
               <div>
                 <img
                   src={post.pictureUrl}
                   onClick={() => navigate(`/posts/detail/${post.postId}`)}
+                  alt={post.attractionsTitle}
                 ></img>
               </div>
               <div>
                 <div>
-                  <img src={post.picture} alt=""/>
+                  <img src={post.memberPicture}></img>
                   <div>
                     <div>{post.username}</div>
                     <span>{post.createdAt.slice(0, 10)}</span>
                   </div>
                 </div>
                 <div>
-                  <BsEye></BsEye>
+                  <EyeIcon className="eye-icon" />
                   <p>{post.views}</p>
-                  <AiFillHeart></AiFillHeart>
+                  <AiFillHeart className="heart-icon"></AiFillHeart>
                   <p>{post.likes}</p>
                 </div>
               </div>
-              <div
-                onClick={() => navigate(`/posts/detail/${post.attractionId}`)}
-              >
+              <div onClick={() => navigate(`/posts/detail/${post.postId}`)}>
                 {post.postTitle}
               </div>
             </PostCard>

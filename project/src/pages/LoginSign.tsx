@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import Login from "./Login";
-import FixedOnScrollUpHeader from "../components/Header/HiddenHeader";
+import Login from "../components/Login";
 import { Header } from "../components/Header/index";
 
 const Body = styled.div`

@@ -308,35 +308,13 @@ const Login = () => {
     }
   };
 
-  const GoogleHandler = () => {
-    axios
-      // .post("/login/oauth2/code/google", {
-      //     username: loginemail,
-      //     password: loginpassword,
-      // })
-      .get("oauth2/authorization/google", {
-        // headers: {
-        //     "Content-Type" : "application/x-www-form-urlencoded"
-        // }
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+  const googleLogin = () => {
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
   };
-
-  const googlelogin = () => {
-    window.location.href = "http://localhost:8090/oauth2/authorization/google";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
-  };
-
-  const kakaologin = () => {
-    window.location.href = "http://localhost:8090/oauth2/authorization/kakao";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
+  const kakaoLogin = () => {
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
 
   return (
@@ -365,9 +343,9 @@ const Login = () => {
           로그인
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <button onClick={kakaologin}>카카</button>
-        <button onClick={googlelogin}>구글</button>
 
+        <button onClick={kakaoLogin}>카카</button>
+        <button onClick={googleLogin}>구글</button>
         <GButton>G</GButton>
 
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
