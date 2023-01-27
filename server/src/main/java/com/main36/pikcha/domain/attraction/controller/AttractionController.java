@@ -278,6 +278,7 @@ public class AttractionController {
         List<Post> postList = attraction.getPosts();
         AttractionMapsDetailResponseDto response
                 = AttractionMapsDetailResponseDto.builder()
+                .attractionId(attraction.getAttractionId())
                 .attractionName(attraction.getAttractionName())
                 .attractionAddress(attraction.getAttractionAddress())
                 .fixedImage(attraction.getFixedImage())

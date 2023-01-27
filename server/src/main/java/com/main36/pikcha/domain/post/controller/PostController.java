@@ -111,10 +111,12 @@ public class PostController {
 
     @LoginUser
     @PatchMapping("/edit/{post-id}")
-    public ResponseEntity patchPosts(PostDto.Patch patchDto,
-                                     Member loginUser,
-                                     @PathVariable("post-id") @Positive Long postId){
+    public ResponseEntity patchPosts(Member loginUser,
+                                     /*@PathVariable("member-id") @Positive Long memberId,*/
+                                     @PathVariable("post-id") @Positive Long postId,
+                                     PostDto.Patch patchDto){
         Post findPost = verifiedById(loginUser.getMemberId(), postId);
+//        Post findPost = verifiedById(memberId, postId);
 
         // 1. 포스트 제목 변경점 수정 (완료)
         if(patchDto.getPostTitle() != null){

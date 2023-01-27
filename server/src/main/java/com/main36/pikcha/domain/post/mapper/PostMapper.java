@@ -67,7 +67,7 @@ public interface PostMapper {
                             .memberId(post.getMember().getMemberId())
                             .username(post.getMember().getUsername())
                             .memberPicture(post.getMember().getPicture())
-                            .pictureUrl(post.getPostImages().get(0).getPostImageUrl())
+                            .pictureUrl(post.getPostImages().isEmpty() ? "" : post.getPostImages().get(0).getPostImageUrl())
                             .views(post.getViews())
                             .likes(post.getLikes())
                             .postTitle(post.getPostTitle())

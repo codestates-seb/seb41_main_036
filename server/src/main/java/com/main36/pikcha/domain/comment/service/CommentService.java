@@ -21,6 +21,8 @@ public class CommentService {
     public Comment createComment(Comment comment){
         return commentRepository.save(comment);
     }
+
+    public Comment updateComment(Comment comment){ return commentRepository.save(comment);}
     @Transactional(readOnly = true)
     public Comment findComment(long commentId){
         return findVerifiedComment(commentId);
