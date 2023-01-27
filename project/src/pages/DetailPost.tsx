@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
+import { FaRegCommentDots } from "react-icons/fa";
 import PostComment from "../components/PostComment";
-import Axios from "axios";
 import axios from "../utils/axiosinstance";
-
 import Button from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -17,12 +16,12 @@ import { Header } from "../components/Header";
 const DetailPostWrapper = styled.div`
   width: 83.5%;
   margin: 0 auto;
-  > div:first-child {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 20px;
-    padding-right: 20px;
-  }
+`;
+
+const PostMangeButtnContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2em;
 `;
 
 const PostManageButton = styled.button`
@@ -46,6 +45,7 @@ const DetailPostTitle = styled.div`
   > h2 {
     width: 50%;
     text-align: center;
+    font-size: var(--font-xxl);
   }
 `;
 
@@ -55,6 +55,12 @@ const DetailPostInfo = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 2em;
+  margin-bottom: 100px;
+  div:first-child {
+    display: flex;
+    align-items: center;
+    color: var(--black-800);
+  }
   > div:last-child {
     width: 100%;
     display: flex;
@@ -73,16 +79,29 @@ const PostContentContainer = styled.article`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  > div > div:first-child {
-    width: 1000px;
-    height: 550px;
-    margin: 0 auto;
-  }
+  justify-content: center;
+  margin: 0 auto;
+  width: 70%;
+
   > div:nth-child(2) {
     margin-top: 30px;
   }
+
+  img {
+    width: 100%;
+    margin: 0 auto;
+  }
 `;
 
+const PostContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  > div:nth-child(2) {
+    margin: 5em 0;
+  }
+`;
 const TagsButton = styled.button`
   padding: 7px 10px;
   height: 30px;
@@ -163,6 +182,16 @@ const AddComment = styled.form`
   }
 `;
 
+const EmptyCommentContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 2em 0;
+
+  svg {
+    margin-right: 1em;
+  }
+`;
+
 export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
@@ -213,16 +242,13 @@ export interface ArrayCommentType extends Array<CommentType> {}
 // const [postContents, setPostContents] = useState<
 //   ArrayPostCotentsType | PostContentsType
 // >([]);
-// const [postContents, setPostContents] = useState<
-//   ArrayPostCotentsType | PostContentsType
-// >([]);
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
+  const [postComments, setPostComments] = useState<ArrayCommentType>();
   const [comment, setComment] = useState("");
-  // const [postContents, setPostContents] = useState<
-  //   ArrayPostCotentsType | PostContentsType
-  // >([]);
+  const [isLogin] = useRecoilState(LoginState);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -230,23 +256,19 @@ const DetailPost = () => {
       .get(`/posts/details/${id}`)
       .then((res) => setPost(res.data.data))
       .catch((err) => console.error(err));
-  }, []);
+    setPostComments(post?.comments);
+  }, [post === undefined]);
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .post(
-        `/comments/upload/1/1`,
-        {
-          commentContent: comment,
-        },
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sImlkIjoyLCJzdWIiOiJ0ZXN0NDAwN0BnbWFpbC5jb20iLCJpYXQiOjE2NzQ1OTAzMTEsImV4cCI6MTY3NDYxNTUxMX0.4RtI8-nDeiPOkSizHb84n6I8uv-4k2Mty9fSQbA_vweYAO4PInCQkDapISGzVTERnwEi2oWwCSTSoY-QpOdc_w",
-          },
-        }
-      )
-      .then((res) => console.log(res))
+      .post(`/comments/upload/${id}`, {
+        commentContent: comment,
+      })
+      .then((res) => {
+        console.log(res);
+        setComment("");
+        window.location.reload();
+      })
       .catch((err) => console.error(err));
   };
   let data: any[] = [];
@@ -260,89 +282,122 @@ const DetailPost = () => {
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .delete("/posts/delete/5/1")
+      .delete(`/posts/delete/${id}`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+
+  const handleCommentWrite = () => {
+    if (!isLogin) setIsModalVisible(true);
+  };
+
   return (
-    <DetailPostWrapper>
-      <div>
-        <PostManageButton>
-          <MdModeEdit /> 수정
-        </PostManageButton>
-        <PostManageButton>
-          <MdDelete /> 삭제
-        </PostManageButton>
-      </div>
-      <DetailPostTitle>
-        <h2>{post?.postTitle}</h2>
-      </DetailPostTitle>
-      <DetailPostInfo>
-        <div>
-          <MdPlace /> &nbsp;{post?.attractionAddress}
-        </div>
-        <div>
-          <button
-            onClick={() =>
-              navigate(`/attractions/detail/${post?.attractionId}`)
-            }
-          >
-            <RxDoubleArrowLeft />
-            &nbsp; 이 명소 방문 리뷰 더보기
-          </button>
-          <span>{post?.createdAt}</span>
-        </div>
-      </DetailPostInfo>
-      <PostContentContainer>
-        {data.map((el) => (
-          <div key={el.imageId}>
-            <div>
-              <img src={el.imageURL} alt="picture" />
-            </div>
-            <div>{el.content}</div>
-          </div>
-        ))}
-        <div>
-          <TagsButton></TagsButton>
-        </div>
-        <PostContentBottom>
+    <>
+      <Header>
+        <Header.HeaderTop />
+        <Header.HeaderBody />
+      </Header>
+      <DetailPostWrapper>
+        {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+        {(post && post.postId === memberId) || memberId === 1 ? (
+          <PostMangeButtnContainer>
+            <PostManageButton>
+              <MdModeEdit /> 수정
+            </PostManageButton>
+            <PostManageButton onClick={deleteHandler}>
+              <MdDelete /> 삭제
+            </PostManageButton>
+          </PostMangeButtnContainer>
+        ) : null}
+        <DetailPostTitle>
+          <h2>{post?.postTitle}</h2>
+        </DetailPostTitle>
+        <DetailPostInfo>
           <div>
-            <img alt="userImg" src={post?.picture} />
-            {post?.username}님의 포스트
+            <MdPlace /> &nbsp;{post?.attractionAddress}
           </div>
           <div>
-            <div>
-              <AiOutlineShareAlt />
-              <span>공유</span>
-            </div>
-            <div>
-              <AiFillEye />
-              <span>{post?.views}</span>
-            </div>
-            <div>
-              <AiFillHeart />
-              <span>{post?.likes}</span>
-            </div>
+            <button
+              onClick={() =>
+                navigate(`/attractions/detail/${post?.attractionId}`)
+              }
+            >
+              <RxDoubleArrowLeft />
+              &nbsp; 이 명소 방문 리뷰 더보기
+            </button>
+            <span>{post?.createdAt.slice(0, 10)}</span>
           </div>
-        </PostContentBottom>
-      </PostContentContainer>
-      <AddComment>
-        <h3>댓글 남기기</h3>
-        <div>
-          <img src={post?.picture} alt="userImg" />
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <Button
-            width="80px"
-            height="35px"
-            text="등록"
-            onClick={(e) => handleCommentSubmit(e)}
-          />
-        </div>
-      </AddComment>
-    </DetailPostWrapper>
+        </DetailPostInfo>
+        <PostContentContainer>
+          <PostContentBox>
+            {data.map((el) => (
+              <div key={el.imageId}>
+                <div>
+                  <img src={el.imageURL} alt="picture" />
+                </div>
+                <div>{el.content}</div>
+              </div>
+            ))}
+          </PostContentBox>
+          <div>
+            {post &&
+              post?.postHashTags.map((tag, idx) => (
+                <>
+                  <TagsButton key={idx}>{tag}</TagsButton>
+                </>
+              ))}
+          </div>
+          <PostContentBottom>
+            <div>
+              <img alt="userImg" src={post?.picture} />
+              {post?.username}님의 포스트
+            </div>
+            <div>
+              <div>
+                <AiOutlineShareAlt />
+                <span>공유</span>
+              </div>
+              <div>
+                <AiFillEye />
+                <span>{post?.views}</span>
+              </div>
+              <div>
+                <AiFillHeart />
+                <span>{post?.likes}</span>
+              </div>
+            </div>
+          </PostContentBottom>
+        </PostContentContainer>
+        {postComments && postComments.length === 0 ? (
+          <EmptyCommentContainer>
+            <FaRegCommentDots />
+            첫번째 댓글을 남겨주세요.
+          </EmptyCommentContainer>
+        ) : (
+          postComments?.map((comment, idx) => (
+            <PostComment key={idx} comment={comment} />
+          ))
+        )}
+        <AddComment>
+          <h3>댓글 남기기</h3>
+          <div>
+            <img src={post?.picture} alt="userImg" />
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              onClick={handleCommentWrite}
+            />
+            <Button
+              type="violet"
+              width="80px"
+              height="35px"
+              text="등록"
+              onClick={(e) => handleCommentSubmit(e)}
+            />
+          </div>
+        </AddComment>
+      </DetailPostWrapper>
+    </>
   );
 };
 

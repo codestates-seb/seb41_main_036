@@ -16,10 +16,9 @@ interface ButtonProps {
 }
 
 const VioletButton = styled.button<ButtonProps>`
-
-display:flex;
-align-items:center;
-justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: var(--purple-300);
@@ -78,7 +77,6 @@ const NoneButton = styled.button<ButtonProps>`
   cursor: pointer;
 `;
 
-
 const Button = ({
   width,
   height,
@@ -129,7 +127,7 @@ const Button = ({
       ) : (
         <></>
       )}
-            {type === "none" ? (
+      {type === "none" ? (
         <NoneButton
           width={width}
           height={height}
@@ -141,7 +139,6 @@ const Button = ({
       ) : (
         <></>
       )}
-
     </>
   );
 };

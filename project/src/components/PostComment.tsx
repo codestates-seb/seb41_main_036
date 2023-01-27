@@ -87,7 +87,6 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
       .catch((err) => console.error(err));
   };
 
-  console.log(comment);
   const modifiedComment = () => {
     axios
       .patch(`/comments/edit/${commentId}`, {
@@ -110,7 +109,7 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
               <span>{comment.createdAt}</span>
             </div>
           </div>
-          {memberId === comment.memberId ? (
+          {memberId === comment.memberId || memberId === 1 ? (
             <div>
               {isEdit ? (
                 <PostManageButton onClick={modifiedComment}>

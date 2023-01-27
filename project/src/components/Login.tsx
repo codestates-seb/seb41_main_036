@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
-import Axios from "axios";
 import axios from "../utils/axiosinstance";
 import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
-
 
 interface TextProps {
   fontSize: string;
@@ -96,7 +94,7 @@ const Leftoverlay = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
-const GButton = styled.button`
+const OauthButton = styled.button`
   width: 50px;
   height: 50px;
   border: 0px;
@@ -106,6 +104,18 @@ const GButton = styled.button`
   font-size: 20px;
   &:hover {
     background-color: var(--purple-400);
+  }
+`;
+const OauthButton2 = styled.button`
+  width: 50px;
+  height: 50px;
+  border: 0px;
+  background-color: #FFE90A;
+  border-radius: 30px;
+  color: black;
+  font-size: 20px;
+  &:hover {
+    background-color: #FFD240;
   }
 `;
 const InputStyle = styled.input`
@@ -263,7 +273,7 @@ const Login = () => {
           localStorage.setItem("Authorization", `${accessToken}`);
           localStorage.setItem("memberId", memberId);
           axios.defaults.headers.common["Authorization"] = accessToken;
-          navigate("/");
+          navigate(-1);
         }
       })
       .catch((err) => {
@@ -298,7 +308,7 @@ const Login = () => {
           console.log(res);
           if (res.status === 201) {
             console.log("회원가입 성공");
-            navigate("/login");
+            window.location.replace("/login")
           }
         })
         .catch((err) => {
@@ -308,6 +318,7 @@ const Login = () => {
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     const googleLogin = () => {
       window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
@@ -337,14 +348,15 @@ const Login = () => {
     console.log("이게무야2", query);
     const param = new URLSearchParams(query);
     console.log(param);
+=======
+  const googleLogin = () => {
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
+>>>>>>> 6e2b66dfcfdb7ecd20f0130ff111f0cdc6f608f3
   };
-
-  const kakaologin = () => {
-    window.location.href = "http://localhost:8090/oauth2/authorization/kakao";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
+  const kakaoLogin = () => {
+    window.location.href =
+      "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
 >>>>>>> cf0ffd2aed8c17c5e6470a642c864f547ceb4b0d
 
@@ -375,6 +387,7 @@ const Login = () => {
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <button onClick={kakaologin}>카카2</button>
         <button onClick={googleLogin}>구글3</button>
         <GButton onClick={googleLogin}>G</GButton>
@@ -383,6 +396,13 @@ const Login = () => {
         <button onClick={googlelogin}>구글</button>
 
         <GButton>G</GButton>
+=======
+{/* 
+        <button onClick={kakaoLogin}>카카</button>
+        <button onClick={googleLogin}>구글</button> */}
+        <OauthButton onClick={googleLogin} >G</OauthButton>
+        <OauthButton2 onClick={kakaoLogin} >K</OauthButton2>
+>>>>>>> 6e2b66dfcfdb7ecd20f0130ff111f0cdc6f608f3
 
 >>>>>>> cf0ffd2aed8c17c5e6470a642c864f547ceb4b0d
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
@@ -432,10 +452,12 @@ const Login = () => {
       </Logincontainer>
       <Signincontainer overlay={overlays}>
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
-          회원가입
+          회원가입 
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <GButton>G</GButton>
+        <OauthButton onClick={googleLogin}>G</OauthButton>
+        <OauthButton2 onClick={kakaoLogin}>K</OauthButton2>
+
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 가입하기
         </TextStyle>

@@ -335,7 +335,10 @@ const MyPage = () => {
       <MyPageContainer>
         <MyPageUserInfo>
           <form>
-            <img src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g" alt="" />
+            <img
+              src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
+              alt=""
+            />
             <div>
               {username} <TfiPencil />
             </div>
