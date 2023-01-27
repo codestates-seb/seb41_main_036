@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -183,8 +184,7 @@ const WritePost = () => {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
-
-  console.log(imgFiles);
+  const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     if (title.length > 40) alert("50자 이내로 작성해주세요.");
@@ -263,7 +263,10 @@ const WritePost = () => {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        navigate(-1);
+      })
       .catch((err) => console.error(err));
   };
 
@@ -477,11 +480,16 @@ const Modal = ({
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
-    setPreviewText("");
-    setPreviewList([...previewList, previews]);
-    setContent([...content, previewText]);
+    if (imageUrl === "") alert("이미지를 등록해주세요.");
+    if (previewText === "") {
+      alert("설명을 등록해주세요.");
+    } else {
+      setPreviewText("");
+      setPreviewList([...previewList, previews]);
+      setContent([...content, previewText]);
+      imgRef.current!.value = "";
+    }
   };
-
   const handleFileUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     imgRef.current!.click();
