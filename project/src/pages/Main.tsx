@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import styled from "styled-components";
-import FixedOnScrollUpHeader from "./components/Header/FixedOnScrollUpHeader";
-import { ArrayPlaceType } from "./pages/Place";
-import { ArrayPostType } from "./pages/Post";
-import PostCardComponent from "./components/PostCardComponent.tsx";
-import PlaceCardComponent from "./components/PlaceCardComponent";
-import Carousel from "./components/Carousel";
-import Ranking from "./components/Ranking";
+import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
+import { ArrayPlaceType } from "./Place";
+import { ArrayPostType } from "./Post";
+import PostCardComponent from "../components/PostCardComponent";
+import PlaceCardComponent from "../components/PlaceCardComponent";
+import Carousel from "../components/Carousel";
+import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
-import { Header } from "./components/Header";
-import HiddenHeader from "./components/Header/HiddenHeader";
-import Modal from "./components/Modal";
+import { Header } from "../components/Header";
 
 const Body = styled.div`
   width: 83.5%;
@@ -40,7 +38,6 @@ const ViewsPlaceContainer = styled.div`
 
 const ViewsPostContainer = styled.div`
   width: 100%;
-  height: 90vh;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -66,16 +63,18 @@ function Main() {
   const [postData, setPostData] = useState<ArrayPostType>();
 
   const url =
-    "http://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=4&sort=newest";
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/home?page=1&size=8&sort=views`;
+    "http://pikcha36.o-r.kr:8080/attractions/?page=1&size=4&sort=posts";
+  const url2 = `http://pikcha36.o-r.kr:8080/posts/filter?0page=1&size=8&sort=views`;
 
   useEffect(() => {
-    axios.all([axios.post(url, { provinces: [] }), axios.get(url2)]).then(
-      axios.spread((res1, res2) => {
-        setAttractionData(res1.data.data);
-        setPostData(res2.data.data);
-      })
-    );
+    axios
+      .get(url)
+      .then((res) => setAttractionData(res.data.data))
+      .catch((err) => console.error(err));
+    axios
+      .post(url2, { provinces: [] })
+      .then((res) => setPostData(res.data.data))
+      .catch((err) => console.error(err));
   }, []);
 
   console.log(attractionData, postData);
@@ -125,114 +124,6 @@ function Main() {
 
 export default Main;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import axios from "./utils/axiosinstance"
 // import { useRecoilState } from "recoil";
 // import {
@@ -241,35 +132,29 @@ export default Main;
 //   LoggedUser,
 // } from "./recoil/state";
 
-
-
-
-
 // const [isLogin, setIslogin] = useRecoilState(LoginState);
 // const [auth, setAuth] = useRecoilState(AuthToken);
 // const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
 
 // const onClickBtn= () => {
 
 //   const memberId = localStorage.getItem("memberId")
 //   axios
-//   .post(`/comments/upload/1`, 
+//   .post(`/comments/upload/1`,
 //   {
 //     commentContent: "1분테스트 16",
 //   },{
-//     headers:{ 
+//     headers:{
 //       "Content-Type": "application/json",
 //     }
 //   }
 
 //   // .get(`token/refresh/${memberId}`
 
-
 //   )
 //   .then((res) => {
 
-//       console.log(res)  
+//       console.log(res)
 //       console.log("댓글등록")
 
 //   })
@@ -277,6 +162,4 @@ export default Main;
 
 // }
 
-
 // <button onClick={onClickBtn}>버튼버튼</button>
-

@@ -21,3 +21,9 @@ export const LoggedUser = atom({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const memberId = atom({
+  key: "memberId",
+  default: undefined,
+  effects_UNSTABLE: [persistAtom],
+});

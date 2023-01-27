@@ -109,6 +109,7 @@ const PostCardComponent = ({
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   const navigate = useNavigate();
+  console.log(currentPosts);
   return (
     <>
       <PostContainer margin={margin}>
@@ -117,7 +118,7 @@ const PostCardComponent = ({
             <PostCard key={post.postId} width={width}>
               <div>
                 <img
-                  src={post.picture} alt=""
+                  src={post.pictureUrl}
                   onClick={() => navigate(`/posts/detail/${post.postId}`)}
                 ></img>
               </div>

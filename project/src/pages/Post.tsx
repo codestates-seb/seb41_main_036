@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
-import PostCardComponent from "../components/PostCardComponent.tsx";
+import PostCardComponent from "../components/PostCardComponent";
 import axios from "axios";
 import PaginationComponent from "../components/PaginationComponent";
 

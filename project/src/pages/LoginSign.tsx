@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Login from '../components/Login';
+import styled from "styled-components";
+import Login from "./Login";
 import FixedOnScrollUpHeader from "../components/Header/HiddenHeader";
 import { Header } from "../components/Header/index";
 
@@ -16,16 +16,15 @@ const Footer = styled.div`
 `;
 
 function LoginSign() {
-  
   return (
     <>
-          <Header>
+      <Header>
         <Header.HeaderBody />
       </Header>
-    <Body> 
-      <Login />
-    </Body>
-    <Footer>footer</Footer>
+      <Body>
+        <Login />
+      </Body>
+      <Footer>footer</Footer>
     </>
   );
 }
