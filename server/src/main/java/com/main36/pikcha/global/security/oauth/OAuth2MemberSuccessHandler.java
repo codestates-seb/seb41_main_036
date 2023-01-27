@@ -44,7 +44,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                                         Authentication authentication) throws IOException, ServletException {
 
         Member member = memberService.findMemberByOauth2Id(authentication.getName());
-//        log.info("member ={}", member);
+        log.info("Oauth member===================={}", member);
 //        String accessToken = BEARER_PREFIX + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles());
 //        log.info("accessToken ={}", accessToken);
 //        String refreshToken = jwtGenerator.generateRefreshToken(member.getMemberId().toString());
@@ -70,7 +70,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                           List<String> authorities) throws IOException {
 //
         String accessToken = jwtGenerator.generateAccessToken(username, authorities);
-        String refreshToken = jwtGenerator.generateRefreshToken(username);
+//        String refreshToken = jwtGenerator.generateRefreshToken(username);
         String uri = createURI(request, accessToken, memberId).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
@@ -85,11 +85,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-                .port("3000")
-                .path("/oauth")
-//                .host("serverName") // 배포 후 사용
-//                .path("/oauth") // 배포 후 사용
+//                .host("localhost")
+//                .port("3000")
+//                .path("/oauth")
+                .host("pikcha36.o-r.kr") // 배포 후 사용
+                .path("/oauth") // 배포 후 사용
                 .queryParams(queryParams)
                 .build()
                 .toUri();
