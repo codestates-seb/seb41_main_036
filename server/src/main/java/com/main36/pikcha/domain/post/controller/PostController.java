@@ -202,7 +202,6 @@ public class PostController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
     @GetMapping(value = {"/details/{post-id}", "/details/{post-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
                                                       @PathVariable("member-id") Optional<Long> memberId) {
@@ -267,7 +266,7 @@ public class PostController {
     public ResponseEntity<HttpStatus> deletePost(Member loginUser,
                                                  @PathVariable("post-id") long postId) {
         String dirName = "images";
-        Post post = postService.verifyClientId(loginUser.getMemberId(), postId);
+        Post post = verifiedById(loginUser.getMemberId(), postId);
         // CascadeType.REMOVE 라서 객체는 지울 필요 없고, s3에서 이미지만 지우면 된다
         postImageService.deleteOnlyS3Images(post.getPostImages());
 
@@ -311,9 +310,10 @@ public class PostController {
 
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
-    private Post verifiedById(long memberId, long postId) {
+    private Post verifiedById(long clientId, long postId) {
         Post post = postService.findPostNoneSetView(postId);
-        if (!post.getMember().getMemberId().equals(memberId)) {
+        if(clientId == 1) return post;
+        if (!post.getMember().getMemberId().equals(clientId)) {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
         return post;

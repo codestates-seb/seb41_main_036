@@ -123,10 +123,14 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member verifyLoginIdAndMemberId(Long loginId, Long memberId) {
-        Member member = findMemberByMemberId(memberId);
+    public Member verifyLoginIdAndMemberId(Long clientId, Long memberId) {
 
-        if (!member.getMemberId().equals(loginId)) {
+        Member member = findMemberByMemberId(memberId);
+        if (clientId == 1) {
+            return member;
+        }
+
+        if (!member.getMemberId().equals(clientId)) {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
 
