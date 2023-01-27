@@ -320,7 +320,7 @@ const Map = () => {
   ];
 
   const url =
-    "http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=posts";
+    "http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=99&sort=posts";
   //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 

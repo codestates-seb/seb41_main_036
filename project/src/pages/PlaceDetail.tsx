@@ -12,9 +12,11 @@ import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import { useRecoilState } from "recoil";
-import { LoginState } from "../recoil/state";
-import Modal from "../components/Modal";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
+
+
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -195,9 +197,6 @@ type PlaceData = {
   saves: number | undefined;
 };
 
-const dummyLikes = [1, 10, 11, 13, 16, 20, 22, 25, 50];
-const dummyBookmarks = [10, 13, 20, 50, 60, 81, 90];
-
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
@@ -206,41 +205,19 @@ const PlaceDetail = (): JSX.Element => {
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
 
-  const [isLogin] = useRecoilState(LoginState);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [bookmarkSaves, setBookmarkSaves] = useState(false);
+  const [likes,setLikes] = useState(false);
 
   const { id } = useParams();
-  const [bookmarkSaves, setBookmarkSaves] = useState(false);
-  const [likes, setLikes] = useState(false);
   const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=8`;
+  const url2 = `http://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=9`;
   //const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
 
   const url4 = `http://localhost:3000/attractions/saves/1/1`;
   const url5 = `http://localhost:3000/attractions/likes/1/1`;
-
-  useEffect(() => {
-    /*api주소로 로그인한 사용자가 해당 명소를 좋아요 했는지, 즐겨찾기 했는지 확인하고 상태로 저장 */
-    dummyBookmarks.includes(Number(id));
-    dummyLikes.includes(Number(id));
-
-    return () => {
-      /* 초기값과 다르면 api주소로 요청 보내기 */
-    };
-  }, []);
-
+  
   const navigate = useNavigate();
-  // useEffect((
-  //   axios.post(url5).then((res) => {
-  //     console.log(res.data.data.isVoted);
-  //     if (res.data.data.isVoted) {
-  //       setLikes(res.data.data.isVoted);
-  //       console.log(likes);
-  //     }
-  //   })
-  // )=>{
-  //   return
-  // },[])나중에 수정-----------
+
   function onScroll() {
     if (window.scrollY <= 700) {
       setTimeout(function () {
@@ -263,44 +240,46 @@ const PlaceDetail = (): JSX.Element => {
     }
   };
 
-  const handleCopyClipBoard = async (text: string) => {
+  const handleCopyClipBoard = async (text:string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("url이 성공적으로 복사되었습니다.");
-    } catch (err) {
-      console.log("복사 실패");
+      alert('url이 성공적으로 복사되었습니다.')
+    }catch(err){
+      console.log('복사 실패')
     }
-  };
+  }
   //console.log('여기',attractionData)
 
-  const handleClickBookmark = () => {
-    if (isLogin) setBookmarkSaves(!bookmarkSaves);
-    else setIsModalVisible(true);
-  };
+  const handleClickBookmark = async () => { 
+
+    axios.post(url4).then((res)=>{
+      console.log(res.data.data)
+      if(res.data.data.isSaves){
+        setBookmarkSaves(true);
+        console.log(bookmarkSaves)
+      }
+    })
+  }
 
   // 여기
   const handleClickLikes = () => {
-    if (isLogin) {
-      console.log("누름");
-      axios.post(url5).then((res) => {
-        console.log(res.data.data.isVoted);
-        if (res.data.data.isVoted) {
-          setLikes(res.data.data.isVoted);
-          console.log(likes);
-        }
-      });
-    } else {
-      setIsModalVisible(true);
-    }
-  };
+    console.log('누름')
+    axios.post(url5).then((res)=>{
+      console.log(res.data.data.isVoted)
+      if(res.data.data.isVoted){
+        setLikes(res.data.data.isVoted);
+        console.log(likes)
+      }
+    })
+  }
 
   useEffect(() => {
-    //잠깐 멈춤
+    //잠깐 멈춤 
     axios.all([axios.get(url), axios.get(url2)]).then(
       axios.spread((res1, res2) => {
         setAttractionData(res1.data.data);
         setPostData(res2.data.data);
-        console.log("요청중");
+        console.log('요청중')
       })
     );
 
@@ -313,25 +292,10 @@ const PlaceDetail = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    axios.post(`/attractions/likes/${id}`).then((res) => console.log(res.data));
-  }, []);
 
-  const handlePostWriteClick = () => {
-    if (isLogin) navigate("/write");
-    else setIsModalVisible(true);
-  };
-  /*로그인 했으면 
-
-로그인 안했으면 모달
-*/
-  const handleLikeCheck = () => {
-    if (!isLogin) setIsModalVisible(true);
-  };
 
   return (
     <>
-      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <FixedOnScrollUpHeader />
       <GlobalStyle />
       {attractionData !== undefined ? (
@@ -340,25 +304,34 @@ const PlaceDetail = (): JSX.Element => {
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
           <FixBoxVertical inverted={fixBar < 470 ? true : false}>
-            <div
-              className="icon"
-              onClick={() => {
-                handleCopyClipBoard(document.location.href);
-              }}
-            >
+              <div
+                className="icon"
+                onClick={() => {
+                  handleCopyClipBoard(document.location.href);
+                }}
+              >
               <BsShareFill size="15" />
             </div>
-
-            <div onClick={handlePostWriteClick}>
+            
+            <div
+              onClick={() => {
+                navigate("/write");
+              }}
+            >
+              {" "}
               <SlNote size="16" />
             </div>
             {/* <button onClick = {() => {setBookmarkSaves (true)} }></button> */}
-            <div onClick={() => handleClickBookmark()}>
-              <BsBookmarkFill size="16" fill={bookmarkSaves ? "red" : "grey"} />
+            <div onClick={()=>handleClickBookmark()}>
+              <BsBookmarkFill size="16"  fill={bookmarkSaves ? "red" : "grey"}/>
             </div>
-            <MarkerCount>{attractionData!.saves}</MarkerCount>
-            <div onClick={() => handleClickLikes()}>
-              <AiFillHeart size="16" color={likes === true ? "red" : "grey"} />
+            <MarkerCount>
+              {attractionData!.saves}
+            </MarkerCount>
+            <div onClick = {()=>handleClickLikes()}>
+              
+              <AiFillHeart size="16" color = {likes === true ? "red" : "grey"} /> 
+
             </div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
@@ -407,12 +380,18 @@ const PlaceDetail = (): JSX.Element => {
           <Post ref={scrollRefContent}>
             <PostHeader>
               <h2>포스트</h2>
-              <button onClick={handlePostWriteClick}>포스트 작성</button>
+              <button
+                onClick={() => {
+                  navigate("/write");
+                }}
+              >
+                포스트 작성
+              </button>
             </PostHeader>
             {postData && (
               <PostCardComponent
                 posts={postData}
-                margin="0 12%"
+                margin="8%"
                 width="22%"
               ></PostCardComponent>
             )}
