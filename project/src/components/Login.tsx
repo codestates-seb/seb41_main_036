@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
 import Axios from "axios";
@@ -7,6 +7,7 @@ import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+
 
 interface TextProps {
   fontSize: string;

@@ -124,7 +124,7 @@ const PostCardComponent = ({
               </div>
               <div>
                 <div>
-                  <img src={post.picture}></img>
+                  <img src={post.picture} alt=""/>
                   <div>
                     <div>{post.username}</div>
                     <span>{post.createdAt.slice(0, 10)}</span>

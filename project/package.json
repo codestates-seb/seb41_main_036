@@ -65,5 +65,5 @@
     "@types/styled-components": "^5.1.26",
     "styled-components": "^5.3.6"
   },
-  "proxy": "http://pikcha36.o-r.kr:8080"
+  "proxy" : "http://pikcha36.o-r.kr:8080"
 }
