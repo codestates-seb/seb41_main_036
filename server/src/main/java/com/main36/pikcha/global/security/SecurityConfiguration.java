@@ -64,7 +64,7 @@ public class SecurityConfiguration {
 
 				.and()
 				.authorizeHttpRequests(authorize -> authorize
-//						.requestMatchers(toH2Console()).permitAll()
+////						.requestMatchers(toH2Console()).permitAll()
 						.antMatchers("/attractions/upload", "/attractions/edit/**", "/attractions/delete", "admin").hasRole("ADMIN")
 						.anyRequest().permitAll())
 

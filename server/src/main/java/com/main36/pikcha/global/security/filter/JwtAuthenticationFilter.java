@@ -29,6 +29,7 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    public static final String SET_COOKIE = "Set-Cookie";
 
     private final JwtGenerator jwtGenerator;
     private final AuthenticationManager authenticationManager;
@@ -67,8 +68,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // response 토큰 설정
         ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
+        response.setHeader(SET_COOKIE, cookie.toString());
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.setHeader("Set-Cookie", String.valueOf(cookie));
 //        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
 
         Gson gson = new Gson();

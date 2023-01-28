@@ -40,7 +40,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/home",
                     "/attractions",
                     "/posts",
-                    "/token/refresh",
+//                    "/token/refresh",
                     "/oauth2/authorization/google",
                     "/oauth2/authorization/kakao"
             );

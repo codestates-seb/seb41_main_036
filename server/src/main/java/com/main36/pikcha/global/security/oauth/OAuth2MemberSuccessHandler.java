@@ -86,10 +86,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
 //                .host("localhost")
-//                .port("3000")
-//                .path("/oauth")
-                .host("pikcha36.o-r.kr") // 배포 후 사용
-                .path("/oauth") // 배포 후 사용
+                .port("3000")
+                .path("/oauth")
+//                .host("pikcha36.o-r.kr") // 배포 후 사용
+//                .path("/oauth") // 배포 후 사용
                 .queryParams(queryParams)
                 .build()
                 .toUri();
