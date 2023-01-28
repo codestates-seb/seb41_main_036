@@ -228,12 +228,12 @@ const PlaceDetail = (): JSX.Element => {
   const [likes,setLikes] = useState(false);
 
   const { id } = useParams();
-  const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=9`;
+  const url = `https://pikcha36.o-r.kr:8080/attractions/${id}`;
+  const url2 = `https://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=9`;
   //const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
 
-  const url4 = `http://localhost:3000/attractions/saves/1/1`;
-  const url5 = `http://localhost:3000/attractions/likes/1/1`;
+  const url4 = `https://localhost:3000/attractions/saves/1/1`;
+  const url5 = `https://localhost:3000/attractions/likes/1/1`;
   
   const navigate = useNavigate();
 
