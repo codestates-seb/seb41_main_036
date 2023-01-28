@@ -9,10 +9,8 @@ axios.interceptors.request.use(
     const originalRequest = config;
     const accessToken = localStorage.getItem("Authorization");
     axios.defaults.headers.common["Authorization"] = accessToken;
-    originalRequest.headers["Authorization"] = accessToken;
-
+    originalRequest.headers["Authroziation"] = accessToken;
     return originalRequest;
-    // return config;
   },
   (error) => {
     console.log("request error", error);
@@ -22,6 +20,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   function (res) {
+    console.log("리스폰 인터셉트");
     return res;
   },
   async (error) => {

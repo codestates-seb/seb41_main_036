@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
 
+
 interface TextProps {
   fontSize: string;
   color: string;

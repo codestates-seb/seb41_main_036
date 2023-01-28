@@ -96,41 +96,40 @@ const PlaceComponent = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   -ms-overflow-style: none;
-`;
-const Place = styled.div<{ imgUrl: string }>`
-  background-color: skyblue;
-  width: 294px;
-  height: 140px;
-  margin-left: -1px;
-  margin-bottom: 5px;
-  border-radius: var(--br-s);
-  cursor: pointer;
-  border: 1px solid var(--black-600);
+`
+const Place = styled.div<{imgUrl:string}>`
+    background-color: skyblue;
+    width: 294px;
+    height: 140px;
+    margin-left: -1px;
+    margin-bottom: 5px;
+    border-radius: var(--br-s);
+    cursor: pointer;
+    border:1px solid var(--black-600);
+    
+    background: linear-gradient(
+        to right,
+        rgba(20, 20, 20, 0.8) 10%,
+            rgba(20, 20, 20, .7) 25%,
+            rgba(20, 20, 20, 0.5) 50%,
+            rgba(20, 20, 20, 0.35) 75%,
+            rgba(20, 20, 20, 0.25) 100%
+      ), url(${props => props.imgUrl});
+    background-size: cover;
 
-  background: linear-gradient(
-      to right,
-      rgba(20, 20, 20, 0.8) 10%,
-      rgba(20, 20, 20, 0.7) 25%,
-      rgba(20, 20, 20, 0.5) 50%,
-      rgba(20, 20, 20, 0.35) 75%,
-      rgba(20, 20, 20, 0.25) 100%
-    ),
-    url(${(props) => props.imgUrl});
-  background-size: cover;
-
-  > div {
-    padding: 85px 0 2px 20px;
-    font-weight: bold;
-    font-size: 18px;
-    color: white;
-  }
-  > p {
-    padding: 5px 0 0 20px;
-    font-weight: bold;
-    font-size: 12px;
-    color: white;
-  }
-`;
+    >div{
+      padding:85px 0 2px 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color:white;
+    }
+    >p{
+      padding:5px 0 0 20px;
+      font-weight: bold;
+      font-size: 12px;
+      color:white;
+    }
+`
 
 const PlaceDetailModal = styled.div`
   position: absolute;
@@ -151,48 +150,67 @@ const PlaceDetailModalHeader = styled.div`
       height: 100%;
       background-size: cover;
     }
-  }
-  > div:nth-child(2) {
-    display: flex;
-    > p:nth-child(1) {
+    >div:nth-child(2){ 
+      display: flex;
+      >p:nth-child(1){
+        font-size: 14px;
+        width: 60px;
+        height: 20px;
+        margin: 15px 250px 0 20px;
+        line-height: 20px;
+        font-weight: 600;
+        color:var(--black-700);
+      }
+      >div{ // 개별 요소
+        margin-top: 12px;
+        margin-left: 3px;
+        margin-right: 5px;
+      }
+      & p{
+        font-size: 10px;
+        margin-left: 5px;
+        color:#373737;
+      }
+    }
+    >div:nth-child(3){
+      display: flex;
+      width: 325px;
+      height: 30px;
+      >h2{
+        //width:250px;
+        background-color: #fbf8ba;
+        margin-left: 15px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+      >a{
+        font-size: 13px;
+        margin-left: 10px;
+        line-height: 30px;
+        text-decoration: none;
+        color:var(--purple-400);
+        font-weight: 600;
+      }
+    }
+    >p:nth-child(4){
+      color:#555555;
       font-size: 14px;
-      width: 60px;
-      height: 20px;
-      margin: 15px 250px 0 20px;
-      line-height: 20px;
+      margin: 4px 0 0 15px;
       font-weight: 600;
-      color: var(--black-700);
     }
-    > div {
-      // 개별 요소
-      margin-top: 12px;
-      margin-left: 3px;
-      margin-right: 5px;
-    }
-    & p {
-      font-size: 10px;
-      margin-left: 5px;
-      color: #373737;
-    }
-  }
-  > div:nth-child(3) {
-    display: flex;
-    width: 325px;
-    height: 30px;
-    > h2 {
-      //width:250px;
-      background-color: #fbf8ba;
-      margin-left: 15px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    > a {
-      font-size: 13px;
-      margin-left: 10px;
-      line-height: 30px;
-      text-decoration: none;
-      color: var(--purple-400);
-      font-weight: 600;
+
+    >div:nth-child(5){
+      display: flex;
+      color:#919191;
+      font-weight: bold;
+      margin: 8px 0 0 17px;
+      >div{
+        margin-right: 3px;
+      }
+      >p{
+        font-size: 12px;
+        font-weight: 500;
+      }
     }
   }
   > p:nth-child(4) {
@@ -302,7 +320,7 @@ const Map = () => {
   ];
 
   const url =
-    "http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=posts";
+    "http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=99&sort=posts";
   //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 
@@ -476,7 +494,7 @@ const Map = () => {
         ) : null}
         {detailModal ? (
           <KakaoMap
-            width="100%"
+            width="71%"
             height="94vh"
             dataList={regionList}
             position="absolute"

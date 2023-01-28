@@ -32,13 +32,6 @@ const Ranking = () => {
   const newRankingData = [...rankingData, ...rankingData.slice(0, 1)];
   const currentTime = new Intl.DateTimeFormat("ko", options).format(new Date());
   useEffect(() => {
-    // axios
-
-    //   .post(
-    //     `http://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=10&sort=likes`,
-    //     { provinces: [] }
-    //   )
-    //   .then((res) => console.log(res.data.data));
     timerIdRef.current = setInterval(() => {
       setStartAnimation(true);
       setTimeout(() => {

@@ -32,7 +32,7 @@ const FixedHeaderOnScrollUp = ({
 
   return (
     <>
-      <Header isVisible={showHeader}>
+      <Header isVisible={showHeader} headerColor="var(--grey-background)">
         <Header.HeaderTop />
         <Header.HeaderBody defaultValue={defaultValue} />
       </Header>

@@ -76,15 +76,18 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
     setCommentcontent(e.target.value);
   };
   const commentId = comment.commentId;
-  console.log(memberId);
+
   const deleteComment = () => {
-    axios
-      .delete(`/comments/delete/${commentId}`)
-      .then((res) => {
-        console.log(res.data);
-        window.location.reload();
-      })
-      .catch((err) => console.error(err));
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .delete(`/comments/delete/${commentId}`)
+        .then((res) => {
+          alert("삭제가 완료되었습니다.");
+          console.log(res.data);
+          window.location.reload();
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
   const modifiedComment = () => {

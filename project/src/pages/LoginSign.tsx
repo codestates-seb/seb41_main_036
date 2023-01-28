@@ -17,9 +17,6 @@ const Footer = styled.div`
 function LoginSign() {
   return (
     <>
-      <Header>
-        <Header.HeaderBody />
-      </Header>
       <Body>
         <Login />
       </Body>

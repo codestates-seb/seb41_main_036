@@ -81,7 +81,6 @@ const PostContentContainer = styled.article`
   padding-top: 20px;
   justify-content: center;
   margin: 0 auto;
-  width: 70%;
 
   > div:nth-child(2) {
     margin-top: 30px;
@@ -107,6 +106,8 @@ const TagsButton = styled.button`
   height: 30px;
   border: none;
   background-color: transparent;
+  margin-right: 10px;
+  margin-top: 5em;
   cursor: pointer;
   background-color: var(--purple-tag);
   color: var(--purple-400);
@@ -283,16 +284,22 @@ const DetailPost = () => {
   }
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axios
-      .delete(`/posts/delete/${id}`)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .delete(`/posts/delete/${id}`)
+        .then((res) => {
+          alert("삭제가 완료되었습니다.");
+          console.log(res);
+          navigate(-1);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-
+  console.log(post);
   return (
     <>
       <Header>
