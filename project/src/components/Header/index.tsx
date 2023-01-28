@@ -4,6 +4,7 @@ import {
   HeaderTopMenu,
   HeaderBody,
   HeaderBodyMenu,
+  HeaderBodyMenuItem,
   HeaderBodyWrapper,
   SearchBarWrapper,
   Profile,
@@ -13,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
-import axios from "axios";
+import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler } from "react";
 
@@ -60,6 +61,7 @@ const HeaderTopBar = () => {
                 height="1px"
                 text="마이페이지"
                 type="none"
+                onClick={() => navigate("/mypage")}
               ></ButtonForm>
             </li>
             <li>
@@ -92,11 +94,13 @@ interface HeaderBodyProps {
   defaultValue?: string;
   backgroundOn?: boolean;
   isSuggetionVisible?: boolean;
+  selectedMenu?: number;
 }
 const HeaderBodyBar = ({
   searchBarOn = true,
   defaultValue = "",
   backgroundOn = true,
+  selectedMenu = -1,
 }: HeaderBodyProps) => {
   const navigate = useNavigate();
   const islogin = useRecoilValue(LoginState);
@@ -118,9 +122,24 @@ const HeaderBodyBar = ({
           />
         </a>
         <HeaderBodyMenu>
-          <li onClick={() => navigate("/attractions")}>명소</li>
-          <li onClick={() => navigate("/posts")}>방문리뷰</li>
-          <li onClick={() => navigate("/map")}>내 주변 명소 찾기</li>
+          <HeaderBodyMenuItem
+            onClick={() => navigate("/attractions")}
+            selected={selectedMenu === 0}
+          >
+            명소
+          </HeaderBodyMenuItem>
+          <HeaderBodyMenuItem
+            onClick={() => navigate("/posts")}
+            selected={selectedMenu === 1}
+          >
+            방문리뷰
+          </HeaderBodyMenuItem>
+          <HeaderBodyMenuItem
+            onClick={() => navigate("/map")}
+            selected={selectedMenu === 2}
+          >
+            내 주변 명소 찾기
+          </HeaderBodyMenuItem>
         </HeaderBodyMenu>
         {searchBarOn && (
           <SearchBarWrapper>

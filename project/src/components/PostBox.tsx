@@ -96,31 +96,29 @@ const PostBox = ({ postData }: any) => {
   return (
     <>
       <PostContainer>
-        {postData.map((el: any) => {
-          return (
-            <PostCard key={el.postId}>
-              <div>
-                <img src={el.picture}></img>
-              </div>
-              <div>
+        {
+          postData.map((el:any)=>{
+            return(
+              <PostCard key={el.postId}>
+                <div><img src={el.picture} alt="" /></div>
                 <div>
-                  <img src={el.picture}></img>
                   <div>
-                    <div>{el.username}</div>
-                    <span>{el.createdAt.slice(0, 10)}</span>
+                    <img src={el.picture} alt=""/>
+                      <div>
+                        <div>{el.username}</div>
+                        <span>{(el.createdAt).slice(0,10)}</span>
+                      </div>
+                    </div>
+                  <div>
+                    <BsEye></BsEye><p>{el.views}</p>
+                    <AiFillHeart></AiFillHeart><p>{el.likes}</p>
                   </div>
                 </div>
-                <div>
-                  <BsEye />
-                  <p>{el.views}</p>
-                  <AiFillHeart />
-                  <p>{el.likes}</p>
-                </div>
-              </div>
-              <div>{el.postTitle}</div>
-            </PostCard>
-          );
-        })}
+                <div>{el.postTitle}</div>
+              </PostCard>
+            )
+          })
+        }
       </PostContainer>
     </>
   );

@@ -10,6 +10,7 @@ import Carousel from "../components/Carousel";
 import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
 import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
+// import axios from "../utils/axiosinstance"
 
 const GoRight = keyframes`
   0% {
@@ -98,12 +99,22 @@ function Main() {
     );
   }, []);
 
+
+
+
+
+
+
+
+
+
   return (
     <>
       <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
       <Body>
+
         <MainSubTitle>많이 다녀간 명소</MainSubTitle>
         <ViewsPlaceContainer>
           <PlaceCardWrapper>

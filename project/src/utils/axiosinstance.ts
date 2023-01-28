@@ -9,8 +9,10 @@ axios.interceptors.request.use(
     const originalRequest = config;
     const accessToken = localStorage.getItem("Authorization");
     axios.defaults.headers.common["Authorization"] = accessToken;
-    console.log("리퀘인");
-    return config;
+
+
+    originalRequest.headers["Authorization"] = accessToken;
+    return originalRequest;
   },
   (error) => {
     console.log("request error", error);
@@ -20,7 +22,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   function (res) {
-    console.log("리스폰 인터셉트");
     return res;
   },
   async (error) => {
@@ -66,12 +67,12 @@ axios.interceptors.response.use(
       alert("로그인 시간 만료.");
       window.location.replace("/login");
     }
-    // if (status === 500){
+    // if (status === 500 ){
     //   localStorage.setItem("loginStatus", "false")
     //   localStorage.removeItem("memberId")
     //   localStorage.removeItem("Authorization")
-    //   alert("로그인 시간 만료.")
-    //   window.location.replace("/login")
+    //   // alert("로그인 시간 만료.")
+    //   // window.location.replace("/login")
     // }
     console.log("response error", error);
     return Promise.reject(error);
