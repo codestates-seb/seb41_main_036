@@ -12,6 +12,7 @@ import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
+import { GiTalk } from "react-icons/gi";
 
 
 
@@ -184,6 +185,25 @@ const MarkerCount = styled.p`
   margin: 2px auto;
 `;
 
+const PostCardNone = styled.div`
+  width:300px;
+  height: 300px;
+  //background-color: #ffffff;
+  margin: 90px auto;
+  //display: flex;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  > div{
+    margin-right: 10px;
+  }
+  >p{
+    margin-top: 5px;
+    font-size: 12px;
+    color:grey;
+  }
+`
+
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -291,8 +311,6 @@ const PlaceDetail = (): JSX.Element => {
     };
   },[]);
 
-
-
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -387,13 +405,23 @@ const PlaceDetail = (): JSX.Element => {
                 포스트 작성
               </button>
             </PostHeader>
-            {postData && (
+            {postData && 
+            postData.length >= 1?
+
+            (
               <PostCardComponent
                 posts={postData}
                 margin="8%"
                 width="22%"
               ></PostCardComponent>
-            )}
+            ):
+            <PostCardNone>
+              <div>
+                <GiTalk size="22"></GiTalk>
+              </div>
+              현재 등록된 포스트가 없습니다.
+              <p>가장 먼저 글을 작성해보시는 것은 어떠신가요?</p>
+            </PostCardNone>}
           </Post>
         </>
       ) : (

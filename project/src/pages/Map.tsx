@@ -259,7 +259,7 @@ const PlaceDetailModalMain = styled.div`
   > div:nth-child(1) {
     font-size: 15px;
     font-weight: 700;
-    margin: 25px 0 10px 20px;
+    margin: 35px 0 30px 20px;
     color: #393939;
   }
 `;
