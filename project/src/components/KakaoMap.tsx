@@ -65,7 +65,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     const options = {
       // center에 위도, 경도 좌표를 설정 
       center: new window.kakao.maps.LatLng(37.573898277022,126.9731314753), // 지도의 중심 좌표
-      level:5 // 확대되어 보여지는 레벨  설정 
+      level:13 // 확대되어 보여지는 레벨  설정 
     };
 
     // 기본 주소 객체 생성
@@ -94,7 +94,9 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                 lon = position.coords.longitude; // 경도
             
               var locPosition = new window.kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+              console.log('테스트여기',locPosition);
               map.setCenter(locPosition);
+              map.setLevel(4);//여기
           });
           } 
 

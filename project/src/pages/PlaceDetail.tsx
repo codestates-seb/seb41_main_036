@@ -35,7 +35,7 @@ const ImageBox = styled.div`
 `;
 const Container = styled.div`
   width: 100%;
-  height: 85vh;
+  height: 98vh;
   background-color: white;
   margin: 0 auto;
   > hr {
