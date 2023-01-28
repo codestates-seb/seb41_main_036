@@ -231,9 +231,6 @@ const EditPost = () => {
     getPostList();
   }, [data === undefined]);
 
-  console.log(removeImgUrl);
-  console.log(imgFiles);
-  console.log(addImgUrl);
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (title && title.length > 20) alert("20자 이내로 작성해주세요.");
     setTitle(e.target.value);
