@@ -25,13 +25,13 @@ public class CookieUtils {
 
     }
 
-    private static void setCookie(HttpServletResponse response, String refreshToken) {
+    public static void setCookie(HttpServletResponse response, String refreshToken) {
 
         Cookie cookie = new Cookie("name", refreshToken);
         cookie.setMaxAge(3 * 24 * 60 * 60);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // 문제점!
+        cookie.setSecure(true); // 문제점!
         response.addCookie(cookie);
     }
 

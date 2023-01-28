@@ -9,6 +9,7 @@ import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.userdetails.AuthMember;
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.utils.CookieUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -28,16 +29,14 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public static final String SET_COOKIE = "Set-Cookie";
 
     private final JwtGenerator jwtGenerator;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(JwtGenerator jwtGenerator, AuthenticationManager authenticationManager) {
-        this.jwtGenerator = jwtGenerator;
-        this.authenticationManager = authenticationManager;
-    }
+    private final CookieUtils cookieUtils;
 
     @SneakyThrows
     @Override
@@ -66,9 +65,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
 
         // response 토큰 설정
-        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
-        log.info("===cookie==={}", cookie.toString());
-        response.setHeader(SET_COOKIE, cookie.toString());
+//        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
+        cookieUtils.setCookie(response, refreshToken);
+
+//        log.info("===cookie==={}", cookie.toString());
+//        response.setHeader(SET_COOKIE, cookie.toString());
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 //        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
 

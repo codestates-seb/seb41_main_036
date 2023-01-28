@@ -10,6 +10,7 @@ import com.main36.pikcha.global.security.handler.*;
 import com.main36.pikcha.global.security.jwt.JwtParser;
 import com.main36.pikcha.global.security.oauth.OAuth2MemberSuccessHandler;
 import com.main36.pikcha.global.security.oauth.OauthService;
+import com.main36.pikcha.global.utils.CookieUtils;
 import com.main36.pikcha.global.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,87 +34,89 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-	private final JwtParser jwtParser;
-	private final JwtGenerator jwtGenerator;
-	private final CustomAuthorityUtils customAuthorityUtils;
-	private final MemberService memberService;
-	private final OauthService oauthService;
+    private final JwtParser jwtParser;
+    private final JwtGenerator jwtGenerator;
+    private final CustomAuthorityUtils customAuthorityUtils;
+    private final MemberService memberService;
+    private final OauthService oauthService;
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
+    private final CookieUtils cookieUtils;
 
-				.httpBasic().disable()
-				.formLogin().disable()
-				.csrf().disable()
-				.headers().frameOptions().sameOrigin()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
 
-				.and()
-				.cors().configurationSource(corsConfigurationSource())
+                .httpBasic().disable()
+                .formLogin().disable()
+                .csrf().disable()
+                .headers().frameOptions().sameOrigin()
 
-				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .cors().configurationSource(corsConfigurationSource())
 
-				.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
-				.accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-				.and()
-				.apply(new CustomFilterConfigure())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
 
-				.and()
-				.authorizeHttpRequests(authorize -> authorize
+                .and()
+                .apply(new CustomFilterConfigure())
+
+                .and()
+                .authorizeHttpRequests(authorize -> authorize
 ////						.requestMatchers(toH2Console()).permitAll()
-						.antMatchers("/attractions/upload", "/attractions/edit/**", "/attractions/delete", "admin").hasRole("ADMIN")
-						.anyRequest().permitAll())
+                        .antMatchers("/attractions/upload", "/attractions/edit/**", "/attractions/delete", "admin").hasRole("ADMIN")
+                        .anyRequest().permitAll())
 
-				.oauth2Login(oauth2 -> oauth2
-						.successHandler(new OAuth2MemberSuccessHandler(customAuthorityUtils, memberService, jwtGenerator))
-						.userInfoEndpoint()
-						.userService(oauthService));
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(customAuthorityUtils, memberService, jwtGenerator))
+                        .userInfoEndpoint()
+                        .userService(oauthService));
 
-		return http.build();
-	}
+        return http.build();
+    }
 
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(
-				List.of(
-						"http://localhost:3000",
-						"http://127.0.0.1:3000",
-						"http://pikcha36.o-r.kr/",
-						"https://pikcha36.o-r.kr/")
-		);
-		configuration.setAllowCredentials(true);
-		configuration.addExposedHeader("Authorization");
-		configuration.addAllowedHeader("*");
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:3000",
+                        "http://127.0.0.1:3000",
+                        "http://pikcha36.o-r.kr/",
+                        "https://pikcha36.o-r.kr/")
+        );
+        configuration.setAllowCredentials(true);
+        configuration.addExposedHeader("Authorization");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
 
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
 
-		return source;
-	}
+        return source;
+    }
 
-	public class CustomFilterConfigure extends AbstractHttpConfigurer<CustomFilterConfigure, HttpSecurity> {
-		@Override
-		public void configure(HttpSecurity builder) throws Exception {
-			AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+    public class CustomFilterConfigure extends AbstractHttpConfigurer<CustomFilterConfigure, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-			JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtGenerator, authenticationManager);
-			jwtAuthenticationFilter.setFilterProcessesUrl("/login");
-			jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
-			jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtGenerator, authenticationManager, cookieUtils);
+            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtGenerator, jwtParser);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtGenerator, jwtParser);
 
-			builder
-					.addFilter(jwtAuthenticationFilter)
-					.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
+            builder
+                    .addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
 
-		}
-	}
+        }
+    }
 }
 
