@@ -12,10 +12,7 @@ import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-
-
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -206,16 +203,16 @@ const PlaceDetail = (): JSX.Element => {
   const [postData, setPostData] = useState<ArrayPostType>();
 
   const [bookmarkSaves, setBookmarkSaves] = useState(false);
-  const [likes,setLikes] = useState(false);
+  const [likes, setLikes] = useState(false);
 
   const { id } = useParams();
-  const url = `http://pikcha36.o-r.kr:8080/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/${id}?page=1&size=9`;
-  //const url3 = "http://pikcha36.o-r.kr:8080/posts/attractions?page=1&size=100";
+  const url = `/attractions/${id}`;
+  const url2 = `/posts/${id}?page=1&size=9`;
+  //const url3 = "/posts/attractions?page=1&size=100";
 
-  const url4 = `http://localhost:3000/attractions/saves/1/1`;
-  const url5 = `http://localhost:3000/attractions/likes/1/1`;
-  
+  const url4 = `/attractions/saves/1/1`;
+  const url5 = `/attractions/likes/1/1`;
+
   const navigate = useNavigate();
 
   function onScroll() {
@@ -240,46 +237,45 @@ const PlaceDetail = (): JSX.Element => {
     }
   };
 
-  const handleCopyClipBoard = async (text:string) => {
+  const handleCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('url이 성공적으로 복사되었습니다.')
-    }catch(err){
-      console.log('복사 실패')
+      alert("url이 성공적으로 복사되었습니다.");
+    } catch (err) {
+      console.log("복사 실패");
     }
-  }
+  };
   //console.log('여기',attractionData)
 
-  const handleClickBookmark = async () => { 
-
-    axios.post(url4).then((res)=>{
-      console.log(res.data.data)
-      if(res.data.data.isSaves){
+  const handleClickBookmark = async () => {
+    axios.post(url4).then((res) => {
+      console.log(res.data.data);
+      if (res.data.data.isSaves) {
         setBookmarkSaves(true);
-        console.log(bookmarkSaves)
+        console.log(bookmarkSaves);
       }
-    })
-  }
+    });
+  };
 
   // 여기
   const handleClickLikes = () => {
-    console.log('누름')
-    axios.post(url5).then((res)=>{
-      console.log(res.data.data.isVoted)
-      if(res.data.data.isVoted){
+    console.log("누름");
+    axios.post(url5).then((res) => {
+      console.log(res.data.data.isVoted);
+      if (res.data.data.isVoted) {
         setLikes(res.data.data.isVoted);
-        console.log(likes)
+        console.log(likes);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    //잠깐 멈춤 
+    //잠깐 멈춤
     axios.all([axios.get(url), axios.get(url2)]).then(
       axios.spread((res1, res2) => {
         setAttractionData(res1.data.data);
         setPostData(res2.data.data);
-        console.log('요청중')
+        console.log("요청중");
       })
     );
 
@@ -292,8 +288,6 @@ const PlaceDetail = (): JSX.Element => {
     };
   }, []);
 
-
-
   return (
     <>
       <FixedOnScrollUpHeader />
@@ -304,15 +298,15 @@ const PlaceDetail = (): JSX.Element => {
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
           <FixBoxVertical inverted={fixBar < 470 ? true : false}>
-              <div
-                className="icon"
-                onClick={() => {
-                  handleCopyClipBoard(document.location.href);
-                }}
-              >
+            <div
+              className="icon"
+              onClick={() => {
+                handleCopyClipBoard(document.location.href);
+              }}
+            >
               <BsShareFill size="15" />
             </div>
-            
+
             <div
               onClick={() => {
                 navigate("/write");
@@ -322,16 +316,12 @@ const PlaceDetail = (): JSX.Element => {
               <SlNote size="16" />
             </div>
             {/* <button onClick = {() => {setBookmarkSaves (true)} }></button> */}
-            <div onClick={()=>handleClickBookmark()}>
-              <BsBookmarkFill size="16"  fill={bookmarkSaves ? "red" : "grey"}/>
+            <div onClick={() => handleClickBookmark()}>
+              <BsBookmarkFill size="16" fill={bookmarkSaves ? "red" : "grey"} />
             </div>
-            <MarkerCount>
-              {attractionData!.saves}
-            </MarkerCount>
-            <div onClick = {()=>handleClickLikes()}>
-              
-              <AiFillHeart size="16" color = {likes === true ? "red" : "grey"} /> 
-
+            <MarkerCount>{attractionData!.saves}</MarkerCount>
+            <div onClick={() => handleClickLikes()}>
+              <AiFillHeart size="16" color={likes === true ? "red" : "grey"} />
             </div>
             <MarkerCount>{attractionData!.likes}</MarkerCount>
           </FixBoxVertical>
@@ -371,10 +361,10 @@ const PlaceDetail = (): JSX.Element => {
               left="20%"
               regionFilter="null"
               component="place"
-              dataset = ''
-              modalData ='ex'
-              setFilterOrPosition='11'
-              filterOrPosition='11'
+              dataset=""
+              modalData="ex"
+              setFilterOrPosition="11"
+              filterOrPosition="11"
             ></KakaoMap>
           </Container>
           <Post ref={scrollRefContent}>

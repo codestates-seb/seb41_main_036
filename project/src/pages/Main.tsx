@@ -86,9 +86,8 @@ function Main() {
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
   const [postData, setPostData] = useState<ArrayPostType>();
 
-  const url =
-    "http://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=4&sort=newest";
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/home?page=1&size=8&sort=views`;
+  const url = "/attractions/filter?page=1&size=4&sort=newest";
+  const url2 = `/posts/home?page=1&size=8&sort=views`;
 
   useEffect(() => {
     axios.all([axios.post(url, { provinces: [] }), axios.get(url2)]).then(
@@ -99,22 +98,12 @@ function Main() {
     );
   }, []);
 
-
-
-
-
-
-
-
-
-
   return (
     <>
       <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
       <Body>
-
         <MainSubTitle>많이 다녀간 명소</MainSubTitle>
         <ViewsPlaceContainer>
           <PlaceCardWrapper>

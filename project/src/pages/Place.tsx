@@ -125,7 +125,7 @@ const Place = () => {
     if (searchValue && !isLoading) {
       axios
         .post(
-          `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           { provinces: checkedList }
         )
         .then((res) => {
@@ -137,7 +137,7 @@ const Place = () => {
     } else if (!isLoading) {
       axios
         .post(
-          `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           {
             provinces: checkedList,
           }
@@ -159,8 +159,8 @@ const Place = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     const URL = searchValue
-      ? `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
-      : `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+      ? `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
+      : `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
 
     axios
       .post(URL, {
