@@ -61,13 +61,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // Detail 문제로 -> 삽입 x
         AuthMember authMember = (AuthMember) authResult.getPrincipal();
-        log.info("authMember= {}", authMember);
         TokenDto tokenDto = jwtGenerator.generateTokenDto(authMember);
         String accessToken = tokenDto.getAccessToken(); // accessToken 만들기
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
 
         // response 토큰 설정
         ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
+        log.info("===cookie==={}", cookie.toString());
         response.setHeader(SET_COOKIE, cookie.toString());
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 //        response.setHeader("Authorization", BEARER_PREFIX + accessToken);

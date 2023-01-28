@@ -82,6 +82,7 @@ public class SecurityConfiguration {
 		configuration.setAllowedOrigins(
 				List.of(
 						"http://localhost:3000",
+						"http://127.0.0.1:3000",
 						"http://pikcha36.o-r.kr/",
 						"https://pikcha36.o-r.kr/")
 		);

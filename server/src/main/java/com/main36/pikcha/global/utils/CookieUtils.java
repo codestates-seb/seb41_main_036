@@ -14,13 +14,13 @@ public class CookieUtils {
     public static ResponseCookie getResponseCookie(String refreshToken) {
 
         return ResponseCookie.from("refreshToken", refreshToken)
-//                .domain("localhost:3000") -> 실행 x
-//                .domain("pikcha36.o-r.kr") -> 성공 할때 sameSite 제거
                 .maxAge(3 * 24 * 60 * 60) // 쿠키 유효기간 설정 (3일)
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
                 .sameSite("None")
+//                .domain("localhost:3000") // 실행 안됌
+//                .domain("pikcha36.o-r.kr") // 성공 할때 sameSite 제거
                 .build();
 
     }
