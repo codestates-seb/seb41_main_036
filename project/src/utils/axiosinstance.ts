@@ -1,16 +1,17 @@
 import Axios, { AxiosHeaders } from "axios";
 
 const axios = Axios.create({
-  baseURL: "http://pikcha36.o-r.kr:8080",
-});
+  // baseURL: "http://pikcha36.o-r.kr:8090",
+  withCredentials: true,
+
+}, 
+);
 
 axios.interceptors.request.use(
   (config) => {
     const originalRequest = config;
     const accessToken = localStorage.getItem("Authorization");
-    axios.defaults.headers.common["Authorization"] = accessToken;
-
-
+    // axios.defaults.headers.common["Authorization"] = accessToken;
     originalRequest.headers["Authorization"] = accessToken;
     return originalRequest;
   },

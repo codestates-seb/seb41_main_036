@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
 import axios from "../utils/axiosinstance";
+import Axios from "axios"
 import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+import { LoginState, AuthToken, LoggedUser, MemberId } from "../recoil/state";
 
 
 interface TextProps {
@@ -34,7 +35,7 @@ const Wrapper = styled.section`
   border-radius: 30px;
 `;
 const Signincontainer = styled.div<OverlayProps>`
-  width: 40%;
+  min-width: 615px;
   height: 100%;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
@@ -50,7 +51,7 @@ const Signincontainer = styled.div<OverlayProps>`
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
 const Logincontainer = styled.div<OverlayProps>`
-  width: 40%;
+  min-width: 615px;
   height: 100%;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
@@ -66,7 +67,7 @@ const Logincontainer = styled.div<OverlayProps>`
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
 const Rightoverlay = styled.div<OverlayProps>`
-  width: 40%;
+  min-width: 615px;
   height: 100%;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
@@ -84,7 +85,7 @@ const Rightoverlay = styled.div<OverlayProps>`
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
 const Leftoverlay = styled.div<OverlayProps>`
-  width: 40%;
+  min-width: 615px; // 40%
   height: 100%;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
@@ -150,6 +151,8 @@ const Logo = styled.img`
   width: 330px;
   height: 80px;
   font-size: 50px;
+  cursor: pointer;
+
 `;
 const CloseButton = styled.button`
   z-index: 100;
@@ -190,6 +193,8 @@ const Login = () => {
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
+  const [memberId, setMenberId] = useRecoilState(MemberId);
+
 
   const navigate = useNavigate();
 
@@ -246,74 +251,14 @@ const Login = () => {
 
   const onClickLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    // if (loginemailErr || loginpasswordErr) {
-    //   alert("로그인 양식을 지켜주세요.");
-    //   return;
-    // }
-
-    // return axios
-    //   .post(process.env.REACT_APP_DB_HOST + "/login", {
-    //     username: loginemail,
-    //     password: loginpassword,
-    //   })
-    //   .then((res) => {
-    //     const { memberId, accessToken } = res.data.data;
-    //     if (res.status === 200) {
-    //       console.log("로그인성공");
-    //       setIslogin(true);
-    //       setAuth(accessToken);
-    //       setLoggedUser(loginemail);
-    //       localStorage.setItem("loginStatus", "true ");
-    //       localStorage.setItem("Authorization", `${accessToken}`);
-    //       localStorage.setItem("memberId", memberId);
-    //       axios.defaults.headers.common["Authorization"] = accessToken;
-    //       navigate(-1);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     alert("회원이 아닙니다.");
-    //   });
     loginHandle()
   };
-
 
   const onClickSignin = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    // if (signemailErr || signpasswordErr || phonenumberErr) {
-    //   alert("회원가입 양식을 제대로 채워주세요.");
-    //   return;
-    // }
-    // if (!signemailErr && !signpasswordErr && !phonenumberErr) {
-    //   return axios
-    //     .post(
-    //       process.env.REACT_APP_DB_HOST + "/signup",
-    //       {
-    //         email: signemail,
-    //         password: signpassword,
-    //         phoneNumber: phonenumber,
-    //         address: address,
-    //         username: username,
-    //       },
-    //       {
-    //         withCredentials: true,
-    //       }
-    //     )
-    //     .then((res) => {
-    //       console.log(res);
-    //       if (res.status === 201) {
-    //         console.log("회원가입 성공");
-    //         window.location.replace("/login")
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.error(err);
-    //       alert("이미 존재하는 회원입니다.");
-    //     });
-    // }
-    singHandle()
+    signHandle()
   };
 
   const loginHandle = () => {
@@ -322,22 +267,36 @@ const Login = () => {
       return;
     }
 
-    return axios
-      .post(process.env.REACT_APP_DB_HOST + "/login", {
+    return Axios
+      .post( process.env.REACT_APP_DB_HOST + "/login", {
         username: loginemail,
         password: loginpassword,
-      })
+    },
+    {
+      withCredentials: true
+    }
+      )
       .then((res) => {
         const { memberId, accessToken } = res.data.data;
+        // console.log("ㅎㄷ", res)
+        // const cookie = res.headers["Set-Cookie"]
+
         if (res.status === 200) {
           console.log("로그인성공");
           setIslogin(true);
           setAuth(accessToken);
           setLoggedUser(loginemail);
+          setMenberId(memberId)
           localStorage.setItem("loginStatus", "true ");
           localStorage.setItem("Authorization", `${accessToken}`);
           localStorage.setItem("memberId", memberId);
-          axios.defaults.headers.common["Authorization"] = accessToken;
+          // axios.defaults.headers.common["Authorization"] = accessToken;
+
+
+
+          // document.cookie = cookie;
+          // console.log("쿠키: ", cookie)
+          
           navigate(-1);
         }
       })
@@ -347,7 +306,7 @@ const Login = () => {
       });
   }
 
-  const singHandle = () => {
+  const signHandle = () => {
     if (signemailErr || signpasswordErr || phonenumberErr) {
       alert("회원가입 양식을 제대로 채워주세요.");
       return;
@@ -373,6 +332,7 @@ const Login = () => {
             console.log("회원가입 성공");
             window.location.replace("/login")
           }
+      
         })
         .catch((err) => {
           console.error(err);
@@ -386,94 +346,31 @@ const Login = () => {
 
     const memberId = localStorage.getItem("memberId")
     axios
-    .post(`http://pikcha36.o-r.kr:8080/attractions/saves/${memberId}`)
+    .get(`/token/test/${memberId}}`)
     .then((res) => {
   
         console.log(res)
-        console.log("댓글등록")
+        console.log("테스트요청")
   
     })
     .catch((err)=>console.error(err))
   
   }
-  
-  
-  
-  
 
 
 
-  // const onKeyPress = (e: 
-  //   KeyboardEvent<HTMLInputElement>
-  //   ) => {
-  //   e.preventDefault();
-
-  //   if(overlays === false){
-  //     if (loginemailErr || loginpasswordErr) {
-  //       alert("로그인 양식을 지켜주세요.");
-  //       return;
-  //     }
-  
-  //     return axios
-  //       .post(process.env.REACT_APP_DB_HOST + "/login", {
-  //         username: loginemail,
-  //         password: loginpassword,
-  //       })
-  //       .then((res) => {
-  //         const { memberId, accessToken } = res.data.data;
-  //         if (res.status === 200) {
-  //           console.log("로그인성공");
-  //           setIslogin(true);
-  //           setAuth(accessToken);
-  //           setLoggedUser(loginemail);
-  //           localStorage.setItem("loginStatus", "true ");
-  //           localStorage.setItem("Authorization", `${accessToken}`);
-  //           localStorage.setItem("memberId", memberId);
-  //           axios.defaults.headers.common["Authorization"] = accessToken;
-  //           navigate(-1);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //         alert("회원이 아닙니다.");
-  //       });
-  //   }
-
-  //   if(overlays === true){
-  //     if (signemailErr || signpasswordErr || phonenumberErr) {
-  //       alert("회원가입 양식을 제대로 채워주세요.");
-  //       return;
-  //     }
-  //     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
-  //       return axios
-  //         .post(
-  //           process.env.REACT_APP_DB_HOST + "/signup",
-  //           {
-  //             email: signemail,
-  //             password: signpassword,
-  //             phoneNumber: phonenumber,
-  //             address: address,
-  //             username: username,
-  //           },
-  //           {
-  //             withCredentials: true,
-  //           }
-  //         )
-  //         .then((res) => {
-  //           console.log(res);
-  //           if (res.status === 201) {
-  //             console.log("회원가입 성공");
-  //             window.location.replace("/login")
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.error(err);
-  //           alert("이미 존재하는 회원입니다.");
-  //         });
-  //     }
-  //   }
-
-  // }
+  const onPressEnter = (e: 
+    React.KeyboardEvent<HTMLInputElement>
+    ) => {
+    if(e.key === "Enter"){
+      if(overlays === false){
+        loginHandle()
+      }
+      if(overlays === true){
+        signHandle()
+      }
+    }
+  }
 
   const googleLogin = () => {
     window.location.href =
@@ -484,8 +381,12 @@ const Login = () => {
       "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
 
+  const onClickLogo = () => {
+    navigate("/");
+  }
+
   return (
-    <Wrapper>
+    <Wrapper >
       {openPostcode && (
         <>
           <DaumPostcode
@@ -504,7 +405,6 @@ const Login = () => {
           <CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
         </>
       )}
-
       <Logincontainer overlay={overlays}>
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
           로그인
@@ -515,11 +415,11 @@ const Login = () => {
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
         </TextStyle>
-
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
         <InputStyle
           placeholder="이메일"
           onChange={handleLoginEmailChange}
+          onKeyDown = {onPressEnter}
         ></InputStyle>
         {loginemailErr && loginemail.length !== 0 ? (
           <ErrMsg color="red" fontSize="16px" fontweight="normal">
@@ -533,6 +433,7 @@ const Login = () => {
         <InputStyle
           placeholder="비밀번호"
           onChange={handleLoginPasswordChange}
+          onKeyDown = {onPressEnter}
           type="password"
         ></InputStyle>
         {loginpasswordErr && loginpassword.length !== 0 ? (
@@ -545,8 +446,6 @@ const Login = () => {
           </TextStyle>
         )}
         <CustomPadding padding="50px 0px 0px 0px"></CustomPadding>
-        <button onClick={onClickx}>버튼버튼</button>
-
         <ButtonForm
           width="180px"
           height="60px"
@@ -555,6 +454,11 @@ const Login = () => {
           type="violet"
           onClick={onClickLogin}
         ></ButtonForm>
+
+
+        <button onClick={onClickx}>123123213</button>
+
+
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           계정정보를 잊으셨나요?
@@ -573,6 +477,7 @@ const Login = () => {
         <InputStyle
           placeholder="이메일"
           onChange={handleSignEmailChange}
+          onKeyDown = {onPressEnter}
         ></InputStyle>
         {signemailErr && signemail.length !== 0 ? (
           <ErrMsg color="red" fontSize="16px" fontweight="normal">
@@ -586,6 +491,7 @@ const Login = () => {
         <InputStyle
           placeholder="비밀번호"
           onChange={handleSignPasswordChange}
+          onKeyDown = {onPressEnter}
           type="password"
         ></InputStyle>
         {signpasswordErr && signpassword.length !== 0 ? (
@@ -600,6 +506,7 @@ const Login = () => {
         <InputStyle
           placeholder="비밀번호확인"
           onChange={handlePasswordConfirm}
+          onKeyDown = {onPressEnter}
           type="password"
         ></InputStyle>
         {passwordConfirm === signpassword ? (
@@ -614,6 +521,7 @@ const Login = () => {
         <InputStyle
           placeholder="전화번호(-를 포함해서 입력해주세요)"
           onChange={handlePhoneChange}
+          onKeyDown = {onPressEnter}
         ></InputStyle>
         {phonenumberErr && phonenumber.length !== 0 ? (
           <ErrMsg color="red" fontSize="16px" fontweight="normal">
@@ -628,6 +536,7 @@ const Login = () => {
           placeholder="주소"
           value={address}
           onClick={handleAddress.clickInput}
+          onKeyDown = {handleAddress.clickInput}
         ></InputStyle>
         <TextStyle color="white" fontSize="18px" fontweight="normal">
           |
@@ -635,6 +544,7 @@ const Login = () => {
         <InputStyle
           placeholder="닉네임"
           onChange={handleUsernameChange}
+          onKeyDown = {onPressEnter}
         ></InputStyle>
         <TextStyle color="white" fontSize="18px" fontweight="normal">
           |
@@ -659,7 +569,7 @@ const Login = () => {
           welcome to the
         </TextStyle>
         <Logo src={process.env.PUBLIC_URL + "/logo.png"}
-            alt="logo"/>
+            alt="logo" onClick={onClickLogo}/>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
         <TextStyle color="white" fontSize="30px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?
@@ -691,7 +601,7 @@ const Login = () => {
         </TextStyle>
         <Logo 
             src={process.env.PUBLIC_URL + "/logo.png"}
-            alt="logo"/>
+            alt="logo" onClick={onClickLogo}/>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
         <TextStyle color="white" fontSize="30px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?
