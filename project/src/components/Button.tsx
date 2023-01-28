@@ -13,6 +13,7 @@ interface ButtonProps {
   text?: string;
   type?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  margin?: string;
 }
 
 const VioletButton = styled.button<ButtonProps>`
@@ -27,6 +28,7 @@ const VioletButton = styled.button<ButtonProps>`
   color: white;
   font-weight: var(--fw-bold);
   font-size: ${(props) => props.fontsize};
+  margin: ${(props) => props.margin};
   cursor: pointer;
   &:hover {
     background-color: var(--purple-400);
@@ -43,6 +45,7 @@ const WhiteButton = styled.button<ButtonProps>`
   color: white;
   font-weight: var(--fw-bold);
   font-size: ${(props) => props.fontsize};
+  margin: ${(props) => props.margin};
   cursor: pointer;
   &:hover {
     background-color: white;
@@ -58,6 +61,7 @@ const GrayButton = styled.button<ButtonProps>`
   color: var(--black-650);
   font-weight: var(--fw-bold);
   font-size: ${(props) => props.fontsize};
+  margin: ${(props) => props.margin};
   cursor: pointer;
   &:hover {
     background-color: var(--black-400);
@@ -74,6 +78,7 @@ const NoneButton = styled.button<ButtonProps>`
   font-weight: 400;
   color: var(--black-900);
   font-size: var(--font-sx);
+  margin: ${(props) => props.margin};
   cursor: pointer;
 `;
 
@@ -85,6 +90,7 @@ const Button = ({
   text,
   type,
   onClick,
+  margin,
 }: ButtonProps) => {
   return (
     <>
@@ -95,6 +101,7 @@ const Button = ({
           fontsize={fontsize}
           hovercolor={hovercolor}
           onClick={onClick}
+          margin={margin}
         >
           {text}
         </VioletButton>
@@ -108,6 +115,7 @@ const Button = ({
           fontsize={fontsize}
           hovercolor={hovercolor}
           onClick={onClick}
+          margin={margin}
         >
           {text}
         </WhiteButton>
@@ -121,6 +129,7 @@ const Button = ({
           fontsize={fontsize}
           hovercolor={hovercolor}
           onClick={onClick}
+          margin={margin}
         >
           {text}
         </GrayButton>
@@ -133,6 +142,7 @@ const Button = ({
           height={height}
           fontsize={fontsize}
           onClick={onClick}
+          margin={margin}
         >
           {text}
         </NoneButton>
