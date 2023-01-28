@@ -147,7 +147,7 @@ const HeaderBodyBar = ({
           </SearchBarWrapper>
         )}
         {islogin && (
-          <Profile>
+          <Profile onClick={() => navigate("/mypage")}>
             <img src={IMG_SRC} alt="profile" />
           </Profile>
         )}

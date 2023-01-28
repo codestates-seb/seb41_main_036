@@ -252,14 +252,22 @@ const DetailPost = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
-  
+
   const navigate = useNavigate();
   useEffect(() => {
-    axios
-      .get(`/posts/details/${id}`)
-      .then((res) => setPost(res.data.data))
-      .catch((err) => console.error(err));
-    setPostComments(post?.comments);
+    if (memberId) {
+      axios
+        .get(`/posts/details/${id}`)
+        .then((res) => setPost(res.data.data))
+        .catch((err) => console.error(err));
+      setPostComments(post?.comments);
+    } else {
+      axios
+        .get(`/posts/details/${id}/${memberId}`)
+        .then((res) => setPost(res.data.data))
+        .catch((err) => console.error(err));
+      setPostComments(post?.comments);
+    }
   }, [post === undefined]);
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -299,7 +307,7 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-  console.log(post);
+
   return (
     <>
       <Header>
@@ -310,7 +318,7 @@ const DetailPost = () => {
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
         {(post && post.postId === memberId) || memberId === 1 ? (
           <PostMangeButtnContainer>
-            <PostManageButton>
+            <PostManageButton onClick={() => navigate(`/edit/${id}`)}>
               <MdModeEdit /> 수정
             </PostManageButton>
             <PostManageButton onClick={deleteHandler}>

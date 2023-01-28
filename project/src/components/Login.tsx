@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonForm from "./Button";
 import axios from "../utils/axiosinstance";
@@ -7,7 +7,7 @@ import DaumPostcode from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, AuthToken, LoggedUser, MemberId } from "../recoil/state";
-
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 interface TextProps {
   fontSize: string;
@@ -35,8 +35,8 @@ const Wrapper = styled.section`
   border-radius: 30px;
 `;
 const Signincontainer = styled.div<OverlayProps>`
-  min-width: 615px;
-  height: 100%;
+  width: 30%;
+  height: 70%;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
@@ -51,13 +51,13 @@ const Signincontainer = styled.div<OverlayProps>`
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
 const Logincontainer = styled.div<OverlayProps>`
-  min-width: 615px;
-  height: 100%;
+  width: 30%;
+  height: 70%;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-color: white;
   transition: all 0.5s;
@@ -67,8 +67,8 @@ const Logincontainer = styled.div<OverlayProps>`
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
 const Rightoverlay = styled.div<OverlayProps>`
-  min-width: 615px;
-  height: 100%;
+  width: 30%;
+  height: 70%;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -85,8 +85,8 @@ const Rightoverlay = styled.div<OverlayProps>`
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
 const Leftoverlay = styled.div<OverlayProps>`
-  min-width: 615px; // 40%
-  height: 100%;
+  width: 30%;
+  height: 70%;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -108,7 +108,7 @@ const OauthBtn = styled.button<ButtonProps>`
   border: 0px;
   background-color: ${(props) => props.backgroundcolor};
   border-radius: 30px;
-  color: ${(props) => props.color };
+  color: ${(props) => props.color};
   font-size: 20px;
   font-weight: bold;
   margin: 10px 0px 10px 0px;
@@ -117,13 +117,13 @@ const OauthBtn = styled.button<ButtonProps>`
   }
 `;
 const InputStyle = styled.input`
-  width: 62%;
-  height: 45px;
+  width: 75%;
+  height: 40px;
   border: 0px;
   border-bottom: 1px solid var(--black-400);
   padding-top: 10px;
-  padding-left: 10px;
-  font-size: 20px;
+  font-size: 15px;
+  margin-bottom: 5px;
   &:focus {
     outline: none;
     border-bottom: 1px solid var(--black-600);
@@ -135,61 +135,81 @@ const TextStyle = styled.div<TextProps>`
   font-weight: ${(props) => props.fontweight};
   padding-top: 10px;
 `;
+
 const ErrMsg = styled.div<TextProps>`
+  width: 75%;
   font-size: ${(props) => props.fontSize};
   color: ${(props) => props.color};
   font-weight: ${(props) => props.fontweight};
-  padding-top: 10px;
-  align-self: flex-start;
-  padding-left: 20%;
 `;
 
 const CustomPadding = styled.div<PaddingProps>`
   padding: ${(props) => props.padding};
 `;
 const Logo = styled.img`
-  width: 330px;
-  height: 80px;
-  font-size: 50px;
+  width: 200px;
+  height: 50px;
+  font-size: 40px;
+  margin-top: 15px;
   cursor: pointer;
-
 `;
 const CloseButton = styled.button`
   z-index: 100;
-  width: 80px;
-  height: 50px;
-  margin-top: 51%;
-  border-radius: 20px;
   background-color: white;
   font-size: 25px;
-  color: black;
-  position: absolute;
+  right: 1.6em;
+  bottom: 7em;
+  color: var(--black-700);
+  position: relative;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
   &:hover {
-    background-color: red;
-    color: white;
+    color: #c3c3c3;
   }
 `;
 
+const SocitalLoginContinaer = styled.div`
+  width: 120px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const LoginInputContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-bottom: 130px;
+
+  span {
+    width: 70%;
+    text-align: left;
+  }
+`;
+
+const LoginHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 const Login = () => {
   const [overlays, setOverlays] = useState<boolean>(false);
   const [loginemail, setLoginEmail] = useState<string>("");
   const [loginpassword, setLoginPassword] = useState<string>("");
-
   const [signemail, setSignEmail] = useState<string>("");
   const [signpassword, setSignPassword] = useState<string>("");
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [phonenumber, setPhonenumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [openPostcode, setOpenPostcode] = useState<boolean>(false);
-
   const [loginemailErr, setLoginEmailErr] = useState<boolean>(true);
   const [loginpasswordErr, setLoginPasswordErr] = useState<boolean>(true);
-
   const [signemailErr, setSignEmailErr] = useState<boolean>(true);
   const [signpasswordErr, setSignPasswordErr] = useState<boolean>(true);
   const [phonenumberErr, setPhonenumberErr] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
-
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
@@ -197,7 +217,6 @@ const Login = () => {
 
 
   const navigate = useNavigate();
-
   const onClickBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     setOverlays(!overlays);
   };
@@ -291,12 +310,6 @@ const Login = () => {
           localStorage.setItem("Authorization", `${accessToken}`);
           localStorage.setItem("memberId", memberId);
           // axios.defaults.headers.common["Authorization"] = accessToken;
-
-
-
-          // document.cookie = cookie;
-          // console.log("쿠키: ", cookie)
-          
           navigate(-1);
         }
       })
@@ -304,7 +317,7 @@ const Login = () => {
         console.error(err);
         alert("회원이 아닙니다.");
       });
-  }
+  };
 
   const signHandle = () => {
     if (signemailErr || signpasswordErr || phonenumberErr) {
@@ -330,7 +343,7 @@ const Login = () => {
           console.log(res);
           if (res.status === 201) {
             console.log("회원가입 성공");
-            window.location.replace("/login")
+            window.location.replace("/login");
           }
       
         })
@@ -402,92 +415,105 @@ const Login = () => {
             autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
             defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
           />
-          <CloseButton onClick={handleAddress.clickInput}>닫기</CloseButton>
+          <CloseButton onClick={handleAddress.clickInput}>
+            <AiOutlineCloseCircle />
+          </CloseButton>
         </>
       )}
       <Logincontainer overlay={overlays}>
-        <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
-          로그인
-        </TextStyle>
-        <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <OauthBtn color="blue" backgroundcolor="var(--black-300)" hoverbackgroundcolor="var(--black-500)" onClick={googleLogin}>G</OauthBtn>
-        <OauthBtn color="black" backgroundcolor="#FFE90A" hoverbackgroundcolor="#FFD240" onClick={kakaoLogin}>K</OauthBtn>
-        <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
-          SNS 계정으로 로그인
-        </TextStyle>
-        <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <InputStyle
-          placeholder="이메일"
-          onChange={handleLoginEmailChange}
-          onKeyDown = {onPressEnter}
-        ></InputStyle>
-        {loginemailErr && loginemail.length !== 0 ? (
-          <ErrMsg color="red" fontSize="16px" fontweight="normal">
-            올바른 이메일 형식이 아닙니다.
-          </ErrMsg>
-        ) : (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
+        <LoginHeaderContainer>
+          <TextStyle color="#6154F8" fontSize="23px" fontweight="bold">
+            로그인
           </TextStyle>
-        )}
-        <InputStyle
-          placeholder="비밀번호"
-          onChange={handleLoginPasswordChange}
-          onKeyDown = {onPressEnter}
-          type="password"
-        ></InputStyle>
-        {loginpasswordErr && loginpassword.length !== 0 ? (
+          <TextStyle color="#6154F8" fontSize="15px" fontweight="bold">
+            SNS 계정으로 로그인
+          </TextStyle>
+          <SocitalLoginContinaer>
+            <OauthBtn
+              color="blue"
+              backgroundcolor="var(--black-300)"
+              hoverbackgroundcolor="var(--black-500)"
+              onClick={googleLogin}
+            >
+              G
+            </OauthBtn>
+            <OauthBtn
+              color="black"
+              backgroundcolor="#FFE90A"
+              hoverbackgroundcolor="#FFD240"
+              onClick={kakaoLogin}
+            >
+              K
+            </OauthBtn>
+          </SocitalLoginContinaer>
+        </LoginHeaderContainer>
+        <LoginInputContainer>
+          <InputStyle
+            placeholder="이메일을 입력하세요."
+            onChange={handleLoginEmailChange}
+            onKeyDown = {onPressEnter}
+          ></InputStyle>
+          {loginemailErr && loginemail.length !== 0 ? (
+            <ErrMsg color="red" fontSize="12px" fontweight="normal">
+              올바른 이메일 형식이 아닙니다.
+            </ErrMsg>
+          ) : null}
+          <InputStyle
+            placeholder="비밀번호를 입력하세요."
+            onChange={handleLoginPasswordChange}
+            type="password"
+            onKeyDown = {onPressEnter}
+          ></InputStyle>
+        </LoginInputContainer>
+        {/* {loginpasswordErr && loginpassword.length !== 0 ? (
           <ErrMsg color="red" fontSize="16px" fontweight="normal">
             비밀번호를 8자이상 입력해주세요.
           </ErrMsg>
-        ) : (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
-          </TextStyle>
-        )}
-        <CustomPadding padding="50px 0px 0px 0px"></CustomPadding>
+        ) : null} */}
         <ButtonForm
-          width="180px"
-          height="60px"
-          fontsize="24px"
+          width="90px"
+          height="35px"
+          fontsize="15px"
           text="로그인"
           type="violet"
           onClick={onClickLogin}
         ></ButtonForm>
-
-
-        <button onClick={onClickx}>123123213</button>
-
-
-        <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
-          계정정보를 잊으셨나요?
-        </TextStyle>
       </Logincontainer>
       <Signincontainer overlay={overlays}>
-        <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
+        <TextStyle color="#6154F8" fontSize="23px" fontweight="bold">
           회원가입
         </TextStyle>
-        <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <OauthBtn color="blue" backgroundcolor="var(--black-300)" hoverbackgroundcolor="var(--black-500)" onClick={googleLogin}>G</OauthBtn>
-        <OauthBtn color="black" backgroundcolor="#FFE90A" hoverbackgroundcolor="#FFD240" onClick={kakaoLogin}>K</OauthBtn>
-        <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
+        <TextStyle color="#6154F8" fontSize="15px" fontweight="bold">
           SNS 계정으로 가입하기
         </TextStyle>
+        <SocitalLoginContinaer>
+          <OauthBtn
+            color="blue"
+            backgroundcolor="var(--black-300)"
+            hoverbackgroundcolor="var(--black-500)"
+            onClick={googleLogin}
+          >
+            G
+          </OauthBtn>
+          <OauthBtn
+            color="black"
+            backgroundcolor="#FFE90A"
+            hoverbackgroundcolor="#FFD240"
+            onClick={kakaoLogin}
+          >
+            K
+          </OauthBtn>
+        </SocitalLoginContinaer>
         <InputStyle
           placeholder="이메일"
           onChange={handleSignEmailChange}
           onKeyDown = {onPressEnter}
         ></InputStyle>
         {signemailErr && signemail.length !== 0 ? (
-          <ErrMsg color="red" fontSize="16px" fontweight="normal">
+          <ErrMsg color="red" fontSize="12px" fontweight="normal">
             올바른 이메일 형식이 아닙니다.
           </ErrMsg>
-        ) : (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
-          </TextStyle>
-        )}
+        ) : null}
         <InputStyle
           placeholder="비밀번호"
           onChange={handleSignPasswordChange}
@@ -495,83 +521,64 @@ const Login = () => {
           type="password"
         ></InputStyle>
         {signpasswordErr && signpassword.length !== 0 ? (
-          <ErrMsg color="red" fontSize="16px" fontweight="normal">
+          <ErrMsg color="red" fontSize="12px" fontweight="normal">
             비밀번호를 8자이상 입력해주세요.
           </ErrMsg>
-        ) : (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
-          </TextStyle>
-        )}
+        ) : null}
         <InputStyle
           placeholder="비밀번호확인"
           onChange={handlePasswordConfirm}
           onKeyDown = {onPressEnter}
           type="password"
         ></InputStyle>
-        {passwordConfirm === signpassword ? (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
-          </TextStyle>
-        ) : (
+        {/* {passwordConfirm === signpassword ? null : (
           <ErrMsg color="red" fontSize="16px" fontweight="normal">
             비밀번호가 다릅니다.
           </ErrMsg>
-        )}
+        )} */}
         <InputStyle
           placeholder="전화번호(-를 포함해서 입력해주세요)"
           onChange={handlePhoneChange}
           onKeyDown = {onPressEnter}
         ></InputStyle>
         {phonenumberErr && phonenumber.length !== 0 ? (
-          <ErrMsg color="red" fontSize="16px" fontweight="normal">
+          <ErrMsg color="red" fontSize="12px" fontweight="normal">
             올바른 전화번호 형식이 아닙니다.
           </ErrMsg>
-        ) : (
-          <TextStyle color="white" fontSize="16px" fontweight="normal">
-            |
-          </TextStyle>
-        )}
+        ) : null}
         <InputStyle
           placeholder="주소"
           value={address}
           onClick={handleAddress.clickInput}
           onKeyDown = {handleAddress.clickInput}
         ></InputStyle>
-        <TextStyle color="white" fontSize="18px" fontweight="normal">
-          |
-        </TextStyle>
         <InputStyle
           placeholder="닉네임"
           onChange={handleUsernameChange}
           onKeyDown = {onPressEnter}
         ></InputStyle>
-        <TextStyle color="white" fontSize="18px" fontweight="normal">
-          |
-        </TextStyle>
         {/* <TextStyle color="red" fontSize='16px' fontweight='normal'>3글자 이상 입력해주세요.</TextStyle> */}
-        <CustomPadding padding="50px 0px 0px 0px"></CustomPadding>
         <ButtonForm
-          width="180px"
-          height="60px"
-          fontsize="24px"
+          width="90px"
+          height="35px"
+          fontsize="15px"
           text="회원가입"
           type="violet"
           onClick={onClickSignin}
+          margin="50px 0 0 0"
         ></ButtonForm>
-        <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
-          계정정보를 잊으셨나요?
-        </TextStyle>
       </Signincontainer>
       <Leftoverlay overlay={overlays}>
-        <TextStyle color="white" fontSize="25px" fontweight="normal">
+        <TextStyle color="white" fontSize="20px" fontweight="normal">
           welcome to the
         </TextStyle>
-        <Logo src={process.env.PUBLIC_URL + "/logo.png"}
-            alt="logo" onClick={onClickLogo}/>
-        <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="white" fontSize="30px" fontweight="normal">
+        <Logo
+          src={process.env.PUBLIC_URL + "/logo-white.png"}
+          alt="logo"
+          onClick={() => navigate("/")}
+        />
+        <TextStyle color="white" fontSize="20px" fontweight="normal">
+          <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
           사진찍기 가장 좋은 장소는 어디일까요?
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
@@ -582,28 +589,29 @@ const Login = () => {
           다양한 정보를 통해 나만의 사진을 찍어보세요.
         </TextStyle>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="white" fontSize="18px" fontweight="bold">
+        <TextStyle color="white" fontSize="16px" fontweight="bold">
           이미 회원이시라면?
         </TextStyle>
         <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
         <ButtonForm
-          width="180px"
-          height="60px"
-          fontsize="24px"
+          width="90px"
+          height="35px"
+          fontsize="15px"
           text="로그인"
           type="white"
           onClick={onClickBtn}
+          margin="32px 0 0 0"
         ></ButtonForm>
       </Leftoverlay>
       <Rightoverlay overlay={overlays}>
-        <TextStyle color="white" fontSize="25px" fontweight="normal">
+        <TextStyle color="white" fontSize="20px" fontweight="normal">
           welcome to the
         </TextStyle>
         <Logo 
             src={process.env.PUBLIC_URL + "/logo.png"}
-            alt="logo" onClick={onClickLogo}/>
+            alt="logo"/>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="white" fontSize="30px" fontweight="normal">
+        <TextStyle color="white" fontSize="20px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
@@ -614,14 +622,14 @@ const Login = () => {
           다양한 정보를 통해 나만의 사진을 찍어보세요.
         </TextStyle>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
-        <TextStyle color="white" fontSize="18px" fontweight="bold">
+        <TextStyle color="white" fontSize="16px" fontweight="bold">
           아직 회원이 아니신가요?
         </TextStyle>
-        <CustomPadding padding="20px 0px 0px 0px"></CustomPadding>
+        <CustomPadding padding="50px 0px 0px 0px"></CustomPadding>
         <ButtonForm
-          width="180px"
-          height="60px"
-          fontsize="24px"
+          width="90px"
+          height="35px"
+          fontsize="15px"
           type="white"
           text="회원가입"
           onClick={onClickBtn}

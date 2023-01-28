@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiTwotoneHome } from "react-icons/ai";
 import { MdModeComment } from "react-icons/md";
-import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { TfiPencil } from "react-icons/tfi";
 import Button from "../components/Button";
 import { BsEye } from "react-icons/bs";
@@ -11,8 +11,9 @@ import axios from "../utils/axiosinstance";
 import { useRecoilState } from "recoil";
 import { MemberId } from "../recoil/state";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import HiddenHeader from "../components/Header/HiddenHeader";
 const MyPageWrapper = styled.div`
-  height: 100vh;
+  height: 96.5vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +95,8 @@ const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
   width: 60%;
-  border-radius: var(--br-l);
+  border-bottom-left-radius: var(--br-l);
+  border-bottom-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
 
@@ -282,7 +284,7 @@ const MyPage = () => {
     {
       title: (
         <>
-          <FaHeart />
+          <BsFillBookmarkFill />
           <span>나의 즐겨찾기</span>
         </>
       ),
@@ -308,92 +310,94 @@ const MyPage = () => {
   };
 
   return (
-    <MyPageWrapper>
-      <MyPageTabBarContainer>
-        {tabMenuBarList.map((menu, idx) => (
-          <MyPageTabBarMenu
-            key={idx}
-            onClick={(e) => handleTabMenuBar(e, idx)}
-            className={tab === idx ? "onToggle" : ""}
-          >
-            {menu.title}
-          </MyPageTabBarMenu>
-        ))}
-      </MyPageTabBarContainer>
-      {userData && (
-        <MyPageContainer>
-          <MyPageUserInfo>
-            <form>
-              <img
-                src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
-                alt=""
-              />
-              <div>
-                {isEdit ? (
-                  <input
-                    name="username"
-                    type="text"
-                    defaultValue={userData.username}
-                    onChange={(e) => onChange(e)}
-                  />
-                ) : (
-                  <>
-                    {userData.username}{" "}
-                    <TfiPencil onClick={() => setIsEdit(true)} />
-                  </>
-                )}
-              </div>
-              <div>{userData.memberTitle}</div>
-              <div>
-                {isEdit ? (
-                  <input
-                    name="address"
-                    type="text"
-                    value={address}
-                    onChange={(e) => onChange(e)}
-                  />
-                ) : (
-                  <>
-                    <FaMapMarkerAlt /> {userData.address}
-                  </>
-                )}
-              </div>
-              <div>{userData.email}</div>
-              <div>
-                {isEdit ? (
-                  <input
-                    name="phoneNumber"
-                    type="text"
-                    value={phoneNumber}
-                    onChange={(e) => onChange(e)}
-                  />
-                ) : (
-                  <>{userData.phoneNumber}</>
-                )}
-                {isEdit ? (
-                  <button onClick={(e) => editInfoSubmit(e)}>완료</button>
-                ) : null}
-              </div>
-              <Button
-                type="violet"
-                width="100px"
-                height="40px"
-                text="회원 탈퇴"
-              />
-            </form>
-          </MyPageUserInfo>
-          <MyPageMainContainer>
-            <div>{tabMenuBarList[tab].content}</div>
-          </MyPageMainContainer>
-        </MyPageContainer>
-      )}
-    </MyPageWrapper>
+    <>
+      <HiddenHeader />
+      <MyPageWrapper>
+        <MyPageTabBarContainer>
+          {tabMenuBarList.map((menu, idx) => (
+            <MyPageTabBarMenu
+              key={idx}
+              onClick={(e) => handleTabMenuBar(e, idx)}
+              className={tab === idx ? "onToggle" : ""}
+            >
+              {menu.title}
+            </MyPageTabBarMenu>
+          ))}
+        </MyPageTabBarContainer>
+        {userData && (
+          <MyPageContainer>
+            <MyPageUserInfo>
+              <form>
+                <img
+                  src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
+                  alt=""
+                />
+                <div>
+                  {isEdit ? (
+                    <input
+                      name="username"
+                      type="text"
+                      defaultValue={userData.username}
+                      onChange={(e) => onChange(e)}
+                    />
+                  ) : (
+                    <>
+                      {userData.username}{" "}
+                      <TfiPencil onClick={() => setIsEdit(true)} />
+                    </>
+                  )}
+                </div>
+                <div>{userData.memberTitle}</div>
+                <div>
+                  {isEdit ? (
+                    <input
+                      name="address"
+                      type="text"
+                      value={address}
+                      onChange={(e) => onChange(e)}
+                    />
+                  ) : (
+                    <>
+                      <FaMapMarkerAlt /> {userData.address}
+                    </>
+                  )}
+                </div>
+                <div>{userData.email}</div>
+                <div>
+                  {isEdit ? (
+                    <input
+                      name="phoneNumber"
+                      type="text"
+                      value={phoneNumber}
+                      onChange={(e) => onChange(e)}
+                    />
+                  ) : (
+                    <>{userData.phoneNumber}</>
+                  )}
+                  {isEdit ? (
+                    <button onClick={(e) => editInfoSubmit(e)}>완료</button>
+                  ) : null}
+                </div>
+                <Button
+                  type="violet"
+                  width="100px"
+                  height="40px"
+                  text="회원 탈퇴"
+                />
+              </form>
+            </MyPageUserInfo>
+            <MyPageMainContainer>
+              <div>{tabMenuBarList[tab].content}</div>
+            </MyPageMainContainer>
+          </MyPageContainer>
+        )}
+      </MyPageWrapper>
+    </>
   );
 };
 
 const MyPageCardContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 5px 10px;
   margin-bottom: 5px;
@@ -408,23 +412,9 @@ const MyPageCardContainer = styled.div`
   }
 
   div {
-    display: flex;
-    min-width: 80px;
+    width: 80px;
     height: 100%;
-    margin-right: 30px;
-    justify-content: center;
-    align-items: flex-end;
     font-size: var(--font-sm);
-
-    svg {
-      margin-right: 5px;
-    }
-
-    span {
-      display: flex;
-      align-items: center;
-      font-weight: var(--fw-bold);
-    }
 
     span:first-child {
       margin-right: 6px;
@@ -435,6 +425,14 @@ const MyPageCardContainer = styled.div`
     min-width: 100px;
     height: 100%;
     border-radius: var(--br-m);
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    font-weight: var(--fw-bold);
+    width: 40px;
+    padding-top: 10px;
   }
 `;
 

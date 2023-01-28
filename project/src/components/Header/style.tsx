@@ -211,6 +211,7 @@ const Profile = styled.div`
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
+  cursor: pointer;
   img {
     display: block;
     width: 100%;
