@@ -18,9 +18,9 @@ public class CookieUtils {
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
-                .sameSite("None")
-//                .domain("localhost:3000") // 실행 안됌
-//                .domain("pikcha36.o-r.kr") // 성공 할때 sameSite 제거
+//                .sameSite("None")
+                .domain("localhost:3000") // 실행 안됌
+                .domain("pikcha36.o-r.kr") // 성공 할때 sameSite 제거
                 .build();
 
     }

@@ -69,7 +69,7 @@ server:
     encoding:
       force-response: true
   ssl:
-    key-store: classpath:localhost.p12
+    key-store: classpath*:keystore.p12
     key-store-type: PKCS12
     key-password: ${SSL_PASSWORD}
   port: 8080
