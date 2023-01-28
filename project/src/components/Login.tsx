@@ -197,28 +197,22 @@ const Login = () => {
   const [overlays, setOverlays] = useState<boolean>(false);
   const [loginemail, setLoginEmail] = useState<string>("");
   const [loginpassword, setLoginPassword] = useState<string>("");
-
   const [signemail, setSignEmail] = useState<string>("");
   const [signpassword, setSignPassword] = useState<string>("");
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [phonenumber, setPhonenumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [openPostcode, setOpenPostcode] = useState<boolean>(false);
-
   const [loginemailErr, setLoginEmailErr] = useState<boolean>(true);
   const [loginpasswordErr, setLoginPasswordErr] = useState<boolean>(true);
-
   const [signemailErr, setSignEmailErr] = useState<boolean>(true);
   const [signpasswordErr, setSignPasswordErr] = useState<boolean>(true);
   const [phonenumberErr, setPhonenumberErr] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
-
   const [isLogin, setIslogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const navigate = useNavigate();
-
   const onClickBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     setOverlays(!overlays);
   };
@@ -654,7 +648,11 @@ const Login = () => {
         <TextStyle color="white" fontSize="20px" fontweight="normal">
           welcome to the
         </TextStyle>
-        <Logo src={process.env.PUBLIC_URL + "/logo-white.png"} alt="logo" />
+        <Logo
+          src={process.env.PUBLIC_URL + "/logo-white.png"}
+          alt="logo"
+          onClick={() => navigate("/")}
+        />
         <TextStyle color="white" fontSize="20px" fontweight="normal">
           <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
           사진찍기 가장 좋은 장소는 어디일까요?
@@ -685,7 +683,11 @@ const Login = () => {
         <TextStyle color="white" fontSize="20px" fontweight="normal">
           welcome to the
         </TextStyle>
-        <Logo src={process.env.PUBLIC_URL + "/logo-white.png"} alt="logo" />
+        <Logo
+          src={process.env.PUBLIC_URL + "/logo-white.png"}
+          alt="logo"
+          onClick={() => navigate("/")}
+        />
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
         <TextStyle color="white" fontSize="20px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?
