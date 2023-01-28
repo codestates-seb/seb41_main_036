@@ -214,7 +214,7 @@ const MyPage = () => {
 
   const getUserProfile = async () => {
     await axios
-      .get(`/users/profile/${memberId}`)
+      .get(process.env.REACT_APP_DB_HOST + `/users/profile/${memberId}`)
       .then((res) => {
         setUserData(res.data.data);
         const { data } = res.data;
@@ -242,7 +242,7 @@ const MyPage = () => {
   const editInfoSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .patch(`/users/edit/${memberId}`, {
+      .patch(process.env.REACT_APP_DB_HOST + `/users/edit/${memberId}`, {
         username: username,
         phoneNumber: phoneNumber,
         address: address,

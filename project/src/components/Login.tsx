@@ -246,6 +246,77 @@ const Login = () => {
 
   const onClickLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    // if (loginemailErr || loginpasswordErr) {
+    //   alert("로그인 양식을 지켜주세요.");
+    //   return;
+    // }
+
+    // return axios
+    //   .post(process.env.REACT_APP_DB_HOST + "/login", {
+    //     username: loginemail,
+    //     password: loginpassword,
+    //   })
+    //   .then((res) => {
+    //     const { memberId, accessToken } = res.data.data;
+    //     if (res.status === 200) {
+    //       console.log("로그인성공");
+    //       setIslogin(true);
+    //       setAuth(accessToken);
+    //       setLoggedUser(loginemail);
+    //       localStorage.setItem("loginStatus", "true ");
+    //       localStorage.setItem("Authorization", `${accessToken}`);
+    //       localStorage.setItem("memberId", memberId);
+    //       axios.defaults.headers.common["Authorization"] = accessToken;
+    //       navigate(-1);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     alert("회원이 아닙니다.");
+    //   });
+    loginHandle()
+  };
+
+
+  const onClickSignin = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    // if (signemailErr || signpasswordErr || phonenumberErr) {
+    //   alert("회원가입 양식을 제대로 채워주세요.");
+    //   return;
+    // }
+    // if (!signemailErr && !signpasswordErr && !phonenumberErr) {
+    //   return axios
+    //     .post(
+    //       process.env.REACT_APP_DB_HOST + "/signup",
+    //       {
+    //         email: signemail,
+    //         password: signpassword,
+    //         phoneNumber: phonenumber,
+    //         address: address,
+    //         username: username,
+    //       },
+    //       {
+    //         withCredentials: true,
+    //       }
+    //     )
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.status === 201) {
+    //         console.log("회원가입 성공");
+    //         window.location.replace("/login")
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //       alert("이미 존재하는 회원입니다.");
+    //     });
+    // }
+    singHandle()
+  };
+
+  const loginHandle = () => {
     if (loginemailErr || loginpasswordErr) {
       alert("로그인 양식을 지켜주세요.");
       return;
@@ -274,11 +345,9 @@ const Login = () => {
         console.error(err);
         alert("회원이 아닙니다.");
       });
-  };
-  const onClickSignin = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  }
+
+  const singHandle = () => {
     if (signemailErr || signpasswordErr || phonenumberErr) {
       alert("회원가입 양식을 제대로 채워주세요.");
       return;
@@ -310,7 +379,29 @@ const Login = () => {
           alert("이미 존재하는 회원입니다.");
         });
     }
-  };
+  }
+
+  const onClickx= () => {
+
+
+    const memberId = localStorage.getItem("memberId")
+    axios
+    .post(`http://pikcha36.o-r.kr:8080/attractions/saves/${memberId}`)
+    .then((res) => {
+  
+        console.log(res)
+        console.log("댓글등록")
+  
+    })
+    .catch((err)=>console.error(err))
+  
+  }
+  
+  
+  
+  
+
+
 
   // const onKeyPress = (e: 
   //   KeyboardEvent<HTMLInputElement>
@@ -424,6 +515,7 @@ const Login = () => {
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
         </TextStyle>
+
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
         <InputStyle
           placeholder="이메일"
@@ -453,6 +545,8 @@ const Login = () => {
           </TextStyle>
         )}
         <CustomPadding padding="50px 0px 0px 0px"></CustomPadding>
+        <button onClick={onClickx}>버튼버튼</button>
+
         <ButtonForm
           width="180px"
           height="60px"
