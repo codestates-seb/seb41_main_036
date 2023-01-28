@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
 
 const Container = styled.div`
@@ -191,11 +191,10 @@ const WritePost = () => {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
-  const { id } = useParams();
   const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    if (title.length > 40) alert("50자 이내로 작성해주세요.");
+    if (title.length > 20) alert("20자 이내로 작성해주세요.");
   };
 
   const TagButton = ({ tag, idx }: { tag: string; idx: number }) => {
@@ -508,8 +507,6 @@ const Modal = ({
     }
   };
 
-  console.log(imgFile);
-  console.log(imgFiles);
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
