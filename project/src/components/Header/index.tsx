@@ -61,6 +61,7 @@ const HeaderTopBar = () => {
                 height="1px"
                 text="마이페이지"
                 type="none"
+                onClick={() => navigate(`/mypage`)}
               ></ButtonForm>
             </li>
             <li>
