@@ -252,7 +252,7 @@ const DetailPost = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
-
+  
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -274,7 +274,6 @@ const DetailPost = () => {
       })
       .catch((err) => console.error(err));
   };
-
   let data: any[] = [];
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
     data.push({
@@ -300,7 +299,7 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-  
+  console.log(post);
   return (
     <>
       <Header>

@@ -14,6 +14,7 @@ import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
 import Oauth from "./pages/Oauth";
 
+
 function App() {
   if (localStorage.getItem("loginStatus") === null) {
     localStorage.setItem("loginStatus", "false");
@@ -37,6 +38,8 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/edit/:id" element={<EditPost />} />
             <Route path="/oauth" element={<Oauth />} />
+            <Route path="/mypage" element={<MyPage />} />
+
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

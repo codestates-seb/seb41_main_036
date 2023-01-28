@@ -76,33 +76,27 @@ const ContainerButton = styled.div`
   }
 `;
 
-const Modal = ({
-  setIsModalVisible,
-}: {
-  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
-}): JSX.Element => {
-  const navigate = useNavigate();
+const Modal = ({setIsModalVisible}:any ):JSX.Element => {
   return (
-    <>
-      <ModalBackground>
-        <Container>
-          <ContainerInfo>
-            <div>
-              <FcInfo size="50" />
-            </div>
-            <div>
-              <p>로그인이 필요한 서비스입니다. </p>
-              <p>로그인하시겠습니까?</p>
-            </div>
-          </ContainerInfo>
-          <ContainerButton>
-            <button onClick={() => navigate("/login")}>확인</button>
-            <button onClick={() => setIsModalVisible(false)}>취소</button>
-          </ContainerButton>
-        </Container>
-      </ModalBackground>
-    </>
-  );
-};
+  <>
+    <ModalBackground>
+      <Container>
+        <ContainerInfo>
+        <div><FcInfo size="50"/></div>
+        <div>
+          <h3>작성중 포스트 삭제</h3>
+          <p>현재 작성중인 글을 삭제하시겠습니까?</p>
+        </div>
+        </ContainerInfo>
+        <ContainerButton>
+          <button>삭제</button>
+          <button>취소</button>
+        </ContainerButton>
+      </Container>
+    </ModalBackground>
+  </>
+  )
+
+}
 
 export default Modal;

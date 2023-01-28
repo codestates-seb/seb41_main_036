@@ -65,5 +65,5 @@
     "@types/react-modal": "^3.13.1",
     "@types/styled-react-modal": "^1.2.2"
   },
-  "proxy" : "http://pikcha36.o-r.kr:8080"
+  "proxy" : "https://pikcha36.o-r.kr:8080"
 }

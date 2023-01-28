@@ -4,7 +4,7 @@ import { ArrayPostType } from "../pages/Post";
 import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div<{ margin: string }>`
-  margin: ${(props) => props.margin};
+  margin-left: ${(props) => (props.margin === "0" ? "0" : props.margin)};
   display: flex;
   flex-wrap: wrap;
   gap: 25px 1.3%;
@@ -65,6 +65,7 @@ const PostCard = styled.div<{ width: string }>`
         object-fit: cover;
       }
       > div {
+      
         > div {
           color: #323232;
           font-weight: bold;
