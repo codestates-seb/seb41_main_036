@@ -23,6 +23,7 @@ public class PostResponseDto {
         private String pictureUrl;
         private int views;
         private int likes;
+        private Boolean isVoted;
         private String postTitle;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
