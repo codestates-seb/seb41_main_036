@@ -85,11 +85,6 @@ const PostContentContainer = styled.article`
   > div:nth-child(2) {
     margin-top: 30px;
   }
-
-  img {
-    width: 100%;
-    margin: 0 auto;
-  }
 `;
 
 const PostContentBox = styled.div`
@@ -97,8 +92,14 @@ const PostContentBox = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  > div:nth-child(2) {
-    margin: 5em 0;
+  img {
+    width: 100%;
+    height: 600px;
+    margin: 0 auto;
+    object-fit: scale-down;
+  }
+  div > div:last-child {
+    padding: 40px 60px;
   }
 `;
 const TagsButton = styled.button`
@@ -347,12 +348,12 @@ const DetailPost = () => {
         </DetailPostInfo>
         <PostContentContainer>
           <PostContentBox>
-            {data.map((el) => (
-              <div key={el.imageId}>
+            {data.map((post) => (
+              <div key={post.imageId}>
                 <div>
-                  <img src={el.imageURL} alt="picture" />
+                  <img src={post.imageURL} alt="picture" />
                 </div>
-                <div>{el.content}</div>
+                <div>{post.content}</div>
               </div>
             ))}
           </PostContentBox>
