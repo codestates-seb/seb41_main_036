@@ -54,26 +54,4 @@ public interface PostMapper {
                 .modifiedAt(post.getModifiedAt())
                 .build();
     }
-
-    default List<PostResponseDto.Home> postListToPostHomeResponseDtoList(List<Post> postList) {
-        if (postList == null) {
-            return  null;
-        }
-
-        return postList.stream()
-                .map(post -> {
-                    return PostResponseDto.Home.builder()
-                            .postId(post.getPostId())
-                            .memberId(post.getMember().getMemberId())
-                            .username(post.getMember().getUsername())
-                            .memberPicture(post.getMember().getPicture())
-                            .pictureUrl(post.getPostImages().isEmpty() ? "" : post.getPostImages().get(0).getPostImageUrl())
-                            .views(post.getViews())
-                            .likes(post.getLikes())
-                            .postTitle(post.getPostTitle())
-                            .createdAt(post.getCreatedAt())
-                            .modifiedAt(post.getModifiedAt())
-                            .build();
-                }).collect(Collectors.toList());
-    }
 }

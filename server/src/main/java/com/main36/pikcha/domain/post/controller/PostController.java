@@ -38,6 +38,7 @@ import javax.validation.constraints.Positive;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -215,40 +216,40 @@ public class PostController {
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }
 
-    @GetMapping("/home")
-    public ResponseEntity<MultiResponseDto<?>> getHomePosts(@RequestParam(defaultValue = "newest", required = false) String sort,
+    @GetMapping(value = {"/home","/home/{member-id}"})
+    public ResponseEntity<MultiResponseDto<?>> getHomePosts(@PathVariable("member-id") Optional<Long> memberId,
+                                                            @RequestParam(defaultValue = "newest", required = false) String sort,
                                                             @RequestParam(defaultValue = "1", required = false) @Positive int page,
                                                             @RequestParam(defaultValue = "8", required = false) @Positive int size) {
         sort = getString(sort);
         Page<Post> allPostsBySort = postService.findAllPostsBySort(page - 1, size, sort);
         List<Post> content = allPostsBySort.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.postListToPostHomeResponseDtoList(content), allPostsBySort), HttpStatus.OK);
-
+        return responseMethod(content, allPostsBySort, memberId);
     }
 
-    @PostMapping("/filter")
-    public ResponseEntity<MultiResponseDto<?>> getFilteredPosts(@RequestParam(defaultValue = "newest", required = false) String sort,
+    @PostMapping(value= {"/filter", "/filter/{member-id}"})
+    public ResponseEntity<MultiResponseDto<?>> getFilteredPosts(@PathVariable("member-id") Optional<Long> memberId,
+                                                                @RequestParam(defaultValue = "newest", required = false) String sort,
                                                             @RequestParam(defaultValue = "1", required = false) @Positive int page,
                                                             @RequestParam(defaultValue = "9", required = false) @Positive int size,
                                                             @RequestBody ProvinceFilterDto filterDto) {
         sort = getString(sort);
 
-        List<Post> posts;
+        List<Post> content;
         Page<Post> postPage;
         if(filterDto.getProvinces().size() == 0 ) {
             postPage = postService.findAllPostsBySort(page - 1, size, sort);
         }else{
             postPage = postService.findAllPostsByProvincesSort(filterDto.getProvinces(), page - 1, size, sort);
         }
-        posts = postPage.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.postListToPostHomeResponseDtoList(posts), postPage), HttpStatus.OK);
+        content = postPage.getContent();
+        return responseMethod(content, postPage, memberId);
     }
 
-    @GetMapping("/{attraction-id}")
+    @GetMapping(value = {"/{attraction-id}","/{attraction-id}/{member-id}"})
     public ResponseEntity<MultiResponseDto<?>> getPostsByAttractionDetailsPage(@PathVariable("attraction-id") long attractionId,
+                                                                               @PathVariable("member-id") Optional<Long> memberId,
                                                                           @RequestParam(defaultValue = "newest", required = false) String sort,
                                                             @RequestParam(defaultValue = "1", required = false) @Positive int page,
                                                             @RequestParam(defaultValue = "8", required = false) @Positive int size) {
@@ -256,9 +257,7 @@ public class PostController {
         Page<Post> allPostsBySort = postService.findAllPostsByAttractionId(attractionId,page - 1, size, sort);
         List<Post> content = allPostsBySort.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(
-                mapper.postListToPostHomeResponseDtoList(content), allPostsBySort), HttpStatus.OK);
-
+        return responseMethod(content, allPostsBySort, memberId);
     }
 
     @LoginUser
@@ -317,5 +316,48 @@ public class PostController {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
         return post;
+    }
+
+    private List<PostResponseDto.Home> loginMapping(List<Post> postList, long memberId){
+        return postList.stream()
+                .map(post -> {
+                    return PostResponseDto.Home.builder()
+                            .postId(post.getPostId())
+                            .memberId(post.getMember().getMemberId())
+                            .username(post.getMember().getUsername())
+                            .memberPicture(post.getMember().getPicture())
+                            .pictureUrl(post.getPostImages().isEmpty() ? "" : post.getPostImages().get(0).getPostImageUrl())
+                            .views(post.getViews())
+                            .likes(post.getLikes())
+                            .isVoted(postService.isVoted(memberId, post.getPostId()))
+                            .postTitle(post.getPostTitle())
+                            .createdAt(post.getCreatedAt())
+                            .modifiedAt(post.getModifiedAt())
+                            .build();
+                }).collect(Collectors.toList());
+    }
+    private List<PostResponseDto.Home> guestMapping(List<Post> postList){
+        return postList.stream()
+                .map(post -> {
+                    return PostResponseDto.Home.builder()
+                            .postId(post.getPostId())
+                            .memberId(post.getMember().getMemberId())
+                            .username(post.getMember().getUsername())
+                            .memberPicture(post.getMember().getPicture())
+                            .pictureUrl(post.getPostImages().isEmpty() ? "" : post.getPostImages().get(0).getPostImageUrl())
+                            .views(post.getViews())
+                            .likes(post.getLikes())
+                            .isVoted(false)
+                            .postTitle(post.getPostTitle())
+                            .createdAt(post.getCreatedAt())
+                            .modifiedAt(post.getModifiedAt())
+                            .build();
+                }).collect(Collectors.toList());
+    }
+
+    private ResponseEntity<MultiResponseDto<?>> responseMethod(List<Post> content, Page<Post> page, Optional<Long> memberId){
+        return memberId.<ResponseEntity<MultiResponseDto<?>>>map(aLong -> new ResponseEntity<>(new MultiResponseDto<>(
+                loginMapping(content, aLong), page), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(new MultiResponseDto<>(
+                guestMapping(content), page), HttpStatus.OK));
     }
 }
