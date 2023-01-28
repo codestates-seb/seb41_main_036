@@ -81,7 +81,6 @@ const PostContentContainer = styled.article`
   padding-top: 20px;
   justify-content: center;
   margin: 0 auto;
-  width: 70%;
 
   > div:nth-child(2) {
     margin-top: 30px;
@@ -256,11 +255,19 @@ const DetailPost = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    axios
-      .get(`/posts/details/${id}`)
-      .then((res) => setPost(res.data.data))
-      .catch((err) => console.error(err));
-    setPostComments(post?.comments);
+    if (memberId) {
+      axios
+        .get(`/posts/details/${id}`)
+        .then((res) => setPost(res.data.data))
+        .catch((err) => console.error(err));
+      setPostComments(post?.comments);
+    } else {
+      axios
+        .get(`/posts/details/${id}/${memberId}`)
+        .then((res) => setPost(res.data.data))
+        .catch((err) => console.error(err));
+      setPostComments(post?.comments);
+    }
   }, [post === undefined]);
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -275,7 +282,6 @@ const DetailPost = () => {
       })
       .catch((err) => console.error(err));
   };
-
   let data: any[] = [];
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
     data.push({
@@ -286,16 +292,22 @@ const DetailPost = () => {
   }
   const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axios
-      .delete(`/posts/delete/${id}`)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .delete(`/posts/delete/${id}`)
+        .then((res) => {
+          alert("삭제가 완료되었습니다.");
+          console.log(res);
+          navigate(-1);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-  console.log(post);
+
   return (
     <>
       <Header>
@@ -306,7 +318,7 @@ const DetailPost = () => {
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
         {(post && post.postId === memberId) || memberId === 1 ? (
           <PostMangeButtnContainer>
-            <PostManageButton>
+            <PostManageButton onClick={() => navigate(`/edit/${id}`)}>
               <MdModeEdit /> 수정
             </PostManageButton>
             <PostManageButton onClick={deleteHandler}>

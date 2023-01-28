@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import React, {
   useState,
   useRef,
@@ -10,8 +10,11 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PostDetailType } from "./DetailPost";
+import { IoArrowBackSharp } from "react-icons/io5";
+import { useRecoilState } from "recoil";
+import { MemberId } from "../recoil/state";
 
 const Container = styled.div`
   display: flex;
@@ -80,12 +83,13 @@ const Preview = styled.div`
   flex-direction: column;
 
   > img {
-    width: 90%;
+    width: 300px;
     height: 300px;
     background-size: cover;
     background-color: white;
     margin: 0 auto;
     object-fit: cover;
+    overflow-y: scroll;
   }
 
   > div {
@@ -94,7 +98,6 @@ const Preview = styled.div`
 
     > p {
       width: 84%;
-      margin-top: -20px;
       font-size: 15px;
       margin-left: 38px;
       margin-bottom: 100px;
@@ -179,6 +182,10 @@ const Header = styled.div`
   > div:nth-child(2) {
     width: 55%;
     background-color: #f0f0f0;
+    padding: 20px;
+    text-align: right;
+    font-size: 20px;
+    cursor: pointer;
   }
 `;
 const EditPost = () => {
@@ -190,36 +197,42 @@ const EditPost = () => {
   const [tag, setTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState(""); // 미리보기용 이미지 주소 1개
+  const [removeImgUrl, setRemoveImgUrl] = useState<any[]>([]);
+  const [addImgUrl, setAddImgUrl] = useState<File[]>([]);
+  const [imgFile, setImgFile] = useState<any>();
   const [imgFiles, setImgFiles] = useState<any[]>([]); // 서버에 보낼 이미지 파일 리스트 - 최종
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [memberId] = useRecoilState(MemberId);
 
-  useEffect(() => {
-    async function getPostList() {
-      await axios
-        .get(`/posts/`)
-        .then((res) => setData(res.data.data))
-        .catch((err) => console.error(err));
-    }
-    getPostList();
-
+  const getPostList = async () => {
+    await axios
+      .get(`/posts/details/${id}/${memberId}`)
+      .then((res) => {
+        setData(res.data.data);
+        const { postTitle, postHashTags, postImageUrls } = res.data.data;
+        setTitle(postTitle);
+        setTags(postHashTags);
+        setImgFiles(postImageUrls);
+      })
+      .catch((err) => console.error(err));
     if (data) {
       let array: any[] = [];
-      setTitle(data?.postTitle);
-      setTags(data?.postHashTags);
-      setImgFiles(data.postImageUrls);
-      //setImageUrl(data?.postImageUrls); // 이미지 주소 리스트
       for (let i = 0; i < data?.postImageUrls.length!; i++) {
         array.push([data?.postImageUrls[i], data?.postContents[i]]);
       }
       setPreviewList(array);
     }
+  };
+
+  useEffect(() => {
+    getPostList();
   }, [data === undefined]);
 
-  console.log(imgFiles);
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (title && title.length > 40) alert("50자 이내로 작성해주세요.");
+    if (title && title.length > 20) alert("20자 이내로 작성해주세요.");
     setTitle(e.target.value);
   };
 
@@ -261,30 +274,43 @@ const EditPost = () => {
   ) => {
     e.preventDefault();
     setPreviewList(previewList.filter((el) => previewList[idx] !== el));
+    setRemoveImgUrl([
+      ...removeImgUrl,
+      imgFiles.filter((img) => imgFiles[idx] === img),
+    ]);
     setImgFiles(imgFiles.filter((file: any) => imgFiles[idx] !== file));
   };
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("postTitle", title!);
-    tags.forEach((tag) => {
-      formData.append("postHashTags", tag);
-    });
-    imgFiles.forEach((img) => {
-      formData.append("postImageFiles", img);
-    });
-    content.forEach((text) => {
-      formData.append("postContents", text);
-    });
-    axios
-      .post(`/posts/register/1/1`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+    if (title === "") alert("제목을 입력해주세요");
+    if (title) {
+      const formData = new FormData();
+      formData.append("postTitle", title);
+      tags.forEach((tag) => {
+        formData.append("postHashTags", tag);
+      });
+      removeImgUrl.forEach((removeImg) => {
+        formData.append("deleteUrls", removeImg);
+      });
+      addImgUrl.forEach((addImg) => {
+        formData.append("postImageFiles", addImg);
+      });
+      content.forEach((text) => {
+        formData.append("postContents", text);
+      });
+      axios
+        .patch(`/posts/edit/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          navigate(`/posts`);
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -298,7 +324,9 @@ const EditPost = () => {
           <BsDot color="#6255F8" />
           수정 포스트
         </div>
-        <div></div>
+        <div onClick={() => navigate(-1)}>
+          <IoArrowBackSharp />
+        </div>
       </Header>
       <Container>
         <form>
@@ -311,6 +339,7 @@ const EditPost = () => {
               placeholder="제목을 입력하세요"
             ></input>
             <ButtonForm
+              type="violet"
               width="100px"
               height="40px"
               text="이미지 등록"
@@ -344,6 +373,10 @@ const EditPost = () => {
               setContent={setContent}
               content={content}
               imgFiles={imgFiles}
+              imgFile={imgFile}
+              setImgFile={setImgFile}
+              addImgUrl={addImgUrl}
+              setAddImgUrl={setAddImgUrl}
             />
           ) : null}
         </form>
@@ -351,6 +384,7 @@ const EditPost = () => {
           <div>
             <h2>{title}</h2>
             <ButtonForm
+              type="violet"
               onClick={(e) => handleSubmit(e)}
               width="100px"
               height="40px"
@@ -455,6 +489,19 @@ const AddButton = styled.button`
   width: 30px;
   height: 30px;
 `;
+
+const SelectImageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > img {
+    width: 200px;
+    height: 200px;
+  }
+`;
+
 const Modal = ({
   setImgFiles,
   previewText,
@@ -467,6 +514,10 @@ const Modal = ({
   setContent,
   content,
   imgFiles,
+  imgFile,
+  setImgFile,
+  addImgUrl,
+  setAddImgUrl,
 }: {
   setImgFiles: Dispatch<SetStateAction<any[]>>;
   previewText: string;
@@ -479,24 +530,34 @@ const Modal = ({
   setContent: Dispatch<SetStateAction<string[]>>;
   content: string[];
   imgFiles: any[];
+  imgFile: File;
+  setImgFile: Dispatch<SetStateAction<File>>;
+  addImgUrl: File[];
+  setAddImgUrl: Dispatch<SetStateAction<File[]>>;
 }) => {
   const previewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    const sizeCheck = 2 * 1024 * 1024;
+    let file = e.target.files![0];
+    const sizeCheck = 5 * 1024 * 1024;
     if (file && file.size > sizeCheck) {
-      alert("2MB 이하의 크기의 파일을 선택해주세요.");
+      alert("5MB 이하의 크기의 파일을 선택해주세요.");
     } else {
       setImageUrl(URL.createObjectURL(file));
-      setImgFiles([...imgFiles, file]);
+      setImgFile(file);
     }
   };
 
   const addPreview = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const previews = [imageUrl, previewText];
-    setPreviewText("");
-    setPreviewList([...previewList, previews]);
-    setContent([...content, previewText]);
+    if (imageUrl === "") alert("이미지를 등록해주세요.");
+    if (previewText === "") alert("설명을 등록해주세요.");
+    if (imageUrl && previewText) {
+      setPreviewText("");
+      setPreviewList([...previewList, previews]);
+      setContent([...content, previewText]);
+      setImgFiles([...imgFiles, imgFile]);
+      setAddImgUrl([...addImgUrl, imgFile]);
+    }
   };
 
   const handleFileUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -505,19 +566,32 @@ const Modal = ({
   };
 
   return (
-    <ModalContainer>
-      <input type="file" accept="image/*" ref={imgRef} onChange={previewImg} />
-      <button onClick={(e) => handleFileUpload(e)}>
-        <span>이미지 업로드</span>
-        <UploadIcon className="upload-icon" />
-      </button>
-      <textarea
-        value={previewText}
-        onChange={(e) => setPreviewText(e.target.value)}
-        placeholder="사진에 대해 설명해주세요!"
-      />
-      <AddButton onClick={(e) => addPreview(e)}>추가하기</AddButton>
-    </ModalContainer>
+    <>
+      {imageUrl && (
+        <SelectImageContainer>
+          선택한 이미지
+          <img src={imageUrl} alt="preview" />
+        </SelectImageContainer>
+      )}
+      <ModalContainer>
+        <input
+          type="file"
+          accept="image/*"
+          ref={imgRef}
+          onChange={previewImg}
+        />
+        <button onClick={(e) => handleFileUpload(e)}>
+          <span>이미지 업로드</span>
+          <UploadIcon className="upload-icon" />
+        </button>
+        <textarea
+          value={previewText}
+          onChange={(e) => setPreviewText(e.target.value)}
+          placeholder="사진에 대해 설명해주세요!"
+        />
+        <AddButton onClick={(e) => addPreview(e)}>추가하기</AddButton>
+      </ModalContainer>
+    </>
   );
 };
 

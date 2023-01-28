@@ -12,7 +12,6 @@ import "../index.css";
 import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 
 
@@ -111,7 +110,7 @@ const NavBar = styled.div`
 const Post = styled.div`
   background: #f8f9fa;
   width: 100%;
-  height: 900px;
+  height: 500px;
 `;
 
 const PostHeader = styled.div`
@@ -290,7 +289,7 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", updateScroll);
     };
-  }, []);
+  },[]);
 
 
 

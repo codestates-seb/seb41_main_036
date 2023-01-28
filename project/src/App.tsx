@@ -37,6 +37,8 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/edit/:id" element={<EditPost />} />
             <Route path="/oauth" element={<Oauth />} />
+            <Route path="/mypage" element={<MyPage />} />
+
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

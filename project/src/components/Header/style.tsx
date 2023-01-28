@@ -26,7 +26,7 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
     border-bottom: ${(props) =>
       props.isVisible ? "1px solid var(--black-275)" : "1px solid transparent"};
     background-color: ${(props) =>
-      props.isVisible ? "transparent" : "var(--black-275)"};
+      props.isVisible ? "transparent" : "hsl(0, 0%, 94%)"};
     color: var(--black-800);
     transition-property: background-color, border-radius;
     transition-duration: 0.1s;
@@ -35,9 +35,9 @@ const SearchForm = styled.form<{ isVisible: Boolean }>`
       cursor: text;
     }
     &::placeholder {
-      font-size: var(--font-sm);
+      font-size: var(--font-xs);
       color: ${(props) =>
-        props.isVisible ? "transparent" : "var(--black-600)"};
+        props.isVisible ? "transparent" : "var(--black-700)"};
     }
     &:focus {
       outline: none;
@@ -145,8 +145,8 @@ const AttractionItemContent = styled.div<{
   transition: all 0.2s ease;
 `;
 const HeaderTop = styled.div`
-  background-color: var(--black-250);
-  height: 32px;
+  background-color: var(--grey-background);
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -155,6 +155,7 @@ const HeaderTop = styled.div`
   width: 100%;
   max-width: 100%;
   padding: 0 75px;
+  background-color: var(--grey-background);
 `;
 const HeaderTopMenu = styled.ul`
   position: relative;
@@ -174,6 +175,7 @@ const HeaderTopMenu = styled.ul`
   }
 `;
 const HeaderBody = styled.div`
+  height: 70px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -187,19 +189,20 @@ const HeaderBody = styled.div`
 const HeaderBodyMenu = styled.ul`
   margin-left: auto;
   display: flex;
-  li {
-    font-size: var(--font-sm);
-    list-style: none;
-    padding-left: 35px;
-    white-space: nowrap;
-    text-align: center;
-    font-weight: 600;
-    color: var(--black-900);
-    transition: all 0.3s ease;
-    &:hover {
-      color: var(--purple-300);
-      cursor: pointer;
-    }
+`;
+const HeaderBodyMenuItem = styled.li<{ selected: boolean }>`
+  font-size: var(--font-sm);
+  list-style: none;
+  padding-left: 35px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 600;
+  color: ${(props) =>
+    props.selected ? "var(--purple-300)" : "var(--black-900)"};
+  transition: all 0.3s ease;
+  &:hover {
+    color: var(--purple-300);
+    cursor: pointer;
   }
 `;
 const Profile = styled.div`
@@ -208,6 +211,7 @@ const Profile = styled.div`
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
+  cursor: pointer;
   img {
     display: block;
     width: 100%;
@@ -233,26 +237,9 @@ const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
   width: 100%;
 
   background-color: ${(props) =>
-    props.backgroundOn ? "white" : "transparent"};
+    props.backgroundOn ? "var(--grey-background)" : "transparent"};
 `;
-const HeaderMountEffect = keyframes`
-   0% {
-    transform:translate(0%,-42px);
-    
-  }
-  100% {
-    transform:translate(0,31px);
-  }
-`;
-const HeaderUnMountEffect = keyframes`
-  0% {
-    transform:translate(0,31px);
-  }
-  100% {
-    transform:translate(0%,-42px);
-    
-  }
-`;
+
 const HiddenHeaderBodyWrapper = styled.header<{
   isVisible: boolean;
 }>`
@@ -264,29 +251,36 @@ const HiddenHeaderBodyWrapper = styled.header<{
   margin: 0 auto;
   left: 0;
   right: 0;
+  transition: all 0.8s ease;
   transform: ${(props) =>
-    props.isVisible ? "translate(0,32px)" : "translate(0,-42px)"};
-  animation: ${(prop) =>
-      prop.isVisible ? HeaderMountEffect : HeaderUnMountEffect}
-    0.9s ease forwards;
+    props.isVisible ? "translate(0,30px)" : "translate(0,-42px)"};
 `;
 const HiddenHeaderTopWrapper = styled.div<{ isVisible: boolean }>`
-  height: 32px;
+  height: 28px;
   position: relative;
   z-index: var(--zi-four);
   width: 100%;
   margin: 0 auto;
-  background-color: var(--black-250);
+  background-color: var(--grey-background);
   svg.arrow-down {
     transition: all 0.5s ease-in-out;
     transform-origin: center;
     transform: ${(props) =>
       props.isVisible
-        ? "translate(4370%, -150%) rotate( -180deg) "
-        : "translate(4370%, -150%)"};
+        ? "translateY(-150%) rotate( -180deg) "
+        : "translateY(-150%)"};
     z-index: var(--zi-four);
     position: absolute;
-    color: var(--black-700);
+    left: calc(50% - 8px);
+    color: var(--purple-300);
+    :hover {
+      cursor: pointer;
+    }
+    ::after {
+      content: "";
+      width: 50px;
+      height: 30px;
+    }
   }
 `;
 
@@ -300,6 +294,7 @@ export {
   HeaderTopMenu,
   HeaderBody,
   HeaderBodyMenu,
+  HeaderBodyMenuItem,
   Profile,
   HeaderWrapper,
   HeaderBodyWrapper,

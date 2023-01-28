@@ -3,9 +3,10 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import PostCardComponent from "../components/PostCardComponent";
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
+
 
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
@@ -102,9 +103,12 @@ const Post = () => {
 
   useEffect(() => {
     axios
-      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
-        provinces: checkedList,
-      })
+      .post(
+        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+        {
+          provinces: checkedList,
+        }
+      )
       .then((res) => {
         setPostsData(res.data.data);
         totalInfoRef.current = res.data.pageInfo;
@@ -115,9 +119,12 @@ const Post = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     axios
-      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
-        provinces: checkedList,
-      })
+      .post(
+        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+        {
+          provinces: checkedList,
+        }
+      )
       .then((res) => {
         setPostsData(res.data.data);
       })
@@ -130,9 +137,9 @@ const Post = () => {
   return (
     <>
       <div style={{ display: "fixed" }}>
-        <Header>
+        <Header headerColor="var(--grey-background)">
           <Header.HeaderTop />
-          <Header.HeaderBody />
+          <Header.HeaderBody selectedMenu={1} />
         </Header>
       </div>
       <PostWrapper>

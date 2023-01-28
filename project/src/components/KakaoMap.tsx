@@ -7,69 +7,69 @@ declare global {
   }
 }
 
-  // 주소 더미 데이터
-  var listData = [
-    '종로구 사직로 161', 
-    '종로구 세종대로 198',
-    '종로구 세종대로 209', 
-    '종로구 세종대로 175'
+// 주소 더미 데이터
+var listData = [
+  "종로구 사직로 161",
+  "종로구 세종대로 198",
+  "종로구 세종대로 209",
+  "종로구 세종대로 175",
 ];
 
 interface Map {
-  width:string, 
-  height:string,
-  dataList:DataList|undefined|string,
-  position:any,
-  left:string,
-  regionFilter:string,
-  component:string,
-  dataset:any,
-  modalData:any,
-  filterOrPosition:any,
-  setFilterOrPosition:any
+  width: string;
+  height: string;
+  dataList: DataList | undefined | string;
+  position: any;
+  left: string;
+  regionFilter: string;
+  component: string;
+  dataset: any;
+  modalData: any;
+  filterOrPosition: any;
+  setFilterOrPosition: any;
 }
 
 export interface DataList {
-  attractionAddress: string,
-  attractionId:number,
-  attractionName:string, 
-  fixedImage:string,
+  attractionAddress: string;
+  attractionId: number;
+  attractionName: string;
+  fixedImage: string;
 }
 
 const MyPosition = styled.div`
-  width:109px;
-  height:40px;
-  background-color:rgb(37, 143, 255);
-  z-index:2;
-  position:absolute;
-  margin:45px 5px;
+  width: 109px;
+  height: 40px;
+  background-color: rgb(37, 143, 255);
+  z-index: 2;
+  position: absolute;
+  margin: 45px 5px;
   text-align: center;
   line-height: 40px;
   box-shadow: #101010a0 0px 3px 3px;
-  color:white;
+  color: white;
   border-radius: 3px;
   font-size: 14px;
   font-weight: 600;
-  :hover{
-    background-color:rgb(17, 90, 169);
+  :hover {
+    background-color: rgb(17, 90, 169);
     cursor: pointer;
   }
 `
 
 const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData ,filterOrPosition, setFilterOrPosition}:Map) =>{
 
-  useEffect(()=>{
-    const container = document.getElementById('map');// 지도를 담을 dom영역
+  useEffect(() => {
+    const container = document.getElementById("map"); // 지도를 담을 dom영역
 
-    // center에 위도, 경도 좌표를 설정 
+    // center에 위도, 경도 좌표를 설정
     const options = {
       // center에 위도, 경도 좌표를 설정 
       center: new window.kakao.maps.LatLng(37.573898277022,126.9731314753), // 지도의 중심 좌표
       level:5 // 확대되어 보여지는 레벨  설정 
     };
 
-    // 기본 주소 객체 생성 
-    const map = new window.kakao.maps.Map(container,options);
+    // 기본 주소 객체 생성
+    const map = new window.kakao.maps.Map(container, options);
     var geocoder = new window.kakao.maps.services.Geocoder();
     
     // map 페이지에서 사용 
@@ -106,14 +106,13 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                   var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
                   // 결과값으로 받은 위치를 마커로 표시합니다
                   var marker = new window.kakao.maps.Marker({
-                      map: map,
-                      position: coords
+                    map: map,
+                    position: coords,
                   });
-      
+
                   // 인포 윈도우 설정
                   var infowindow = new window.kakao.maps.InfoWindow({
-                    content: 
-                    `<div 
+                    content: `<div 
                       style="
                         width:180px;
                         height:110px;
@@ -151,7 +150,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                       더보기
                     </a>
                   </div>`,
-                    disableAutoPan: false
+                    disableAutoPan: false,
                   });
                 infowindow.open(map, marker);
               } 
@@ -228,7 +227,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
           }
         }
     }
-    
+
     // placedetail 컴포넌트에서 사용 -- 수정 금지
     if(component === 'place'){
       geocoder.addressSearch(dataList, function(result:any, status:any) {
@@ -244,7 +243,7 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
     });    
     };
 
-    // Map Control - 공통 
+    // Map Control - 공통
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
     var mapTypeControl = new window.kakao.maps.MapTypeControl();
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
@@ -253,27 +252,29 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
   },[filterOrPosition,dataset=== undefined, modalData])
 
 
-  return(
+  return (
     <>
-    <div 
-      id="map" 
-      style={{
-        width:width,
-        height:height, 
-        position:position,
-        left:left, 
-        border:"1px solid white"
-        }}>
-      { component === "map" ?  
-        <MyPosition 
-          onClick={()=>{
-            setFilterOrPosition(!filterOrPosition)
-          }}>
-          {filterOrPosition ? "실시간 위치 OFF": "실시간 위치"}
-        </MyPosition>
-        : null}
-    </div>
+      <div
+        id="map"
+        style={{
+          width: width,
+          height: height,
+          position: position,
+          left: left,
+          border: "1px solid white",
+        }}
+      >
+        {component === "map" ? (
+          <MyPosition
+            onClick={() => {
+              setFilterOrPosition(!filterOrPosition);
+            }}
+          >
+            {filterOrPosition ? "실시간 위치 OFF" : "실시간 위치"}
+          </MyPosition>
+        ) : null}
+      </div>
     </>
-  )
-}
+  );
+};
 export default KakaoMap;
