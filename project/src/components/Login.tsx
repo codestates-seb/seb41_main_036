@@ -18,6 +18,12 @@ interface PaddingProps {
 interface OverlayProps {
   overlay: boolean;
 }
+interface ButtonProps {
+  backgroundcolor?: string;
+  color?: string;
+  hoverbackgroundcolor?: string;
+  hovercolor?: string;
+}
 const Wrapper = styled.section`
   width: 100%;
   height: 100%;
@@ -94,28 +100,18 @@ const Leftoverlay = styled.div<OverlayProps>`
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
 `;
-const OauthButton = styled.button`
+const OauthBtn = styled.button<ButtonProps>`
   width: 50px;
   height: 50px;
   border: 0px;
-  background-color: var(--purple-300);
+  background-color: ${(props) => props.backgroundcolor};
   border-radius: 30px;
-  color: white;
+  color: ${(props) => props.color };
   font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0px 10px 0px;
   &:hover {
-    background-color: var(--purple-400);
-  }
-`;
-const OauthButton2 = styled.button`
-  width: 50px;
-  height: 50px;
-  border: 0px;
-  background-color: #FFE90A;
-  border-radius: 30px;
-  color: black;
-  font-size: 20px;
-  &:hover {
-    background-color: #FFD240;
+    background-color: ${(props) => props.hoverbackgroundcolor};
   }
 `;
 const InputStyle = styled.input`
@@ -149,12 +145,9 @@ const ErrMsg = styled.div<TextProps>`
 const CustomPadding = styled.div<PaddingProps>`
   padding: ${(props) => props.padding};
 `;
-const LogoLogo = styled.div`
+const Logo = styled.img`
   width: 330px;
   height: 80px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
   font-size: 50px;
 `;
 const CloseButton = styled.button`
@@ -318,47 +311,86 @@ const Login = () => {
     }
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    const googleLogin = () => {
-      window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
-    };
-    const kakaologin = () => {
-      window.location.href = "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
-    };
-=======
-  const GoogleHandler = () => {
-    axios
-      // .post("/login/oauth2/code/google", {
-      //     username: loginemail,
-      //     password: loginpassword,
-      // })
-      .get("oauth2/authorization/google", {
-        // headers: {
-        //     "Content-Type" : "application/x-www-form-urlencoded"
-        // }
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-  };
+  // const onKeyPress = (e: 
+  //   KeyboardEvent<HTMLInputElement>
+  //   ) => {
+  //   e.preventDefault();
 
-  const googlelogin = () => {
-    window.location.href = "http://localhost:8090/oauth2/authorization/google";
-    const query = window.location.search;
-    console.log("이게무야2", query);
-    const param = new URLSearchParams(query);
-    console.log(param);
-=======
+  //   if(overlays === false){
+  //     if (loginemailErr || loginpasswordErr) {
+  //       alert("로그인 양식을 지켜주세요.");
+  //       return;
+  //     }
+  
+  //     return axios
+  //       .post(process.env.REACT_APP_DB_HOST + "/login", {
+  //         username: loginemail,
+  //         password: loginpassword,
+  //       })
+  //       .then((res) => {
+  //         const { memberId, accessToken } = res.data.data;
+  //         if (res.status === 200) {
+  //           console.log("로그인성공");
+  //           setIslogin(true);
+  //           setAuth(accessToken);
+  //           setLoggedUser(loginemail);
+  //           localStorage.setItem("loginStatus", "true ");
+  //           localStorage.setItem("Authorization", `${accessToken}`);
+  //           localStorage.setItem("memberId", memberId);
+  //           axios.defaults.headers.common["Authorization"] = accessToken;
+  //           navigate(-1);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         alert("회원이 아닙니다.");
+  //       });
+  //   }
+
+  //   if(overlays === true){
+  //     if (signemailErr || signpasswordErr || phonenumberErr) {
+  //       alert("회원가입 양식을 제대로 채워주세요.");
+  //       return;
+  //     }
+  //     if (!signemailErr && !signpasswordErr && !phonenumberErr) {
+  //       return axios
+  //         .post(
+  //           process.env.REACT_APP_DB_HOST + "/signup",
+  //           {
+  //             email: signemail,
+  //             password: signpassword,
+  //             phoneNumber: phonenumber,
+  //             address: address,
+  //             username: username,
+  //           },
+  //           {
+  //             withCredentials: true,
+  //           }
+  //         )
+  //         .then((res) => {
+  //           console.log(res);
+  //           if (res.status === 201) {
+  //             console.log("회원가입 성공");
+  //             window.location.replace("/login")
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           console.error(err);
+  //           alert("이미 존재하는 회원입니다.");
+  //         });
+  //     }
+  //   }
+
+  // }
+
   const googleLogin = () => {
     window.location.href =
       "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
->>>>>>> 6e2b66dfcfdb7ecd20f0130ff111f0cdc6f608f3
   };
   const kakaoLogin = () => {
     window.location.href =
       "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
->>>>>>> cf0ffd2aed8c17c5e6470a642c864f547ceb4b0d
 
   return (
     <Wrapper>
@@ -386,25 +418,8 @@ const Login = () => {
           로그인
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <button onClick={kakaologin}>카카2</button>
-        <button onClick={googleLogin}>구글3</button>
-        <GButton onClick={googleLogin}>G</GButton>
-=======
-        <button onClick={kakaologin}>카카</button>
-        <button onClick={googlelogin}>구글</button>
-
-        <GButton>G</GButton>
-=======
-{/* 
-        <button onClick={kakaoLogin}>카카</button>
-        <button onClick={googleLogin}>구글</button> */}
-        <OauthButton onClick={googleLogin} >G</OauthButton>
-        <OauthButton2 onClick={kakaoLogin} >K</OauthButton2>
->>>>>>> 6e2b66dfcfdb7ecd20f0130ff111f0cdc6f608f3
-
->>>>>>> cf0ffd2aed8c17c5e6470a642c864f547ceb4b0d
+        <OauthBtn color="blue" backgroundcolor="var(--black-300)" hoverbackgroundcolor="var(--black-500)" onClick={googleLogin}>G</OauthBtn>
+        <OauthBtn color="black" backgroundcolor="#FFE90A" hoverbackgroundcolor="#FFD240" onClick={kakaoLogin}>K</OauthBtn>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 로그인
         </TextStyle>
@@ -452,12 +467,11 @@ const Login = () => {
       </Logincontainer>
       <Signincontainer overlay={overlays}>
         <TextStyle color="#6154F8" fontSize="45px" fontweight="bold">
-          회원가입 
+          회원가입
         </TextStyle>
         <CustomPadding padding="30px 0px 0px 0px"></CustomPadding>
-        <OauthButton onClick={googleLogin}>G</OauthButton>
-        <OauthButton2 onClick={kakaoLogin}>K</OauthButton2>
-
+        <OauthBtn color="blue" backgroundcolor="var(--black-300)" hoverbackgroundcolor="var(--black-500)" onClick={googleLogin}>G</OauthBtn>
+        <OauthBtn color="black" backgroundcolor="#FFE90A" hoverbackgroundcolor="#FFD240" onClick={kakaoLogin}>K</OauthBtn>
         <TextStyle color="#6154F8" fontSize="22px" fontweight="bold">
           SNS 계정으로 가입하기
         </TextStyle>
@@ -549,7 +563,8 @@ const Login = () => {
         <TextStyle color="white" fontSize="25px" fontweight="normal">
           welcome to the
         </TextStyle>
-        <LogoLogo>pickcha</LogoLogo>
+        <Logo src={process.env.PUBLIC_URL + "/logo.png"}
+            alt="logo"/>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
         <TextStyle color="white" fontSize="30px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?
@@ -579,7 +594,9 @@ const Login = () => {
         <TextStyle color="white" fontSize="25px" fontweight="normal">
           welcome to the
         </TextStyle>
-        <LogoLogo>pickcha</LogoLogo>
+        <Logo 
+            src={process.env.PUBLIC_URL + "/logo.png"}
+            alt="logo"/>
         <CustomPadding padding="70px 0px 0px 0px"></CustomPadding>
         <TextStyle color="white" fontSize="30px" fontweight="normal">
           사진찍기 가장 좋은 장소는 어디일까요?

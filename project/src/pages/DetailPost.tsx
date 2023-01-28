@@ -250,6 +250,8 @@ const DetailPost = () => {
   const [isLogin] = useRecoilState(LoginState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
+  const [memberId] = useRecoilState(MemberId);
+  
   const navigate = useNavigate();
   useEffect(() => {
     axios

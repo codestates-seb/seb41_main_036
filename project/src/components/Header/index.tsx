@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
-import axios from "axios";
+import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler } from "react";
 
@@ -60,6 +60,8 @@ const HeaderTopBar = () => {
                 height="1px"
                 text="마이페이지"
                 type="none"
+                onClick={() => navigate("/mypage")}
+
               ></ButtonForm>
             </li>
             <li>
