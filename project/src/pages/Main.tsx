@@ -135,7 +135,6 @@ function Main() {
         </MoreLink>
       </Body>
       <Footer />
-      {/* <Footer>footer</Footer> */}
     </>
   );
 }
