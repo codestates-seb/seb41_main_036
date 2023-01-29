@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
+import styled, { ThemeConsumer } from "styled-components";
 
 declare global {
   interface Window {
@@ -57,10 +57,10 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
 
   const options = {
     // center에 위도, 경도 좌표를 설정 
-    center: new window.kakao.maps.LatLng(37.573898277022,126.9731314753), // 지도의 중심 좌표
-    level:4 // 확대되어 보여지는 레벨  설정 
+    center: new window.kakao.maps.LatLng(37.5575265973614,  127.175938009116), // 지도의 중심 좌표
+    level:5 // 확대되어 보여지는 레벨  설정 
   };
-  
+
   
 
   const conditionPlace = (geocoder:any, map:any) => {
@@ -78,35 +78,32 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
   }
 
   const conditionMap = (geocoder:any, map:any) => {
+    
     // 내 위치 찾는거 누르면?
     if(filterOrPosition === true){
 
       // 내위치 받아오기 예제
       if (navigator.geolocation) {
         console.log('내 위치를 받아오기')
-
         // 주변 데이터 보여주기 위해서 값 불러오기 
         console.log('리스트 데이터',dataset)
-
         // 내 위치먼저 불러온 다음에 
           // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function(position) {
-  
           var lat = position.coords.latitude, // 위도
               lon = position.coords.longitude; // 경도
-          
             var locPosition = new window.kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             console.log('테스트여기',locPosition);
             map.setCenter(locPosition);
-            map.setLevel(4);//여기
-        });
-        } 
-
-         // 근처 렌더링된 데이터 보여주기        
+            });
+          } 
+      
+        // 근처 렌더링된 데이터 보여주기        
         dataset.forEach(function(addr:any,index:number){
           geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
             // 정상적으로 검색이 완료됐으면 
              if (status === window.kakao.maps.services.Status.OK) {
+              console.log( index,'검색완료',addr)
                 var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
                 // 결과값으로 받은 위치를 마커로 표시합니다
                 var marker = new window.kakao.maps.Marker({
@@ -154,12 +151,17 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                     더보기
                   </a>
                 </div>`,
-                  disableAutoPan: false,
+                  disableAutoPan: true,
                 });
               infowindow.open(map, marker);
             } 
           });  
         })
+      
+
+
+
+        
 
       }else { 
       console.log('주변 필터링 데이터 한 개 보여주기')
@@ -234,11 +236,15 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
 
 
   useEffect(() => {
+    //1 한번 렌더링 되면서, 무조건 실행
+    
 
     // 기본 주소 객체 생성
     const map = new window.kakao.maps.Map(container.current, options);
     var geocoder = new window.kakao.maps.services.Geocoder();
     
+
+    // 2. 컴포넌트에 따라서 조건 분기됨.
     // map 페이지에서 사용 
     if (component === 'map'){
       conditionMap(geocoder,map)
@@ -286,4 +292,5 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
   );
 };
 export default KakaoMap;
+
 

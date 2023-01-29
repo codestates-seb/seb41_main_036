@@ -406,22 +406,14 @@ const PlaceDetail = (): JSX.Element => {
               </button>
             </PostHeader>
             {postData && 
-            postData.length >= 1?
-
             (
               <PostCardComponent
                 posts={postData}
                 margin="8%"
                 width="22%"
               ></PostCardComponent>
-            ):
-            <PostCardNone>
-              <div>
-                <GiTalk size="22"></GiTalk>
-              </div>
-              현재 등록된 포스트가 없습니다.
-              <p>가장 먼저 글을 작성해보시는 것은 어떠신가요?</p>
-            </PostCardNone>}
+            )
+            }
           </Post>
         </>
       ) : (
