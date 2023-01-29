@@ -325,8 +325,13 @@ const Map = () => {
   ];
 
   const url =
+<<<<<<< HEAD
     "https://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=100&sort=posts";
   //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
+=======
+    "/attractions/maps?page=1&size=99&sort=posts";
+  //const url2 = '/attractions/mapdetails/1';
+>>>>>>> 6b9275e8cf410e6b0ad06d848344c389f9f3f7e1
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 
   useEffect(() => {
@@ -361,7 +366,11 @@ const Map = () => {
   const handleModalData = (dataUrl: string) => {
     // 모달창 데이터 받아오기
     axios
+<<<<<<< HEAD
       .get(`https://pikcha36.o-r.kr:8080/attractions/mapdetails/${dataUrl}`)
+=======
+      .get(`/attractions/mapdetails/${dataUrl}`)
+>>>>>>> 6b9275e8cf410e6b0ad06d848344c389f9f3f7e1
       .then((res) => {
         setModalData(res.data.data);
         console.log("모달데이터", modalData);

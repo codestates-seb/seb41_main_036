@@ -6,7 +6,7 @@ import PostCardComponent from "../components/PostCardComponent";
 import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
-
+import Footer from "../components/Footer";
 
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
@@ -103,12 +103,9 @@ const Post = () => {
 
   useEffect(() => {
     axios
-      .post(
-        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-        {
-          provinces: checkedList,
-        }
-      )
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
+        provinces: checkedList,
+      })
       .then((res) => {
         setPostsData(res.data.data);
         totalInfoRef.current = res.data.pageInfo;
@@ -119,12 +116,9 @@ const Post = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     axios
-      .post(
-        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-        {
-          provinces: checkedList,
-        }
-      )
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
+        provinces: checkedList,
+      })
       .then((res) => {
         setPostsData(res.data.data);
       })
@@ -183,6 +177,7 @@ const Post = () => {
           )}
         </PostContainer>
       </PostWrapper>
+      <Footer />
     </>
   );
 };
