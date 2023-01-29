@@ -16,7 +16,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
-import { lazy, ReactNode, MouseEventHandler } from "react";
+import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
 
 const SearchBar = lazy(() => import("./SearchBar"));
 // import { ReactComponent as Logo } from "./../../data/Templogo.svg";
@@ -32,9 +32,11 @@ const HeaderTopBar = () => {
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
 
   const localLogin = localStorage.getItem("loginStatus");
-  if (typeof localLogin === "string") {
-    setIslogin(JSON.parse(localLogin));
-  }
+  useEffect(() => {
+    if (typeof localLogin === "string") {
+      setIslogin(JSON.parse(localLogin));
+    }
+  }, []);
 
   const onClickLogout = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

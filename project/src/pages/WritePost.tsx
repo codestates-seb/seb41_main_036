@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
 
 const Container = styled.div`
@@ -191,6 +191,7 @@ const WritePost = () => {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
+  const { id } = useParams();
   const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -267,7 +268,7 @@ const WritePost = () => {
         formData.append("postContents", text);
       });
       axios
-        .post(`/posts/register/1`, formData, {
+        .post(`/posts/register/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

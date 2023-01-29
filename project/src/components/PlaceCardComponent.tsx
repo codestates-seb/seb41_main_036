@@ -5,11 +5,11 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
 import { ArrayPlaceType } from "../pages/Place";
 import { useNavigate } from "react-router-dom";
-
-const PlaceCardWrapper = styled.div<{ width: string }>`
+import { getCurrentCount } from "../utils/utils";
+export const PlaceCardWrapper = styled.div<{ width: string }>`
   width: ${(props) => props.width};
   height: 100%;
-  max-width: 330px;
+  max-width: 340px;
   display: flex;
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0, 0, 0.6, 1);
