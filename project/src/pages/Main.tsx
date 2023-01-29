@@ -10,6 +10,7 @@ import Carousel from "../components/Carousel";
 import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
 import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
+import Footer from "../components/Footer";
 // import axios from "../utils/axiosinstance"
 
 const GoRight = keyframes`
@@ -133,6 +134,7 @@ function Main() {
           </Link>
         </MoreLink>
       </Body>
+      <Footer />
       {/* <Footer>footer</Footer> */}
     </>
   );
