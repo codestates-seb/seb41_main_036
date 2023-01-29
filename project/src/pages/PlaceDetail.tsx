@@ -319,6 +319,7 @@ const PlaceDetail = (): JSX.Element => {
   const memberId = localStorage.getItem("memberId");
 
   const { id } = useParams();
+
   const url = `http://pikcha36.o-r.kr:8090/attractions/${id}`;
   const url2 = `http://pikcha36.o-r.kr:8090/attractions/${id}/${memberId}`;
   const url3 = `http://pikcha36.o-r.kr:8090/posts/${id}?page=${curPage}&size=8`;
@@ -343,7 +344,7 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scroll", updateScroll);
     };
-  }, []);
+  }, [ATTRACTIONS_URL]);
 
   useEffect(() => {
     axios.get(POSTS_URL).then((res) => {
