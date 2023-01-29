@@ -6,7 +6,7 @@ import PostCardComponent from "../components/PostCardComponent";
 import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
-
+import Footer from "../components/Footer";
 
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
@@ -14,6 +14,7 @@ const PostWrapper = styled.div`
   display: flex;
   width: 83.5%;
   margin: 0 auto;
+  max-width: 1280px;
 `;
 
 const LocationWrapper = styled.nav`
@@ -100,15 +101,12 @@ const Post = () => {
   const [onFilter, setOnFliter] = useState(0);
   const [sort, setSort] = useState("newest");
   const totalInfoRef = useRef<PageInfoType | null>(null);
-
+  console.log(postsData);
   useEffect(() => {
     axios
-      .post(
-        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-        {
-          provinces: checkedList,
-        }
-      )
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
+        provinces: checkedList,
+      })
       .then((res) => {
         setPostsData(res.data.data);
         totalInfoRef.current = res.data.pageInfo;
@@ -119,12 +117,9 @@ const Post = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     axios
-      .post(
-        `http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-        {
-          provinces: checkedList,
-        }
-      )
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
+        provinces: checkedList,
+      })
       .then((res) => {
         setPostsData(res.data.data);
       })
@@ -183,6 +178,7 @@ const Post = () => {
           )}
         </PostContainer>
       </PostWrapper>
+      <Footer />
     </>
   );
 };

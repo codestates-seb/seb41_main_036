@@ -10,6 +10,7 @@ import Carousel from "../components/Carousel";
 import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
 import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
+import Footer from "../components/Footer";
 // import axios from "../utils/axiosinstance"
 
 const GoRight = keyframes`
@@ -22,6 +23,7 @@ const GoRight = keyframes`
 `;
 
 const Body = styled.div`
+  max-width: 1440px;
   width: 83.5%;
   margin: 0 auto;
   height: 100%;
@@ -52,6 +54,9 @@ const ViewsPostContainer = styled.div`
     cursor: pointer;
     font-weight: bold;
     margin: 30px 0 0 83%;
+  }
+  > div {
+    justify-content: space-between;
   }
 `;
 const MoreLink = styled.div`
@@ -86,9 +91,8 @@ function Main() {
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
   const [postData, setPostData] = useState<ArrayPostType>();
 
-  const url =
-    "http://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=4&sort=newest";
-  const url2 = `http://pikcha36.o-r.kr:8080/posts/home?page=1&size=8&sort=views`;
+  const url = "/attractions/filter?page=1&size=4&sort=newest";
+  const url2 = `/posts/home?page=1&size=8&sort=views`;
 
   useEffect(() => {
     axios.all([axios.post(url, { provinces: [] }), axios.get(url2)]).then(
@@ -99,22 +103,12 @@ function Main() {
     );
   }, []);
 
-
-
-
-
-
-
-
-
-
   return (
     <>
       <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
       <Body>
-
         <MainSubTitle>많이 다녀간 명소</MainSubTitle>
         <ViewsPlaceContainer>
           <PlaceCardWrapper>
@@ -144,7 +138,7 @@ function Main() {
           </Link>
         </MoreLink>
       </Body>
-      {/* <Footer>footer</Footer> */}
+      <Footer />
     </>
   );
 }

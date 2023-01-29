@@ -73,8 +73,7 @@ const SelectBox = styled.div`
   }
 
   label {
-    color: var(--black-700);
-    font-weight: var(--fw-medium);
+    color: var(--black-800);
   }
 `;
 
@@ -159,7 +158,7 @@ export default function LocationFilter({
       <SelectContainer>
         <div>
           <span>선택한 지역</span>
-          <button onClick={allRemove}>초기화</button>
+          {!!checkedList.length && <button onClick={allRemove}>초기화</button>}
         </div>
         {checkedList &&
           checkedList.map((item, idx) => (

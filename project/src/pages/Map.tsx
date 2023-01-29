@@ -118,16 +118,17 @@ const Place = styled.div<{imgUrl:string}>`
     background-size: cover;
 
     >div{
-      padding:85px 0 2px 20px;
+      padding:85px 0 2px 15px;
       font-weight: bold;
       font-size: 18px;
       color:white;
     }
     >p{
-      padding:5px 0 0 20px;
+      padding:5px 0 0 15px;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 11px;
       color:white;
+      margin-bottom: 15px;
     }
 `
 
@@ -142,6 +143,10 @@ const PlaceDetailModal = styled.div`
 
 const PlaceDetailModalHeader = styled.div`
   height: 370px;
+  //background-color: red;
+  // 얘는 이미지 
+  //background-color: red;
+  // 얘는 이미지 
   > div:nth-child(1) {
     width: 100%;
     height: 200px;
@@ -150,8 +155,12 @@ const PlaceDetailModalHeader = styled.div`
       height: 100%;
       background-size: cover;
     }
+  }
+  
     >div:nth-child(2){ 
       display: flex;
+      //background-color: yellow;
+      //background-color: yellow;
       >p:nth-child(1){
         font-size: 14px;
         width: 60px;
@@ -212,7 +221,7 @@ const PlaceDetailModalHeader = styled.div`
         font-weight: 500;
       }
     }
-  }
+  
   > p:nth-child(4) {
     color: #555555;
     font-size: 14px;
@@ -238,7 +247,7 @@ const PlaceDetailModalHeader = styled.div`
     font-size: 15px;
     font-weight: bold;
     margin: 20px 0 0 17px;
-    color: #2e3776;
+    color: #0b113f87;
   }
   > span {
     color: #555555;
@@ -255,7 +264,8 @@ const PlaceDetailModalMain = styled.div`
   > div:nth-child(1) {
     font-size: 15px;
     font-weight: 700;
-    margin: 25px 0 10px 20px;
+    margin: 35px 0 30px 20px;
+    margin: 35px 0 30px 20px;
     color: #393939;
   }
 `;
@@ -268,6 +278,8 @@ const PostImgContainer = styled.div`
 
   > img {
     width: 48%;
+    height: 110px;
+    height: 110px;
     margin: 0 2px;
   }
 `;
@@ -320,8 +332,8 @@ const Map = () => {
   ];
 
   const url =
-    "http://pikcha36.o-r.kr:8080/attractions/maps?page=1&size=99&sort=posts";
-  //const url2 = 'http://pikcha36.o-r.kr:8080/attractions/mapdetails/1';
+    "/attractions/maps?page=1&size=99&sort=posts";
+  //const url2 = '/attractions/mapdetails/1';
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 
   useEffect(() => {
@@ -356,7 +368,7 @@ const Map = () => {
   const handleModalData = (dataUrl: string) => {
     // 모달창 데이터 받아오기
     axios
-      .get(`http://pikcha36.o-r.kr:8080/attractions/mapdetails/${dataUrl}`)
+      .get(`/attractions/mapdetails/${dataUrl}`)
       .then((res) => {
         setModalData(res.data.data);
         console.log("모달데이터", modalData);
@@ -472,7 +484,7 @@ const Map = () => {
                       <>
                         <img
                           src={el.imageUrls}
-                          key={index}
+                          key={modalData.attractionId}
                           onClick={() => {
                             alert("테스트");
                           }}

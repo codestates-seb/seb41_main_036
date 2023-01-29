@@ -22,7 +22,7 @@ const MainRankingWrapper = styled.ul`
 const RankingTitle = styled.span`
   display: flex;
   align-items: center;
-  margin-right: 25px;
+  margin: 1px 25px 0 0;
   font-size: var(--font-sm);
   font-weight: var(--fw-bold);
   color: var(--black-800);
@@ -96,7 +96,7 @@ const RankingItemContent = styled.span<{
 const CurrentTimeSpan = styled.span`
   font-size: var(--font-xs);
   color: var(--black-700);
-  margin-left: 20px;
+  margin: 1px 0 0 20px;
 `;
 export {
   RankingWrapper,

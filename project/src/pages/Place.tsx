@@ -8,9 +8,11 @@ import axios from "../utils/axiosinstance";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
+import Footer from "../components/Footer";
 
 const PlaceWrapper = styled.div`
   display: flex;
+  max-width: 1280px;
   width: 83.5%;
   margin: 0 auto;
   padding-top: 40px;
@@ -119,25 +121,27 @@ const Place = () => {
   useEffect(() => {
     setCurPage(1);
   }, [checkedList]);
+
   useEffect(() => {
     setIsLoading(true);
 
     if (searchValue && !isLoading) {
       axios
         .post(
-          `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           { provinces: checkedList }
         )
         .then((res) => {
           setIsLoading(false);
           setPlacesData(res.data.data);
+          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
     } else if (!isLoading) {
       axios
         .post(
-          `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
+          `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           {
             provinces: checkedList,
           }
@@ -145,6 +149,7 @@ const Place = () => {
         .then((res) => {
           setIsLoading(false);
           setPlacesData(res.data.data);
+          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
@@ -159,8 +164,8 @@ const Place = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     const URL = searchValue
-      ? `http://pikcha36.o-r.kr:8080/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
-      : `http://pikcha36.o-r.kr:8080/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+      ? `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
+      : `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
 
     axios
       .post(URL, {
@@ -238,6 +243,7 @@ const Place = () => {
           )}
         </PlaceContainer>
       </PlaceWrapper>
+      <Footer />
     </>
   );
 };
