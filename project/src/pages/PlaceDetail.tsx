@@ -283,6 +283,7 @@ const Notification = styled.div`
     margin-bottom: 53px;
   }
 `;
+
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -439,7 +440,6 @@ const PlaceDetail = (): JSX.Element => {
             >
               <BsShareFill className="share-icon" />
             </div>
-
             <div onClick={handlePostButtonClick}>
               {" "}
               <NoteIcon className="post-icon" />
