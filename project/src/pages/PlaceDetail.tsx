@@ -322,27 +322,20 @@ const PlaceDetail = (): JSX.Element => {
   const url = `http://pikcha36.o-r.kr:8090/attractions/${id}`;
   const url2 = `http://pikcha36.o-r.kr:8090/attractions/${id}/${memberId}`;
   const url3 = `http://pikcha36.o-r.kr:8090/posts/${id}?page=${curPage}&size=8`;
-  const url4 = `http://pikcha36.o-r.kr:8090/posts/${id}/${memberId}?page=1&size=8`;
+  const url4 = `http://pikcha36.o-r.kr:8090/posts/${id}/${memberId}?page=${curPage}&size=8`;
 
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
-
+  const ATTRACTIONS_URL = isLogin ? url2 : url;
+  const POSTS_URL = isLogin ? url4 : url3;
   const navigate = useNavigate();
 
   useEffect(() => {
-    const ATTRACTIONS_URL = isLogin ? url2 : url;
-    const POSTS_URL = isLogin ? url4 : url3;
-    axios.all([axios.get(ATTRACTIONS_URL), axios.get(POSTS_URL)]).then(
-      axios.spread((res1, res2) => {
-        setAttractionData(res1.data.data);
-        setLikes(res1.data.data.isVoted);
-        setBookmarkSaves(res1.data.data.isSaved);
-        setPostData(res2.data.data);
-        totalInfoRef.current = res2.data.pageInfo;
-        console.log("요청중");
-      })
-    );
-
+    Axios.get(ATTRACTIONS_URL).then((res) => {
+      setAttractionData(res.data.data);
+      setLikes(res.data.data.isVoted);
+      setBookmarkSaves(res.data.data.isSaved);
+    });
     window.addEventListener("scroll", updateScroll);
     window.addEventListener("scroll", onScroll);
 
@@ -351,6 +344,13 @@ const PlaceDetail = (): JSX.Element => {
       window.removeEventListener("scroll", updateScroll);
     };
   }, []);
+
+  useEffect(() => {
+    axios.get(POSTS_URL).then((res) => {
+      setPostData(res.data.data);
+      totalInfoRef.current = res.data.pageInfo;
+    });
+  }, [POSTS_URL]);
 
   function onScroll() {
     if (window.scrollY <= 700) {
