@@ -23,6 +23,7 @@ const GoRight = keyframes`
 `;
 
 const Body = styled.div`
+  max-width: 1440px;
   width: 83.5%;
   margin: 0 auto;
   height: 100%;
@@ -53,6 +54,9 @@ const ViewsPostContainer = styled.div`
     cursor: pointer;
     font-weight: bold;
     margin: 30px 0 0 83%;
+  }
+  > div {
+    justify-content: space-between;
   }
 `;
 const MoreLink = styled.div`

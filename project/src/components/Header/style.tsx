@@ -152,7 +152,6 @@ const HeaderTop = styled.div`
   justify-content: flex-end;
   z-index: var(--zi-four);
   position: relative;
-  width: 100%;
   max-width: 100%;
   padding: 0 75px;
   background-color: var(--grey-background);
@@ -200,7 +199,7 @@ const HeaderBodyMenuItem = styled.li<{ selected: boolean }>`
   color: ${(props) =>
     props.selected ? "var(--purple-300)" : "var(--black-900)"};
   transition: all 0.3s ease;
-  &:hover {
+  :hover {
     color: var(--purple-300);
     cursor: pointer;
   }

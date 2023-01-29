@@ -9,7 +9,6 @@ const PostContainer = styled.div<{ margin: string }>`
   flex-wrap: wrap;
   gap: 25px 1.3%;
   width: 100%;
-
   div:last-child {
     cursor: pointer;
   }
@@ -17,6 +16,7 @@ const PostContainer = styled.div<{ margin: string }>`
 
 const PostCard = styled.div<{ width: string }>`
   width: ${(props) => props.width};
+  max-width: 350px;
   height: 230px;
   background-color: #ffffff;
   display: flex;
