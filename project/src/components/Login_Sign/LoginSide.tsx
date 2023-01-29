@@ -11,6 +11,7 @@ import {
 } from "../../recoil/state";
 import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
+import Axios from "axios"
 
 const LoginSide = () => {
   const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);

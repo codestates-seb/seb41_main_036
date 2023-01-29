@@ -10,6 +10,7 @@ import {
 
 const Footer = () => {
   const navigate = useNavigate();
+
   return (
     <FooterWrapper>
       <FooterContainer>
