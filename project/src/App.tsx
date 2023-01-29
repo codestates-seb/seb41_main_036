@@ -14,6 +14,7 @@ import MyPage from "./pages/MyPage";
 import EditPost from "./pages/EditPost ";
 import Oauth from "./pages/Oauth";
 
+import Test from "./components/Test";
 
 function App() {
   if (localStorage.getItem("loginStatus") === null) {
@@ -25,6 +26,7 @@ function App() {
       <BrowserRouter>
         <RecoilRoot>
           <Routes>
+            <Route path="/test" element={<Test/>}></Route>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
             <Route path="/attractions" element={<Place />}>

@@ -33,7 +33,7 @@ const ImageBox = styled.div`
 `;
 const Container = styled.div`
   width: 100%;
-  height: 85vh;
+  height: 98vh;
   background-color: white;
   margin: 0 auto;
   > hr {
@@ -182,6 +182,25 @@ const MarkerCount = styled.p`
   font-size: 13px;
   margin: 2px auto;
 `;
+
+const PostCardNone = styled.div`
+  width:300px;
+  height: 300px;
+  //background-color: #ffffff;
+  margin: 90px auto;
+  //display: flex;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  > div{
+    margin-right: 10px;
+  }
+  >p{
+    margin-top: 5px;
+    font-size: 12px;
+    color:grey;
+  }
+`
 
 type PlaceData = {
   attractionId: number | undefined;
@@ -379,13 +398,15 @@ const PlaceDetail = (): JSX.Element => {
                 포스트 작성
               </button>
             </PostHeader>
-            {postData && (
+            {postData && 
+            (
               <PostCardComponent
                 posts={postData}
                 margin="8%"
                 width="22%"
               ></PostCardComponent>
-            )}
+            )
+            }
           </Post>
         </>
       ) : (
