@@ -9,9 +9,10 @@ import { BsEye } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
 import axios from "../utils/axiosinstance";
 import { useRecoilState } from "recoil";
-import { MemberId } from "../recoil/state";
+import { AuthToken, LoggedUser, LoginState, MemberId } from "../recoil/state";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
+import { useNavigate } from "react-router-dom";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -211,9 +212,16 @@ const MyPage = () => {
     address: "",
     phoneNumber: "",
   });
-
+  const naviate = useNavigate();
   const { username, address, phoneNumber } = inputs;
+  const [isLogin, setIsLogin] = useRecoilState(LoginState);
+  const [auth, setAuth] = useRecoilState(AuthToken);
+  const [LoggerUser, setLoggedUser] = useRecoilState(LoggedUser);
 
+  const testButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsLogin(false);
+  };
   const getUserProfile = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/users/profile/${memberId}`)
@@ -254,6 +262,27 @@ const MyPage = () => {
         setIsEdit(false);
       })
       .catch((err) => console.error(err));
+  };
+
+  const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (window.confirm("정말 탈퇴하시겠습니까?")) {
+      axios
+        .delete(`/users/delete/${memberId}`)
+        .then((res) => {
+          console.log(res);
+          setIsLogin(false);
+          setAuth("");
+          setLoggedUser("");
+          axios.defaults.headers.common["Authorization"] = null;
+          localStorage.removeItem("Authorization");
+          localStorage.setItem("loginStatus", "false");
+          localStorage.removeItem("memberId");
+          alert("탈퇴가 완료되었습니다.");
+          naviate(`/`);
+        })
+        .catch((err) => console.error(err));
+    }
   };
   const tabMenuBarList = [
     {
@@ -383,6 +412,7 @@ const MyPage = () => {
                   width="100px"
                   height="40px"
                   text="회원 탈퇴"
+                  onClick={deleteUser}
                 />
               </form>
             </MyPageUserInfo>
