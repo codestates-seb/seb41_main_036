@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 
 const PlaceWrapper = styled.div`
   display: flex;
+  max-width: 1280px;
   width: 83.5%;
   margin: 0 auto;
   padding-top: 40px;
@@ -120,6 +121,7 @@ const Place = () => {
   useEffect(() => {
     setCurPage(1);
   }, [checkedList]);
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -132,6 +134,7 @@ const Place = () => {
         .then((res) => {
           setIsLoading(false);
           setPlacesData(res.data.data);
+          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
@@ -146,6 +149,7 @@ const Place = () => {
         .then((res) => {
           setIsLoading(false);
           setPlacesData(res.data.data);
+          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
