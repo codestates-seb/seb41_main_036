@@ -56,7 +56,6 @@ const FilterButton = styled.button`
   color: var(--black-900);
   font-weight: var(--fw-bold);
   cursor: pointer;
-
   &.active {
     color: var(--purple-400);
     border-bottom: 1px solid var(--purple-300);
@@ -104,7 +103,7 @@ const Post = () => {
   console.log(postsData);
   useEffect(() => {
     axios
-      .post(`/posts/filter?page=1&size=10&sort=newest`, {
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => {
@@ -117,7 +116,7 @@ const Post = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     axios
-      .post(`/posts/filter?page=1&size=10&sort=newest`, {
+      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => {
