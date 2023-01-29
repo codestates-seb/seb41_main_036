@@ -26,14 +26,14 @@ function App() {
       <BrowserRouter>
         <RecoilRoot>
           <Routes>
-            <Route path="/test" element={<Test/>}></Route>
+            <Route path="/test" element={<Test />}></Route>
             <Route path="/login" element={<LoginSign />}></Route>
             <Route path="/" element={<Main />} />
             <Route path="/attractions" element={<Place />}>
               <Route path="search" element={<Place />} />
             </Route>
             <Route path="/posts" element={<Post />} />
-            <Route path="/write" element={<WritePost />} />
+            <Route path="/write/:id" element={<WritePost />} />
             <Route path="/map" element={<Map />} />
             <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
             <Route path="/posts/detail/:id" element={<DetailPost />} />
@@ -41,7 +41,6 @@ function App() {
             <Route path="/edit/:id" element={<EditPost />} />
             <Route path="/oauth" element={<Oauth />} />
             <Route path="/mypage" element={<MyPage />} />
-
           </Routes>
         </RecoilRoot>
       </BrowserRouter>

@@ -184,7 +184,7 @@ const MarkerCount = styled.p`
 `;
 
 const PostCardNone = styled.div`
-  width:300px;
+  width: 300px;
   height: 300px;
   //background-color: #ffffff;
   margin: 90px auto;
@@ -192,15 +192,15 @@ const PostCardNone = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 500;
-  > div{
+  > div {
     margin-right: 10px;
   }
-  >p{
+  > p {
     margin-top: 5px;
     font-size: 12px;
-    color:grey;
+    color: grey;
   }
-`
+`;
 
 type PlaceData = {
   attractionId: number | undefined;
@@ -329,7 +329,7 @@ const PlaceDetail = (): JSX.Element => {
 
             <div
               onClick={() => {
-                navigate("/write");
+                navigate(`/write/${id}`);
               }}
             >
               {" "}
@@ -398,15 +398,13 @@ const PlaceDetail = (): JSX.Element => {
                 포스트 작성
               </button>
             </PostHeader>
-            {postData && 
-            (
+            {postData && (
               <PostCardComponent
                 posts={postData}
                 margin="8%"
                 width="22%"
               ></PostCardComponent>
-            )
-            }
+            )}
           </Post>
         </>
       ) : (
