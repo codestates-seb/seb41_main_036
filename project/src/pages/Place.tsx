@@ -8,6 +8,7 @@ import axios from "../utils/axiosinstance";
 import PlaceCardComponent from "../components/PlaceCardComponent";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
+import Footer from "../components/Footer";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -238,6 +239,7 @@ const Place = () => {
           )}
         </PlaceContainer>
       </PlaceWrapper>
+      <Footer />
     </>
   );
 };

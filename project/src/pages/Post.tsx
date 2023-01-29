@@ -6,6 +6,7 @@ import PostCardComponent from "../components/PostCardComponent";
 import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
+import Footer from "../components/Footer";
 
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
@@ -176,6 +177,7 @@ const Post = () => {
           )}
         </PostContainer>
       </PostWrapper>
+      <Footer />
     </>
   );
 };

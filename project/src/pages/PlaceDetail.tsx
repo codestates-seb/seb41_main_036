@@ -13,6 +13,7 @@ import axios from "axios";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Footer from "../components/Footer";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -390,6 +391,7 @@ const PlaceDetail = (): JSX.Element => {
       ) : (
         <div>Loading ... </div>
       )}
+      <Footer />
     </>
   );
 };

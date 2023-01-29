@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { LoginState, MemberId } from "../recoil/state";
 import Modal from "../components/Modal";
 import { Header } from "../components/Header";
+import Footer from "../components/Footer";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
@@ -415,6 +416,7 @@ const DetailPost = () => {
           </div>
         </AddComment>
       </DetailPostWrapper>
+      <Footer />
     </>
   );
 };
