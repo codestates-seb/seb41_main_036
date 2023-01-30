@@ -13,6 +13,7 @@ import { AuthToken, LoggedUser, LoginState, MemberId } from "../recoil/state";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
+import MyPagePagination from "../components/MyPagePagination";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -184,7 +185,7 @@ interface UserType {
   modifiedAt: string;
 }
 
-interface PostsType {
+export interface MyPostsType {
   postId: number;
   postTitle: string;
   pictureUrl: string;
@@ -194,7 +195,7 @@ interface PostsType {
   modifiedAt: string;
 }
 
-interface SaveType {
+export interface MySavesType {
   attractionId: number;
   attractionName: string;
   fixedImage: string;
@@ -202,6 +203,8 @@ interface SaveType {
   saves: number;
 }
 
+export interface ArrayMyPostsType extends Array<MyPostsType> {}
+export interface ArrayMySavesType extends Array<MySavesType> {}
 const MyPage = () => {
   const [tab, setTab] = useState(0);
   const [userData, setUserData] = useState<UserType>();
@@ -218,10 +221,6 @@ const MyPage = () => {
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [LoggerUser, setLoggedUser] = useRecoilState(LoggedUser);
 
-  const testButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsLogin(false);
-  };
   const getUserProfile = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/users/profile/${memberId}`)
@@ -305,8 +304,7 @@ const MyPage = () => {
         <>
           <h2>Posts</h2>
           <span>{userData && userData.totalMyPosts}개의 포스트</span>
-          {userData &&
-            userData.posts.map((post) => <MyPageMyPostCard post={post} />)}
+          {userData && <MyPageMyPostCard posts={userData.posts} limit={6} />}
         </>
       ),
     },
@@ -321,10 +319,9 @@ const MyPage = () => {
         <>
           <h2>My Favorite</h2>
           <span>{userData && userData.totalMySaves}개의 즐겨찾기</span>
-          {userData &&
-            userData.saves.map((saves) => (
-              <MyPageMyFavoriteCard saves={saves} />
-            ))}
+          {userData && (
+            <MyPageMyFavoriteCard saves={userData.saves} limit={6} />
+          )}
         </>
       ),
     },
@@ -466,44 +463,85 @@ const MyPageCardContainer = styled.div`
   }
 `;
 
-const MyPageMyPostCard = ({ post }: { post: PostsType }) => {
+const MyPageMyPostCard = ({
+  posts,
+  limit,
+}: {
+  posts: ArrayMyPostsType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useState(1);
+  const indexOfLastPost = curPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   return (
     <>
-      <MyPageCardContainer>
-        <h3>{post.postTitle}</h3>
-        <div>
-          <span>
-            <BsEye />
-            {post.views}
-          </span>
-          <span>
-            <AiFillHeart />
-            {post.likes}
-          </span>
-        </div>
-        <img src={post.pictureUrl} alt="post-img" />
-      </MyPageCardContainer>
+      {posts &&
+        currentPosts.map((post) => (
+          <MyPageCardContainer key={post.postId}>
+            <h3>{post.postTitle}</h3>
+            <div>
+              <span>
+                <BsEye />
+                &nbsp;
+                {post.views}
+              </span>
+              <span>
+                <AiFillHeart />
+                &nbsp;
+                {post.likes}
+              </span>
+            </div>
+            <img src={post.pictureUrl} alt="post-img" />
+          </MyPageCardContainer>
+        ))}
+      <MyPagePagination
+        limit={6}
+        props={posts}
+        setCurPage={setCurPage}
+        curPage={curPage}
+      />
     </>
   );
 };
 
-const MyPageMyFavoriteCard = ({ saves }: { saves: SaveType }) => {
+const MyPageMyFavoriteCard = ({
+  saves,
+  limit,
+}: {
+  saves: ArrayMySavesType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useState(1);
+  const indexOfLastPost = curPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
+  const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
   return (
     <>
-      <MyPageCardContainer>
-        <h3>{saves.attractionName}</h3>
-        <div>
-          <span>
-            <BsFillBookmarkFill />
-            {saves.saves}
-          </span>
-          <span>
-            <AiFillHeart />
-            {saves.likes}
-          </span>
-        </div>
-        <img src={saves.fixedImage} alt="post-img" />
-      </MyPageCardContainer>
+      {saves &&
+        currentSaves.map((save) => (
+          <MyPageCardContainer key={save.attractionId}>
+            <h3>{save.attractionName}</h3>
+            <div>
+              <span>
+                <BsFillBookmarkFill />
+                &nbsp;{save.saves}
+              </span>
+              <span>
+                <AiFillHeart />
+                &nbsp;
+                {save.likes}
+              </span>
+            </div>
+            <img src={save.fixedImage} alt="post-img" />
+          </MyPageCardContainer>
+        ))}
+      <MyPagePagination
+        limit={6}
+        props={saves}
+        setCurPage={setCurPage}
+        curPage={curPage}
+      />
     </>
   );
 };
