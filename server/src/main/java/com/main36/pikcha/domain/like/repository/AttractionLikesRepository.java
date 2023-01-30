@@ -13,4 +13,5 @@ public interface AttractionLikesRepository extends JpaRepository<AttractionLikes
     Optional<AttractionLikes> findByMemberAndAttraction(Member member, Attraction attraction);
     @Query(value = "select c from AttractionLikes c where c.member.memberId = :memberId and c.attraction.attractionId = :attractionId")
     Optional<AttractionLikes> findByMemberIdAndAttractionId(long memberId, long attractionId);
+
 }

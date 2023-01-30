@@ -33,7 +33,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 
 import java.io.IOException;
@@ -267,7 +266,9 @@ public class PostController {
         String dirName = "images";
         Post post = verifiedById(loginUser.getMemberId(), postId);
         // CascadeType.REMOVE 라서 객체는 지울 필요 없고, s3에서 이미지만 지우면 된다
-        postImageService.deleteOnlyS3Images(post.getPostImages());
+        if(!post.getPostImages().isEmpty()){
+            postImageService.deleteOnlyS3Images(post.getPostImages());
+        }
 
         postService.erasePost(post);
 

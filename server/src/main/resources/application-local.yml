@@ -5,6 +5,10 @@ spring:
     multipart:
       max-file-size: 10MB  # 2MB 제한
       max-request-size: 10MB # 2MB 제한
+  batch:
+    job:
+      enabled: false # spring 실행시 배치 자동실행 끄기
+
 
   h2:
     console:
