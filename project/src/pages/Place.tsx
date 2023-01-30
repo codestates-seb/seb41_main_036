@@ -5,9 +5,11 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "../utils/axiosinstance";
-import PlaceCardComponent from "../components/PlaceCardComponent";
+import PlaceCard from "../components/PlaceCard";
 import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../recoil/state";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -76,6 +78,8 @@ export interface PlaceType {
   likes: number;
   numOfPosts: number;
   saves: number;
+  isSaved: boolean;
+  isVoted: boolean;
 }
 
 export interface PageInfoType {
@@ -112,21 +116,29 @@ const Place = () => {
   const { search } = useLocation();
   const totalInfoRef = useRef<PageInfoType | null>(null);
 
+  const [isLogin] = useRecoilState(LoginState);
+  const memberId = localStorage.getItem("memberId");
+
   const searchValue = useMemo(
     () => new URLSearchParams(search).get("keyword"),
     [search]
   );
+
+  const url1 = `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+
   useEffect(() => {
     setCurPage(1);
   }, [checkedList]);
 
   useEffect(() => {
+    const search_url = isLogin ? url1_loggedIn : url1;
+    const url = isLogin ? url2_loggedIn : url2;
     if (searchValue) {
       axios
-        .post(
-          `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-          { provinces: checkedList }
-        )
+        .post(search_url, { provinces: checkedList })
         .then((res) => {
           setPlacesData(res.data.data);
           totalInfoRef.current = res.data.pageInfo;
@@ -134,12 +146,9 @@ const Place = () => {
         .catch((err) => console.error(err));
     } else {
       axios
-        .post(
-          `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-          {
-            provinces: checkedList,
-          }
-        )
+        .post(url, {
+          provinces: checkedList,
+        })
         .then((res) => {
           setPlacesData(res.data.data);
           totalInfoRef.current = res.data.pageInfo;
@@ -147,27 +156,11 @@ const Place = () => {
         .catch((err) => console.error(err));
       return;
     }
-  }, [searchValue, curPage, checkedList]);
+  }, [searchValue, curPage, checkedList, sort]);
 
-  const handleSort = (idx: number) => {
+  const handleSortClick = (idx: number, sort: string) => {
     setOnFliter(idx);
-  };
-
-  const handleSortPlace = (sort: string) => {
     setSort(sort);
-    const URL = searchValue
-      ? `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
-      : `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
-
-    axios
-      .post(URL, {
-        provinces: checkedList,
-      })
-      .then((res) => {
-        setPlacesData(res.data.data);
-        setSortClick(!sortClick);
-      })
-      .catch((err) => console.error(err));
   };
 
   return (
@@ -207,8 +200,7 @@ const Place = () => {
                   className={onFilter === idx ? "active" : ""}
                   key={idx}
                   onClick={() => {
-                    handleSort(idx);
-                    handleSortPlace(sort.eng);
+                    handleSortClick(idx, sort.eng);
                   }}
                 >
                   {sort.kor}
@@ -217,9 +209,10 @@ const Place = () => {
             </div>
           </PlaceFilterContainer>
           <PlaceBox>
-            {placesData && (
-              <PlaceCardComponent placesData={placesData} width="32%" />
-            )}
+            {placesData &&
+              placesData.map((placeInfo) => (
+                <PlaceCard placeInfo={placeInfo} width="32%" />
+              ))}
           </PlaceBox>
           {placesData && (
             <Pagination

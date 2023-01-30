@@ -15,21 +15,26 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   background-color: white;
+  * {
+    box-sizing: content-box !important;
+  }
 `;
 
 const PlaceList = styled.div`
   width: 25%;
   height: 86vh;
   padding: 10px 0;
+  box-sizing: content-box;
 `;
 
 const DropDown = styled.article`
   position: absolute;
   margin-left: 20px;
+  box-sizing: content-box;
   > button {
     cursor: pointer;
     background-color: white;
-    width: 310px;
+
     height: 40px;
     margin-left: 5px;
     padding-left: 10px;
@@ -58,7 +63,7 @@ const SelectList = styled.div`
   width: 295px;
   height: 200px;
   margin-left: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   color: var(--black-750);
   position: relative;
@@ -93,7 +98,7 @@ const PlaceComponent = styled.div`
   height: 88vh;
   margin-left: 26px;
   background-color: #ffffff;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   -ms-overflow-style: none;
 `;
@@ -119,7 +124,7 @@ const Place = styled.div<{ imgUrl: string }>`
   background-size: cover;
 
   > div {
-    padding: 85px 0 2px 15px;
+    padding: 85px 0 2px 20px;
     font-weight: bold;
     font-size: 18px;
     color: white;
@@ -143,7 +148,7 @@ const PlaceDetailModal = styled.div`
 `;
 
 const PlaceDetailModalHeader = styled.div`
-  height: 370px;
+  box-sizing: content-box;
   > div:nth-child(1) {
     width: 100%;
     height: 200px;
@@ -158,17 +163,14 @@ const PlaceDetailModalHeader = styled.div`
     display: flex;
     > p:nth-child(1) {
       font-size: 14px;
-      width: 60px;
-      height: 20px;
-      margin: 15px 250px 0 20px;
+      margin: 15px 265px 0 20px;
       line-height: 20px;
       font-weight: 600;
       color: var(--black-700);
     }
     > div {
-      margin-top: 12px;
-      margin-left: 3px;
-      margin-right: 5px;
+      margin-top: 13px;
+      margin-right: 11px;
     }
     & p {
       font-size: 10px;
@@ -177,12 +179,13 @@ const PlaceDetailModalHeader = styled.div`
     }
   }
   > div:nth-child(3) {
+    box-sizing: content-box;
     display: flex;
     width: 325px;
     height: 30px;
     > h2 {
       background-color: #fbf8ba;
-      margin-left: 15px;
+      margin-left: 20px;
       font-weight: 700;
       margin-bottom: 5px;
     }
@@ -195,18 +198,12 @@ const PlaceDetailModalHeader = styled.div`
       font-weight: 600;
     }
   }
-  > p:nth-child(4) {
-    color: #555555;
-    font-size: 14px;
-    margin: 4px 0 0 15px;
-    font-weight: 600;
-  }
 
   > div:nth-child(5) {
     display: flex;
     color: #919191;
     font-weight: bold;
-    margin: 8px 0 0 17px;
+    margin: 10px 0 0 20px;
     > div {
       margin-right: 3px;
     }
@@ -217,17 +214,26 @@ const PlaceDetailModalHeader = styled.div`
   }
 
   > p:nth-child(4) {
+    box-sizing: content-box;
     color: #555555;
     font-size: 14px;
-    margin: 4px 0 0 15px;
+    margin: 4px 0 0 20px;
     font-weight: 600;
   }
-
+  > div {
+    margin-right: 5px;
+  }
+  & p {
+    font-size: 10px;
+    margin-left: 5px;
+    color: #373737;
+  }
   > div:nth-child(5) {
+    box-sizing: content-box;
     display: flex;
     color: #919191;
     font-weight: bold;
-    margin: 8px 0 0 17px;
+    margin: 8px 0 0 20px;
     > div {
       margin-right: 3px;
     }
@@ -238,14 +244,17 @@ const PlaceDetailModalHeader = styled.div`
   }
 
   > div:nth-child(6) {
+    box-sizing: content-box;
     font-size: 15px;
     font-weight: bold;
-    margin: 20px 0 0 17px;
+    margin: 10px 0 15px 20px;
     color: #0b113f87;
   }
   > span {
     color: #555555;
     margin-left: 350px;
+    position: absolute;
+    transform: translateY(-10px);
     cursor: pointer;
   }
 `;
@@ -256,20 +265,19 @@ const PlaceDetailModalMain = styled.div`
   border-top: 1px solid #e4dcdc;
 
   > div:nth-child(1) {
+    box-sizing: content-box;
     font-size: 15px;
     font-weight: 700;
-    margin: 35px 0 30px 20px;
-    margin: 35px 0 30px 20px;
+    margin: 17px 0 17px 20px;
     color: #393939;
   }
 `;
 
 const PostImgContainer = styled.div`
   width: 90%;
-  height: 430px;
   margin: 0 auto;
-  overflow: scroll;
-
+  overflow: auto;
+  height: 35vh;
   > img {
     width: 48%;
     height: 110px;

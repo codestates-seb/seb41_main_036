@@ -1,14 +1,3 @@
-// import photo1 from "./../data/photo1.jpg";
-// import photo2 from "./../data/photo2.jpg";
-// import photo3 from "./../data/photo3.jpg";
-// import photo4 from "./../data/photo4.jpg";
-// import photo5 from "./../data/photo5.jpg";
-// import photo7 from "./../data/photo7.jpg";
-// import photo8 from "./../data/photo8.jpg";
-// import photo9 from "./../data/photo9.jpg";
-// import photo10 from "./../data/photo10.jpg";
-// import photo11 from "./../data/photo11.jpg";
-//https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g
 const prefix = "https://drive.google.com/uc?id=";
 const carouselData = [
   {
@@ -59,7 +48,7 @@ const carouselData = [
   {
     img: prefix + "1_N4v0M79nc4EkceHvVj1YxL09krXYucr",
     id: 4,
-    attractionId: undefined,
+    attractionId: 104,
     title: "사진찍기 가장 좋은 장소는 어디일까요?",
     subtitle:
       "나만의 사진 명소를 발견할 수 있을지도 모릅니다. 명소부터 포스트까지 다양한 정보를 통해 나만의 사진을 찍어보세요.5",
