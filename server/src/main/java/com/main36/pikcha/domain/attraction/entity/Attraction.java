@@ -26,6 +26,13 @@ public class Attraction extends Auditable {
     @Column(name = "attraction_name", nullable = false)
     private String attractionName;
 
+    @Lob
+    @Column( name = "attraction_description", nullable = false)
+    private String attractionDescription;
+
+    @Column(name = "attraction_address", nullable = false)
+    private String attractionAddress;
+
     @Column(name = "likes", nullable = false)
     @ColumnDefault("0")
     private Long likes;
@@ -38,16 +45,7 @@ public class Attraction extends Auditable {
 //    @Formula("(SELECT count(1) FROM post p WHERE p.postId = attractionId)")
     @ColumnDefault("0")
     private Long numOfPosts;
-    @Lob
-    @Column( name = "attraction_description", nullable = false)
-    private String attractionDescription;
 
-    @Column(name = "attraction_address", nullable = false)
-    private String attractionAddress;
-
-//    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    @JoinColumn(name = "attraction_image_id")
-//    private AttractionImage attractionImage;
     @Column(name = "fixed_image")
     private String fixedImage;
 

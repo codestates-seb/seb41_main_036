@@ -12,6 +12,7 @@ import com.main36.pikcha.global.utils.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -74,14 +75,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private void content(HttpServletResponse response) {
         // #1
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("utf-8");
+//        response.setContentType("text/plain");
+//        response.setCharacterEncoding("utf-8");
 
         // #2
         // response.setHeader("Content-type", "text/plain;charset=utf-8"); // 한글이 깨질 수 있으므로 utf-8로 설정
 
         // #3
-        // response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
     }
 }
