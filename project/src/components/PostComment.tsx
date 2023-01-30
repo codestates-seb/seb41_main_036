@@ -6,7 +6,8 @@ import { MemberId } from "../recoil/state";
 import axios from "../utils/axiosinstance";
 
 const PostCommentContainer = styled.div`
-  margin-top: 20px;
+width: 70%;
+margin: 20px auto;
   > div {
     display: flex;
     justify-content: space-between;
