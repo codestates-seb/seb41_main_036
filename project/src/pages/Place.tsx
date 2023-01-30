@@ -211,7 +211,11 @@ const Place = () => {
           <PlaceBox>
             {placesData &&
               placesData.map((placeInfo) => (
-                <PlaceCard placeInfo={placeInfo} width="32%" />
+                <PlaceCard
+                  key={placeInfo.attractionId}
+                  placeInfo={placeInfo}
+                  width="32%"
+                />
               ))}
           </PlaceBox>
           {placesData && (

@@ -122,7 +122,11 @@ function Main() {
           <PlaceCardWrapper>
             {attractionData &&
               attractionData.map((placeInfo) => (
-                <PlaceCard placeInfo={placeInfo} width="24%" />
+                <PlaceCard
+                  placeInfo={placeInfo}
+                  width="24%"
+                  key={placeInfo.attractionId}
+                />
               ))}
           </PlaceCardWrapper>
           <MoreLink>

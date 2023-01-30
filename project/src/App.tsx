@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import styled from "styled-components";
 import "./App.css";
 import { RecoilRoot } from "recoil";
 import Oauth from "./pages/Oauth";
@@ -26,7 +27,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <RecoilRoot>
-          <Suspense fallback={<BeatLoader color="#36d7b7" />}>
+          <Suspense fallback={<BeatLoader color="var(--black-500)" />}>
             <Routes>
               <Route path="/test" element={<Test />}></Route>
               <Route path="/login" element={<LoginSign />}></Route>

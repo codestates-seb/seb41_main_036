@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiFillHeart as LikeIcon } from "react-icons/ai";
 import { BsFillBookmarkFill as BookmarkIcon } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
@@ -22,8 +22,7 @@ const PlaceCard = ({
   const [isLogin] = useRecoilState(LoginState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
-  console.log(placeInfo, "placeInfo");
-  console.log(currentBookmark, "currrentBoormark");
+
   const {
     attractionId,
     likes: likesData,
@@ -33,7 +32,7 @@ const PlaceCard = ({
   } = placeInfo;
   const URL_FOR_SAVES = `/attractions/saves/${attractionId}`;
   const URL_FOR_LIKES = `/attractions/likes/${attractionId}`;
-  console.log(placeInfo, "jhgjhgghjgjhjg");
+
   const handleBookmarkClick = () => {
     if (!isLogin) {
       setIsModalVisible(true);
@@ -41,7 +40,6 @@ const PlaceCard = ({
     }
     Axios.post(URL_FOR_SAVES).then((res) => {
       setCurrentBookmark(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
   const handleLikeClick = () => {
@@ -51,7 +49,6 @@ const PlaceCard = ({
     }
     Axios.post(URL_FOR_LIKES).then((res) => {
       setCurrentLike(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
   return (
