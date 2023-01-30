@@ -49,8 +49,8 @@ const LoginSide = () => {
       return;
     }
 
-    return axios.post(
-      process.env.REACT_APP_DB_HOST + "/login",
+    return Axios.post(
+      process.env.REACT_APP_DB_HOST + "https://pikcha36.o-r.kr:8080/login",
       {
         username: loginemail,
         password: loginpassword,
