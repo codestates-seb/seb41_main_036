@@ -23,7 +23,7 @@ const OverlayLeft = () => {
         alt="logo"
         onClick={() => navigate("/")}
       />
-      <l.TextStyle color="white" fontSize="20px" fontweight="normal">
+      <l.TextStyle color="white" fontSize="20px" fontweight="bold">
         <l.CustomPadding padding="70px 0px 0px 0px"></l.CustomPadding>
         사진찍기 가장 좋은 장소는 어디일까요?
       </l.TextStyle>

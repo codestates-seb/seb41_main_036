@@ -128,8 +128,8 @@ const TagsButton = styled.button`
 `;
 
 const PostContentBottom = styled.div`
-width: 70%;
-margin: 0 auto;
+  width: 70%;
+  margin: 0 auto;
   height: 40px;
   display: flex;
   justify-content: space-between;
@@ -145,7 +145,7 @@ margin: 0 auto;
   > div:first-child {
     display: flex;
     align-items: center;
-    font-weight: var(--fw-bold);
+    font-size: 20px;
   }
   > div:last-child {
     width: 100px;
@@ -191,6 +191,7 @@ const AddComment = styled.form<{ isLogin: boolean }>`
     padding: 10px;
     border-radius: var(--br-m);
     resize: none;
+    margin-bottom: 30px;
   }
   button {
     position: relative;
@@ -383,7 +384,7 @@ const DetailPost = () => {
           <PostContentBottom>
             <div>
               <img alt="userImg" src={post?.picture} />
-              {post?.username}님의 포스트
+              <strong>{post?.username}</strong>님의 포스트
             </div>
             <div>
               <div>

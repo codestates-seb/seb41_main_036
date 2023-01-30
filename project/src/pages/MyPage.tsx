@@ -36,6 +36,7 @@ const MyPageContainer = styled.div`
 const MyPageUserInfo = styled.aside`
   width: 25%;
   height: 100%;
+  font-weight: 500;
 
   > div:first-child {
     svg {
@@ -60,20 +61,20 @@ const MyPageUserInfo = styled.aside`
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin: 30px auto;
+      margin: 30px 10px;
     }
 
     div {
-      margin: 3px 0 3px 0;
+      margin: 1px 0 3px 0;
       color:var(--black-750);
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       font-size: var(--font-sm);
     }
     div:nth-child(2) {
       display: flex;
       font-weight: var(--fw-bold);
       font-size: var(--font-xl);
-      margin-bottom: 20px;
+      margin-bottom: 6px;
       svg {
         color:#868686;
         margin-left: 10px;
@@ -98,7 +99,7 @@ const MyPageUserInfo = styled.aside`
     }
     button {
       position: relative;
-      top: 10em;
+      top: 8em;
     }
   }
 `;
@@ -120,7 +121,7 @@ const MyPageMainContainer = styled.article`
       display: block;
       text-align: right;
       font-weight: var(--fw-bold);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       margin-right: 5px;
     }
   }
@@ -162,6 +163,43 @@ const MyPageTabBarMenu = styled.button`
     }
   }
 `;
+
+const EditTitle = styled.div`
+  
+  >input{
+    border: none;
+    width:230px;
+    padding: 0px;
+    border-bottom: 1px solid #b9cad3;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+`
+const EditAddress = styled.div`
+  > input{
+    padding: 0;
+    margin: 0;
+    border:none;
+    border-bottom: 1px solid #b9cad3;
+  }
+`
+
+const EditButton = styled.button`
+  border:none;
+  background-color: white;
+  font-weight: bold;
+  color:grey;
+  top:200px;
+  margin-left: 170px;
+  cursor: pointer;
+  :hover{
+    color:var(--purple-400);
+  }
+`
+
+
+
 
 interface UserType {
   memberId: number;
@@ -372,12 +410,15 @@ const MyPage = () => {
                 />
                 <div>
                   {isEdit ? (
+                    <EditTitle>
                     <input
+                      autoFocus
                       name="username"
                       type="text"
                       defaultValue={userData.username}
                       onChange={(e) => onChange(e)}
                     />
+                    </EditTitle>
                   ) : (
                     <>
                       {userData.username}{" "}
@@ -388,12 +429,14 @@ const MyPage = () => {
                 <div>{userData.memberTitle}</div>
                 <div>
                   {isEdit ? (
+                    <EditAddress>
                     <input
                       name="address"
                       type="text"
                       value={address}
                       onChange={(e) => onChange(e)}
                     />
+                    </EditAddress>
                   ) : (
                     <>
                       <FaMapMarkerAlt /> {userData.address}
@@ -403,17 +446,19 @@ const MyPage = () => {
                 <div>{userData.email}</div>
                 <div>
                   {isEdit ? (
+                    <EditAddress>
                     <input
                       name="phoneNumber"
                       type="text"
                       value={phoneNumber}
                       onChange={(e) => onChange(e)}
                     />
+                    </EditAddress>
                   ) : (
                     <>{userData.phoneNumber}</>
                   )}
                   {isEdit ? (
-                    <button onClick={(e) => editInfoSubmit(e)}>완료</button>
+                    <EditButton onClick={(e) => editInfoSubmit(e)}>수정 완료</EditButton>
                   ) : null}
                 </div>
                 <Button
@@ -461,6 +506,7 @@ const MyPageCardContainer = styled.div`
   }
 
   img {
+    margin-left: 3%;
     min-width: 100px;
     height: 100%;
     border-radius: var(--br-s);
@@ -470,7 +516,7 @@ const MyPageCardContainer = styled.div`
     background-color: #fcfcd0;
     flex-direction: row;
     width: 130px;
-    line-height: 50px;
+    line-height: 40px;
     margin-right: 10px;
   }
 `;
