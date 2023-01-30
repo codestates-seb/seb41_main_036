@@ -9,11 +9,12 @@ import {
 import {
   AttractionItem,
   AttractionItemContent,
+  AttractionItemContentWrapper,
   SuggestionItemWrapper,
 } from "./style";
+import { useNavigate } from "react-router-dom";
 import { TbArrowUpRight as ShortcutIcon } from "react-icons/tb";
 import { BiLocationPlus as SearchMoreIcon } from "react-icons/bi";
-import { Link } from "react-router-dom";
 
 const MAX_SUGGEST = 5;
 
@@ -119,10 +120,13 @@ const SuggestionItem = ({
   };
 
   let letterIndex = exactMatchedLetter.flat();
-
+  const navigate = useNavigate();
+  const handleAttractionItemClick = () => {
+    navigate(`/attractions/detail/${info.id}`);
+  };
   return (
     <AttractionItem selectedEl={selectedEl} onMouseOver={handleMouseOver}>
-      <Link to={`/attractions/detail/${info.id}`}>
+      <AttractionItemContentWrapper onClick={handleAttractionItemClick}>
         <AttractionItemContent type="name">
           {letterIndex.map((el, i, arr) => {
             let formerIndex = i === 0 ? 0 : arr[i - 1] + 1;
@@ -137,7 +141,7 @@ const SuggestionItem = ({
         <AttractionItemContent type="address">
           {info.address}
         </AttractionItemContent>
-      </Link>
+      </AttractionItemContentWrapper>
       <ShortcutIcon />
     </AttractionItem>
   );

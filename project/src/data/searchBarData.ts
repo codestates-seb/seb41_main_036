@@ -475,7 +475,7 @@ const AttractionsData: Array<AttractionsProps> = [
     address: "중구 세종대로 110",
   },
   {
-    name: "서울시립 미술관",
+    name: "서울 시립 미술관",
     id: 95,
     address: "중구 덕수궁길 61",
   },

@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  //baseURL: "http://pikcha36.o-r.kr:8090",
+  baseURL: "http://pikcha36.o-r.kr:8090",
   //withCredentials: true,
 
 });
