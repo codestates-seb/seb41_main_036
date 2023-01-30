@@ -305,25 +305,16 @@ const PlaceDetail = (): JSX.Element => {
 
   const [bookmarkSaves, setBookmarkSaves] = useState(false); //로컬 북마트 상태 저장
   const [likes, setLikes] = useState(false);
-
   const [isLogin] = useRecoilState(LoginState);
-
   const [curPage, setCurPage] = useState(1);
-
-  const [auth, setAuth] = useRecoilState(AuthToken);
-  const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
-
   const { id } = useParams();
-
   const url = `/attractions/${id}`;
   const url2 = `/attractions/${id}/${memberId}`;
   const url3 = `/posts/${id}?page=${curPage}&size=8`;
   const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
-
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
   const ATTRACTIONS_URL = isLogin ? url2 : url;
@@ -379,7 +370,7 @@ const PlaceDetail = (): JSX.Element => {
       await navigator.clipboard.writeText(text);
       alert("url이 성공적으로 복사되었습니다.");
     } catch (err) {
-      console.log("복사 실패");
+      console.error(err);
     }
   };
 
@@ -390,7 +381,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     Axios.post(URL_FOR_SAVES).then((res) => {
       setBookmarkSaves(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -401,7 +391,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     Axios.post(URL_FOR_LIKES).then((res) => {
       setLikes(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -412,21 +401,13 @@ const PlaceDetail = (): JSX.Element => {
     }
     navigate(`/write/${id}`);
   };
-  console.log(
-    attractionData,
-    "데이터값 확인",
-    Number(bookmarkSaves),
-    bookmarkSaves,
-    isLogin,
-    postData
-  );
 
   return (
     <>
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <FixedOnScrollUpHeader />
       <GlobalStyle />
-      {attractionData !== undefined ? (
+      {attractionData && (
         <>
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
@@ -543,8 +524,6 @@ const PlaceDetail = (): JSX.Element => {
             )}
           </Post>
         </>
-      ) : (
-        <div>Loading ... </div>
       )}
       <Footer />
     </>

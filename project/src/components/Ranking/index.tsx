@@ -41,7 +41,6 @@ const Ranking = () => {
     }, 5000);
     return () => clearInterval(timerIdRef.current as NodeJS.Timeout);
   }, []);
-  // console.log(newRankingData.slice(9, 11 % 12), newRankingData);
   return (
     <RankingWrapper>
       <MainRankingWrapper>

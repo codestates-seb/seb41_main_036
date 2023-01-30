@@ -6,7 +6,6 @@ import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "../utils/axiosinstance";
 import PlaceCardComponent from "../components/PlaceCardComponent";
-import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
 
@@ -107,7 +106,6 @@ const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();
   const [checkedList, setCheckedlist] = useState<string[]>([]);
   const [sortClick, setSortClick] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
   const [curPage, setCurPage] = useState(1);
   const [sort, setSort] = useState("newest");
@@ -123,22 +121,18 @@ const Place = () => {
   }, [checkedList]);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    if (searchValue && !isLoading) {
+    if (searchValue) {
       axios
         .post(
           `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
           { provinces: checkedList }
         )
         .then((res) => {
-          setIsLoading(false);
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
-    } else if (!isLoading) {
+    } else {
       axios
         .post(
           `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
@@ -147,9 +141,7 @@ const Place = () => {
           }
         )
         .then((res) => {
-          setIsLoading(false);
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
@@ -224,17 +216,11 @@ const Place = () => {
               ))}
             </div>
           </PlaceFilterContainer>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <PlaceBox>
-                {placesData && (
-                  <PlaceCardComponent placesData={placesData} width="32%" />
-                )}
-              </PlaceBox>
-            </>
-          )}
+          <PlaceBox>
+            {placesData && (
+              <PlaceCardComponent placesData={placesData} width="32%" />
+            )}
+          </PlaceBox>
           {placesData && (
             <Pagination
               props={totalInfoRef.current as PageInfoType}

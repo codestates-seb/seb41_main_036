@@ -274,23 +274,23 @@ const MyPage = () => {
       })
       .catch((err) => console.error(err));
   };
-
   const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
       axios
         .delete(`/users/delete/${memberId}`)
         .then((res) => {
-          console.log(res);
-          setIsLogin(false);
-          setAuth("");
-          setLoggedUser("");
-          axios.defaults.headers.common["Authorization"] = null;
-          localStorage.removeItem("Authorization");
-          localStorage.setItem("loginStatus", "false");
-          localStorage.removeItem("memberId");
-          alert("탈퇴가 완료되었습니다.");
-          naviate(`/`);
+          if (res.status === 200) {
+            setIsLogin(false);
+            setAuth("");
+            setLoggedUser("");
+            axios.defaults.headers.common["Authorization"] = null;
+            localStorage.removeItem("Authorization");
+            localStorage.setItem("loginStatus", "false");
+            localStorage.removeItem("memberId");
+            alert("탈퇴가 완료되었습니다.");
+            naviate(`/`);
+          }
         })
         .catch((err) => console.error(err));
     }

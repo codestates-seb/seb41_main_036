@@ -144,7 +144,6 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
       )}
       <SearchIcon className="search-icon" onClick={handleSearchIconClick} />
       {isVisible && (
-        <Suspense fallback={<Loading />}>
           <SuggestionBox
             trimmedSearchValue={trimmedSearchValue}
             filteredAttractions={filteredAttractions}
@@ -153,16 +152,9 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
             onInputChange={setInputValue}
             onSelectionChange={setSelected}
           />
-        </Suspense>
       )}
     </SearchForm>
   );
 };
-function Loading() {
-  return (
-    <AttractionItemContent as="li" type="notice">
-      로딩중...
-    </AttractionItemContent>
-  );
-}
+
 export default SearchBar;

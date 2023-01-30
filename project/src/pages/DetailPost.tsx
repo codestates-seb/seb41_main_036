@@ -280,9 +280,10 @@ const DetailPost = () => {
         commentContent: comment,
       })
       .then((res) => {
-        console.log(res);
-        setComment("");
-        window.location.reload();
+        if (res.status === 201) {
+          setComment("");
+          window.location.reload();
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -300,9 +301,10 @@ const DetailPost = () => {
       axios
         .delete(`/posts/delete/${id}`)
         .then((res) => {
-          alert("삭제가 완료되었습니다.");
-          console.log(res);
-          navigate(-1);
+          if (res.status === 204) {
+            alert("삭제가 완료되었습니다.");
+            navigate(-1);
+          }
         })
         .catch((err) => console.log(err));
     }
