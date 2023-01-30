@@ -19,7 +19,7 @@ public class HashTag extends Auditable {
     private long hashTagId;
 
     @Setter
-    @Column(name = "hashtag_content")
+    @Column(length = 10, name = "hashtag_content")
     private String hashTagContent;
 
     @ManyToOne(fetch = FetchType.LAZY)

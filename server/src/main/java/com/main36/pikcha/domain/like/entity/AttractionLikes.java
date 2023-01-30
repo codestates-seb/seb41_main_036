@@ -19,6 +19,7 @@ public class AttractionLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attractionLikesId;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

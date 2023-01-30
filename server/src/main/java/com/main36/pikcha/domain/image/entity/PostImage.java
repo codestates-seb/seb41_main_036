@@ -16,10 +16,10 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postImageId;
 
-    @Column(nullable = false)
+    @Column(name= "post_image_file_name", nullable = false)
     private String postImageFileName;
 
-    @Column(nullable = false)
+    @Column(name = "post_image_url", nullable = false)
     private String postImageUrl;
 
 //    @ManyToOne

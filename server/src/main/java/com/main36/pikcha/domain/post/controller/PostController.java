@@ -54,6 +54,7 @@ public class PostController {
     private final PostImageService postImageService;
 
 
+    // 1. 포스트 등록
     @LoginUser
     @PostMapping("/register/{attraction-id}")
     public ResponseEntity<DataResponseDto<?>> registerPost2(Member loginUser,
@@ -105,14 +106,15 @@ public class PostController {
         post.setComments(new ArrayList<>());
 
         Post createdPost = postService.createPost(post);
-
         // response 생성
         PostResponseDto.Detail response = mapper.postToPostDetailResponseDto(createdPost);
         // 좋아요 누른 여부를 false로 반환(처음 생성해서 false)
         response.setIsVoted(false);
+
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
     }
 
+    // 2. 포스트 수정
     @LoginUser
     @PatchMapping("/edit/{post-id}")
     public ResponseEntity patchPosts(Member loginUser,
@@ -195,13 +197,14 @@ public class PostController {
                 }
             }
         }
-
         // 6. 포스트 업데이트 (완료)
         postService.updatePost(findPost);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    // 3. 포스트 상세페이지 (비로그인/로그인)
     @GetMapping(value = {"/details/{post-id}", "/details/{post-id}/{member-id}"})
     public ResponseEntity<DataResponseDto<?>> getPost(@PathVariable("post-id") @Positive long postId,
                                                       @PathVariable("member-id") Optional<Long> memberId) {
@@ -215,6 +218,7 @@ public class PostController {
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }
 
+    // 4. 메인페이지 포스트 리스트 (비로그인/로그인)
     @GetMapping(value = {"/home","/home/{member-id}"})
     public ResponseEntity<MultiResponseDto<?>> getHomePosts(@PathVariable("member-id") Optional<Long> memberId,
                                                             @RequestParam(defaultValue = "newest", required = false) String sort,
@@ -227,6 +231,7 @@ public class PostController {
         return responseMethod(content, allPostsBySort, memberId);
     }
 
+    // 5. 명소 메인페이지 포스트 리스트 지역구 조회 (비로그인/로그인)
     @PostMapping(value= {"/filter", "/filter/{member-id}"})
     public ResponseEntity<MultiResponseDto<?>> getFilteredPosts(@PathVariable("member-id") Optional<Long> memberId,
                                                                 @RequestParam(defaultValue = "newest", required = false) String sort,
@@ -243,9 +248,11 @@ public class PostController {
             postPage = postService.findAllPostsByProvincesSort(filterDto.getProvinces(), page - 1, size, sort);
         }
         content = postPage.getContent();
+
         return responseMethod(content, postPage, memberId);
     }
 
+    // 6. 명소 상세페이지 포스트 리스트 조회 (비로그인/로그인)
     @GetMapping(value = {"/{attraction-id}","/{attraction-id}/{member-id}"})
     public ResponseEntity<MultiResponseDto<?>> getPostsByAttractionDetailsPage(@PathVariable("attraction-id") long attractionId,
                                                                                @PathVariable("member-id") Optional<Long> memberId,
@@ -259,6 +266,7 @@ public class PostController {
         return responseMethod(content, allPostsBySort, memberId);
     }
 
+    // 7. 포스트 삭제
     @LoginUser
     @DeleteMapping("/delete/{post-id}")
     public ResponseEntity<HttpStatus> deletePost(Member loginUser,
@@ -269,28 +277,12 @@ public class PostController {
         if(!post.getPostImages().isEmpty()){
             postImageService.deleteOnlyS3Images(post.getPostImages());
         }
-
         postService.erasePost(post);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    private static String getString(String sort) {
-        switch (sort) {
-            case "newest":
-                sort = "postId";
-                break;
-            case "likes":
-                sort = "likes";
-                break;
-            case "views":
-                sort = "views";
-                break;
-        }
-        return sort;
-    }
-
-    // 포스트 좋아요!
+    // 8. 포스트 좋아요!
     @LoginUser
     @PostMapping("/likes/{post-id}")
     public ResponseEntity<DataResponseDto<?>> votePost(Member loginUser,
@@ -316,6 +308,7 @@ public class PostController {
         if (!post.getMember().getMemberId().equals(clientId)) {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
+
         return post;
     }
 
@@ -360,5 +353,20 @@ public class PostController {
         return memberId.<ResponseEntity<MultiResponseDto<?>>>map(aLong -> new ResponseEntity<>(new MultiResponseDto<>(
                 loginMapping(content, aLong), page), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(new MultiResponseDto<>(
                 guestMapping(content), page), HttpStatus.OK));
+    }
+
+    private static String getString(String sort) {
+        switch (sort) {
+            case "newest":
+                sort = "postId";
+                break;
+            case "likes":
+                sort = "likes";
+                break;
+            case "views":
+                sort = "views";
+                break;
+        }
+        return sort;
     }
 }

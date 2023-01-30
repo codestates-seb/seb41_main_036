@@ -1,8 +1,6 @@
 package com.main36.pikcha.domain.attraction.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,5 +15,5 @@ public class AttractionResponseDto {
     private Boolean isSaved;
     private Long likes;
     private Long saves;
-//    private Long postNumber;
+
 }

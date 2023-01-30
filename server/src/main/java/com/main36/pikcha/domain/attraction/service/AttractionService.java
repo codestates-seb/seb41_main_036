@@ -42,16 +42,6 @@ public class AttractionService {
                 .ifPresent(findAttraction::setAttractionName);
         Optional.ofNullable(attraction.getAttractionDescription())
                 .ifPresent(findAttraction::setAttractionDescription);
-
-        // 이미지를 바꾸는 경우 기존 이미지를 삭제
-/*        Optional.ofNullable(attraction.getAttractionImage())
-                .ifPresent(attractionImage-> {
-                    if(findAttraction.getAttractionImage()!= null) {
-                        attractionImageService.deleteAttractionImage(
-                                findAttraction.getAttractionImage().getAttractionImageId());
-                    }
-                    findAttraction.setAttractionImage(attractionImage);
-                });*/
         Optional.ofNullable(attraction.getProvince())
                 .ifPresent(findAttraction::setProvince);
 
@@ -95,8 +85,7 @@ public class AttractionService {
 
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
-        //attraction image도 같이 삭제(s3에서도 이미지파일 삭제)
-//        attractionImageService.deleteAttractionImage(findAttraction.getAttractionImage().getAttractionImageId());
+
         attractionRepository.delete(findAttraction);
     }
 

@@ -27,20 +27,10 @@ public class Post extends Auditable {
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @ElementCollection
-    @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
-    @OrderColumn
-    @Column(name = "post_contents")
-    private List<String> postContents = new ArrayList<>();
-
-    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
-    @JoinColumn(name = "post_id")
-    private List<HashTag> hashTags = new ArrayList<>();
-
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")
     private int views;
 
-    @Column(name = "likes", columnDefinition = "integer default 0", nullable = false )
+    @Column(name = "likes", nullable = false, columnDefinition = "integer default 0")
     private int likes;
 
     @ManyToOne
@@ -58,4 +48,13 @@ public class Post extends Auditable {
     @JoinColumn(name = "post_id")
     private List<PostImage> postImages = new ArrayList<>();
 
+    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
+    private List<HashTag> hashTags = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))
+    @OrderColumn
+    @Column(name = "post_contents")
+    private List<String> postContents = new ArrayList<>();
 }
