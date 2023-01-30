@@ -1,21 +1,17 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { MdEditNote as NoteIcon } from "react-icons/md";
 import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
-//import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
-import axios from "axios";
-import Axios from "../utils/axiosinstance";
+import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "../components/Footer";
-
-import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
@@ -305,25 +301,16 @@ const PlaceDetail = (): JSX.Element => {
 
   const [bookmarkSaves, setBookmarkSaves] = useState(false); //로컬 북마트 상태 저장
   const [likes, setLikes] = useState(false);
-
   const [isLogin] = useRecoilState(LoginState);
-
   const [curPage, setCurPage] = useState(1);
-
-  const [auth, setAuth] = useRecoilState(AuthToken);
-  const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
-
   const { id } = useParams();
-
   const url = `/attractions/${id}`;
   const url2 = `/attractions/${id}/${memberId}`;
   const url3 = `/posts/${id}?page=${curPage}&size=8`;
   const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
-
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
   const ATTRACTIONS_URL = isLogin ? url2 : url;
@@ -331,7 +318,7 @@ const PlaceDetail = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    Axios.get(ATTRACTIONS_URL).then((res) => {
+    axios.get(ATTRACTIONS_URL).then((res) => {
       setAttractionData(res.data.data);
       setLikes(res.data.data.isVoted);
       setBookmarkSaves(res.data.data.isSaved);
@@ -366,7 +353,7 @@ const PlaceDetail = (): JSX.Element => {
 
   const handleView = (setting: string) => {
     setView(setting);
-    if (view === "info") {
+    if (view === "info" && setting === "post") {
       scrollRefContent?.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -379,7 +366,7 @@ const PlaceDetail = (): JSX.Element => {
       await navigator.clipboard.writeText(text);
       alert("url이 성공적으로 복사되었습니다.");
     } catch (err) {
-      console.log("복사 실패");
+      console.error(err);
     }
   };
 
@@ -388,9 +375,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_SAVES).then((res) => {
+    axios.post(URL_FOR_SAVES).then((res) => {
       setBookmarkSaves(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -399,9 +385,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_LIKES).then((res) => {
+    axios.post(URL_FOR_LIKES).then((res) => {
       setLikes(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -412,21 +397,13 @@ const PlaceDetail = (): JSX.Element => {
     }
     navigate(`/write/${id}`);
   };
-  console.log(
-    attractionData,
-    "데이터값 확인",
-    Number(bookmarkSaves),
-    bookmarkSaves,
-    isLogin,
-    postData
-  );
 
   return (
     <>
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <FixedOnScrollUpHeader />
       <GlobalStyle />
-      {attractionData !== undefined ? (
+      {attractionData && (
         <>
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
@@ -543,8 +520,6 @@ const PlaceDetail = (): JSX.Element => {
             )}
           </Post>
         </>
-      ) : (
-        <div>Loading ... </div>
       )}
       <Footer />
     </>

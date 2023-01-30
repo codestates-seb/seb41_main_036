@@ -81,7 +81,6 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
           var lat = position.coords.latitude, 
               lon = position.coords.longitude; 
             var locPosition = new window.kakao.maps.LatLng(lat, lon) 
-            console.log('테스트여기',locPosition);
             map.setCenter(locPosition);
             });
           } 

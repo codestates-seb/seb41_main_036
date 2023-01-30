@@ -100,7 +100,6 @@ const Post = () => {
   const [onFilter, setOnFliter] = useState(0);
   const [sort, setSort] = useState("newest");
   const totalInfoRef = useRef<PageInfoType | null>(null);
-  console.log(postsData);
   useEffect(() => {
     axios
       .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {

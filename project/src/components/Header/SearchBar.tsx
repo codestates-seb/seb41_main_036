@@ -158,6 +158,7 @@ const SearchBar = ({ defaultValue = "" }: SearchBarProps) => {
     </SearchForm>
   );
 };
+
 function Loading() {
   return (
     <AttractionItemContent as="li" type="notice">

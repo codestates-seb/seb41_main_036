@@ -8,28 +8,34 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkPlus, BsFillChatLeftFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import "../index.css";
-import axios from "axios";
+import axios from "../utils/axiosinstance";
 import { GiTalk } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { LoginState } from "../recoil/state";
+import { useRecoilState } from "recoil";
 
 const Container = styled.div`
   display: flex;
   background-color: white;
+  * {
+    box-sizing: content-box !important;
+  }
 `;
 
 const PlaceList = styled.div`
   width: 25%;
   height: 86vh;
   padding: 10px 0;
+  box-sizing: content-box;
 `;
 
 const DropDown = styled.article`
   position: absolute;
   margin-left: 20px;
+  box-sizing: content-box;
   > button {
     cursor: pointer;
     background-color: white;
-    width: 310px;
     height: 40px;
     margin-left: 5px;
     padding-left: 10px;
@@ -58,17 +64,15 @@ const SelectList = styled.div`
   width: 295px;
   height: 200px;
   margin-left: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   color: var(--black-750);
   position: relative;
   top: 0;
   border-collapse: collapse;
-
   ::-webkit-scrollbar {
     display: none;
   }
-
   > button {
     cursor: pointer;
     font-weight: 500;
@@ -93,44 +97,43 @@ const PlaceComponent = styled.div`
   height: 88vh;
   margin-left: 26px;
   background-color: #ffffff;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   -ms-overflow-style: none;
-`
-const Place = styled.div<{imgUrl:string}>`
-    background-color: skyblue;
-    width: 294px;
-    height: 140px;
-    margin-left: -1px;
-    margin-bottom: 5px;
-    border-radius: var(--br-s);
-    cursor: pointer;
-    border:1px solid var(--black-600);
-    
-    background: linear-gradient(
-        to right,
-        rgba(20, 20, 20, 0.8) 10%,
-            rgba(20, 20, 20, .7) 25%,
-            rgba(20, 20, 20, 0.5) 50%,
-            rgba(20, 20, 20, 0.35) 75%,
-            rgba(20, 20, 20, 0.25) 100%
-      ), url(${props => props.imgUrl});
-    background-size: cover;
-
-    >div{
-      padding:85px 0 2px 15px;
-      font-weight: bold;
-      font-size: 18px;
-      color:white;
-    }
-    >p{
-      padding:5px 0 0 15px;
-      font-weight: bold;
-      font-size: 11px;
-      color:white;
-      margin-bottom: 15px;
-    }
-`
+`;
+const Place = styled.div<{ imgUrl: string }>`
+  background-color: skyblue;
+  width: 294px;
+  height: 140px;
+  margin-left: -1px;
+  margin-bottom: 5px;
+  border-radius: var(--br-s);
+  cursor: pointer;
+  border: 1px solid var(--black-600);
+  background: linear-gradient(
+      to right,
+      rgba(20, 20, 20, 0.8) 10%,
+      rgba(20, 20, 20, 0.7) 25%,
+      rgba(20, 20, 20, 0.5) 50%,
+      rgba(20, 20, 20, 0.35) 75%,
+      rgba(20, 20, 20, 0.25) 100%
+    ),
+    url(${(props) => props.imgUrl});
+  background-size: cover;
+  > div {
+    padding: 85px 0 2px 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+  }
+  > p {
+    padding: 5px 0 0 15px;
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+    margin-bottom: 15px;
+  }
+`;
 
 const PlaceDetailModal = styled.div`
   position: absolute;
@@ -142,7 +145,7 @@ const PlaceDetailModal = styled.div`
 `;
 
 const PlaceDetailModalHeader = styled.div`
-  height: 370px;
+  box-sizing: content-box;
   > div:nth-child(1) {
     width: 100%;
     height: 200px;
@@ -152,81 +155,51 @@ const PlaceDetailModalHeader = styled.div`
       background-size: cover;
     }
   }
-  
-    >div:nth-child(2){ 
-      display: flex;
-      >p:nth-child(1){
-        font-size: 14px;
-        width: 60px;
-        height: 20px;
-        margin: 15px 250px 0 20px;
-        line-height: 20px;
-        font-weight: 600;
-        color:var(--black-700);
-      }
-      >div{ 
-        margin-top: 12px;
-        margin-left: 3px;
-        margin-right: 5px;
-      }
-      & p{
-        font-size: 10px;
-        margin-left: 5px;
-        color:#373737;
-      }
-    }
-    >div:nth-child(3){
-      display: flex;
-      width: 325px;
-      height: 30px;
-      >h2{
-        background-color: #fbf8ba;
-        margin-left: 15px;
-        font-weight: 700;
-        margin-bottom: 5px;
-      }
-      >a{
-        font-size: 13px;
-        margin-left: 10px;
-        line-height: 30px;
-        text-decoration: none;
-        color:var(--purple-400);
-        font-weight: 600;
-      }
-    }
-    >p:nth-child(4){
-      color:#555555;
+  > div:nth-child(2) {
+    display: flex;
+    > p:nth-child(1) {
       font-size: 14px;
-      margin: 4px 0 0 15px;
+      margin: 15px 265px 0 20px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--black-700);
+    }
+    > div {
+      cursor: pointer;
+      margin-top: 13px;
+      margin-right: 11px;
+    }
+    & p {
+      font-size: 10px;
+      margin-left: 5px;
+      color: #373737;
+    }
+  }
+  > div:nth-child(3) {
+    box-sizing: content-box;
+    display: flex;
+    width: 325px;
+    height: 30px;
+    > h2 {
+      background-color: #fbf8ba;
+      margin-left: 20px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    > a {
+      font-size: 13px;
+      margin-left: 10px;
+      line-height: 30px;
+      text-decoration: none;
+      color: var(--purple-400);
       font-weight: 600;
     }
-
-    >div:nth-child(5){
-      display: flex;
-      color:#919191;
-      font-weight: bold;
-      margin: 8px 0 0 17px;
-      >div{
-        margin-right: 3px;
-      }
-      >p{
-        font-size: 12px;
-        font-weight: 500;
-      }
-    }
-  
-  > p:nth-child(4) {
-    color: #555555;
-    font-size: 14px;
-    margin: 4px 0 0 15px;
-    font-weight: 600;
   }
-
   > div:nth-child(5) {
     display: flex;
     color: #919191;
     font-weight: bold;
-    margin: 8px 0 0 17px;
+    margin: 10px 0 0 20px;
     > div {
       margin-right: 3px;
     }
@@ -235,16 +208,47 @@ const PlaceDetailModalHeader = styled.div`
       font-weight: 500;
     }
   }
-
+  > p:nth-child(4) {
+    box-sizing: content-box;
+    color: #555555;
+    font-size: 14px;
+    margin: 4px 0 0 20px;
+    font-weight: 600;
+  }
+  > div {
+    margin-right: 5px;
+  }
+  & p {
+    font-size: 10px;
+    margin-left: 5px;
+    color: #373737;
+  }
+  > div:nth-child(5) {
+    box-sizing: content-box;
+    display: flex;
+    color: #919191;
+    font-weight: bold;
+    margin: 8px 0 0 20px;
+    > div {
+      margin-right: 3px;
+    }
+    > p {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
   > div:nth-child(6) {
+    box-sizing: content-box;
     font-size: 15px;
     font-weight: bold;
-    margin: 20px 0 0 17px;
+    margin: 10px 0 15px 20px;
     color: #0b113f87;
   }
   > span {
     color: #555555;
     margin-left: 350px;
+    position: absolute;
+    transform: translateY(-10px);
     cursor: pointer;
   }
 `;
@@ -253,22 +257,20 @@ const PlaceDetailModalMain = styled.div`
   width: 100%;
   height: 485px;
   border-top: 1px solid #e4dcdc;
-
   > div:nth-child(1) {
+    box-sizing: content-box;
     font-size: 15px;
     font-weight: 700;
-    margin: 35px 0 30px 20px;
-    margin: 35px 0 30px 20px;
+    margin: 17px 0 17px 20px;
     color: #393939;
   }
 `;
 
 const PostImgContainer = styled.div`
   width: 90%;
-  height: 430px;
   margin: 0 auto;
-  overflow: scroll;
-
+  overflow: auto;
+  height: 35vh;
   > img {
     width: 48%;
     height: 110px;
@@ -314,11 +316,39 @@ const Map = () => {
   ];
 
 
-  const url =
-    "/attractions/maps?page=1&size=99&sort=posts";
+  const url = "/attractions/maps?page=1&size=99&sort=posts";
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
+  const url2 = `/attractions/${modalDataId}`;
+  const memberId = localStorage.getItem("memberId");
+  const url3 = `/attractions/${modalDataId}/${memberId}`;
+  const [isLogin] = useRecoilState(LoginState);
+  const [isVoted,setIsVoted] = useState();
+  const [isLiked,setIsLiked] = useState();
+  const URL_FOR_SAVES = `/attractions/saves/${modalDataId}`;
+  const URL_FOR_LIKES = `/attractions/likes/${modalDataId}`;
+  const ATTRACTIONS_URL = isLogin ? url3 : url2;
+
+  const handleClickLiked = () => {
+    axios.post(URL_FOR_LIKES).then((res) => {
+      setIsVoted(res.data.data.isVoted);
+    });    
+  }
+
+  const handleClickSaved = () => {
+    axios.post(URL_FOR_SAVES).then((res) => {
+      setIsLiked(res.data.data.isSaved);
+    });
+  }
 
   useEffect(() => {
+
+    // 전체 데이터를 받아와서 반영 
+    axios.get(ATTRACTIONS_URL)
+    .then((res)=>{
+      setIsVoted(res.data.data.isVoted)
+      setIsLiked(res.data.data.isSaved)
+    })
+
     if (regionFilter === "전체") {
       axios
         .post(url, {
@@ -337,15 +367,12 @@ const Map = () => {
           setRegionList(res.data.data);
         });
     }
+  }, [regionFilter, setDropdownView, modalData, ATTRACTIONS_URL]);
 
-  }, [regionFilter, setDropdownView]);
-
-  const handleModalData = (dataUrl: string) => {
-    axios
-      .get(`/attractions/mapdetails/${dataUrl}`)
-      .then((res) => {
-        setModalData(res.data.data);
-      });
+  const handleModalData = (dataUrl: string|number) => {
+    axios.get(`/attractions/mapdetails/${dataUrl}`).then((res) => {
+      setModalData(res.data.data);
+    });
   };
 
   return (
@@ -417,12 +444,18 @@ const Map = () => {
               </div>
               <div>
                 <p>서울 명소</p>
-                <div>
-                  <AiOutlineHeart color="#969696"></AiOutlineHeart>
-                  <p>{modalData.likes}</p>
+                <div onClick={()=>handleClickLiked()}>
+                  <AiOutlineHeart 
+                    color={
+                      isVoted === true ? "var(--pink-heart)" : "var(--black-400)"
+                    }
+                    ></AiOutlineHeart>
+                  <p>{ modalData.likes }</p>
                 </div>
-                <div>
-                  <BsBookmarkPlus color="#969696"></BsBookmarkPlus>
+                <div onClick={()=>{handleClickSaved()}}>
+                  <BsBookmarkPlus 
+                    color={isLiked ? "green" : "var(--black-400)"}
+                    ></BsBookmarkPlus>
                   <p>{modalData.saves}</p>
                 </div>
               </div>
@@ -456,7 +489,7 @@ const Map = () => {
                           src={el.imageUrls}
                           key={index}
                           onClick={() => {
-                            navigate(`/posts/detail/${el.postId}`)
+                            navigate(`/posts/detail/${el.postId}`);
                           }}
                         ></img>
                       </>

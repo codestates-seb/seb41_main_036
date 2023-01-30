@@ -16,7 +16,6 @@ import {
   TiArrowSortedDown as DownIcon,
 } from "react-icons/ti";
 import { BsDash as DashIcon } from "react-icons/bs";
-import axios from "axios";
 interface optionsType {
   dateStyle: "medium";
   timeStyle: "short";
@@ -41,7 +40,6 @@ const Ranking = () => {
     }, 5000);
     return () => clearInterval(timerIdRef.current as NodeJS.Timeout);
   }, []);
-  // console.log(newRankingData.slice(9, 11 % 12), newRankingData);
   return (
     <RankingWrapper>
       <MainRankingWrapper>

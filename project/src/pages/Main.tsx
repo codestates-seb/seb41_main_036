@@ -5,14 +5,14 @@ import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import { ArrayPlaceType } from "./Place";
 import { ArrayPostType } from "./Post";
 import PostCardComponent from "../components/PostCardComponent";
-import PlaceCardComponent from "../components/PlaceCardComponent";
+import PlaceCard from "../components/PlaceCard";
 import Carousel from "../components/Carousel";
 import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
 import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
 import Footer from "../components/Footer";
-// import axios from "../utils/axiosinstance"
-
+import { useRecoilState } from "recoil";
+import { LoginState } from "../recoil/state";
 const GoRight = keyframes`
   0% {
     transform: translateX(0);
@@ -90,17 +90,25 @@ const PlaceCardWrapper = styled.div`
 function Main() {
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
   const [postData, setPostData] = useState<ArrayPostType>();
+  const [isLogin] = useRecoilState(LoginState);
+  const memberId = localStorage.getItem("memberId");
 
-  const url = "/attractions/filter?page=1&size=4&sort=newest";
+  const url1 = "/attractions/filter?page=1&size=4&sort=posts";
+  const url1_LoggedIn = `/attractions/filter/${memberId}?page=1&size=4&sort=posts`;
   const url2 = `/posts/home?page=1&size=8&sort=views`;
+  const url2_LoggedIn = `/posts/home/${memberId}?page=1&size=8&sort=views`;
 
   useEffect(() => {
-    axios.all([axios.post(url, { provinces: [] }), axios.get(url2)]).then(
-      axios.spread((res1, res2) => {
-        setAttractionData(res1.data.data);
-        setPostData(res2.data.data);
-      })
-    );
+    const attraction_url = isLogin ? url1_LoggedIn : url1;
+    const post_url = isLogin ? url2_LoggedIn : url2;
+    axios
+      .all([axios.post(attraction_url, { provinces: [] }), axios.get(post_url)])
+      .then(
+        axios.spread((res1, res2) => {
+          setAttractionData(res1.data.data);
+          setPostData(res2.data.data);
+        })
+      );
   }, []);
 
   return (
@@ -112,12 +120,14 @@ function Main() {
         <MainSubTitle>많이 다녀간 명소</MainSubTitle>
         <ViewsPlaceContainer>
           <PlaceCardWrapper>
-            {attractionData && (
-              <PlaceCardComponent
-                placesData={attractionData}
-                width="24%"
-              ></PlaceCardComponent>
-            )}
+            {attractionData &&
+              attractionData.map((placeInfo) => (
+                <PlaceCard
+                  placeInfo={placeInfo}
+                  width="24%"
+                  key={placeInfo.attractionId}
+                />
+              ))}
           </PlaceCardWrapper>
           <MoreLink>
             <Link to={"/attractions"}>
@@ -144,43 +154,3 @@ function Main() {
 }
 
 export default Main;
-
-// import axios from "./utils/axiosinstance"
-// import { useRecoilState } from "recoil";
-// import {
-//   LoginState,
-//   AuthToken,
-//   LoggedUser,
-// } from "./recoil/state";
-
-// const [isLogin, setIslogin] = useRecoilState(LoginState);
-// const [auth, setAuth] = useRecoilState(AuthToken);
-// const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
-// const onClickBtn= () => {
-
-//   const memberId = localStorage.getItem("memberId")
-//   axios
-//   .post(`/comments/upload/1`,
-//   {
-//     commentContent: "1분테스트 16",
-//   },{
-//     headers:{
-//       "Content-Type": "application/json",
-//     }
-//   }
-
-//   // .get(`token/refresh/${memberId}`
-
-//   )
-//   .then((res) => {
-
-//       console.log(res)
-//       console.log("댓글등록")
-
-//   })
-//   .catch((err)=>console.error(err))
-
-// }
-
-// <button onClick={onClickBtn}>버튼버튼</button>

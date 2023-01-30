@@ -26,31 +26,26 @@ const MyPageWrapper = styled.div`
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 70vh;
+  height: 80vh;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: var(--br-l);
   display: flex;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const MyPageUserInfo = styled.aside`
   width: 25%;
   height: 100%;
-  font-weight: 500;
-
   > div:first-child {
     svg {
       cursor: pointer;
     }
   }
-
   form {
     display: flex;
     flex-direction: column;
     height: 70%;
     margin-top: 4em;
     margin-left: 2em;
-
     div:nth-child(2) {
       svg {
         cursor: pointer;
@@ -61,24 +56,24 @@ const MyPageUserInfo = styled.aside`
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin: 30px 10px;
+      margin-bottom: 15px;
     }
-
     div {
-      margin: 1px 0 3px 0;
-      color:var(--black-750);
-      margin-bottom: 6px;
+      margin: 3px 0 3px 0;
+      color: var(--black-750);
+      margin-bottom: 10px;
       font-size: var(--font-sm);
     }
     div:nth-child(2) {
       display: flex;
+      align-items: center;
       font-weight: var(--fw-bold);
       font-size: var(--font-xl);
-      margin-bottom: 6px;
+      margin-bottom: 20px;
       svg {
-        color:#868686;
+        color: #868686;
         margin-left: 10px;
-        :hover{
+        :hover {
           color: var(--purple-400);
         }
       }
@@ -91,16 +86,24 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(4) {
       display: flex;
       align-items: center;
-
       svg {
         margin-right: 5px;
         color: var(--purple-400);
       }
     }
-    button {
-      position: relative;
-      top: 8em;
+  }
+  input {
+    height: 30px;
+    border-radius: var(--br-m);
+    padding: 6px 7px;
+    margin-top: 5px;
+    border-color: var(--purple-400);
+    :focus {
+      outline-color: var(--purple-300);
+      box-shadow: 0 0 5px blue;
     }
+  }
+  button {
   }
 `;
 const MyPageMainContainer = styled.article`
@@ -112,16 +115,14 @@ const MyPageMainContainer = styled.article`
   border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
-
   > div {
     height: 100%;
     padding: 30px;
-
     > span {
       display: block;
       text-align: right;
       font-weight: var(--fw-bold);
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       margin-right: 5px;
     }
   }
@@ -153,54 +154,24 @@ const MyPageTabBarMenu = styled.button`
     margin-right: 10px;
     color: var(--black-500);
   }
-
   &.onToggle {
     color: var(--purple-400);
     background-color: var(--purple-200);
-
     svg {
       color: var(--purple-400);
     }
   }
 `;
 
-const EditTitle = styled.div`
-  
-  >input{
-    border: none;
-    width:230px;
-    padding: 0px;
-    border-bottom: 1px solid #b9cad3;
-    font-size: 22px;
-    font-weight: bold;
-    border-radius: 5px;
-  }
-`
-const EditAddress = styled.div`
-  > input{
-    padding: 0;
-    margin: 0;
-    border:none;
-    border-bottom: 1px solid #b9cad3;
-  }
-`
-
-const EditButton = styled.button`
-  border:none;
-  background-color: white;
-  font-weight: bold;
-  color:grey;
-  top:200px;
-  margin-left: 170px;
-  cursor: pointer;
-  :hover{
-    color:var(--purple-400);
-  }
-`
-
-
-
-
+const EditSubmitButton = styled.button`
+  width: 50px;
+  height: 25px;
+  border: none;
+  background-color: var(--purple-300);
+  border-radius: var(--br-m);
+  margin-top: 10px;
+  color: white;
+`;
 interface UserType {
   memberId: number;
   username: string;
@@ -273,7 +244,7 @@ const MyPage = () => {
 
   const getUserProfile = async () => {
     await axios
-      .get(process.env.REACT_APP_DB_HOST + `/users/profile/${memberId}`)
+      .get(`/users/profile/${memberId}`)
       .then((res) => {
         setUserData(res.data.data);
         const { data } = res.data;
@@ -301,48 +272,47 @@ const MyPage = () => {
   const editInfoSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .patch(process.env.REACT_APP_DB_HOST + `/users/edit/${memberId}`, {
+      .patch(`/users/edit/${memberId}`, {
         username: username,
         phoneNumber: phoneNumber,
         address: address,
       })
       .then((res) => {
-        console.log(res);
-        setIsEdit(false);
+        if (res.status === 200) setIsEdit(false);
       })
       .catch((err) => console.error(err));
   };
-
   const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
       axios
         .delete(`/users/delete/${memberId}`)
         .then((res) => {
-          console.log(res);
-          setIsLogin(false);
-          setAuth("");
-          setLoggedUser("");
-          axios.defaults.headers.common["Authorization"] = null;
-          localStorage.removeItem("Authorization");
-          localStorage.setItem("loginStatus", "false");
-          localStorage.removeItem("memberId");
-          alert("탈퇴가 완료되었습니다.");
-          naviate(`/`);
+          if (res.status === 200) {
+            setIsLogin(false);
+            setAuth("");
+            setLoggedUser("");
+            axios.defaults.headers.common["Authorization"] = null;
+            localStorage.removeItem("Authorization");
+            localStorage.setItem("loginStatus", "false");
+            localStorage.removeItem("memberId");
+            alert("탈퇴가 완료되었습니다.");
+            naviate(`/`);
+          }
         })
         .catch((err) => console.error(err));
     }
   };
   const tabMenuBarList = [
-    // {
-    //   title: (
-    //     <>
-    //       <AiTwotoneHome />
-    //       <span>나의 방문 기록</span>
-    //     </>
-    //   ),
-    //   content: "",
-    // },
+    {
+      title: (
+        <>
+          <AiTwotoneHome />
+          <span>나의 방문 기록</span>
+        </>
+      ),
+      content: "",
+    },
     {
       title: (
         <>
@@ -410,15 +380,13 @@ const MyPage = () => {
                 />
                 <div>
                   {isEdit ? (
-                    <EditTitle>
                     <input
-                      autoFocus
                       name="username"
                       type="text"
                       defaultValue={userData.username}
+                      placeholder="이름"
                       onChange={(e) => onChange(e)}
                     />
-                    </EditTitle>
                   ) : (
                     <>
                       {userData.username}{" "}
@@ -429,14 +397,13 @@ const MyPage = () => {
                 <div>{userData.memberTitle}</div>
                 <div>
                   {isEdit ? (
-                    <EditAddress>
                     <input
                       name="address"
                       type="text"
                       value={address}
+                      placeholder="주소"
                       onChange={(e) => onChange(e)}
                     />
-                    </EditAddress>
                   ) : (
                     <>
                       <FaMapMarkerAlt /> {userData.address}
@@ -446,29 +413,31 @@ const MyPage = () => {
                 <div>{userData.email}</div>
                 <div>
                   {isEdit ? (
-                    <EditAddress>
                     <input
                       name="phoneNumber"
                       type="text"
                       value={phoneNumber}
+                      placeholder="전화번호"
                       onChange={(e) => onChange(e)}
                     />
-                    </EditAddress>
                   ) : (
                     <>{userData.phoneNumber}</>
                   )}
-                  {isEdit ? (
-                    <EditButton onClick={(e) => editInfoSubmit(e)}>수정 완료</EditButton>
-                  ) : null}
                 </div>
-                <Button
-                  type="violet"
-                  width="100px"
-                  height="40px"
-                  text="회원 탈퇴"
-                  onClick={deleteUser}
-                />
+                {isEdit ? (
+                  <EditSubmitButton onClick={(e) => editInfoSubmit(e)}>
+                    완료
+                  </EditSubmitButton>
+                ) : null}
               </form>
+              <Button
+                type="violet"
+                width="100px"
+                height="40px"
+                text="회원 탈퇴"
+                onClick={deleteUser}
+                margin="10px 2em"
+              />
             </MyPageUserInfo>
             <MyPageMainContainer>
               <div>{tabMenuBarList[tab].content}</div>
@@ -494,29 +463,24 @@ const MyPageCardContainer = styled.div`
     font-size: 15px;
     width: 75%;
   }
-
   div {
     width: 85px;
     height: 100%;
     font-size: var(--font-sm);
-
     span:first-child {
       margin-right: 6px;
     }
   }
-
   img {
-    margin-left: 3%;
     min-width: 100px;
     height: 100%;
     border-radius: var(--br-s);
   }
-
   span {
     background-color: #fcfcd0;
     flex-direction: row;
     width: 130px;
-    line-height: 40px;
+    line-height: 50px;
     margin-right: 10px;
   }
 `;
