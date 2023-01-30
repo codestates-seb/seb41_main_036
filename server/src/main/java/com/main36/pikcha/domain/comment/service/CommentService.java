@@ -37,7 +37,6 @@ public class CommentService {
                 page, size, Sort.by("commentId").ascending()
         ));
     }
-
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
     }

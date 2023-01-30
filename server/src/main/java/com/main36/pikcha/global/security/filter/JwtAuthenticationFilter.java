@@ -9,10 +9,10 @@ import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.userdetails.AuthMember;
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.utils.CookieUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,15 +28,14 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
 
     private final JwtGenerator jwtGenerator;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(JwtGenerator jwtGenerator, AuthenticationManager authenticationManager) {
-        this.jwtGenerator = jwtGenerator;
-        this.authenticationManager = authenticationManager;
-    }
+    private final CookieUtils cookieUtils;
 
     @SneakyThrows
     @Override
@@ -47,10 +46,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("# attemptAuthentication : loginDto.getEmail={}, login.getPassword={}", loginDto.getUsername(), loginDto.getPassword());
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+
         return authenticationManager.authenticate(authenticationToken);
-
     }
-
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
@@ -58,27 +56,33 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-        // Detail 문제로 -> 삽입 x
         AuthMember authMember = (AuthMember) authResult.getPrincipal();
-        log.info("authMember= {}", authMember);
         TokenDto tokenDto = jwtGenerator.generateTokenDto(authMember);
         String accessToken = tokenDto.getAccessToken(); // accessToken 만들기
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
 
-        // response 토큰 설정
-        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.setHeader("Set-Cookie", String.valueOf(cookie));
-//        response.setHeader("Authorization", BEARER_PREFIX + accessToken);
+        content(response);
 
+        CookieUtils.setCookieInHeader(response, refreshToken);
+
+        // 응답 바디 설정
         Gson gson = new Gson();
         LoginResponseDto of = LoginResponseDto.ofAuthMember(authMember, BEARER_PREFIX + accessToken);
         response.getWriter().write(gson.toJson(new DataResponseDto<>(of), DataResponseDto.class));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-
     }
 
+    private void content(HttpServletResponse response) {
+        // #1
+//        response.setContentType("text/plain");
+//        response.setCharacterEncoding("utf-8");
 
+        // #2
+        // response.setHeader("Content-type", "text/plain;charset=utf-8"); // 한글이 깨질 수 있으므로 utf-8로 설정
 
+        // #3
+         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+
+    }
 }

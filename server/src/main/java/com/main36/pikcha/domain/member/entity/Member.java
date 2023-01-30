@@ -24,7 +24,7 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(name = "oauth_id")
+    @Column(name = "oauth_id", updatable = false, unique = true)
     private String oauthId;
     @Column(nullable = false)
     private String username;
@@ -32,7 +32,7 @@ public class Member extends Auditable {
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 30, nullable = false)
     private String password;
 
     @Column(name = "phone_number", nullable = false)

@@ -18,17 +18,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequiredArgsConstructor
-
 public class TokenController {
 
     private final JwtGenerator jwtGenerator;
     private final JwtParser jwtParser;
     private final MemberService memberService;
 
-
     @GetMapping("/token/refresh/{member-id}")
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {
+        log.info("memberId= {}", memberId);
         log.info("refresh= {}", refresh);
         if (refresh.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
@@ -45,6 +44,16 @@ public class TokenController {
 
         return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
     }
+
+    @GetMapping("/token/test/{member-id}")
+    public ResponseEntity<?> test(@PathVariable("member-id") Long memberId,
+                                  @CookieValue(value = "refreshToken") String refresh) {
+
+        log.info("memberId= {}", memberId);
+        log.info("refresh= {}", refresh);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 //    @LoginUser
 //    @GetMapping("/token/refresh")
