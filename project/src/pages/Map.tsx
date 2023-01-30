@@ -8,9 +8,9 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkPlus, BsFillChatLeftFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import "../index.css";
-import axios from "axios";
-import { DataList } from "../components/KakaoMap";
+import axios from "../utils/axiosinstance";
 import { GiTalk } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -96,41 +96,42 @@ const PlaceComponent = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   -ms-overflow-style: none;
-`
-const Place = styled.div<{imgUrl:string}>`
-    background-color: skyblue;
-    width: 294px;
-    height: 140px;
-    margin-left: -1px;
-    margin-bottom: 5px;
-    border-radius: var(--br-s);
-    cursor: pointer;
-    border:1px solid var(--black-600);
-    
-    background: linear-gradient(
-        to right,
-        rgba(20, 20, 20, 0.8) 10%,
-            rgba(20, 20, 20, .7) 25%,
-            rgba(20, 20, 20, 0.5) 50%,
-            rgba(20, 20, 20, 0.35) 75%,
-            rgba(20, 20, 20, 0.25) 100%
-      ), url(${props => props.imgUrl});
-    background-size: cover;
+`;
+const Place = styled.div<{ imgUrl: string }>`
+  background-color: skyblue;
+  width: 294px;
+  height: 140px;
+  margin-left: -1px;
+  margin-bottom: 5px;
+  border-radius: var(--br-s);
+  cursor: pointer;
+  border: 1px solid var(--black-600);
 
-    >div{
-      padding:85px 0 2px 15px;
-      font-weight: bold;
-      font-size: 18px;
-      color:white;
-    }
-    >p{
-      padding:5px 0 0 15px;
-      font-weight: bold;
-      font-size: 11px;
-      color:white;
-      margin-bottom: 15px;
-    }
-`
+  background: linear-gradient(
+      to right,
+      rgba(20, 20, 20, 0.8) 10%,
+      rgba(20, 20, 20, 0.7) 25%,
+      rgba(20, 20, 20, 0.5) 50%,
+      rgba(20, 20, 20, 0.35) 75%,
+      rgba(20, 20, 20, 0.25) 100%
+    ),
+    url(${(props) => props.imgUrl});
+  background-size: cover;
+
+  > div {
+    padding: 85px 0 2px 15px;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+  }
+  > p {
+    padding: 5px 0 0 15px;
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+    margin-bottom: 15px;
+  }
+`;
 
 const PlaceDetailModal = styled.div`
   position: absolute;
@@ -143,10 +144,6 @@ const PlaceDetailModal = styled.div`
 
 const PlaceDetailModalHeader = styled.div`
   height: 370px;
-  //background-color: red;
-  // 얘는 이미지 
-  //background-color: red;
-  // 얘는 이미지 
   > div:nth-child(1) {
     width: 100%;
     height: 200px;
@@ -156,72 +153,69 @@ const PlaceDetailModalHeader = styled.div`
       background-size: cover;
     }
   }
-  
-    >div:nth-child(2){ 
-      display: flex;
-      //background-color: yellow;
-      //background-color: yellow;
-      >p:nth-child(1){
-        font-size: 14px;
-        width: 60px;
-        height: 20px;
-        margin: 15px 250px 0 20px;
-        line-height: 20px;
-        font-weight: 600;
-        color:var(--black-700);
-      }
-      >div{ // 개별 요소
-        margin-top: 12px;
-        margin-left: 3px;
-        margin-right: 5px;
-      }
-      & p{
-        font-size: 10px;
-        margin-left: 5px;
-        color:#373737;
-      }
-    }
-    >div:nth-child(3){
-      display: flex;
-      width: 325px;
-      height: 30px;
-      >h2{
-        //width:250px;
-        background-color: #fbf8ba;
-        margin-left: 15px;
-        font-weight: 700;
-        margin-bottom: 5px;
-      }
-      >a{
-        font-size: 13px;
-        margin-left: 10px;
-        line-height: 30px;
-        text-decoration: none;
-        color:var(--purple-400);
-        font-weight: 600;
-      }
-    }
-    >p:nth-child(4){
-      color:#555555;
+
+  > div:nth-child(2) {
+    display: flex;
+    > p:nth-child(1) {
       font-size: 14px;
-      margin: 4px 0 0 15px;
+      width: 60px;
+      height: 20px;
+      margin: 15px 250px 0 20px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--black-700);
+    }
+    > div {
+      margin-top: 12px;
+      margin-left: 3px;
+      margin-right: 5px;
+    }
+    & p {
+      font-size: 10px;
+      margin-left: 5px;
+      color: #373737;
+    }
+  }
+  > div:nth-child(3) {
+    display: flex;
+    width: 325px;
+    height: 30px;
+    > h2 {
+      background-color: #fbf8ba;
+      margin-left: 15px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    > a {
+      font-size: 13px;
+      margin-left: 10px;
+      line-height: 30px;
+      text-decoration: none;
+      color: var(--purple-400);
       font-weight: 600;
     }
+  }
+  > p:nth-child(4) {
+    color: #555555;
+    font-size: 14px;
+    margin: 4px 0 0 15px;
+    font-weight: 600;
+  }
 
-    >div:nth-child(5){
-      display: flex;
-      color:#919191;
-      font-weight: bold;
-      margin: 8px 0 0 17px;
-      >div{
-        margin-right: 3px;
-      }
-      >p{
-        font-size: 12px;
-        font-weight: 500;
-      }
+  > div:nth-child(5) {
+    display: flex;
+    color: #919191;
+    font-weight: bold;
+    margin: 8px 0 0 17px;
+    > div {
+      margin-right: 3px;
     }
-  
+    > p {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+
   > p:nth-child(4) {
     color: #555555;
     font-size: 14px;
@@ -294,28 +288,17 @@ const PostNone = styled.div`
   > div {
     margin-right: 5px;
   }
-  //background-color:red;
 `;
 
 const Map = () => {
-  // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false);
-  //현재 눌린 버튼의 값 설정
   const [regionFilter, setRegionFilter] = useState("전체");
-  //우측 상세페이지 모달창 On/Off 설정
   const [detailModal, setDetailModal] = useState(false);
-
-  // 현재 필터링된 데이터 목록
   const [regionList, setRegionList] = useState<any>(undefined);
-
-  // 현재 눌린 명소의 값을 저장
   const [modalData, setModalData] = useState<any>("");
-
-  // 현재 눌린 명소의 아이디를 저장
   const [modalDataId, setModalDataId] = useState<number>(1);
-
-  // 카카오맵에 전체 마커로 찍을 데이터 저장용
   const [wholeData, setWholeData] = useState<any>();
+  const navigate = useNavigate();
 
   const tags = [
     "#가족 여행지",
@@ -331,16 +314,10 @@ const Map = () => {
     "#테마 거리",
   ];
 
-  const url =
-    "/attractions/maps?page=1&size=99&sort=posts";
-  //const url2 = '/attractions/mapdetails/1';
+  const url = "/attractions/maps?page=1&size=99&sort=posts";
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 
   useEffect(() => {
-    // 처음에 무조건 데이터를 받아옴
-    // 그리고 요청 값 바뀔 때마다 다른 데이터를 불러와야함.
-
-    // 필터링용 데이터 받아오기
     if (regionFilter === "전체") {
       axios
         .post(url, {
@@ -357,23 +334,14 @@ const Map = () => {
         })
         .then((res) => {
           setRegionList(res.data.data);
-          console.log("요청중..");
         });
     }
-
-    console.log("전체 데이터----", wholeData);
-    console.log("전체 데이터----", regionList);
   }, [regionFilter, setDropdownView]);
 
   const handleModalData = (dataUrl: string) => {
-    // 모달창 데이터 받아오기
-    axios
-      .get(`/attractions/mapdetails/${dataUrl}`)
-      .then((res) => {
-        setModalData(res.data.data);
-        console.log("모달데이터", modalData);
-      });
-    // 받아온 데이터를 모달창에 뿌리기
+    axios.get(`/attractions/mapdetails/${dataUrl}`).then((res) => {
+      setModalData(res.data.data);
+    });
   };
 
   return (
@@ -403,7 +371,6 @@ const Map = () => {
                       key={el.id}
                       onClick={() => {
                         setRegionFilter(el.Post);
-                        console.log(regionFilter);
                         setDropdownView(false);
                       }}
                     >
@@ -423,7 +390,6 @@ const Map = () => {
                       setDetailModal(true);
                       handleModalData(el.attractionId);
                       setModalDataId(el.attractionId);
-                      console.log("모달 데이터 아이디", modalDataId);
                       setFilterOrPosition(false);
                     }}
                     imgUrl={el.fixedImage}
@@ -484,9 +450,9 @@ const Map = () => {
                       <>
                         <img
                           src={el.imageUrls}
-                          key={modalData.attractionId}
+                          key={index}
                           onClick={() => {
-                            alert("테스트");
+                            navigate(`/posts/detail/${el.postId}`);
                           }}
                         ></img>
                       </>

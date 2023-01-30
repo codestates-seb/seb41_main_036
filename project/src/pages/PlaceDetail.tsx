@@ -8,8 +8,7 @@ import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
 //import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
-import axios from "axios";
-import Axios from "../utils/axiosinstance";
+import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -241,7 +240,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     .heart-icon {
       height: 19px;
       width: 19px;
-
       :hover {
         fill: var(--pink-heart);
         transform: scale(1.1);
@@ -323,7 +321,7 @@ const PlaceDetail = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    Axios.get(ATTRACTIONS_URL).then((res) => {
+    axios.get(ATTRACTIONS_URL).then((res) => {
       setAttractionData(res.data.data);
       setLikes(res.data.data.isVoted);
       setBookmarkSaves(res.data.data.isSaved);
@@ -371,7 +369,7 @@ const PlaceDetail = (): JSX.Element => {
       await navigator.clipboard.writeText(text);
       alert("url이 성공적으로 복사되었습니다.");
     } catch (err) {
-      console.log("복사 실패");
+      console.error(err);
     }
   };
 
@@ -380,9 +378,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_SAVES).then((res) => {
+    axios.post(URL_FOR_SAVES).then((res) => {
       setBookmarkSaves(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -391,9 +388,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_LIKES).then((res) => {
+    axios.post(URL_FOR_LIKES).then((res) => {
       setLikes(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -404,14 +400,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     navigate(`/write/${id}`);
   };
-  console.log(
-    attractionData,
-    "데이터값 확인",
-    Number(bookmarkSaves),
-    bookmarkSaves,
-    isLogin,
-    postData
-  );
 
   return (
     <>

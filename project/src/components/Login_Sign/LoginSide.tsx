@@ -11,7 +11,6 @@ import {
 } from "../../recoil/state";
 import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
-import Axios from "axios"
 
 const LoginSide = () => {
   const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);
@@ -90,11 +89,11 @@ const LoginSide = () => {
 
   const googleLogin = () => {
     window.location.href =
-      "http://pikcha36.o-r.kr:8080/oauth2/authorization/google";
+      "https://pikcha36.o-r.kr:8080/oauth2/authorization/google";
   };
   const kakaoLogin = () => {
     window.location.href =
-      "http://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
+      "https://pikcha36.o-r.kr:8080/oauth2/authorization/kakao";
   };
 
   return (
