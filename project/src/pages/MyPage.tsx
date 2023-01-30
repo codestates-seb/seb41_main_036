@@ -18,15 +18,18 @@ const MyPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #f6f6f6b2;
+  padding-top: 40px;
 `;
 
 const MyPageContainer = styled.div`
   width: 83.5%;
   height: 80vh;
   margin: 0 auto;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-l);
   display: flex;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const MyPageUserInfo = styled.aside`
   width: 20%;
@@ -94,9 +97,10 @@ const MyPageUserInfo = styled.aside`
 const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
   border-bottom-left-radius: var(--br-l);
   border-bottom-right-radius: var(--br-l);
+  border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
 
@@ -134,6 +138,7 @@ const MyPageTabBarMenu = styled.button`
   border: none;
   font-size: var(--font-base);
   cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   svg {
     margin-right: 10px;
     color: var(--black-500);
@@ -256,15 +261,15 @@ const MyPage = () => {
       .catch((err) => console.error(err));
   };
   const tabMenuBarList = [
-    {
-      title: (
-        <>
-          <AiTwotoneHome />
-          <span>나의 방문 기록</span>
-        </>
-      ),
-      content: "",
-    },
+    // {
+    //   title: (
+    //     <>
+    //       <AiTwotoneHome />
+    //       <span>나의 방문 기록</span>
+    //     </>
+    //   ),
+    //   content: "",
+    // },
     {
       title: (
         <>

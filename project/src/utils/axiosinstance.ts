@@ -1,9 +1,8 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: "http://pikcha36.o-r.kr:8090",
-  //withCredentials: true,
-
+  // baseURL: "http://pikcha36.o-r.kr:8090",
+  withCredentials: true,
 });
 
 axios.interceptors.request.use(
@@ -11,7 +10,6 @@ axios.interceptors.request.use(
     const originalRequest = config;
     const accessToken = localStorage.getItem("Authorization");
     axios.defaults.headers.common["Authorization"] = accessToken;
-
     originalRequest.headers["Authorization"] = accessToken;
     return originalRequest;
   },
@@ -34,7 +32,12 @@ axios.interceptors.response.use(
       const originalRequest = config;
       axios.defaults.headers.common["Authorization"] = null;
       const memberId = localStorage.getItem("memberId");
-      const { data } = await axios.get(`/token/refresh/${memberId}`);
+      const { data } = await Axios.get(`/token/refresh/${memberId}`,{
+        headers: {
+          Authorization : null
+        },
+      }
+      ) 
       console.log("리프데이터 : ", data);
       const accessToken = data.data.accessToken;
       console.log("어쏘 : ", accessToken);
@@ -48,7 +51,12 @@ axios.interceptors.response.use(
       const originalRequest = config;
       axios.defaults.headers.common["Authorization"] = null;
       const memberId = localStorage.getItem("memberId");
-      const { data } = await axios.get(`/token/refresh/${memberId}`);
+      const { data } = await Axios.get(`/token/refresh/${memberId}`,{
+        headers: {
+          Authorization : null
+        },
+      }
+      ) 
       console.log("리프데이터 : ", data);
       const accessToken = data.data.accessToken;
       console.log("어쏘 : ", accessToken);
