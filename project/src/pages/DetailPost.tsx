@@ -158,9 +158,11 @@ const PostContentBottom = styled.div`
   }
 `;
 
-const AddComment = styled.form`
+const AddComment = styled.form<{ isLogin: boolean }>`
   margin-top: 20px;
   width: 100%;
+  margin-bottom: 10em;
+
   > div {
     margin-top: 20px;
     display: flex;
@@ -397,7 +399,7 @@ const DetailPost = () => {
             <PostComment key={idx} comment={comment} />
           ))
         )}
-        <AddComment>
+        <AddComment isLogin={isLogin}>
           <h3>댓글 남기기</h3>
           <div>
             <img src={post?.picture} alt="userImg" />
@@ -406,13 +408,17 @@ const DetailPost = () => {
               onChange={(e) => setComment(e.target.value)}
               onClick={handleCommentWrite}
             />
-            <Button
-              type="violet"
-              width="80px"
-              height="35px"
-              text="등록"
-              onClick={(e) => handleCommentSubmit(e)}
-            />
+            {isLogin ? (
+              <Button
+                type="violet"
+                width="80px"
+                height="35px"
+                text="등록"
+                onClick={(e) => handleCommentSubmit(e)}
+              />
+            ) : (
+              <Button type="gray" width="80px" height="35px" text="등록" />
+            )}
           </div>
         </AddComment>
       </DetailPostWrapper>

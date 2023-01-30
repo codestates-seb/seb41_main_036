@@ -82,16 +82,6 @@ const Preview = styled.div`
   display: flex;
   flex-direction: column;
 
-  > img {
-    width: 300px;
-    height: 300px;
-    background-size: cover;
-    background-color: white;
-    margin: 0 auto;
-    object-fit: cover;
-    overflow-y: scroll;
-  }
-
   > div {
     display: flex;
     flex-direction: column;
@@ -173,7 +163,7 @@ const TagWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   width: 100%;
-  //padding: 20px 0 0 0;
+  background-color: #fcfcfc;
   > div:nth-child(1) {
     width: 45%;
     height: 100%;
@@ -187,6 +177,14 @@ const Header = styled.div`
     font-size: 20px;
     cursor: pointer;
   }
+`;
+
+const PreviewImgWrapper = styled.div`
+  overflow: scroll;
+  width: 90%;
+  height: 400px;
+  margin: 0 auto;
+  object-fit: cover;
 `;
 const EditPost = () => {
   const [data, setData] = useState<PostDetailType>();
@@ -395,7 +393,9 @@ const EditPost = () => {
             previewList.map((el, index) => {
               return (
                 <Preview key={index}>
-                  <img src={el[0]} />
+                  <PreviewImgWrapper>
+                    <img src={el[0]} />
+                  </PreviewImgWrapper>
                   <div>
                     <button
                       onClick={(e) => handleRemovePreview(e, index)}

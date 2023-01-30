@@ -445,7 +445,7 @@ const MyPageCardContainer = styled.div`
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
     0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
   height: 13%;
-
+  cursor: pointer;
   h3 {
     width: 70%;
   }
@@ -486,11 +486,15 @@ const MyPageMyPostCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const naviate = useNavigate();
   return (
     <>
       {posts &&
         currentPosts.map((post) => (
-          <MyPageCardContainer key={post.postId}>
+          <MyPageCardContainer
+            key={post.postId}
+            onClick={() => naviate(`/posts/detail/${post.postId}`)}
+          >
             <h3>{post.postTitle}</h3>
             <div>
               <span>
@@ -528,11 +532,15 @@ const MyPageMyFavoriteCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
+  const naviate = useNavigate();
   return (
     <>
       {saves &&
         currentSaves.map((save) => (
-          <MyPageCardContainer key={save.attractionId}>
+          <MyPageCardContainer
+            key={save.attractionId}
+            onClick={() => naviate(`/attractions/detail/${save.attractionId}`)}
+          >
             <h3>{save.attractionName}</h3>
             <div>
               <span>
