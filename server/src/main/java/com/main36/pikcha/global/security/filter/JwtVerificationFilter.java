@@ -40,7 +40,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/home",
                     "/attractions",
                     "/posts",
-                    "/token/refresh",
+//                    "/token/refresh",
                     "/oauth2/authorization/google",
                     "/oauth2/authorization/kakao"
             );
@@ -62,7 +62,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         try {
             String jwt = getAccessToken(request);
-            log.info("jwt = ==== {}", jwt);
+            log.info("==== jwt ===== {}", jwt);
             if (StringUtils.hasText(jwt) && jwtParser.verifyAccessToken(jwt)) {
                 Authentication authentication = jwtGenerator.getAuthentication(jwt);
                 log.info("# Token verification success !");

@@ -4,12 +4,16 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+!**/src/main/**/resources/
 
 # yml
 application.yml
 application-local.yml
 application-server.yml
-
+*.yml
+*.p12
+/*.p12
+/*.yml
 ### STS ###
 .apt_generated
 .classpath

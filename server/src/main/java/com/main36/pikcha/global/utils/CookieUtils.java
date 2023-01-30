@@ -11,24 +11,29 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CookieUtils {
 
-    public static ResponseCookie getResponseCookie(String refreshToken) {
+    public static final String SET_COOKIE = "Set-Cookie";
+    public static void setCookieInHeader(HttpServletResponse response, String refreshToken) {
 
-        return ResponseCookie.from("refreshToken", refreshToken)
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(3 * 24 * 60 * 60) // 쿠키 유효기간 설정 (3일)
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
                 .sameSite("None")
+//                .domain(".pikcha36.o-r.kr") // 성공 -> 할때 sameSite 제거
+//                .domain("pikcha36.o-r.kr") // 성공 -> 할때 sameSite 제거
                 .build();
+
+        response.setHeader(SET_COOKIE, String.valueOf(cookie));
     }
 
-    private static void setCookie(HttpServletResponse response, String refreshToken) {
+    public static void setCookie(HttpServletResponse response, String refreshToken) {
 
-        Cookie cookie = new Cookie("name", refreshToken);
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setMaxAge(3 * 24 * 60 * 60);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // 문제점!
+        cookie.setSecure(true); // 문제점!
         response.addCookie(cookie);
     }
 
@@ -45,4 +50,11 @@ public class CookieUtils {
         }
         return null;
     }
+
+    public void deleteCookie(HttpServletResponse response) {
+        Cookie deleteServletCookie = new Cookie("refreshToken", null);
+        deleteServletCookie.setMaxAge(0);
+        response.addCookie(deleteServletCookie);
+    }
+
 }
