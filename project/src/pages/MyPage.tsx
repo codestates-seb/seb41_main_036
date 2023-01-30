@@ -34,7 +34,7 @@ const MyPageContainer = styled.div`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const MyPageUserInfo = styled.aside`
-  width: 20%;
+  width: 25%;
   height: 100%;
 
   > div:first-child {
@@ -53,27 +53,33 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(2) {
       svg {
         cursor: pointer;
+        width: 20px;
       }
     }
     > img {
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin-bottom: 20px;
+      margin: 30px auto;
     }
 
     div {
+      margin: 3px 0 3px 0;
+      color:var(--black-750);
       margin-bottom: 10px;
       font-size: var(--font-sm);
     }
     div:nth-child(2) {
       display: flex;
-      align-items: center;
       font-weight: var(--fw-bold);
       font-size: var(--font-xl);
       margin-bottom: 20px;
       svg {
+        color:#868686;
         margin-left: 10px;
+        :hover{
+          color: var(--purple-400);
+        }
       }
     }
     div:nth-child(3) {
@@ -92,7 +98,7 @@ const MyPageUserInfo = styled.aside`
     }
     button {
       position: relative;
-      top: 13em;
+      top: 14em;
     }
   }
 `;
@@ -124,13 +130,14 @@ const MyPageTabBarContainer = styled.nav`
   display: flex;
   width: 50%;
   height: 50px;
+  margin-left: 6.2%;
 `;
 
 const MyPageTabBarMenu = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 27%;
   height: 100%;
   border-top-left-radius: var(--br-l);
   border-top-right-radius: var(--br-l);
