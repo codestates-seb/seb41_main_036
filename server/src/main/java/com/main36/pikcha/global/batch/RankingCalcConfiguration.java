@@ -1,3 +1,4 @@
+/*
 package com.main36.pikcha.global.batch;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
@@ -86,11 +87,14 @@ public class RankingCalcConfiguration {
         return new JpaItemWriterBuilder<Attraction>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
-        /*return new JdbcBatchItemWriterBuilder<Attraction>()
+        */
+/*return new JdbcBatchItemWriterBuilder<Attraction>()
                 .dataSource(dataSource)
-                .sql("insert into attraction(rank, rankChange")*/
+                .sql("insert into attraction(rank, rankChange")*//*
+
     }
-    /*@Bean
+    */
+/*@Bean
     @StepScope
     public Step simpleStep2(@Value("#{jobParameters[requestDate]}")String requestDate){
         return stepBuilderFactory.get("simpleJob")
@@ -100,5 +104,7 @@ public class RankingCalcConfiguration {
                     return RepeatStatus.FINISHED;
                 }))
                 .build();
-    }*/
+    }*//*
+
 }
+*/
