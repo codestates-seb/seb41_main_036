@@ -306,25 +306,16 @@ const PlaceDetail = (): JSX.Element => {
 
   const [bookmarkSaves, setBookmarkSaves] = useState(false); //로컬 북마트 상태 저장
   const [likes, setLikes] = useState(false);
-
   const [isLogin] = useRecoilState(LoginState);
-
   const [curPage, setCurPage] = useState(1);
-
-  const [auth, setAuth] = useRecoilState(AuthToken);
-  const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
-
   const { id } = useParams();
-
-  const url = `http://pikcha36.o-r.kr:8090/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8090/attractions/${id}/${memberId}`;
-  const url3 = `http://pikcha36.o-r.kr:8090/posts/${id}?page=${curPage}&size=8`;
-  const url4 = `http://pikcha36.o-r.kr:8090/posts/${id}/${memberId}?page=${curPage}&size=8`;
-
+  const url = `/attractions/${id}`;
+  const url2 = `/attractions/${id}/${memberId}`;
+  const url3 = `/posts/${id}?page=${curPage}&size=8`;
+  const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
   const ATTRACTIONS_URL = isLogin ? url2 : url;
@@ -427,7 +418,7 @@ const PlaceDetail = (): JSX.Element => {
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <FixedOnScrollUpHeader />
       <GlobalStyle />
-      {attractionData !== undefined ? (
+      {attractionData && (
         <>
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
@@ -544,8 +535,6 @@ const PlaceDetail = (): JSX.Element => {
             )}
           </Post>
         </>
-      ) : (
-        <div>Loading ... </div>
       )}
       <Footer />
     </>

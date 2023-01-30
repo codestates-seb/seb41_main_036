@@ -272,7 +272,6 @@ const WritePost = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           navigate(`/posts/detail/${res.data.data.postId}`);
         })
         .catch((err) => console.error(err));

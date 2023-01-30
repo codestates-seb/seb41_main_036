@@ -11,7 +11,6 @@ import Ranking from "../components/Ranking";
 import { Link } from "react-router-dom";
 import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
 import Footer from "../components/Footer";
-// import axios from "../utils/axiosinstance"
 
 const GoRight = keyframes`
   0% {
@@ -91,8 +90,9 @@ function Main() {
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
   const [postData, setPostData] = useState<ArrayPostType>();
 
-  const url = "/attractions/filter?page=1&size=4&sort=newest";
-  const url2 = `/posts/home?page=1&size=8&sort=views`;
+  const url =
+    "https://pikcha36.o-r.kr:8080/attractions/filter?page=1&size=4&sort=posts";
+  const url2 = `https://pikcha36.o-r.kr:8080/posts/home?page=1&size=8&sort=views`;
 
   useEffect(() => {
     axios.all([axios.post(url, { provinces: [] }), axios.get(url2)]).then(
@@ -144,43 +144,3 @@ function Main() {
 }
 
 export default Main;
-
-// import axios from "./utils/axiosinstance"
-// import { useRecoilState } from "recoil";
-// import {
-//   LoginState,
-//   AuthToken,
-//   LoggedUser,
-// } from "./recoil/state";
-
-// const [isLogin, setIslogin] = useRecoilState(LoginState);
-// const [auth, setAuth] = useRecoilState(AuthToken);
-// const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
-// const onClickBtn= () => {
-
-//   const memberId = localStorage.getItem("memberId")
-//   axios
-//   .post(`/comments/upload/1`,
-//   {
-//     commentContent: "1분테스트 16",
-//   },{
-//     headers:{
-//       "Content-Type": "application/json",
-//     }
-//   }
-
-//   // .get(`token/refresh/${memberId}`
-
-//   )
-//   .then((res) => {
-
-//       console.log(res)
-//       console.log("댓글등록")
-
-//   })
-//   .catch((err)=>console.error(err))
-
-// }
-
-// <button onClick={onClickBtn}>버튼버튼</button>

@@ -262,7 +262,7 @@ const MyPage = () => {
       })
       .catch((err) => console.error(err));
   };
-
+  console.log(memberId);
   const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
