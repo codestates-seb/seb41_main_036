@@ -161,6 +161,8 @@ const PostContentBottom = styled.div`
 const AddComment = styled.form`
   margin-top: 20px;
   width: 100%;
+  margin-bottom: 10em;
+
   > div {
     margin-top: 20px;
     display: flex;
