@@ -20,18 +20,21 @@ const MyPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #f6f6f6b2;
+  padding-top: 40px;
 `;
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-l);
   display: flex;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const MyPageUserInfo = styled.aside`
-  width: 20%;
+  width: 25%;
   height: 100%;
 
   > div:first-child {
@@ -50,27 +53,33 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(2) {
       svg {
         cursor: pointer;
+        width: 20px;
       }
     }
     > img {
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin-bottom: 20px;
+      margin: 30px auto;
     }
 
     div {
+      margin: 3px 0 3px 0;
+      color: var(--black-750);
       margin-bottom: 10px;
       font-size: var(--font-sm);
     }
     div:nth-child(2) {
       display: flex;
-      align-items: center;
       font-weight: var(--fw-bold);
       font-size: var(--font-xl);
       margin-bottom: 20px;
       svg {
+        color: #868686;
         margin-left: 10px;
+        :hover {
+          color: var(--purple-400);
+        }
       }
     }
     div:nth-child(3) {
@@ -89,16 +98,17 @@ const MyPageUserInfo = styled.aside`
     }
     button {
       position: relative;
-      top: 13em;
+      top: 10em;
     }
   }
 `;
 const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
   border-bottom-left-radius: var(--br-l);
   border-bottom-right-radius: var(--br-l);
+  border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
 
@@ -120,13 +130,14 @@ const MyPageTabBarContainer = styled.nav`
   display: flex;
   width: 50%;
   height: 50px;
+  margin-left: 6.2%;
 `;
 
 const MyPageTabBarMenu = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 27%;
   height: 100%;
   border-top-left-radius: var(--br-l);
   border-top-right-radius: var(--br-l);
@@ -134,8 +145,9 @@ const MyPageTabBarMenu = styled.button`
   font-weight: var(--fw-bold);
   color: var(--black-700);
   border: none;
-  font-size: var(--font-base);
+  font-size: var(--font-sm);
   cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   svg {
     margin-right: 10px;
     color: var(--black-500);
@@ -262,37 +274,37 @@ const MyPage = () => {
       })
       .catch((err) => console.error(err));
   };
-  console.log(memberId);
   const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
       axios
         .delete(`/users/delete/${memberId}`)
         .then((res) => {
-          console.log(res);
-          setIsLogin(false);
-          setAuth("");
-          setLoggedUser("");
-          axios.defaults.headers.common["Authorization"] = null;
-          localStorage.removeItem("Authorization");
-          localStorage.setItem("loginStatus", "false");
-          localStorage.removeItem("memberId");
-          alert("탈퇴가 완료되었습니다.");
-          naviate(`/`);
+          if (res.status === 200) {
+            setIsLogin(false);
+            setAuth("");
+            setLoggedUser("");
+            axios.defaults.headers.common["Authorization"] = null;
+            localStorage.removeItem("Authorization");
+            localStorage.setItem("loginStatus", "false");
+            localStorage.removeItem("memberId");
+            alert("탈퇴가 완료되었습니다.");
+            naviate(`/`);
+          }
         })
         .catch((err) => console.error(err));
     }
   };
   const tabMenuBarList = [
-    {
-      title: (
-        <>
-          <AiTwotoneHome />
-          <span>나의 방문 기록</span>
-        </>
-      ),
-      content: "",
-    },
+    // {
+    //   title: (
+    //     <>
+    //       <AiTwotoneHome />
+    //       <span>나의 방문 기록</span>
+    //     </>
+    //   ),
+    //   content: "",
+    // },
     {
       title: (
         <>
@@ -428,18 +440,18 @@ const MyPageCardContainer = styled.div`
   align-items: center;
   padding: 5px 10px;
   margin-bottom: 5px;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-m);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
-    0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
-  height: 13%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 10%;
   cursor: pointer;
   h3 {
-    width: 70%;
+    font-size: 15px;
+    width: 75%;
   }
 
   div {
-    width: 80px;
+    width: 85px;
     height: 100%;
     font-size: var(--font-sm);
 
@@ -451,15 +463,15 @@ const MyPageCardContainer = styled.div`
   img {
     min-width: 100px;
     height: 100%;
-    border-radius: var(--br-m);
+    border-radius: var(--br-s);
   }
 
   span {
-    display: flex;
-    align-items: center;
-    font-weight: var(--fw-bold);
-    width: 40px;
-    padding-top: 10px;
+    background-color: #fcfcd0;
+    flex-direction: row;
+    width: 130px;
+    line-height: 50px;
+    margin-right: 10px;
   }
 `;
 

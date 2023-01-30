@@ -83,9 +83,7 @@ const Login = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           if (res.status === 201) {
-            console.log("회원가입 성공");
             setOverlays(false);
             window.location.replace("/login");
           }

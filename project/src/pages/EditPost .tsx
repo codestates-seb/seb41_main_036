@@ -304,8 +304,7 @@ const EditPost = () => {
           },
         })
         .then((res) => {
-          console.log(res);
-          navigate(`/posts`);
+          if (res.status === 200) navigate(`/posts`);
         })
         .catch((err) => console.error(err));
     }

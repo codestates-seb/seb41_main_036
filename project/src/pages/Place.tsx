@@ -129,7 +129,6 @@ const Place = () => {
         )
         .then((res) => {
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
@@ -143,7 +142,6 @@ const Place = () => {
         )
         .then((res) => {
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));

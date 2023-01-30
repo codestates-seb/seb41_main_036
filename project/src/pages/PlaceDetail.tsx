@@ -241,7 +241,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     .heart-icon {
       height: 19px;
       width: 19px;
-
       :hover {
         fill: var(--pink-heart);
         transform: scale(1.1);
@@ -371,7 +370,7 @@ const PlaceDetail = (): JSX.Element => {
       await navigator.clipboard.writeText(text);
       alert("url이 성공적으로 복사되었습니다.");
     } catch (err) {
-      console.log("복사 실패");
+      console.error(err);
     }
   };
 
@@ -382,7 +381,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     Axios.post(URL_FOR_SAVES).then((res) => {
       setBookmarkSaves(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -393,7 +391,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     Axios.post(URL_FOR_LIKES).then((res) => {
       setLikes(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -404,14 +401,6 @@ const PlaceDetail = (): JSX.Element => {
     }
     navigate(`/write/${id}`);
   };
-  console.log(
-    attractionData,
-    "데이터값 확인",
-    Number(bookmarkSaves),
-    bookmarkSaves,
-    isLogin,
-    postData
-  );
 
   return (
     <>

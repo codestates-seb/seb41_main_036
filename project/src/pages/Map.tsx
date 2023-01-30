@@ -9,8 +9,8 @@ import { BsBookmarkPlus, BsFillChatLeftFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import "../index.css";
 import axios from "axios";
-import { DataList } from "../components/KakaoMap";
 import { GiTalk } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -143,10 +143,6 @@ const PlaceDetailModal = styled.div`
 
 const PlaceDetailModalHeader = styled.div`
   height: 370px;
-  //background-color: red;
-  // 얘는 이미지 
-  //background-color: red;
-  // 얘는 이미지 
   > div:nth-child(1) {
     width: 100%;
     height: 200px;
@@ -159,8 +155,6 @@ const PlaceDetailModalHeader = styled.div`
   
     >div:nth-child(2){ 
       display: flex;
-      //background-color: yellow;
-      //background-color: yellow;
       >p:nth-child(1){
         font-size: 14px;
         width: 60px;
@@ -170,7 +164,7 @@ const PlaceDetailModalHeader = styled.div`
         font-weight: 600;
         color:var(--black-700);
       }
-      >div{ // 개별 요소
+      >div{ 
         margin-top: 12px;
         margin-left: 3px;
         margin-right: 5px;
@@ -186,7 +180,6 @@ const PlaceDetailModalHeader = styled.div`
       width: 325px;
       height: 30px;
       >h2{
-        //width:250px;
         background-color: #fbf8ba;
         margin-left: 15px;
         font-weight: 700;
@@ -294,28 +287,17 @@ const PostNone = styled.div`
   > div {
     margin-right: 5px;
   }
-  //background-color:red;
 `;
 
 const Map = () => {
-  // 드롭다운 메뉴를 보여줄지 말지 설정하는 변수
   const [dropdownView, setDropdownView] = useState(false);
-  //현재 눌린 버튼의 값 설정
   const [regionFilter, setRegionFilter] = useState("전체");
-  //우측 상세페이지 모달창 On/Off 설정
   const [detailModal, setDetailModal] = useState(false);
-
-  // 현재 필터링된 데이터 목록
   const [regionList, setRegionList] = useState<any>(undefined);
-
-  // 현재 눌린 명소의 값을 저장
   const [modalData, setModalData] = useState<any>("");
-
-  // 현재 눌린 명소의 아이디를 저장
   const [modalDataId, setModalDataId] = useState<number>(1);
-
-  // 카카오맵에 전체 마커로 찍을 데이터 저장용
   const [wholeData, setWholeData] = useState<any>();
+  const navigate = useNavigate();
 
   const tags = [
     "#가족 여행지",
@@ -331,16 +313,12 @@ const Map = () => {
     "#테마 거리",
   ];
 
+
   const url =
     "/attractions/maps?page=1&size=99&sort=posts";
-  //const url2 = '/attractions/mapdetails/1';
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
 
   useEffect(() => {
-    // 처음에 무조건 데이터를 받아옴
-    // 그리고 요청 값 바뀔 때마다 다른 데이터를 불러와야함.
-
-    // 필터링용 데이터 받아오기
     if (regionFilter === "전체") {
       axios
         .post(url, {
@@ -357,23 +335,17 @@ const Map = () => {
         })
         .then((res) => {
           setRegionList(res.data.data);
-          console.log("요청중..");
         });
     }
 
-    console.log("전체 데이터----", wholeData);
-    console.log("전체 데이터----", regionList);
   }, [regionFilter, setDropdownView]);
 
   const handleModalData = (dataUrl: string) => {
-    // 모달창 데이터 받아오기
     axios
       .get(`/attractions/mapdetails/${dataUrl}`)
       .then((res) => {
         setModalData(res.data.data);
-        console.log("모달데이터", modalData);
       });
-    // 받아온 데이터를 모달창에 뿌리기
   };
 
   return (
@@ -403,7 +375,6 @@ const Map = () => {
                       key={el.id}
                       onClick={() => {
                         setRegionFilter(el.Post);
-                        console.log(regionFilter);
                         setDropdownView(false);
                       }}
                     >
@@ -423,7 +394,6 @@ const Map = () => {
                       setDetailModal(true);
                       handleModalData(el.attractionId);
                       setModalDataId(el.attractionId);
-                      console.log("모달 데이터 아이디", modalDataId);
                       setFilterOrPosition(false);
                     }}
                     imgUrl={el.fixedImage}
@@ -484,9 +454,9 @@ const Map = () => {
                       <>
                         <img
                           src={el.imageUrls}
-                          key={modalData.attractionId}
+                          key={index}
                           onClick={() => {
-                            alert("테스트");
+                            navigate(`/posts/detail/${el.postId}`)
                           }}
                         ></img>
                       </>
