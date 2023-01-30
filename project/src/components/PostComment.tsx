@@ -82,7 +82,7 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
       axios
         .delete(`/comments/delete/${commentId}`)
         .then((res) => {
-          if (res.status === 200) {
+          if (res.status === 204) {
             alert("삭제가 완료되었습니다.");
             window.location.reload();
           }
@@ -97,7 +97,10 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
         commentContent: commentContent,
       })
       .then((res) => {
-        if (res.status === 200) setIsEdit(!isEdit);
+        if (res.status === 200) {
+          setIsEdit(!isEdit);
+          window.location.reload();
+        }
       })
       .catch((err) => console.error(err));
   };
