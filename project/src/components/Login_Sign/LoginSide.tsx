@@ -62,7 +62,6 @@ const LoginSide = () => {
       .then((res) => {
         const { memberId, accessToken } = res.data.data;
         if (res.status === 200) {
-          console.log("로그인성공");
           setIslogin(true);
           setAuth(accessToken);
           setLoggedUser(loginemail);
