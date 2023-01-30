@@ -411,7 +411,7 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    navigate("/write");
+    navigate(`/write/${id}`);
   };
   console.log(
     attractionData,
