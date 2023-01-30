@@ -65,7 +65,7 @@ const MyPageUserInfo = styled.aside`
 
     div {
       margin: 3px 0 3px 0;
-      color: var(--black-750);
+      color:var(--black-750);
       margin-bottom: 10px;
       font-size: var(--font-sm);
     }
@@ -75,9 +75,9 @@ const MyPageUserInfo = styled.aside`
       font-size: var(--font-xl);
       margin-bottom: 20px;
       svg {
-        color: #868686;
+        color:#868686;
         margin-left: 10px;
-        :hover {
+        :hover{
           color: var(--purple-400);
         }
       }

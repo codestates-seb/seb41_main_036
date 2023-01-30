@@ -6,6 +6,7 @@ import Oauth from "./pages/Oauth";
 import Test from "./components/Test";
 import BeatLoader from "react-spinners/FadeLoader";
 
+
 function App() {
   if (localStorage.getItem("loginStatus") === null) {
     localStorage.setItem("loginStatus", "false");
