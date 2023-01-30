@@ -115,7 +115,7 @@ const Post = () => {
   const handleSortPlace = (sort: string) => {
     setSort(sort);
     axios
-      .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
+      .post(`http://pikcha36.o-r.kr:8080/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {
         provinces: checkedList,
       })
       .then((res) => {

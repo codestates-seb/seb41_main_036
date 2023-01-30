@@ -11,6 +11,8 @@ import "../index.css";
 import axios from "../utils/axiosinstance";
 import { GiTalk } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { LoginState } from "../recoil/state";
+import { useRecoilState } from "recoil";
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +36,6 @@ const DropDown = styled.article`
   > button {
     cursor: pointer;
     background-color: white;
-
     height: 40px;
     margin-left: 5px;
     padding-left: 10px;
@@ -69,11 +70,9 @@ const SelectList = styled.div`
   position: relative;
   top: 0;
   border-collapse: collapse;
-
   ::-webkit-scrollbar {
     display: none;
   }
-
   > button {
     cursor: pointer;
     font-weight: 500;
@@ -111,7 +110,6 @@ const Place = styled.div<{ imgUrl: string }>`
   border-radius: var(--br-s);
   cursor: pointer;
   border: 1px solid var(--black-600);
-
   background: linear-gradient(
       to right,
       rgba(20, 20, 20, 0.8) 10%,
@@ -122,7 +120,6 @@ const Place = styled.div<{ imgUrl: string }>`
     ),
     url(${(props) => props.imgUrl});
   background-size: cover;
-
   > div {
     padding: 85px 0 2px 20px;
     font-weight: bold;
@@ -158,7 +155,6 @@ const PlaceDetailModalHeader = styled.div`
       background-size: cover;
     }
   }
-
   > div:nth-child(2) {
     display: flex;
     > p:nth-child(1) {
@@ -169,6 +165,7 @@ const PlaceDetailModalHeader = styled.div`
       color: var(--black-700);
     }
     > div {
+      cursor: pointer;
       margin-top: 13px;
       margin-right: 11px;
     }
@@ -198,7 +195,6 @@ const PlaceDetailModalHeader = styled.div`
       font-weight: 600;
     }
   }
-
   > div:nth-child(5) {
     display: flex;
     color: #919191;
@@ -212,7 +208,6 @@ const PlaceDetailModalHeader = styled.div`
       font-weight: 500;
     }
   }
-
   > p:nth-child(4) {
     box-sizing: content-box;
     color: #555555;
@@ -242,7 +237,6 @@ const PlaceDetailModalHeader = styled.div`
       font-weight: 500;
     }
   }
-
   > div:nth-child(6) {
     box-sizing: content-box;
     font-size: 15px;
@@ -263,7 +257,6 @@ const PlaceDetailModalMain = styled.div`
   width: 100%;
   height: 485px;
   border-top: 1px solid #e4dcdc;
-
   > div:nth-child(1) {
     box-sizing: content-box;
     font-size: 15px;
@@ -322,10 +315,40 @@ const Map = () => {
     "#테마 거리",
   ];
 
+
   const url = "/attractions/maps?page=1&size=99&sort=posts";
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
+  const url2 = `/attractions/${modalDataId}`;
+  const memberId = localStorage.getItem("memberId");
+  const url3 = `/attractions/${modalDataId}/${memberId}`;
+  const [isLogin] = useRecoilState(LoginState);
+  const [isVoted,setIsVoted] = useState();
+  const [isLiked,setIsLiked] = useState();
+  const URL_FOR_SAVES = `/attractions/saves/${modalDataId}`;
+  const URL_FOR_LIKES = `/attractions/likes/${modalDataId}`;
+  const ATTRACTIONS_URL = isLogin ? url3 : url2;
+
+  const handleClickLiked = () => {
+    axios.post(URL_FOR_LIKES).then((res) => {
+      setIsVoted(res.data.data.isVoted);
+    });    
+  }
+
+  const handleClickSaved = () => {
+    axios.post(URL_FOR_SAVES).then((res) => {
+      setIsLiked(res.data.data.isSaved);
+    });
+  }
 
   useEffect(() => {
+
+    // 전체 데이터를 받아와서 반영 
+    axios.get(ATTRACTIONS_URL)
+    .then((res)=>{
+      setIsVoted(res.data.data.isVoted)
+      setIsLiked(res.data.data.isSaved)
+    })
+
     if (regionFilter === "전체") {
       axios
         .post(url, {
@@ -344,9 +367,9 @@ const Map = () => {
           setRegionList(res.data.data);
         });
     }
-  }, [regionFilter, setDropdownView]);
+  }, [regionFilter, setDropdownView, modalData, ATTRACTIONS_URL]);
 
-  const handleModalData = (dataUrl: string) => {
+  const handleModalData = (dataUrl: string|number) => {
     axios.get(`/attractions/mapdetails/${dataUrl}`).then((res) => {
       setModalData(res.data.data);
     });
@@ -421,12 +444,18 @@ const Map = () => {
               </div>
               <div>
                 <p>서울 명소</p>
-                <div>
-                  <AiOutlineHeart color="#969696"></AiOutlineHeart>
-                  <p>{modalData.likes}</p>
+                <div onClick={()=>handleClickLiked()}>
+                  <AiOutlineHeart 
+                    color={
+                      isVoted === true ? "var(--pink-heart)" : "var(--black-400)"
+                    }
+                    ></AiOutlineHeart>
+                  <p>{ modalData.likes }</p>
                 </div>
-                <div>
-                  <BsBookmarkPlus color="#969696"></BsBookmarkPlus>
+                <div onClick={()=>{handleClickSaved()}}>
+                  <BsBookmarkPlus 
+                    color={isLiked ? "green" : "var(--black-400)"}
+                    ></BsBookmarkPlus>
                   <p>{modalData.saves}</p>
                 </div>
               </div>

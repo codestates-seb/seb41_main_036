@@ -35,20 +35,17 @@ const MyPageContainer = styled.div`
 const MyPageUserInfo = styled.aside`
   width: 25%;
   height: 100%;
-
   > div:first-child {
     svg {
       cursor: pointer;
     }
   }
-
   form {
     display: flex;
     flex-direction: column;
     height: 70%;
     margin-top: 4em;
     margin-left: 2em;
-
     div:nth-child(2) {
       svg {
         cursor: pointer;
@@ -61,7 +58,6 @@ const MyPageUserInfo = styled.aside`
       border-radius: 100%;
       margin-bottom: 15px;
     }
-
     div {
       margin: 3px 0 3px 0;
       color: var(--black-750);
@@ -90,7 +86,6 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(4) {
       display: flex;
       align-items: center;
-
       svg {
         margin-right: 5px;
         color: var(--purple-400);
@@ -108,7 +103,6 @@ const MyPageUserInfo = styled.aside`
       box-shadow: 0 0 5px blue;
     }
   }
-
   button {
   }
 `;
@@ -121,11 +115,9 @@ const MyPageMainContainer = styled.article`
   border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
-
   > div {
     height: 100%;
     padding: 30px;
-
     > span {
       display: block;
       text-align: right;
@@ -162,11 +154,9 @@ const MyPageTabBarMenu = styled.button`
     margin-right: 10px;
     color: var(--black-500);
   }
-
   &.onToggle {
     color: var(--purple-400);
     background-color: var(--purple-200);
-
     svg {
       color: var(--purple-400);
     }
@@ -473,23 +463,19 @@ const MyPageCardContainer = styled.div`
     font-size: 15px;
     width: 75%;
   }
-
   div {
     width: 85px;
     height: 100%;
     font-size: var(--font-sm);
-
     span:first-child {
       margin-right: 6px;
     }
   }
-
   img {
     min-width: 100px;
     height: 100%;
     border-radius: var(--br-s);
   }
-
   span {
     background-color: #fcfcd0;
     flex-direction: row;
