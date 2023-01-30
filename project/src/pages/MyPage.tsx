@@ -26,12 +26,11 @@ const MyPageWrapper = styled.div`
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 70vh;
+  height: 80vh;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: var(--br-l);
   display: flex;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const MyPageUserInfo = styled.aside`
   width: 25%;
@@ -60,7 +59,7 @@ const MyPageUserInfo = styled.aside`
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin: 30px auto;
+      margin-bottom: 15px;
     }
 
     div {
@@ -71,6 +70,7 @@ const MyPageUserInfo = styled.aside`
     }
     div:nth-child(2) {
       display: flex;
+      align-items: center;
       font-weight: var(--fw-bold);
       font-size: var(--font-xl);
       margin-bottom: 20px;
@@ -96,10 +96,20 @@ const MyPageUserInfo = styled.aside`
         color: var(--purple-400);
       }
     }
-    button {
-      position: relative;
-      top: 10em;
+  }
+  input {
+    height: 30px;
+    border-radius: var(--br-m);
+    padding: 6px 7px;
+    margin-top: 5px;
+    border-color: var(--purple-400);
+    :focus {
+      outline-color: var(--purple-300);
+      box-shadow: 0 0 5px blue;
     }
+  }
+
+  button {
   }
 `;
 const MyPageMainContainer = styled.article`
@@ -163,6 +173,15 @@ const MyPageTabBarMenu = styled.button`
   }
 `;
 
+const EditSubmitButton = styled.button`
+  width: 50px;
+  height: 25px;
+  border: none;
+  background-color: var(--purple-300);
+  border-radius: var(--br-m);
+  margin-top: 10px;
+  color: white;
+`;
 interface UserType {
   memberId: number;
   username: string;
@@ -269,8 +288,7 @@ const MyPage = () => {
         address: address,
       })
       .then((res) => {
-        console.log(res);
-        setIsEdit(false);
+        if (res.status === 200) setIsEdit(false);
       })
       .catch((err) => console.error(err));
   };
@@ -376,6 +394,7 @@ const MyPage = () => {
                       name="username"
                       type="text"
                       defaultValue={userData.username}
+                      placeholder="이름"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
@@ -392,6 +411,7 @@ const MyPage = () => {
                       name="address"
                       type="text"
                       value={address}
+                      placeholder="주소"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
@@ -407,23 +427,27 @@ const MyPage = () => {
                       name="phoneNumber"
                       type="text"
                       value={phoneNumber}
+                      placeholder="전화번호"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
                     <>{userData.phoneNumber}</>
                   )}
-                  {isEdit ? (
-                    <button onClick={(e) => editInfoSubmit(e)}>완료</button>
-                  ) : null}
                 </div>
-                <Button
-                  type="violet"
-                  width="100px"
-                  height="40px"
-                  text="회원 탈퇴"
-                  onClick={deleteUser}
-                />
+                {isEdit ? (
+                  <EditSubmitButton onClick={(e) => editInfoSubmit(e)}>
+                    완료
+                  </EditSubmitButton>
+                ) : null}
               </form>
+              <Button
+                type="violet"
+                width="100px"
+                height="40px"
+                text="회원 탈퇴"
+                onClick={deleteUser}
+                margin="10px 2em"
+              />
             </MyPageUserInfo>
             <MyPageMainContainer>
               <div>{tabMenuBarList[tab].content}</div>
