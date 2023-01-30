@@ -2,7 +2,6 @@ package com.main36.pikcha.domain.attraction.service;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.attraction.repository.AttractionRepository;
-import com.main36.pikcha.domain.image.service.AttractionImageService;
 import com.main36.pikcha.domain.like.entity.AttractionLikes;
 import com.main36.pikcha.domain.like.repository.AttractionLikesRepository;
 import com.main36.pikcha.domain.member.entity.Member;
@@ -26,7 +25,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AttractionService {
     private final AttractionRepository attractionRepository;
-    private final AttractionImageService attractionImageService;
     private final AttractionLikesRepository attractionLikesRepository;
     private final SaveRepository saveRepository;
 
