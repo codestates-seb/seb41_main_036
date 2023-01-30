@@ -143,11 +143,6 @@ const LoginSide = () => {
           onKeyDown={onPressEnter}
         ></l.InputStyle>
       </l.LoginInputContainer>
-      {/* {loginpasswordErr && loginpassword.length !== 0 ? (
-          <ErrMsg color="red" fontSize="16px" fontweight="normal">
-            비밀번호를 8자이상 입력해주세요.
-          </ErrMsg>
-        ) : null} */}
       <ButtonForm
         width="90px"
         height="35px"

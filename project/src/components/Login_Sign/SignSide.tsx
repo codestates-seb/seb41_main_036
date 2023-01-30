@@ -86,7 +86,7 @@ const Login = () => {
           console.log(res);
           if (res.status === 201) {
             console.log("회원가입 성공");
-            setOverlays(false)
+            setOverlays(false);
             window.location.replace("/login");
           }
         })
@@ -187,11 +187,11 @@ const Login = () => {
           onKeyDown={onPressEnter}
           type="password"
         ></s.InputStyle>
-        {/* {passwordConfirm === signpassword ? null : (
-  <ErrMsg color="red" fontSize="16px" fontweight="normal">
-    비밀번호가 다릅니다.
-  </ErrMsg>
-)} */}
+        {passwordConfirm === signpassword ? null : (
+          <s.ErrMsg color="red" fontSize="12px" fontweight="normal">
+            비밀번호가 다릅니다.
+          </s.ErrMsg>
+        )}
         <s.InputStyle
           placeholder="전화번호(-를 포함해서 입력해주세요)"
           onChange={handlePhoneChange}
@@ -213,7 +213,6 @@ const Login = () => {
           onChange={handleUsernameChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
-        {/* <TextStyle color="red" fontSize='16px' fontweight='normal'>3글자 이상 입력해주세요.</TextStyle> */}
         <ButtonForm
           width="90px"
           height="35px"
