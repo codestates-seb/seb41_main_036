@@ -9,8 +9,6 @@ import {
   SearchBarWrapper,
   Profile,
 } from "./style";
-// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
-// import logo from "../../../data/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
@@ -19,7 +17,6 @@ import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
 
 const SearchBar = lazy(() => import("./SearchBar"));
-// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";

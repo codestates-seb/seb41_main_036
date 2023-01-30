@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiFillHeart as LikeIcon } from "react-icons/ai";
 import { BsFillBookmarkFill as BookmarkIcon } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
