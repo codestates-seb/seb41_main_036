@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { MdEditNote as NoteIcon } from "react-icons/md";
@@ -11,7 +11,6 @@ import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
 import Footer from "../components/Footer";
-
 import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";

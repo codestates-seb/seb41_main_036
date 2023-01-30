@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import styled from "styled-components";
 import "./App.css";
 import { RecoilRoot } from "recoil";
 import Oauth from "./pages/Oauth";
@@ -22,7 +21,7 @@ function App() {
   const Map = lazy(() => import("./pages/Map"));
   const LoginSign = lazy(() => import("./pages/LoginSign"));
   const EditPost = lazy(() => import("./pages/EditPost "));
-
+  const NoAddress = lazy(() => import("./pages/NoAddress"));
   return (
     <div className="App">
       <BrowserRouter>
@@ -44,6 +43,7 @@ function App() {
               <Route path="/edit/:id" element={<EditPost />} />
               <Route path="/oauth" element={<Oauth />} />
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="*" element={<NoAddress />} />
             </Routes>
           </Suspense>
         </RecoilRoot>
