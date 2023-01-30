@@ -1,20 +1,18 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { MdEditNote as NoteIcon } from "react-icons/md";
 import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
-//import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
 import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "../components/Footer";
 
-import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
@@ -356,7 +354,7 @@ const PlaceDetail = (): JSX.Element => {
 
   const handleView = (setting: string) => {
     setView(setting);
-    if (view === "info") {
+    if (view === "info" && setting === "post") {
       scrollRefContent?.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
