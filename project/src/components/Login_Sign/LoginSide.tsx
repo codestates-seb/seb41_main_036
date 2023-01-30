@@ -48,16 +48,17 @@ const LoginSide = () => {
       return;
     }
 
-    return axios.post(
-      process.env.REACT_APP_DB_HOST + "/login",
-      {
-        username: loginemail,
-        password: loginpassword,
-      },
-      {
-        withCredentials: true,
-      }
-    )
+    return axios
+      .post(
+        `/login`,
+        {
+          username: loginemail,
+          password: loginpassword,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         const { memberId, accessToken } = res.data.data;
         if (res.status === 200) {
