@@ -241,7 +241,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     .heart-icon {
       height: 19px;
       width: 19px;
-
       :hover {
         fill: var(--pink-heart);
         transform: scale(1.1);
@@ -320,10 +319,10 @@ const PlaceDetail = (): JSX.Element => {
 
   const { id } = useParams();
 
-  const url = `http://pikcha36.o-r.kr:8090/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8090/attractions/${id}/${memberId}`;
-  const url3 = `http://pikcha36.o-r.kr:8090/posts/${id}?page=${curPage}&size=8`;
-  const url4 = `http://pikcha36.o-r.kr:8090/posts/${id}/${memberId}?page=${curPage}&size=8`;
+  const url = `/attractions/${id}`;
+  const url2 = `/attractions/${id}/${memberId}`;
+  const url3 = `/posts/${id}?page=${curPage}&size=8`;
+  const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
 
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
