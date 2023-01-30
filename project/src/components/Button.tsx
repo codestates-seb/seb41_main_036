@@ -67,6 +67,9 @@ const GrayButton = styled.button<ButtonProps>`
     background-color: var(--black-400);
     color: var(--black-650);
   }
+  :disabled {
+    pointer-events: none;
+  }
 `;
 
 const NoneButton = styled.button<ButtonProps>`
@@ -79,7 +82,9 @@ const NoneButton = styled.button<ButtonProps>`
   color: var(--black-900);
   font-size: var(--font-sx);
   margin: ${(props) => props.margin};
-  cursor: pointer;
+  :disabled {
+    pointer-events: none;
+  }
 `;
 
 const Button = ({
@@ -130,6 +135,7 @@ const Button = ({
           hovercolor={hovercolor}
           onClick={onClick}
           margin={margin}
+          disabled
         >
           {text}
         </GrayButton>
