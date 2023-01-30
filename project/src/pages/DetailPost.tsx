@@ -351,10 +351,10 @@ const DetailPost = () => {
         </DetailPostInfo>
         <PostContentContainer>
           <PostContentBox>
-            {data.map((post) => (
-              <div key={post.imageId}>
+            {data.map((post,idx) => (
+              <div key={post.imageId} >
                 <div>
-                  <img src={post.imageURL} alt="picture" />
+                  <img src={post.imageURL} alt="picture"  />
                 </div>
                 <div>{post.content}</div>
               </div>

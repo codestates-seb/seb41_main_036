@@ -26,7 +26,7 @@ const MyPageWrapper = styled.div`
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: var(--br-l);
@@ -98,7 +98,7 @@ const MyPageUserInfo = styled.aside`
     }
     button {
       position: relative;
-      top: 14em;
+      top: 10em;
     }
   }
 `;
@@ -145,7 +145,7 @@ const MyPageTabBarMenu = styled.button`
   font-weight: var(--fw-bold);
   color: var(--black-700);
   border: none;
-  font-size: var(--font-base);
+  font-size: var(--font-sm);
   cursor: pointer;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   svg {
@@ -440,18 +440,18 @@ const MyPageCardContainer = styled.div`
   align-items: center;
   padding: 5px 10px;
   margin-bottom: 5px;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-m);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
-    0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
-  height: 13%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 10%;
   cursor: pointer;
   h3 {
-    width: 70%;
+    font-size: 15px;
+    width: 75%;
   }
 
   div {
-    width: 80px;
+    width: 85px;
     height: 100%;
     font-size: var(--font-sm);
 
@@ -463,15 +463,15 @@ const MyPageCardContainer = styled.div`
   img {
     min-width: 100px;
     height: 100%;
-    border-radius: var(--br-m);
+    border-radius: var(--br-s);
   }
 
   span {
-    display: flex;
-    align-items: center;
-    font-weight: var(--fw-bold);
-    width: 40px;
-    padding-top: 10px;
+    background-color: #fcfcd0;
+    flex-direction: row;
+    width: 130px;
+    line-height: 50px;
+    margin-right: 10px;
   }
 `;
 
