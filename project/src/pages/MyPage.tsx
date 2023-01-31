@@ -14,6 +14,7 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
+import OnWorking from "./OnWorking";
 import Charts from "../components/Charts";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
@@ -313,8 +314,9 @@ const MyPage = () => {
       ),
       content: (
         <div>
-          <div>님의 방문기록 입니다.</div>
-        {/* <Charts userData={userData}></Charts> */}
+          {/* <div>님의 방문기록 입니다.</div> */}
+          <OnWorking />
+          {/* <Charts userData={userData}></Charts> */}
         </div>
       ),
     },
@@ -469,6 +471,8 @@ const MyPageCardContainer = styled.div`
     width: 75%;
   }
   div {
+    display: flex;
+    align-items: center;
     width: 85px;
     height: 100%;
     font-size: var(--font-sm);
@@ -477,12 +481,12 @@ const MyPageCardContainer = styled.div`
     }
   }
   img {
-    min-width: 100px;
-    height: 100%;
+    width: 100px;
+    height: 35px;
+    object-fit: cover;
     border-radius: var(--br-s);
   }
   span {
-    background-color: #fcfcd0;
     flex-direction: row;
     width: 130px;
     line-height: 50px;

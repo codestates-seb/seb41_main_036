@@ -26,7 +26,10 @@ export const Wrapper = styled.section`
   border-radius: 30px;
 `;
 export const Signincontainer = styled.div<OverlayProps>`
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  min-width: 360px;
+  min-height: 515px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   width: 30%;
   height: 70%;
   border-radius: ${(props) =>
@@ -43,6 +46,8 @@ export const Signincontainer = styled.div<OverlayProps>`
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
 `;
 export const Logincontainer = styled.div<OverlayProps>`
+  min-width: 360px;
+  min-height: 515px;
   width: 30%;
   height: 70%;
   border-radius: ${(props) =>
@@ -61,6 +66,8 @@ export const Logincontainer = styled.div<OverlayProps>`
 export const Rightoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -79,6 +86,8 @@ export const Rightoverlay = styled.div<OverlayProps>`
 export const Leftoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -162,7 +171,7 @@ export const CloseButton = styled.button`
 `;
 
 export const SocitalLoginContinaer = styled.div`
-  width:100px;
+  width: 100px;
   display: flex;
   justify-content: space-around;
 `;
