@@ -106,6 +106,7 @@ const PostContentBox = styled.div`
   }
   div > div:last-child {
     padding: 0 30px;
+    text-align: center;
   }
 `;
 const TagsButton = styled.button`
