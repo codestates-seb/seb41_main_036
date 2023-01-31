@@ -86,7 +86,7 @@ const PostContentContainer = styled.article`
   margin: 0 auto;
 
   > div:nth-child(2) {
-    margin:30px auto 0;
+    margin: 30px auto 0;
     width: 70%;
   }
 `;
@@ -168,7 +168,7 @@ const PostContentBottom = styled.div`
 const AddComment = styled.form<{ isLogin: boolean }>`
   margin: 35px auto 50px;
   width: 80%;
-  >h3{
+  > h3 {
     margin-left: 7%;
   }
 
@@ -214,6 +214,7 @@ export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
   attractionName: string;
+  memberId: number;
   comments: [
     {
       commentId: number;
@@ -272,15 +273,15 @@ const DetailPost = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (memberId) {
+    if (isLogin) {
       axios
-        .get(`/posts/details/${id}`)
+        .get(`/posts/details/${id}/${memberId}`)
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
     } else {
       axios
-        .get(`/posts/details/${id}/${memberId}`)
+        .get(`/posts/details/${id}`)
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
@@ -326,7 +327,9 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-
+  console.log(memberId);
+  console.log(post);
+  console.log(postComments);
   return (
     <>
       <Header>
@@ -335,7 +338,7 @@ const DetailPost = () => {
       </Header>
       <DetailPostWrapper>
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
-        {(post && post.postId === memberId) || memberId === 1 ? (
+        {(post && post.memberId === memberId) || memberId === 1 ? (
           <PostMangeButtnContainer>
             <PostManageButton onClick={() => navigate(`/edit/${id}`)}>
               <MdModeEdit /> 수정
@@ -366,10 +369,10 @@ const DetailPost = () => {
         </DetailPostInfo>
         <PostContentContainer>
           <PostContentBox>
-            {data.map((post,idx) => (
-              <div key={post.imageId} >
+            {data.map((post, idx) => (
+              <div key={idx}>
                 <div>
-                  <img src={post.imageURL} alt="picture"  />
+                  <img src={post.imageURL} alt="picture" />
                 </div>
                 <div>{post.content}</div>
               </div>
