@@ -32,7 +32,7 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final CustomAuthorityUtils customAuthorityUtils;
+//    private final CustomAuthorityUtils customAuthorityUtils;
 
     private final MemberService memberService;
 
