@@ -16,7 +16,7 @@ import Footer from "../components/Footer";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
-  margin: 0 auto;
+  margin: 30px auto;
 `;
 
 const PostMangeButtnContainer = styled.div`

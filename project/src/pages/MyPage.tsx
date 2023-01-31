@@ -14,6 +14,7 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
+import Charts from "../components/Charts";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -311,7 +312,12 @@ const MyPage = () => {
           <span>나의 방문 기록</span>
         </>
       ),
-      content: "",
+      content: (
+        <div>
+          <div>님의 방문기록 입니다.</div>
+        {/* <Charts userData={userData}></Charts> */}
+        </div>
+      ),
     },
     {
       title: (
