@@ -251,8 +251,10 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (title === "") alert("제목을 입력해주세요");
-    if (title) {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+    } else if (imgFiles.length === 0) alert("이미지를 등록해주세요.");
+    else {
       const formData = new FormData();
       formData.append("postTitle", title);
       tags.forEach((tag) => {
