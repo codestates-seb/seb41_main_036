@@ -9,9 +9,11 @@ import { BsEye } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
 import axios from "../utils/axiosinstance";
 import { useRecoilState } from "recoil";
-import { MemberId } from "../recoil/state";
+import { AuthToken, LoggedUser, LoginState, MemberId } from "../recoil/state";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
+import { useNavigate } from "react-router-dom";
+import MyPagePagination from "../components/MyPagePagination";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -183,7 +185,7 @@ interface UserType {
   modifiedAt: string;
 }
 
-interface PostsType {
+export interface MyPostsType {
   postId: number;
   postTitle: string;
   pictureUrl: string;
@@ -193,7 +195,7 @@ interface PostsType {
   modifiedAt: string;
 }
 
-interface SaveType {
+export interface MySavesType {
   attractionId: number;
   attractionName: string;
   fixedImage: string;
@@ -201,6 +203,8 @@ interface SaveType {
   saves: number;
 }
 
+export interface ArrayMyPostsType extends Array<MyPostsType> {}
+export interface ArrayMySavesType extends Array<MySavesType> {}
 const MyPage = () => {
   const [tab, setTab] = useState(0);
   const [userData, setUserData] = useState<UserType>();
@@ -211,8 +215,11 @@ const MyPage = () => {
     address: "",
     phoneNumber: "",
   });
-
+  const naviate = useNavigate();
   const { username, address, phoneNumber } = inputs;
+  const [isLogin, setIsLogin] = useRecoilState(LoginState);
+  const [auth, setAuth] = useRecoilState(AuthToken);
+  const [LoggerUser, setLoggedUser] = useRecoilState(LoggedUser);
 
   const getUserProfile = async () => {
     await axios
@@ -255,6 +262,27 @@ const MyPage = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (window.confirm("정말 탈퇴하시겠습니까?")) {
+      axios
+        .delete(`/users/delete/${memberId}`)
+        .then((res) => {
+          console.log(res);
+          setIsLogin(false);
+          setAuth("");
+          setLoggedUser("");
+          axios.defaults.headers.common["Authorization"] = null;
+          localStorage.removeItem("Authorization");
+          localStorage.setItem("loginStatus", "false");
+          localStorage.removeItem("memberId");
+          alert("탈퇴가 완료되었습니다.");
+          naviate(`/`);
+        })
+        .catch((err) => console.error(err));
+    }
+  };
   const tabMenuBarList = [
     {
       title: (
@@ -276,8 +304,7 @@ const MyPage = () => {
         <>
           <h2>Posts</h2>
           <span>{userData && userData.totalMyPosts}개의 포스트</span>
-          {userData &&
-            userData.posts.map((post) => <MyPageMyPostCard post={post} />)}
+          {userData && <MyPageMyPostCard posts={userData.posts} limit={6} />}
         </>
       ),
     },
@@ -292,10 +319,9 @@ const MyPage = () => {
         <>
           <h2>My Favorite</h2>
           <span>{userData && userData.totalMySaves}개의 즐겨찾기</span>
-          {userData &&
-            userData.saves.map((saves) => (
-              <MyPageMyFavoriteCard saves={saves} />
-            ))}
+          {userData && (
+            <MyPageMyFavoriteCard saves={userData.saves} limit={6} />
+          )}
         </>
       ),
     },
@@ -383,6 +409,7 @@ const MyPage = () => {
                   width="100px"
                   height="40px"
                   text="회원 탈퇴"
+                  onClick={deleteUser}
                 />
               </form>
             </MyPageUserInfo>
@@ -406,7 +433,7 @@ const MyPageCardContainer = styled.div`
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
     0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
   height: 13%;
-
+  cursor: pointer;
   h3 {
     width: 70%;
   }
@@ -436,44 +463,93 @@ const MyPageCardContainer = styled.div`
   }
 `;
 
-const MyPageMyPostCard = ({ post }: { post: PostsType }) => {
+const MyPageMyPostCard = ({
+  posts,
+  limit,
+}: {
+  posts: ArrayMyPostsType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useState(1);
+  const indexOfLastPost = curPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const naviate = useNavigate();
   return (
     <>
-      <MyPageCardContainer>
-        <h3>{post.postTitle}</h3>
-        <div>
-          <span>
-            <BsEye />
-            {post.views}
-          </span>
-          <span>
-            <AiFillHeart />
-            {post.likes}
-          </span>
-        </div>
-        <img src={post.pictureUrl} alt="post-img" />
-      </MyPageCardContainer>
+      {posts &&
+        currentPosts.map((post) => (
+          <MyPageCardContainer
+            key={post.postId}
+            onClick={() => naviate(`/posts/detail/${post.postId}`)}
+          >
+            <h3>{post.postTitle}</h3>
+            <div>
+              <span>
+                <BsEye />
+                &nbsp;
+                {post.views}
+              </span>
+              <span>
+                <AiFillHeart />
+                &nbsp;
+                {post.likes}
+              </span>
+            </div>
+            <img src={post.pictureUrl} alt="post-img" />
+          </MyPageCardContainer>
+        ))}
+      <MyPagePagination
+        limit={6}
+        props={posts}
+        setCurPage={setCurPage}
+        curPage={curPage}
+      />
     </>
   );
 };
 
-const MyPageMyFavoriteCard = ({ saves }: { saves: SaveType }) => {
+const MyPageMyFavoriteCard = ({
+  saves,
+  limit,
+}: {
+  saves: ArrayMySavesType;
+  limit: number;
+}) => {
+  const [curPage, setCurPage] = useState(1);
+  const indexOfLastPost = curPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
+  const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
+  const naviate = useNavigate();
   return (
     <>
-      <MyPageCardContainer>
-        <h3>{saves.attractionName}</h3>
-        <div>
-          <span>
-            <BsFillBookmarkFill />
-            {saves.saves}
-          </span>
-          <span>
-            <AiFillHeart />
-            {saves.likes}
-          </span>
-        </div>
-        <img src={saves.fixedImage} alt="post-img" />
-      </MyPageCardContainer>
+      {saves &&
+        currentSaves.map((save) => (
+          <MyPageCardContainer
+            key={save.attractionId}
+            onClick={() => naviate(`/attractions/detail/${save.attractionId}`)}
+          >
+            <h3>{save.attractionName}</h3>
+            <div>
+              <span>
+                <BsFillBookmarkFill />
+                &nbsp;{save.saves}
+              </span>
+              <span>
+                <AiFillHeart />
+                &nbsp;
+                {save.likes}
+              </span>
+            </div>
+            <img src={save.fixedImage} alt="post-img" />
+          </MyPageCardContainer>
+        ))}
+      <MyPagePagination
+        limit={6}
+        props={saves}
+        setCurPage={setCurPage}
+        curPage={curPage}
+      />
     </>
   );
 };

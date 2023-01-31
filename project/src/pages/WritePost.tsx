@@ -12,7 +12,6 @@ const Container = styled.div`
   width: 100%;
   height: 92vh;
   background-color: #fcfcfc;
-
   > form {
     width: 45%;
     display: flex;
@@ -72,15 +71,6 @@ const PreviewContainer = styled.div`
 const Preview = styled.div`
   display: flex;
   flex-direction: column;
-
-  > img {
-    width: 90%;
-    height: 300px;
-    background-size: cover;
-    background-color: white;
-    margin: 0 auto;
-    object-fit: cover;
-  }
 
   > div {
     display: flex;
@@ -164,7 +154,7 @@ const TagWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   width: 100%;
-  //padding: 20px 0 0 0;
+  background-color: #fcfcfc;
   > div:nth-child(1) {
     width: 45%;
     height: 100%;
@@ -178,6 +168,14 @@ const Header = styled.div`
     font-size: 20px;
     cursor: pointer;
   }
+`;
+
+const PreviewImgWrapper = styled.div`
+  overflow: scroll;
+  width: 90%;
+  height: 400px;
+  margin: 0 auto;
+  object-fit: cover;
 `;
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
@@ -361,7 +359,9 @@ const WritePost = () => {
             previewList.map((el, index) => {
               return (
                 <Preview key={index}>
-                  <img src={el[0]} />
+                  <PreviewImgWrapper>
+                    <img src={el[0]} />
+                  </PreviewImgWrapper>
                   <div>
                     <button
                       onClick={(e) => handleRemovePreview(e, index)}
@@ -389,9 +389,7 @@ const ModalContainer = styled.div`
   padding: 20px;
   width: 400px;
   height: 300px;
-  // background-color: aqua;
   border: 0.5px solid var(--purple-300);
-  /* From https://css.glass */
   background: rgba(255, 255, 255, 0.45);
   border-radius: 25px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);

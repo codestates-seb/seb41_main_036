@@ -91,12 +91,7 @@ const AttractionItem = styled.div<{ selectedEl: Boolean }>`
   padding: 8px 12px;
   margin: 6px 5px 1px;
   border-radius: var(--br-m);
-  a {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
+
   svg {
     color: var(--black-300);
     width: 18px;
@@ -109,6 +104,11 @@ const AttractionItem = styled.div<{ selectedEl: Boolean }>`
     }
   }
   transition: all 0.2s ease;
+`;
+const AttractionItemContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `;
 const AttractionItemContent = styled.div<{
   type: string;
@@ -288,6 +288,7 @@ export {
   SearchForm,
   AttractionItem,
   AttractionItemContent,
+  AttractionItemContentWrapper,
   SuggestionItemWrapper,
   HeaderTop,
   HeaderTopMenu,

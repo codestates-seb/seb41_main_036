@@ -22,12 +22,13 @@ export const Wrapper = styled.section`
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;  
   border-radius: 30px;
 `;
 export const Signincontainer = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
@@ -40,10 +41,12 @@ export const Signincontainer = styled.div<OverlayProps>`
   z-index: ${(props) => (props.overlay ? "1" : "0")};
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
+  box-shadow: ${(props) => (props.overlay ? "5px 5px 3px gray" : "5px 5px 3px gray")};
 `;
 export const Logincontainer = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
@@ -56,10 +59,13 @@ export const Logincontainer = styled.div<OverlayProps>`
   z-index: ${(props) => (props.overlay ? "0" : "1")};
   transform: ${(props) =>
     props.overlay ? "translateX(-50%)" : "translateX(50%)"};
+      box-shadow: ${(props) => (props.overlay ? "5px 5px 3px gray" : "5px 5px 3px gray")};
+
 `;
 export const Rightoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -74,10 +80,13 @@ export const Rightoverlay = styled.div<OverlayProps>`
   z-index: ${(props) => (props.overlay ? "0" : "1")};
   transform: ${(props) =>
     props.overlay ? "translateX(50%)" : "translateX(-50%)"};
+      box-shadow: ${(props) => (props.overlay ? "5px 5px 3px gray" : "0px 5px 3px gray")};
+
 `;
 export const Leftoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
+  min-width: 360px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -91,7 +100,9 @@ export const Leftoverlay = styled.div<OverlayProps>`
   position: absolute;
   z-index: ${(props) => (props.overlay ? "1" : "0")};
   transform: ${(props) =>
-    props.overlay ? "translateX(50%)" : "translateX(-50%)"};
+    props.overlay ? "translateX(50%)" : "translateX(-50%)"};  
+      box-shadow: ${(props) => (props.overlay ? "5px 5px 3px gray" : "5px 5px 3px gray")};
+
 `;
 export const OauthBtn = styled.button<ButtonProps>`
   width: 50px;

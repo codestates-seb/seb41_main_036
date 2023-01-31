@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: "https://pikcha36.o-r.kr:8080",
+  // baseURL: "https://pikcha36.o-r.kr:8080",
   withCredentials: true,
 });
 
@@ -12,6 +12,7 @@ axios.interceptors.request.use(
     axios.defaults.headers.common["Authorization"] = accessToken;
     originalRequest.headers["Authorization"] = accessToken;
     return originalRequest;
+    
   },
   (error) => {
     console.log("request error", error);
@@ -36,6 +37,7 @@ axios.interceptors.response.use(
         headers: {
           Authorization : null
         },
+        withCredentials: true,
       }
       ) 
       console.log("리프데이터 : ", data);
