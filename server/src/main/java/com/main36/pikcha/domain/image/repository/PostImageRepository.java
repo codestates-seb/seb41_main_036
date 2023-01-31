@@ -8,8 +8,5 @@ import java.util.Optional;
 
 
 public interface PostImageRepository extends JpaRepository<PostImage, Long> {
-
-//    @Query(value = "select p from PostImage as p where p.Post")
-//    List<PostImage> findByPostId(long postId);
     Optional<PostImage> findByPostImageUrl(String url);
 }

@@ -26,22 +26,23 @@ public class Member extends Auditable {
 
     @Column(name = "oauth_id", updatable = false, unique = true)
     private String oauthId;
-    @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false, updatable = false, unique = true)
-    private String email;
 
     @Column(length = 30, nullable = false)
+    private String username;
+
+    @Column(length = 30, nullable = false, updatable = false, unique = true)
+    private String email;
+
+    @Column(length = 80, nullable = false)
     private String password;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(length = 15, name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String address;
 
-    @Column(name = "member_title")
+    @Column(length = 50, name = "member_title")
     private String memberTitle;
 
     @Column(name = "picture")

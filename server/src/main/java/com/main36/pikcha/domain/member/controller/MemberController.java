@@ -7,8 +7,6 @@ import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.mapper.MemberMapper;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.global.aop.LoginUser;
-import com.main36.pikcha.global.security.jwt.JwtGenerator;
-import com.main36.pikcha.global.security.jwt.JwtParser;
 import com.main36.pikcha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +28,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper mapper;
-    private final JwtGenerator jwtGenerator;
-    private final JwtParser jwtParser;
 
     @PostMapping("/signup")
     public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {

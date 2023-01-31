@@ -37,27 +37,6 @@ public class PostImageService {
         return postImageRepository.save(postImage);
     }
 
-    public PostImage updatePostImage(PostImage postImage){
-        PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());
-
-        Optional.ofNullable(postImage.getPostImageFileName())
-                .ifPresent(findPostImage::setPostImageFileName);
-        Optional.ofNullable(postImage.getPostImageUrl())
-                .ifPresent(findPostImage::setPostImageUrl);
-
-        return postImageRepository.save(findPostImage);
-    }
-
-    public void deletePostImages(List<PostImage> postImages){
-        for(PostImage postImage : postImages) {
-            PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());
-            String fileName = findPostImage.getPostImageFileName();
-            String filePath = dirName + "/" + fileName;
-            s3Service.delete(filePath);
-            postImageRepository.delete(findPostImage);
-        }
-    }
-
     public void deleteOnlyS3Images(List<PostImage> postImages){
         for(PostImage postImage : postImages) {
             PostImage findPostImage = findVerifiedPostImage(postImage.getPostImageId());

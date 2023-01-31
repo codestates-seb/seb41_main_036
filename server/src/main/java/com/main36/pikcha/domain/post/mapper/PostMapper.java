@@ -22,6 +22,7 @@ public interface PostMapper {
         }
 
         return PostResponseDto.Detail.builder()
+                .memberId(post.getMember().getMemberId())
                 .postId(post.getPostId())
                 .postTitle(post.getPostTitle())
                 .postContents(post.getPostContents())

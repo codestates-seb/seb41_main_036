@@ -6,10 +6,8 @@ import com.main36.pikcha.domain.comment.entity.Comment;
 import com.main36.pikcha.domain.comment.mapper.CommentMapper;
 import com.main36.pikcha.domain.comment.service.CommentService;
 import com.main36.pikcha.domain.member.entity.Member;
-import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.domain.post.service.PostService;
 import com.main36.pikcha.global.aop.LoginUser;
-import com.main36.pikcha.global.security.jwt.JwtParser;
 import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class CommentController {
-    private final JwtParser jwtParser;
-    private final MemberService memberService;
     private final CommentService commentService;
     private final PostService postService;
     private final CommentMapper mapper;

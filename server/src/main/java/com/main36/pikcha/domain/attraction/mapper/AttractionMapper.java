@@ -23,8 +23,6 @@ public interface AttractionMapper {
                 .fixedImage(attraction.getFixedImage())
                 .build();
     }
-
-
     List<AttractionMapsResponseDto> attractionsToAttractionMapsResponseDtos(List<Attraction> attractions);
 }
 
