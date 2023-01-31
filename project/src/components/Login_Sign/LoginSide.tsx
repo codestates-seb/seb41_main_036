@@ -11,7 +11,6 @@ import {
 } from "../../recoil/state";
 import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
-import Axios from "axios"
 
 const LoginSide = () => {
   const [overlays, setOverlays] = useRecoilState(setOverlay);
@@ -49,20 +48,20 @@ const LoginSide = () => {
       return;
     }
 
-    return axios.post(
-      process.env.REACT_APP_DB_HOST + "/login",
-      {
-        username: loginemail,
-        password: loginpassword,
-      },
-      {
-        withCredentials: true,
-      }
-    )
+    return axios
+      .post(
+        `/login`,
+        {
+          username: loginemail,
+          password: loginpassword,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         const { memberId, accessToken } = res.data.data;
         if (res.status === 200) {
-          console.log("로그인성공");
           setIslogin(true);
           setAuth(accessToken);
           setLoggedUser(loginemail);

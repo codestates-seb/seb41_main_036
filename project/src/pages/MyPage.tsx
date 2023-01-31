@@ -14,52 +14,53 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
+import Charts from "../components/Charts";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #f6f6f6b2;
 `;
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-l);
   display: flex;
 `;
 const MyPageUserInfo = styled.aside`
-  width: 20%;
+  width: 25%;
   height: 100%;
-
   > div:first-child {
     svg {
       cursor: pointer;
     }
   }
-
   form {
     display: flex;
     flex-direction: column;
     height: 70%;
     margin-top: 4em;
     margin-left: 2em;
-
     div:nth-child(2) {
       svg {
         cursor: pointer;
+        width: 20px;
       }
     }
     > img {
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
-
     div {
+      margin: 3px 0 3px 0;
+      color: var(--black-750);
       margin-bottom: 10px;
       font-size: var(--font-sm);
     }
@@ -70,7 +71,11 @@ const MyPageUserInfo = styled.aside`
       font-size: var(--font-xl);
       margin-bottom: 20px;
       svg {
+        color: #868686;
         margin-left: 10px;
+        :hover {
+          color: var(--purple-400);
+        }
       }
     }
     div:nth-child(3) {
@@ -81,31 +86,38 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(4) {
       display: flex;
       align-items: center;
-
       svg {
         margin-right: 5px;
         color: var(--purple-400);
       }
     }
-    button {
-      position: relative;
-      top: 13em;
+  }
+  input {
+    height: 30px;
+    border-radius: var(--br-m);
+    padding: 6px 7px;
+    margin-top: 5px;
+    border-color: var(--purple-400);
+    :focus {
+      outline-color: var(--purple-300);
+      box-shadow: 0 0 5px blue;
     }
+  }
+  button {
   }
 `;
 const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
   border-bottom-left-radius: var(--br-l);
   border-bottom-right-radius: var(--br-l);
+  border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
-
   > div {
     height: 100%;
     padding: 30px;
-
     > span {
       display: block;
       text-align: right;
@@ -120,13 +132,14 @@ const MyPageTabBarContainer = styled.nav`
   display: flex;
   width: 50%;
   height: 50px;
+  margin-left: 6.2%;
 `;
 
 const MyPageTabBarMenu = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 27%;
   height: 100%;
   border-top-left-radius: var(--br-l);
   border-top-right-radius: var(--br-l);
@@ -134,23 +147,31 @@ const MyPageTabBarMenu = styled.button`
   font-weight: var(--fw-bold);
   color: var(--black-700);
   border: none;
-  font-size: var(--font-base);
+  font-size: var(--font-sm);
   cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   svg {
     margin-right: 10px;
     color: var(--black-500);
   }
-
   &.onToggle {
     color: var(--purple-400);
     background-color: var(--purple-200);
-
     svg {
       color: var(--purple-400);
     }
   }
 `;
 
+const EditSubmitButton = styled.button`
+  width: 50px;
+  height: 25px;
+  border: none;
+  background-color: var(--purple-300);
+  border-radius: var(--br-m);
+  margin-top: 10px;
+  color: white;
+`;
 interface UserType {
   memberId: number;
   username: string;
@@ -223,7 +244,7 @@ const MyPage = () => {
 
   const getUserProfile = async () => {
     await axios
-      .get(process.env.REACT_APP_DB_HOST + `/users/profile/${memberId}`)
+      .get(`/users/profile/${memberId}`)
       .then((res) => {
         setUserData(res.data.data);
         const { data } = res.data;
@@ -251,34 +272,33 @@ const MyPage = () => {
   const editInfoSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .patch(process.env.REACT_APP_DB_HOST + `/users/edit/${memberId}`, {
+      .patch(`/users/edit/${memberId}`, {
         username: username,
         phoneNumber: phoneNumber,
         address: address,
       })
       .then((res) => {
-        console.log(res);
-        setIsEdit(false);
+        if (res.status === 200) setIsEdit(false);
       })
       .catch((err) => console.error(err));
   };
-
   const deleteUser = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
       axios
         .delete(`/users/delete/${memberId}`)
         .then((res) => {
-          console.log(res);
-          setIsLogin(false);
-          setAuth("");
-          setLoggedUser("");
-          axios.defaults.headers.common["Authorization"] = null;
-          localStorage.removeItem("Authorization");
-          localStorage.setItem("loginStatus", "false");
-          localStorage.removeItem("memberId");
-          alert("탈퇴가 완료되었습니다.");
-          naviate(`/`);
+          if (res.status === 200) {
+            setIsLogin(false);
+            setAuth("");
+            setLoggedUser("");
+            axios.defaults.headers.common["Authorization"] = null;
+            localStorage.removeItem("Authorization");
+            localStorage.setItem("loginStatus", "false");
+            localStorage.removeItem("memberId");
+            alert("탈퇴가 완료되었습니다.");
+            naviate(`/`);
+          }
         })
         .catch((err) => console.error(err));
     }
@@ -291,7 +311,12 @@ const MyPage = () => {
           <span>나의 방문 기록</span>
         </>
       ),
-      content: "",
+      content: (
+        <div>
+          <div>님의 방문기록 입니다.</div>
+        {/* <Charts userData={userData}></Charts> */}
+        </div>
+      ),
     },
     {
       title: (
@@ -364,6 +389,7 @@ const MyPage = () => {
                       name="username"
                       type="text"
                       defaultValue={userData.username}
+                      placeholder="이름"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
@@ -380,6 +406,7 @@ const MyPage = () => {
                       name="address"
                       type="text"
                       value={address}
+                      placeholder="주소"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
@@ -395,23 +422,27 @@ const MyPage = () => {
                       name="phoneNumber"
                       type="text"
                       value={phoneNumber}
+                      placeholder="전화번호"
                       onChange={(e) => onChange(e)}
                     />
                   ) : (
                     <>{userData.phoneNumber}</>
                   )}
-                  {isEdit ? (
-                    <button onClick={(e) => editInfoSubmit(e)}>완료</button>
-                  ) : null}
                 </div>
-                <Button
-                  type="violet"
-                  width="100px"
-                  height="40px"
-                  text="회원 탈퇴"
-                  onClick={deleteUser}
-                />
+                {isEdit ? (
+                  <EditSubmitButton onClick={(e) => editInfoSubmit(e)}>
+                    완료
+                  </EditSubmitButton>
+                ) : null}
               </form>
+              <Button
+                type="violet"
+                width="100px"
+                height="40px"
+                text="회원 탈퇴"
+                onClick={deleteUser}
+                margin="10px 2em"
+              />
             </MyPageUserInfo>
             <MyPageMainContainer>
               <div>{tabMenuBarList[tab].content}</div>
@@ -428,38 +459,34 @@ const MyPageCardContainer = styled.div`
   align-items: center;
   padding: 5px 10px;
   margin-bottom: 5px;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: var(--br-m);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
-    0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
-  height: 13%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 10%;
   cursor: pointer;
   h3 {
-    width: 70%;
+    font-size: 15px;
+    width: 75%;
   }
-
   div {
-    width: 80px;
+    width: 85px;
     height: 100%;
     font-size: var(--font-sm);
-
     span:first-child {
       margin-right: 6px;
     }
   }
-
   img {
     min-width: 100px;
     height: 100%;
-    border-radius: var(--br-m);
+    border-radius: var(--br-s);
   }
-
   span {
-    display: flex;
-    align-items: center;
-    font-weight: var(--fw-bold);
-    width: 40px;
-    padding-top: 10px;
+    background-color: #fcfcd0;
+    flex-direction: row;
+    width: 130px;
+    line-height: 50px;
+    margin-right: 10px;
   }
 `;
 

@@ -5,29 +5,32 @@ import styled from "styled-components";
 import LocationFilter from "../components/LocationFilter";
 import { Header } from "../components/Header";
 import axios from "../utils/axiosinstance";
-import PlaceCardComponent from "../components/PlaceCardComponent";
-import Loading from "../components/Loading";
+import PlaceCard from "../components/PlaceCard";
 import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../recoil/state";
 
 const PlaceWrapper = styled.div`
   display: flex;
   max-width: 1280px;
   width: 83.5%;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 70px;
 `;
 
 const LocationWrapper = styled.nav`
   min-width: 190px;
   max-height: 850px;
   border-radius: var(--br-m);
+  border: 1px solid var(--black-200);
   overflow: hidden;
   margin-top: 10px;
-  background-color: white;
-  border: 1px solid var(--black-275);
+  background-color: transparent;
+  margin-bottom: 20px;
   overflow-y: auto;
   height: 100%;
+  background-color: var(--black-200);
 `;
 
 const PlaceContainer = styled.div`
@@ -77,6 +80,8 @@ export interface PlaceType {
   likes: number;
   numOfPosts: number;
   saves: number;
+  isSaved: boolean;
+  isVoted: boolean;
 }
 
 export interface PageInfoType {
@@ -107,86 +112,70 @@ const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();
   const [checkedList, setCheckedlist] = useState<string[]>([]);
   const [sortClick, setSortClick] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
   const [curPage, setCurPage] = useState(1);
   const [sort, setSort] = useState("newest");
   const { search } = useLocation();
   const totalInfoRef = useRef<PageInfoType | null>(null);
 
+  const [isLogin] = useRecoilState(LoginState);
+  const memberId = localStorage.getItem("memberId");
+
   const searchValue = useMemo(
     () => new URLSearchParams(search).get("keyword"),
     [search]
   );
+
+  const url1 = `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+
   useEffect(() => {
     setCurPage(1);
   }, [checkedList]);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    if (searchValue && !isLoading) {
+    const search_url = isLogin ? url1_loggedIn : url1;
+    const url = isLogin ? url2_loggedIn : url2;
+    if (searchValue) {
       axios
-        .post(
-          `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-          { provinces: checkedList }
-        )
+        .post(search_url, { provinces: checkedList })
         .then((res) => {
-          setIsLoading(false);
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
-    } else if (!isLoading) {
+    } else {
       axios
-        .post(
-          `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`,
-          {
-            provinces: checkedList,
-          }
-        )
+        .post(url, {
+          provinces: checkedList,
+        })
         .then((res) => {
-          setIsLoading(false);
           setPlacesData(res.data.data);
-          console.log(res);
           totalInfoRef.current = res.data.pageInfo;
         })
         .catch((err) => console.error(err));
       return;
     }
-  }, [searchValue, curPage, checkedList]);
+  }, [searchValue, curPage, checkedList, sort]);
 
-  const handleSort = (idx: number) => {
+  const handleSortClick = (idx: number, sort: string) => {
     setOnFliter(idx);
-  };
-
-  const handleSortPlace = (sort: string) => {
     setSort(sort);
-    const URL = searchValue
-      ? `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
-      : `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
-
-    axios
-      .post(URL, {
-        provinces: checkedList,
-      })
-      .then((res) => {
-        setPlacesData(res.data.data);
-        setSortClick(!sortClick);
-      })
-      .catch((err) => console.error(err));
   };
 
   return (
     <>
-      <Header headerColor="var(--black-200)">
-        <Header.HeaderTop />
-        <Header.HeaderBody
-          defaultValue={searchValue ? searchValue : undefined}
-          selectedMenu={0}
-        />
-      </Header>
+      <div style={{ display: "fixed" }}>
+        <Header headerColor="var(--black-200)">
+          <Header.HeaderTop />
+          <Header.HeaderBody
+            defaultValue={searchValue ? searchValue : undefined}
+            selectedMenu={0}
+          />
+        </Header>
+      </div>
       <PlaceWrapper>
         <LocationWrapper>
           {placesData && (
@@ -215,8 +204,7 @@ const Place = () => {
                   className={onFilter === idx ? "active" : ""}
                   key={idx}
                   onClick={() => {
-                    handleSort(idx);
-                    handleSortPlace(sort.eng);
+                    handleSortClick(idx, sort.eng);
                   }}
                 >
                   {sort.kor}
@@ -224,17 +212,16 @@ const Place = () => {
               ))}
             </div>
           </PlaceFilterContainer>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <PlaceBox>
-                {placesData && (
-                  <PlaceCardComponent placesData={placesData} width="32%" />
-                )}
-              </PlaceBox>
-            </>
-          )}
+          <PlaceBox>
+            {placesData &&
+              placesData.map((placeInfo) => (
+                <PlaceCard
+                  key={placeInfo.attractionId}
+                  placeInfo={placeInfo}
+                  width="32%"
+                />
+              ))}
+          </PlaceBox>
           {placesData && (
             <Pagination
               props={totalInfoRef.current as PageInfoType}

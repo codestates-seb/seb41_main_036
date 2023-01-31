@@ -1,21 +1,17 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
 import { MdEditNote as NoteIcon } from "react-icons/md";
 import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
-//import PaginationComponent from "../components/PaginationComponent";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
-import axios from "axios";
-import Axios from "../utils/axiosinstance";
+import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCardComponent";
 import { ArrayPostType } from "./Post";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import Footer from "../components/Footer";
-
-import { LoginState, AuthToken, LoggedUser } from "../recoil/state";
+import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
@@ -241,7 +237,6 @@ const FixBoxVertical = styled.div<{ inverted: boolean }>`
     .heart-icon {
       height: 19px;
       width: 19px;
-
       :hover {
         fill: var(--pink-heart);
         transform: scale(1.1);
@@ -283,7 +278,10 @@ const Notification = styled.div`
     margin-bottom: 53px;
   }
 `;
-
+const PostWrapper = styled.div`
+  width: 100%;
+  background-color: #f8f9fa;
+`;
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -299,32 +297,22 @@ type PlaceData = {
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
-  //const [shareOpen, setShareOpen] = useState(false);
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
 
   const [bookmarkSaves, setBookmarkSaves] = useState(false); //로컬 북마트 상태 저장
   const [likes, setLikes] = useState(false);
-
   const [isLogin] = useRecoilState(LoginState);
-
   const [curPage, setCurPage] = useState(1);
-
-  const [auth, setAuth] = useRecoilState(AuthToken);
-  const [loggedUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
-
   const { id } = useParams();
-
-  const url = `http://pikcha36.o-r.kr:8090/attractions/${id}`;
-  const url2 = `http://pikcha36.o-r.kr:8090/attractions/${id}/${memberId}`;
-  const url3 = `http://pikcha36.o-r.kr:8090/posts/${id}?page=${curPage}&size=8`;
-  const url4 = `http://pikcha36.o-r.kr:8090/posts/${id}/${memberId}?page=${curPage}&size=8`;
-
+  const url = `/attractions/${id}`;
+  const url2 = `/attractions/${id}/${memberId}`;
+  const url3 = `/posts/${id}?page=${curPage}&size=8`;
+  const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
   const URL_FOR_SAVES = `/attractions/saves/${id}`;
   const URL_FOR_LIKES = `/attractions/likes/${id}`;
   const ATTRACTIONS_URL = isLogin ? url2 : url;
@@ -332,7 +320,7 @@ const PlaceDetail = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    Axios.get(ATTRACTIONS_URL).then((res) => {
+    axios.get(ATTRACTIONS_URL).then((res) => {
       setAttractionData(res.data.data);
       setLikes(res.data.data.isVoted);
       setBookmarkSaves(res.data.data.isSaved);
@@ -367,7 +355,7 @@ const PlaceDetail = (): JSX.Element => {
 
   const handleView = (setting: string) => {
     setView(setting);
-    if (view === "info") {
+    if (view === "info" && setting === "post") {
       scrollRefContent?.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -380,7 +368,7 @@ const PlaceDetail = (): JSX.Element => {
       await navigator.clipboard.writeText(text);
       alert("url이 성공적으로 복사되었습니다.");
     } catch (err) {
-      console.log("복사 실패");
+      console.error(err);
     }
   };
 
@@ -389,9 +377,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_SAVES).then((res) => {
+    axios.post(URL_FOR_SAVES).then((res) => {
       setBookmarkSaves(res.data.data.isSaved);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -400,9 +387,8 @@ const PlaceDetail = (): JSX.Element => {
       setIsModalVisible(true);
       return;
     }
-    Axios.post(URL_FOR_LIKES).then((res) => {
+    axios.post(URL_FOR_LIKES).then((res) => {
       setLikes(res.data.data.isVoted);
-      console.log(res.data.data, "요청확인!!!!!!!");
     });
   };
 
@@ -413,21 +399,13 @@ const PlaceDetail = (): JSX.Element => {
     }
     navigate(`/write/${id}`);
   };
-  console.log(
-    attractionData,
-    "데이터값 확인",
-    Number(bookmarkSaves),
-    bookmarkSaves,
-    isLogin,
-    postData
-  );
 
   return (
     <>
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <FixedOnScrollUpHeader />
       <GlobalStyle />
-      {attractionData !== undefined ? (
+      {attractionData && (
         <>
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
@@ -516,36 +494,36 @@ const PlaceDetail = (): JSX.Element => {
               ></KakaoMap>
             </LocationInfoContainer>
           </Container>
-          <Post ref={scrollRefContent}>
-            <PostHeader>
-              <h2>포스트</h2>
-              <button onClick={handlePostButtonClick}>포스트 작성</button>
-            </PostHeader>
-            <PostCardListWrapper>
-              {postData?.length ? (
-                <PostCardComponent
-                  posts={postData}
-                  margin="0%"
-                  width="24%"
-                ></PostCardComponent>
-              ) : (
-                <Notification>
-                  <NoSearchResultIcon />
-                  <h3>해당 명소에 등록된 포스트가 없습니다</h3>
-                  <p>첫번째 포스트를 남겨주세요</p>
-                </Notification>
+          <PostWrapper>
+            <Post ref={scrollRefContent}>
+              <PostHeader>
+                <h2>포스트</h2>
+                <button onClick={handlePostButtonClick}>포스트 작성</button>
+              </PostHeader>
+              <PostCardListWrapper>
+                {postData?.length ? (
+                  <PostCardComponent
+                    posts={postData}
+                    margin="0%"
+                    width="24%"
+                  ></PostCardComponent>
+                ) : (
+                  <Notification>
+                    <NoSearchResultIcon />
+                    <h3>해당 명소에 등록된 포스트가 없습니다</h3>
+                    <p>첫번째 포스트를 남겨주세요</p>
+                  </Notification>
+                )}
+              </PostCardListWrapper>
+              {!!postData?.length && (
+                <Pagination
+                  props={totalInfoRef.current as PageInfoType}
+                  setCurPage={setCurPage}
+                />
               )}
-            </PostCardListWrapper>
-            {!!postData?.length && (
-              <Pagination
-                props={totalInfoRef.current as PageInfoType}
-                setCurPage={setCurPage}
-              />
-            )}
-          </Post>
+            </Post>
+          </PostWrapper>
         </>
-      ) : (
-        <div>Loading ... </div>
       )}
       <Footer />
     </>
@@ -553,6 +531,3 @@ const PlaceDetail = (): JSX.Element => {
 };
 
 export default PlaceDetail;
-//현재 개수, 이전에 누른 상태였는지, 지금 상태는 뭔지
-//포스트 작성 연결하기, 페이지네이션 컴포넌트 데려와서 완성하기,
-//포스트 하트 데려와서 눌렀는지 연결시키기=> 포스트 컴포넌트에서 처리한다

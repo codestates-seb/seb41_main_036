@@ -24,7 +24,7 @@ const OverlayRight = () => {
         onClick={() => navigate("/")}
       />
       <r.CustomPadding padding="70px 0px 0px 0px"></r.CustomPadding>
-      <r.TextStyle color="white" fontSize="20px" fontweight="normal">
+      <r.TextStyle color="white" fontSize="20px" fontweight="bold">
         사진찍기 가장 좋은 장소는 어디일까요?
       </r.TextStyle>
       <r.CustomPadding padding="30px 0px 0px 0px"></r.CustomPadding>

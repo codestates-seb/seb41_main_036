@@ -504,5 +504,25 @@ const AttractionsData: Array<AttractionsProps> = [
     id: 100,
     address: "중랑구 송림길 160",
   },
+  {
+    name: "광진교 8번가",
+    id: 101,
+    address: "강동구 구천면로 77",
+  },
+  {
+    name: "암사동 선사주거지",
+    id: 102,
+    address: "강동구 올림픽로 875",
+  },
+  {
+    name: "강동리본센터",
+    id: 103,
+    address: "강동구 양재대로81길 73",
+  },
+  {
+    name: "청계천",
+    id: 104,
+    address: "종로구 서린동 148",
+  },
 ];
 export { AttractionsData };

@@ -26,6 +26,7 @@ export const Wrapper = styled.section`
   border-radius: 30px;
 `;
 export const Signincontainer = styled.div<OverlayProps>`
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   width: 30%;
   height: 70%;
   min-width: 360px;
@@ -105,15 +106,15 @@ export const Leftoverlay = styled.div<OverlayProps>`
 
 `;
 export const OauthBtn = styled.button<ButtonProps>`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 0px;
   background-color: ${(props) => props.backgroundcolor};
   border-radius: 30px;
   color: ${(props) => props.color};
   font-size: 20px;
   font-weight: bold;
-  margin: 10px 0px 10px 0px;
+  margin: 10px 0px 5px 0px;
   &:hover {
     background-color: ${(props) => props.hoverbackgroundcolor};
   }
@@ -123,7 +124,7 @@ export const InputStyle = styled.input`
   height: 40px;
   border: 0px;
   border-bottom: 1px solid var(--black-400);
-  padding-top: 10px;
+  padding-top: 15px;
   font-size: 15px;
   margin-bottom: 5px;
   &:focus {
@@ -172,7 +173,7 @@ export const CloseButton = styled.button`
 `;
 
 export const SocitalLoginContinaer = styled.div`
-  width: 120px;
+  width:100px;
   display: flex;
   justify-content: space-around;
 `;

@@ -16,13 +16,14 @@ import Footer from "../components/Footer";
 
 const DetailPostWrapper = styled.div`
   width: 83.5%;
-  margin: 0 auto;
+  margin: 30px auto;
 `;
 
 const PostMangeButtnContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 2em;
+  margin-top: 5em;
+  width: 85%;
 `;
 
 const PostManageButton = styled.button`
@@ -39,7 +40,8 @@ const PostManageButton = styled.button`
 `;
 
 const DetailPostTitle = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   padding-top: 20px;
@@ -51,12 +53,12 @@ const DetailPostTitle = styled.div`
 `;
 
 const DetailPostInfo = styled.div`
-  width: 100%;
+  width: 70%;
   display: flex;
+  margin: 2em auto;
   flex-direction: column;
   align-items: center;
-  margin-top: 2em;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
   div:first-child {
     display: flex;
     align-items: center;
@@ -84,23 +86,26 @@ const PostContentContainer = styled.article`
   margin: 0 auto;
 
   > div:nth-child(2) {
-    margin-top: 30px;
+    margin: 30px auto 0;
+    width: 70%;
   }
 `;
 
 const PostContentBox = styled.div`
   display: flex;
+  width: 70%;
+  margin: 0 auto;
   flex-direction: column;
   justify-content: center;
 
   img {
     width: 100%;
-    height: 600px;
+    height: 30%;
     margin: 0 auto;
     object-fit: scale-down;
   }
   div > div:last-child {
-    padding: 40px 60px;
+    padding: 0 30px;
   }
 `;
 const TagsButton = styled.button`
@@ -123,12 +128,14 @@ const TagsButton = styled.button`
 `;
 
 const PostContentBottom = styled.div`
+  width: 70%;
+  margin: 0 auto;
   height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5em 0;
-  border-bottom: 1px solid var(--black-600);
+  padding: 5em 0 3em 0;
+  border-bottom: 3px solid #9e95ec;
   > div > img {
     width: 30px;
     height: 30px;
@@ -138,7 +145,7 @@ const PostContentBottom = styled.div`
   > div:first-child {
     display: flex;
     align-items: center;
-    font-weight: var(--fw-bold);
+    font-size: 20px;
   }
   > div:last-child {
     width: 100px;
@@ -158,27 +165,33 @@ const PostContentBottom = styled.div`
   }
 `;
 
-const AddComment = styled.form`
-  margin-top: 20px;
-  width: 100%;
-  margin-bottom: 10em;
+const AddComment = styled.form<{ isLogin: boolean }>`
+  margin: 35px auto 50px;
+  width: 80%;
+  > h3 {
+    margin-left: 7%;
+  }
 
   > div {
-    margin-top: 20px;
+    width: 94%;
+    margin: 22px 30% 0 58px;
     display: flex;
+    //background-color: red;
   }
   > div > img {
     width: 40px;
     height: 40px;
     border-radius: var(--br-l);
-    margin-right: 10px;
+    margin: 0 14px 0 30px;
   }
   > div > textarea {
-    width: 95%;
+    border-color: #c6c6c6;
+    width: 90%;
     height: 150px;
     padding: 10px;
     border-radius: var(--br-m);
     resize: none;
+    margin-bottom: 30px;
   }
   button {
     position: relative;
@@ -201,6 +214,7 @@ export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
   attractionName: string;
+  memberId: number;
   comments: [
     {
       commentId: number;
@@ -259,15 +273,15 @@ const DetailPost = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (memberId) {
+    if (isLogin) {
       axios
-        .get(`/posts/details/${id}`)
+        .get(`/posts/details/${id}/${memberId}`)
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
     } else {
       axios
-        .get(`/posts/details/${id}/${memberId}`)
+        .get(`/posts/details/${id}`)
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
@@ -280,9 +294,10 @@ const DetailPost = () => {
         commentContent: comment,
       })
       .then((res) => {
-        console.log(res);
-        setComment("");
-        window.location.reload();
+        if (res.status === 201) {
+          setComment("");
+          window.location.reload();
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -300,9 +315,10 @@ const DetailPost = () => {
       axios
         .delete(`/posts/delete/${id}`)
         .then((res) => {
-          alert("삭제가 완료되었습니다.");
-          console.log(res);
-          navigate(-1);
+          if (res.status === 204) {
+            alert("삭제가 완료되었습니다.");
+            navigate(-1);
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -311,7 +327,9 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-
+  console.log(memberId);
+  console.log(post);
+  console.log(postComments);
   return (
     <>
       <Header>
@@ -320,7 +338,7 @@ const DetailPost = () => {
       </Header>
       <DetailPostWrapper>
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
-        {(post && post.postId === memberId) || memberId === 1 ? (
+        {(post && post.memberId === memberId) || memberId === 1 ? (
           <PostMangeButtnContainer>
             <PostManageButton onClick={() => navigate(`/edit/${id}`)}>
               <MdModeEdit /> 수정
@@ -351,8 +369,8 @@ const DetailPost = () => {
         </DetailPostInfo>
         <PostContentContainer>
           <PostContentBox>
-            {data.map((post) => (
-              <div key={post.imageId}>
+            {data.map((post, idx) => (
+              <div key={idx}>
                 <div>
                   <img src={post.imageURL} alt="picture" />
                 </div>
@@ -371,7 +389,7 @@ const DetailPost = () => {
           <PostContentBottom>
             <div>
               <img alt="userImg" src={post?.picture} />
-              {post?.username}님의 포스트
+              <strong>{post?.username}</strong>님의 포스트
             </div>
             <div>
               <div>
@@ -399,22 +417,27 @@ const DetailPost = () => {
             <PostComment key={idx} comment={comment} />
           ))
         )}
-        <AddComment>
+        <AddComment isLogin={isLogin}>
           <h3>댓글 남기기</h3>
           <div>
             <img src={post?.picture} alt="userImg" />
             <textarea
+              placeholder="댓글을 남겨주세요!"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               onClick={handleCommentWrite}
             />
-            <Button
-              type="violet"
-              width="80px"
-              height="35px"
-              text="등록"
-              onClick={(e) => handleCommentSubmit(e)}
-            />
+            {isLogin ? (
+              <Button
+                type="violet"
+                width="80px"
+                height="35px"
+                text="등록"
+                onClick={(e) => handleCommentSubmit(e)}
+              />
+            ) : (
+              <Button type="gray" width="80px" height="35px" text="등록" />
+            )}
           </div>
         </AddComment>
       </DetailPostWrapper>

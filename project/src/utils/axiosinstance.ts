@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  // baseURL: "https://pikcha36.o-r.kr:8080",
+  baseURL: "https://pikcha36.o-r.kr:8080",
   withCredentials: true,
 });
 
@@ -15,7 +15,6 @@ axios.interceptors.request.use(
     
   },
   (error) => {
-    console.log("request error", error);
     return Promise.reject(error);
   }
 );
@@ -33,16 +32,14 @@ axios.interceptors.response.use(
       const originalRequest = config;
       axios.defaults.headers.common["Authorization"] = null;
       const memberId = localStorage.getItem("memberId");
-      const { data } = await Axios.get(`/token/refresh/${memberId}`,{
+      const { data } = await Axios.get(`/token/refresh/${memberId}`, {
         headers: {
-          Authorization : null
+          Authorization: null,
         },
-        withCredentials: true,
       }
       ) 
       console.log("리프데이터 : ", data);
       const accessToken = data.data.accessToken;
-      console.log("어쏘 : ", accessToken);
       localStorage.setItem("Authorization", `${accessToken}`);
       originalRequest.headers.Authorization = accessToken;
       axios.defaults.headers.common["Authorization"] = accessToken;
@@ -53,15 +50,12 @@ axios.interceptors.response.use(
       const originalRequest = config;
       axios.defaults.headers.common["Authorization"] = null;
       const memberId = localStorage.getItem("memberId");
-      const { data } = await Axios.get(`/token/refresh/${memberId}`,{
+      const { data } = await Axios.get(`/token/refresh/${memberId}`, {
         headers: {
-          Authorization : null
+          Authorization: null,
         },
-      }
-      ) 
-      console.log("리프데이터 : ", data);
+      });
       const accessToken = data.data.accessToken;
-      console.log("어쏘 : ", accessToken);
       localStorage.setItem("Authorization", `${accessToken}`);
       originalRequest.headers.Authorization = accessToken;
       axios.defaults.headers.common["Authorization"] = accessToken;
@@ -85,7 +79,6 @@ axios.interceptors.response.use(
     //   // alert("로그인 시간 만료.")
     //   // window.location.replace("/login")
     // }
-    console.log("response error", error);
     return Promise.reject(error);
   }
 );

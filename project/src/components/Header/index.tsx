@@ -9,17 +9,14 @@ import {
   SearchBarWrapper,
   Profile,
 } from "./style";
-// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
-// import logo from "../../../data/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
-
+import Logo from "../../data/Logo.png";
 const SearchBar = lazy(() => import("./SearchBar"));
-// import { ReactComponent as Logo } from "./../../data/Templogo.svg";
 
 const IMG_SRC =
   "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g";
@@ -114,11 +111,10 @@ const HeaderBodyBar = ({
           style={{ height: "70px", display: "flex", alignItems: "center" }}
         >
           <img
-            src={process.env.PUBLIC_URL + "/logo.png"}
+            src={Logo}
             alt="logo"
             style={{
-              width: "180px",
-              height: "30px",
+              width: "100px",
               backgroundSize: "cover",
             }}
           />

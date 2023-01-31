@@ -6,7 +6,8 @@ import { MemberId } from "../recoil/state";
 import axios from "../utils/axiosinstance";
 
 const PostCommentContainer = styled.div`
-  margin-top: 20px;
+width: 70%;
+margin: 20px auto;
   > div {
     display: flex;
     justify-content: space-between;
@@ -23,9 +24,12 @@ const PostCommentContainer = styled.div`
   > div > div:first-child > div {
     display: flex;
     flex-direction: column;
+    font-weight: bold;
   }
   > div > div:first-child > div > span {
     font-size: var(--font-xxs);
+    font-weight: 200;
+    margin-top: 4px;
   }
   > div > div:last-child {
     display: flex;
@@ -82,9 +86,10 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
       axios
         .delete(`/comments/delete/${commentId}`)
         .then((res) => {
-          alert("삭제가 완료되었습니다.");
-          console.log(res.data);
-          window.location.reload();
+          if (res.status === 204) {
+            alert("삭제가 완료되었습니다.");
+            window.location.reload();
+          }
         })
         .catch((err) => console.error(err));
     }
@@ -96,8 +101,10 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
         commentContent: commentContent,
       })
       .then((res) => {
-        console.log(res);
-        setIsEdit(!isEdit);
+        if (res.status === 200) {
+          setIsEdit(!isEdit);
+          window.location.reload();
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -109,7 +116,8 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
             <img alt="userImg" src={comment.memberPicture} />
             <div>
               {comment.username}
-              <span>{comment.createdAt}</span>
+              <span>
+                {comment.createdAt.slice(0,4)}년 {comment.createdAt.slice(5,7)}월 {comment.createdAt.slice(8,10)}일 / {comment.createdAt.slice(11,19)}에 작성</span>
             </div>
           </div>
           {memberId === comment.memberId || memberId === 1 ? (
