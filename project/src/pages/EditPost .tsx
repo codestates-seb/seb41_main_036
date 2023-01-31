@@ -35,8 +35,8 @@ const Container = styled.div`
     border: none;
     outline: none;
     font-size: 25px;
-    color: var(--black-200);
     font-weight: var(--fw-bold);
+
     &:focus {
       border-color: transparent;
     }
@@ -281,30 +281,29 @@ const EditPost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (title === "") alert("제목을 입력해주세요");
-    if (title) {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+    } else if (imgFiles.length === 0) alert("이미지를 등록해주세요.");
+    else {
       const formData = new FormData();
       formData.append("postTitle", title);
       tags.forEach((tag) => {
         formData.append("postHashTags", tag);
       });
-      removeImgUrl.forEach((removeImg) => {
-        formData.append("deleteUrls", removeImg);
-      });
-      addImgUrl.forEach((addImg) => {
-        formData.append("postImageFiles", addImg);
+      imgFiles.forEach((img) => {
+        formData.append("postImageFiles", img);
       });
       content.forEach((text) => {
         formData.append("postContents", text);
       });
       axios
-        .patch(`/posts/edit/${id}`, formData, {
+        .post(`/posts/register/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
-          if (res.status === 200) navigate(`/posts`);
+          navigate(`/posts/detail/${res.data.data.postId}`);
         })
         .catch((err) => console.error(err));
     }
@@ -385,7 +384,7 @@ const EditPost = () => {
               onClick={(e) => handleSubmit(e)}
               width="100px"
               height="40px"
-              text="포스트 등록"
+              text="수정 완료"
             />
           </div>
           {previewList &&
