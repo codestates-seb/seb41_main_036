@@ -22,12 +22,11 @@ const MyPageWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: #f6f6f6b2;
-  padding-top: 40px;
 `;
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: var(--br-l);
