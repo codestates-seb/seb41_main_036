@@ -60,10 +60,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         TokenDto tokenDto = jwtGenerator.generateTokenDto(authMember);
         String accessToken = tokenDto.getAccessToken(); // accessToken 만들기
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
-
+        log.info("=========successfulAuth {}========", refreshToken);
         content(response);
 
-        CookieUtils.setCookieInHeader(response, refreshToken);
+        cookieUtils.setCookieInHeader(response, refreshToken);
 
         // 응답 바디 설정
         Gson gson = new Gson();
