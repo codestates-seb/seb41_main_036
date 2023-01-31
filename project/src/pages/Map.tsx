@@ -342,7 +342,6 @@ const Map = () => {
 
   useEffect(() => {
 
-    // 전체 데이터를 받아와서 반영 
     axios.get(ATTRACTIONS_URL)
     .then((res)=>{
       setIsVoted(res.data.data.isVoted)
