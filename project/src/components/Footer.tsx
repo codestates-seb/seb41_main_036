@@ -4,10 +4,16 @@ import {
   FooterImage,
   FooterText,
   FooterWrapper,
+  FooterBottomText,
   LogoContainer,
   MadePeopleContainer,
+  FooterBottomContainer,
+  LinkIconContainer,
+  LinkWrapper,
 } from "./FooterStyled";
-
+import { BsGithub as GithubIcon } from "react-icons/bs";
+import { CgFigma as FigmaIcon } from "react-icons/cg";
+import Logo from "../data/Logo.png";
 const Footer = () => {
   const navigate = useNavigate();
 
@@ -15,56 +21,48 @@ const Footer = () => {
     <FooterWrapper>
       <FooterContainer>
         <LogoContainer>
-          <FooterImage
-            src={process.env.PUBLIC_URL + "/logo2.jpg"}
+          <img
+            src={Logo}
             alt="logo"
-            width="50px"
-            height="50px"
-            onClick={() => navigate(`/`)}
+            style={{
+              width: "100px",
+              backgroundSize: "cover",
+            }}
+            onClick={() => navigate("/")}
           />
-          <FooterText
-            fontSize="var(--font-xxl)"
-            marginLeft="15px"
-            cursor="pointer"
-            hoverColor="var(--black-600)"
-          >
-            pikcha
-          </FooterText>
         </LogoContainer>
+
         <MadePeopleContainer>
-          <FooterImage
-            src={process.env.PUBLIC_URL + "/logo-git.png"}
-            width="30px"
-            height="30px"
-            onClick={() =>
-              navigate(`/https://github.com/codestates-seb/seb41_main_036`)
-            }
-          />
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            김진주
-          </FooterText>
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            박혜수
-          </FooterText>
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            이동우
-          </FooterText>
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            이상유
-          </FooterText>
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            이승현
-          </FooterText>
-          <FooterText fontSize="var(--font-base)" marginLeft="20px">
-            정세민
-          </FooterText>
+          <FooterText marginRight="10px">김진주 |</FooterText>
+          <FooterText marginRight="10px">박혜수 |</FooterText>
+          <FooterText marginRight="10px">이동우 |</FooterText>
+          <FooterText marginRight="10px">이상유 |</FooterText>
+          <FooterText marginRight="10px">이승현 |</FooterText>
+          <FooterText marginRight="10px">정세민</FooterText>
         </MadePeopleContainer>
+        <LinkWrapper>
+          <LinkIconContainer
+            href="https://github.com/codestates-seb/seb41_main_036"
+            className="github-icon"
+          >
+            <GithubIcon />
+          </LinkIconContainer>
+          <LinkIconContainer
+            href="https://www.figma.com/file/iFs2WMfNlUTOA6ILnCljk3/main-project?node-id=0%3A1&t=FKufgjpDJAMZQ80B-1"
+            className="figma-icon"
+          >
+            <FigmaIcon />
+          </LinkIconContainer>
+        </LinkWrapper>
         <hr />
-        <MadePeopleContainer>
-          <FooterText fontSize="var(--font-sm)">
-            Copyright 2023. SEB41_036 All rights reserved.
-          </FooterText>
-        </MadePeopleContainer>
+        <FooterBottomContainer>
+          <FooterBottomText>
+            &copy; Copyright 2023. SEB41_036 All rights reserved.
+          </FooterBottomText>
+          <FooterBottomText>이용약관</FooterBottomText>
+          <FooterBottomText>개인정보처리방침</FooterBottomText>
+          <FooterBottomText>제휴제안</FooterBottomText>
+        </FooterBottomContainer>
       </FooterContainer>
     </FooterWrapper>
   );

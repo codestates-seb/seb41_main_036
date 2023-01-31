@@ -37,65 +37,77 @@ const MyPosition = styled.div`
   margin: 45px 5px;
   text-align: center;
   line-height: 40px;
-  box-shadow: #101010a0 0px 3px 3px;
+  box-shadow: #101010a0 0px 3px 10px;
   color: white;
-  border-radius: 3px;
+  border-radius: var(--br-m);
   font-size: 14px;
   font-weight: 600;
   :hover {
     background-color: rgb(17, 90, 169);
     cursor: pointer;
   }
-`
+`;
 
-
-
-const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData ,filterOrPosition, setFilterOrPosition}:Map) =>{
-
+const KakaoMap = ({
+  width,
+  height,
+  dataList,
+  position,
+  left,
+  regionFilter,
+  component,
+  dataset,
+  modalData,
+  filterOrPosition,
+  setFilterOrPosition,
+}: Map) => {
   const container = useRef<any>();
 
   const options = {
-    center: new window.kakao.maps.LatLng(37.5575265973614,  127.175938009116), 
-    level:5 
+    center: new window.kakao.maps.LatLng(37.5575265973614, 127.175938009116),
+    level: 5,
   };
 
-  
+  const conditionPlace = (geocoder: any, map: any) => {
+    geocoder.addressSearch(dataList, function (result: any, status: any) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        var marker = new window.kakao.maps.Marker({
+          map: map,
+          position: coords,
+        });
+        map.setCenter(coords);
+      }
+    });
+  };
 
-  const conditionPlace = (geocoder:any, map:any) => {
-    geocoder.addressSearch(dataList, function(result:any, status:any) {
-      if (status === window.kakao.maps.services.Status.OK) {    
-         var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-         var marker = new window.kakao.maps.Marker({
-             map: map,
-             position: coords
-         });
-         map.setCenter(coords);
-     } 
-    });    
-  }
-
-  const conditionMap = (geocoder:any, map:any) => {
-    if(filterOrPosition === true){
+  const conditionMap = (geocoder: any, map: any) => {
+    if (filterOrPosition === true) {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var lat = position.coords.latitude, 
-              lon = position.coords.longitude; 
-            var locPosition = new window.kakao.maps.LatLng(lat, lon) 
-            map.setCenter(locPosition);
-            });
-          } 
-           
-        dataset.forEach(function(addr:any,index:number){
-          geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
-             if (status === window.kakao.maps.services.Status.OK) {
-                var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                var marker = new window.kakao.maps.Marker({
-                  map: map,
-                  position: coords,
-                });
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var lat = position.coords.latitude,
+            lon = position.coords.longitude;
+          var locPosition = new window.kakao.maps.LatLng(lat, lon);
+          map.setCenter(locPosition);
+        });
+      }
 
-                var infowindow = new window.kakao.maps.InfoWindow({
-                  content: `<div 
+      dataset.forEach(function (addr: any, index: number) {
+        geocoder.addressSearch(
+          addr.attractionAddress,
+          function (result: any, status: any) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              var coords = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x
+              );
+              var marker = new window.kakao.maps.Marker({
+                map: map,
+                position: coords,
+              });
+
+              var infowindow = new window.kakao.maps.InfoWindow({
+                content: `<div 
                     style="
                       width:180px;
                       height:110px;
@@ -133,27 +145,30 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                     더보기
                   </a>
                 </div>`,
-                  disableAutoPan: true,
-                });
+                disableAutoPan: true,
+              });
               infowindow.open(map, marker);
-            } 
-          });  
-        })
-      
-      }else {   
-        if(modalData){
-          geocoder.addressSearch(modalData.attractionAddress, function(result:any, status:any){
+            }
+          }
+        );
+      });
+    } else {
+      if (modalData) {
+        geocoder.addressSearch(
+          modalData.attractionAddress,
+          function (result: any, status: any) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              var placePosition = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x
+              );
+              var marker = new window.kakao.maps.Marker({
+                map: map,
+                position: placePosition,
+              });
 
-            if (status === window.kakao.maps.services.Status.OK){
-              var placePosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                var marker = new window.kakao.maps.Marker({
-                    map: map,
-                    position:  placePosition,
-                });
-
-                var infowindow = new window.kakao.maps.InfoWindow({
-                  content: 
-                    `<div 
+              var infowindow = new window.kakao.maps.InfoWindow({
+                content: `<div 
                       style="
                         width:180px;
                         height:110px;
@@ -191,36 +206,34 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
                       더보기
                     </a>
                   </div>`,
-                  disableAutoPan: false
-                });
-                
+                disableAutoPan: false,
+              });
+
               infowindow.open(map, marker);
               map.panTo(placePosition);
               map.relayout();
             }
-          })
-        }
+          }
+        );
       }
-  }
-
+    }
+  };
 
   useEffect(() => {
     const map = new window.kakao.maps.Map(container.current, options);
     var geocoder = new window.kakao.maps.services.Geocoder();
-    
-    if (component === 'map'){
-      conditionMap(geocoder,map)
+
+    if (component === "map") {
+      conditionMap(geocoder, map);
     }
 
-    if(component === 'place'){
-      conditionPlace(geocoder, map)
-    };
+    if (component === "place") {
+      conditionPlace(geocoder, map);
+    }
 
     var mapTypeControl = new window.kakao.maps.MapTypeControl();
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
-
-  },[filterOrPosition,dataset=== undefined, modalData])
-
+  }, [filterOrPosition, dataset === undefined, modalData]);
 
   return (
     <>
@@ -249,5 +262,3 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
   );
 };
 export default KakaoMap;
-
-

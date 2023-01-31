@@ -24,7 +24,6 @@ const Container = styled.div`
     border: none;
     outline: none;
     font-size: 25px;
-    color: var(--black-200);
     font-weight: var(--fw-bold);
     background-color: #fcfcfc;
     &:focus {

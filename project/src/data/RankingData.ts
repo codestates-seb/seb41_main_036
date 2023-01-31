@@ -2,7 +2,7 @@ const rankingData = [
   {
     id: 72,
     name: "N서울타워",
-    address: "용상구 남산공원길 105",
+    address: "용산구 남산공원길 105",
     currentRank: 1,
     rankOrder: 0,
   },

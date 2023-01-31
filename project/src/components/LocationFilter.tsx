@@ -11,7 +11,7 @@ const SelectContainer = styled.div`
   border-bottom: 1px solid var(--black-300);
   display: flex;
   flex-direction: column;
-  padding: 20px 20px 20px 21px;
+  padding: 20px 20px 18px 21px;
   background-color: transparent;
 
   > div {
@@ -74,6 +74,7 @@ const SelectBox = styled.div`
 
   label {
     color: var(--black-800);
+    letter-spacing: 0.05rem;
   }
 `;
 
@@ -86,6 +87,7 @@ const SelectPost = styled.ul`
     align-items: center;
     font-size: var(--font-sm);
     padding-top: 12px;
+    letter-spacing: 0.05rem;
   }
 
   > li > button {

@@ -40,15 +40,16 @@ const EmptyNotificationWrapper = styled.div`
     letter-spacing: 0.2rem;
   }
   a {
-    margin-top: 10px;
+    margin-top: 15px;
     background-color: var(--black-250);
     letter-spacing: 0.2rem;
     font-size: var(--font-xs);
-    padding: 7px 12px 7px 15px;
+    padding: 10px 15px 10px 18px;
     border-radius: 50px;
+    color: var(--black-700);
   }
 `;
-const EmptyNotification = () => {
+const NoAddress = () => {
   return (
     <Wrapper>
       <EmptyNotificationWrapper>
@@ -59,4 +60,4 @@ const EmptyNotification = () => {
     </Wrapper>
   );
 };
-export default EmptyNotification;
+export default NoAddress;

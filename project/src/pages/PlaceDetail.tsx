@@ -278,7 +278,10 @@ const Notification = styled.div`
     margin-bottom: 53px;
   }
 `;
-
+const PostWrapper = styled.div`
+  width: 100%;
+  background-color: #f8f9fa;
+`;
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -294,7 +297,6 @@ type PlaceData = {
 const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
-  //const [shareOpen, setShareOpen] = useState(false);
   const [fixBar, setFixBar] = useState(0);
   const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
@@ -492,33 +494,35 @@ const PlaceDetail = (): JSX.Element => {
               ></KakaoMap>
             </LocationInfoContainer>
           </Container>
-          <Post ref={scrollRefContent}>
-            <PostHeader>
-              <h2>포스트</h2>
-              <button onClick={handlePostButtonClick}>포스트 작성</button>
-            </PostHeader>
-            <PostCardListWrapper>
-              {postData?.length ? (
-                <PostCardComponent
-                  posts={postData}
-                  margin="0%"
-                  width="24%"
-                ></PostCardComponent>
-              ) : (
-                <Notification>
-                  <NoSearchResultIcon />
-                  <h3>해당 명소에 등록된 포스트가 없습니다</h3>
-                  <p>첫번째 포스트를 남겨주세요</p>
-                </Notification>
+          <PostWrapper>
+            <Post ref={scrollRefContent}>
+              <PostHeader>
+                <h2>포스트</h2>
+                <button onClick={handlePostButtonClick}>포스트 작성</button>
+              </PostHeader>
+              <PostCardListWrapper>
+                {postData?.length ? (
+                  <PostCardComponent
+                    posts={postData}
+                    margin="0%"
+                    width="24%"
+                  ></PostCardComponent>
+                ) : (
+                  <Notification>
+                    <NoSearchResultIcon />
+                    <h3>해당 명소에 등록된 포스트가 없습니다</h3>
+                    <p>첫번째 포스트를 남겨주세요</p>
+                  </Notification>
+                )}
+              </PostCardListWrapper>
+              {!!postData?.length && (
+                <Pagination
+                  props={totalInfoRef.current as PageInfoType}
+                  setCurPage={setCurPage}
+                />
               )}
-            </PostCardListWrapper>
-            {!!postData?.length && (
-              <Pagination
-                props={totalInfoRef.current as PageInfoType}
-                setCurPage={setCurPage}
-              />
-            )}
-          </Post>
+            </Post>
+          </PostWrapper>
         </>
       )}
       <Footer />
@@ -527,6 +531,3 @@ const PlaceDetail = (): JSX.Element => {
 };
 
 export default PlaceDetail;
-//현재 개수, 이전에 누른 상태였는지, 지금 상태는 뭔지
-//포스트 작성 연결하기, 페이지네이션 컴포넌트 데려와서 완성하기,
-//포스트 하트 데려와서 눌렀는지 연결시키기=> 포스트 컴포넌트에서 처리한다

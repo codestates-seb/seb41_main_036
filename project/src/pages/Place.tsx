@@ -16,19 +16,21 @@ const PlaceWrapper = styled.div`
   max-width: 1280px;
   width: 83.5%;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 70px;
 `;
 
 const LocationWrapper = styled.nav`
   min-width: 190px;
   max-height: 850px;
   border-radius: var(--br-m);
+  border: 1px solid var(--black-200);
   overflow: hidden;
   margin-top: 10px;
-  background-color: white;
-  border: 1px solid var(--black-275);
+  background-color: transparent;
+  margin-bottom: 20px;
   overflow-y: auto;
   height: 100%;
+  background-color: var(--black-200);
 `;
 
 const PlaceContainer = styled.div`
@@ -165,13 +167,15 @@ const Place = () => {
 
   return (
     <>
-      <Header headerColor="var(--black-200)">
-        <Header.HeaderTop />
-        <Header.HeaderBody
-          defaultValue={searchValue ? searchValue : undefined}
-          selectedMenu={0}
-        />
-      </Header>
+      <div style={{ display: "fixed" }}>
+        <Header headerColor="var(--black-200)">
+          <Header.HeaderTop />
+          <Header.HeaderBody
+            defaultValue={searchValue ? searchValue : undefined}
+            selectedMenu={0}
+          />
+        </Header>
+      </div>
       <PlaceWrapper>
         <LocationWrapper>
           {placesData && (

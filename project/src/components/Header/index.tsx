@@ -15,7 +15,7 @@ import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
 import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
-
+import Logo from "../../data/Logo.png";
 const SearchBar = lazy(() => import("./SearchBar"));
 
 const IMG_SRC =
@@ -111,11 +111,10 @@ const HeaderBodyBar = ({
           style={{ height: "70px", display: "flex", alignItems: "center" }}
         >
           <img
-            src={process.env.PUBLIC_URL + "/logo.png"}
+            src={Logo}
             alt="logo"
             style={{
-              width: "180px",
-              height: "30px",
+              width: "100px",
               backgroundSize: "cover",
             }}
           />
