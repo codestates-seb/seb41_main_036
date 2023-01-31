@@ -8,6 +8,7 @@ import com.main36.pikcha.domain.member.mapper.MemberMapper;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.response.DataResponseDto;
+import com.main36.pikcha.global.utils.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -28,6 +30,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper mapper;
+
+    private final CookieUtils cookieUtils;
 
     @PostMapping("/signup")
     public ResponseEntity<DataResponseDto<?>> postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
@@ -41,6 +45,12 @@ public class MemberController {
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberToSignUpResponseDto(createMember)),
                 HttpStatus.CREATED);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> test(HttpServletResponse response) {
+        cookieUtils.deleteCookie(response);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginUser
