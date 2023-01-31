@@ -593,6 +593,4 @@ const Modal = ({
   );
 };
 
-//태그
-
 export default EditPost;

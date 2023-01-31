@@ -176,7 +176,6 @@ const AddComment = styled.form<{ isLogin: boolean }>`
     width: 94%;
     margin: 22px 30% 0 58px;
     display: flex;
-    //background-color: red;
   }
   > div > img {
     width: 40px;
@@ -327,9 +326,7 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-  console.log(memberId);
-  console.log(post);
-  console.log(postComments);
+
   return (
     <>
       <Header>

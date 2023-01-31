@@ -47,7 +47,7 @@ const ViewsPostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  //border: 1px solid black;
+
   > p {
     cursor: pointer;
     font-weight: bold;
