@@ -30,6 +30,7 @@ export const Signincontainer = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
   min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
@@ -48,6 +49,7 @@ export const Logincontainer = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
   min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "30px 0px 0px 30px" : "0px 30px 30px 0px"};
   display: flex;
@@ -67,6 +69,7 @@ export const Rightoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
   min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;
@@ -88,6 +91,7 @@ export const Leftoverlay = styled.div<OverlayProps>`
   width: 30%;
   height: 70%;
   min-width: 360px;
+  min-height: 515px;
   border-radius: ${(props) =>
     props.overlay ? "0px 30px 30px 0px" : "30px 0px 0px 30px"};
   display: flex;

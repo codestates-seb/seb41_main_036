@@ -67,9 +67,5 @@
     "http-proxy-middleware": "^2.0.6",
     "styled-components": "^5.3.6"
   },
-<<<<<<< HEAD
   "proxy" : "https://pikcha36.o-r.kr:8080"
-=======
-  "proxy": "https://pikcha36.o-r.kr:8080"
->>>>>>> 21585d36e4cc0a9637515f006f795ec86757ad65
 }
