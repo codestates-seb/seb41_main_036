@@ -32,6 +32,7 @@ public class PostResponseDto {
     @Data
     @Builder
     public static class Detail {
+        private long memberId;
         private long postId;
         private String postTitle;
         private List<String> postContents;
