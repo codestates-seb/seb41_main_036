@@ -420,7 +420,12 @@ const DetailPost = () => {
         <AddComment isLogin={isLogin}>
           <h3>댓글 남기기</h3>
           <div>
-            <img src={post?.picture} alt="userImg" />
+            <img
+              src={
+                "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
+              }
+              alt="userImg"
+            />
             <textarea
               placeholder="댓글을 남겨주세요!"
               value={comment}
