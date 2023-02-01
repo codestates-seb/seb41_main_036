@@ -53,13 +53,12 @@ const MyPosition = styled.div`
 const KakaoMap = ({width, height, dataList, position, left, regionFilter, component, dataset, modalData ,filterOrPosition, setFilterOrPosition}:Map) =>{
 
   const container = useRef<any>();
+  const [myLocation, setMyLocation] = useState();
 
   const options = {
     center: new window.kakao.maps.LatLng(37.5575265973614,  127.175938009116), 
     level:5 
   };
-
-  
 
   const conditionPlace = (geocoder:any, map:any) => {
     geocoder.addressSearch(dataList, function(result:any, status:any) {
@@ -81,9 +80,12 @@ const KakaoMap = ({width, height, dataList, position, left, regionFilter, compon
           var lat = position.coords.latitude, 
               lon = position.coords.longitude; 
             var locPosition = new window.kakao.maps.LatLng(lat, lon) 
+            setMyLocation(locPosition);
+            console.log(myLocation)
             map.setCenter(locPosition);
             });
-          } 
+          }
+      
            
         dataset.forEach(function(addr:any,index:number){
           geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
