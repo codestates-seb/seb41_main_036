@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
+import Logo from "../../data/Logo.png";
 
 const OverlayLeft = () => {
   const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);
@@ -18,11 +19,7 @@ const OverlayLeft = () => {
       <l.TextStyle color="white" fontSize="20px" fontweight="normal">
         welcome to the
       </l.TextStyle>
-      <l.Logo
-        src={process.env.PUBLIC_URL + "/logo-white.png"}
-        alt="logo"
-        onClick={() => navigate("/")}
-      />
+      <l.Logo src={Logo} alt="logo" onClick={() => navigate("/")} />
       <l.TextStyle color="white" fontSize="20px" fontweight="bold">
         <l.CustomPadding padding="70px 0px 0px 0px"></l.CustomPadding>
         사진찍기 가장 좋은 장소는 어디일까요?
