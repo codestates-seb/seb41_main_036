@@ -7,7 +7,7 @@ import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
 import Footer from "../components/Footer";
-
+import EmptyResult from "../components/EmptyResult";
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
   padding-top: 70px;
@@ -30,6 +30,7 @@ const LocationWrapper = styled.nav`
 `;
 
 const PostContainer = styled.div`
+  min-height: 788px;
   margin: 20px 0 20px 30px;
   width: 100%;
 `;
@@ -168,11 +169,13 @@ const Post = () => {
               <PostCardComponent posts={postsData} margin="0" width="32.2%" />
             )}
           </PostCardContainer>
-          {postsData && (
+          {!!postsData?.length ? (
             <Pagination
               props={totalInfoRef.current as PageInfoType}
               setCurPage={setCurPage}
             ></Pagination>
+          ) : (
+            <EmptyResult message="등록된 포스트가 없습니다" />
           )}
         </PostContainer>
       </PostWrapper>

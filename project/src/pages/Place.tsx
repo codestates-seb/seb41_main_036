@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../recoil/state";
+import EmptyResult from "../components/EmptyResult";
 
 const PlaceWrapper = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ const LocationWrapper = styled.nav`
 `;
 
 const PlaceContainer = styled.div`
+  min-height: 790px;
   margin: 20px 0 20px 30px;
   width: 100%;
 `;
@@ -68,6 +70,7 @@ export const FilterButton = styled.button`
 
 const PlaceBox = styled.div`
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 25px 2%;
 `;
@@ -111,7 +114,6 @@ export interface ArrayPlaceType extends Array<PlaceType> {}
 const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();
   const [checkedList, setCheckedlist] = useState<string[]>([]);
-  const [sortClick, setSortClick] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
   const [curPage, setCurPage] = useState(1);
   const [sort, setSort] = useState("newest");
@@ -198,6 +200,7 @@ const Place = () => {
             ) : (
               <span>총 {totalInfoRef.current?.totalElements}개의 명소</span>
             )}
+
             <div>
               {sortList.map((sort, idx) => (
                 <FilterButton
@@ -213,14 +216,23 @@ const Place = () => {
             </div>
           </PlaceFilterContainer>
           <PlaceBox>
-            {placesData &&
+            {!totalInfoRef.current?.totalElements && searchValue && (
+              <EmptyResult
+                message="다른 검색어를 입력해보세요"
+                subtitle={false}
+              />
+            )}
+            {placesData?.length ? (
               placesData.map((placeInfo) => (
                 <PlaceCard
                   key={placeInfo.attractionId}
                   placeInfo={placeInfo}
                   width="32%"
                 />
-              ))}
+              ))
+            ) : (
+              <EmptyResult message="등록된 명소가 없습니다" subtitle={false} />
+            )}
           </PlaceBox>
           {placesData && (
             <Pagination

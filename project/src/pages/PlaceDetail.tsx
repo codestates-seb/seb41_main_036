@@ -15,9 +15,9 @@ import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
-import { ReactComponent as NoSearchResultIcon } from "../data/NoSearchResult.svg";
 import { PageInfoType } from "./Place";
 import { getCurrentCount } from "../utils/utils";
+import EmptyResult from "../components/EmptyResult";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -257,27 +257,6 @@ const PostCardListWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Notification = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.02rem;
-  svg {
-    padding-top: 10px;
-    opacity: 0.8;
-  }
-  h3 {
-    color: var(--black-700);
-    padding: 0px 0 10px;
-    font-size: var(--font-sm);
-  }
-  p {
-    color: var(--black-700);
-    font-size: var(--font-xs);
-    margin-bottom: 53px;
-  }
-`;
 const PostWrapper = styled.div`
   width: 100%;
   background-color: #f8f9fa;
@@ -508,11 +487,7 @@ const PlaceDetail = (): JSX.Element => {
                     width="24%"
                   ></PostCardComponent>
                 ) : (
-                  <Notification>
-                    <NoSearchResultIcon />
-                    <h3>해당 명소에 등록된 포스트가 없습니다</h3>
-                    <p>첫번째 포스트를 남겨주세요</p>
-                  </Notification>
+                  <EmptyResult message="해당 명소에 등록된 포스트가 없습니다" />
                 )}
               </PostCardListWrapper>
               {!!postData?.length && (
