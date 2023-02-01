@@ -102,11 +102,13 @@ const PostContentBox = styled.div`
     width: 100%;
     height: 30%;
     margin: 0 auto;
-    object-fit: scale-down;
+    object-fit: cover;
+    margin-bottom: 2em;
   }
   div > div:last-child {
     padding: 0 30px;
     text-align: center;
+    margin-bottom: 2em;
   }
 `;
 const TagsButton = styled.button`
