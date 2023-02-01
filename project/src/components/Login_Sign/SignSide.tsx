@@ -85,6 +85,7 @@ const Login = () => {
         .then((res) => {
           if (res.status === 201) {
             setOverlays(false);
+            console.log(res.data);
             window.location.replace("/login");
           }
         })

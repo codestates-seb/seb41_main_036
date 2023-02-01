@@ -113,6 +113,7 @@ export const OauthBtn = styled.button<ButtonProps>`
   font-size: 20px;
   font-weight: bold;
   margin: 10px 0px 5px 0px;
+  cursor: pointer;
   &:hover {
     background-color: ${(props) => props.hoverbackgroundcolor};
   }
