@@ -44,17 +44,11 @@ const ViewsPlaceContainer = styled.div`
 
 const ViewsPostContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 
   > p {
     cursor: pointer;
     font-weight: bold;
     margin: 30px 0 0 83%;
-  }
-  > div {
-    justify-content: space-between;
   }
 `;
 const MoreLink = styled.div`
