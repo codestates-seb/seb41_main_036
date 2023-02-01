@@ -54,7 +54,6 @@ const KakaoMap = ({
   dataList,
   position,
   left,
-  regionFilter,
   component,
   dataset,
   modalData,
