@@ -13,7 +13,7 @@ import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
 
 const LoginSide = () => {
-  const [overlays, setOverlays] = useRecoilState(setOverlay);
+  const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);
   const [loginemail, setLoginEmail] = useState<string>("");
   const [loginpassword, setLoginPassword] = useState<string>("");
   const [loginemailErr, setLoginEmailErr] = useState<boolean>(true);

@@ -160,6 +160,7 @@ const Login = () => {
         </s.SocitalLoginContinaer>
         <s.InputStyle
           placeholder="이메일"
+          value={signemail}
           onChange={handleSignEmailChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
@@ -170,6 +171,7 @@ const Login = () => {
         ) : null}
         <s.InputStyle
           placeholder="비밀번호"
+          value={signpassword}
           onChange={handleSignPasswordChange}
           onKeyDown={onPressEnter}
           type="password"
@@ -181,6 +183,7 @@ const Login = () => {
         ) : null}
         <s.InputStyle
           placeholder="비밀번호확인"
+          value={passwordConfirm}
           onChange={handlePasswordConfirm}
           onKeyDown={onPressEnter}
           type="password"
@@ -192,6 +195,7 @@ const Login = () => {
         )}
         <s.InputStyle
           placeholder="전화번호(-를 포함해서 입력해주세요)"
+          value={phonenumber}
           onChange={handlePhoneChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
