@@ -183,7 +183,7 @@ const HeaderBody = styled.div`
   display: flex;
   align-items: center;
   display: flex;
-  max-width: 100%;
+  max-width: 100vw;
   padding: 0 75px;
   svg.logo {
     width: 200px;
@@ -246,6 +246,7 @@ const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
 const HiddenHeaderBodyWrapper = styled.header<{
   isVisible: boolean;
 }>`
+  width: 100%;
   position: fixed;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
@@ -253,7 +254,6 @@ const HiddenHeaderBodyWrapper = styled.header<{
   -webkit-backdrop-filter: blur(11.5px);
   margin: 0 auto;
   left: 0;
-  right: 0;
   transition: all 0.8s ease;
   transform: ${(props) =>
     props.isVisible ? "translate(0,28px)" : "translate(0,-42px)"};
@@ -276,15 +276,15 @@ const HiddenHeaderTopWrapper = styled.div<{ isVisible: boolean }>`
     position: absolute;
     left: calc(50% - 8px);
     color: var(--purple-300);
-    :hover {
-      cursor: pointer;
-    }
     ::after {
       content: "";
       width: 50px;
       height: 30px;
       background-color: var(--grey-background);
     }
+  }
+  :hover {
+    cursor: pointer;
   }
 `;
 

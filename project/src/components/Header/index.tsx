@@ -14,7 +14,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
-import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
+import {
+  lazy,
+  ReactNode,
+  MouseEventHandler,
+  useEffect,
+  forwardRef,
+} from "react";
 import Logo from "../../data/Logo.png";
 const SearchBar = lazy(() => import("./SearchBar"));
 
@@ -165,6 +171,7 @@ interface HeaderMainProps {
   mouseOutHandler?: MouseEventHandler<HTMLElement>;
   isVisible?: boolean;
   headerColor?: string;
+  ref?: React.RefObject<HTMLHeadElement>;
 }
 const HeaderMain = ({
   children,
