@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { setOverlay } from "../../recoil/setOverlay";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import * as s from "./LoginSignStyle";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);
@@ -19,6 +20,8 @@ const Login = () => {
   const [signpasswordErr, setSignPasswordErr] = useState<boolean>(true);
   const [phonenumberErr, setPhonenumberErr] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
+  const navigate = useNavigate();
+
 
   const handleSignEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const EMAIL_REGEX = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.[a-zA-Z]{2,4}$/;
@@ -85,7 +88,8 @@ const Login = () => {
         .then((res) => {
           if (res.status === 201) {
             setOverlays(false);
-            window.location.replace("/login");
+            navigate(-1)
+            // window.location.replace("/login")
           }
         })
         .catch((err) => {
@@ -160,7 +164,8 @@ const Login = () => {
         </s.SocitalLoginContinaer>
         <s.InputStyle
           placeholder="이메일"
-          // value={signemail}
+          defaultValue={""}
+
           onChange={handleSignEmailChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
@@ -171,7 +176,8 @@ const Login = () => {
         ) : null}
         <s.InputStyle
           placeholder="비밀번호"
-          // value={signpassword}
+          defaultValue={""}
+
           onChange={handleSignPasswordChange}
           onKeyDown={onPressEnter}
           type="password"
@@ -183,7 +189,8 @@ const Login = () => {
         ) : null}
         <s.InputStyle
           placeholder="비밀번호확인"
-          // value={passwordConfirm}
+          defaultValue={""}
+
           onChange={handlePasswordConfirm}
           onKeyDown={onPressEnter}
           type="password"
@@ -195,7 +202,7 @@ const Login = () => {
         )}
         <s.InputStyle
           placeholder="전화번호(-를 포함해서 입력해주세요)"
-          // value={phonenumber}
+          defaultValue={""}
           onChange={handlePhoneChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
@@ -209,6 +216,7 @@ const Login = () => {
           defaultValue={address}
           onClick={handleAddress.clickInput}
           onKeyDown={handleAddress.clickInput}
+          readOnly
         ></s.InputStyle>
         <s.InputStyle
           placeholder="닉네임"

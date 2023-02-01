@@ -187,7 +187,6 @@ const CloseButton = styled.button`
   /* position: relative; */
   border: none;
   background-color: transparent;
-  /* background-color: blue; */
   margin-left: 45%;
   margin-top: 3%;
   cursor: pointer;
