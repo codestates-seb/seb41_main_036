@@ -39,14 +39,20 @@ const HeaderTopBar = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setIslogin(false);
-    setAuth("");
-    setLoggedUser("");
-    axios.defaults.headers.common["Authorization"] = null;
-    localStorage.removeItem("Authorization");
-    localStorage.setItem("loginStatus", "false");
-    localStorage.removeItem("memberId");
-    navigate("/");
+    axios
+      .post(`/logout`)
+      .then((res) => {
+        console.log(res);
+        setIslogin(false);
+        setAuth("");
+        setLoggedUser("");
+        axios.defaults.headers.common["Authorization"] = null;
+        localStorage.removeItem("Authorization");
+        localStorage.setItem("loginStatus", "false");
+        localStorage.removeItem("memberId");
+        navigate("/");
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
