@@ -24,6 +24,4 @@ public class PostDto {
         private List<String> deleteUrls;
     }
 
-
-
 }

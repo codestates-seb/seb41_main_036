@@ -50,8 +50,9 @@ public class PostResponseDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+
     @Data
-    public static class MapsImageUrlResponse{
+    public static class MapsImageUrlResponse {
         private long postId;
         private String imageUrls;
 

@@ -23,7 +23,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
-
+    private static final String userPictureURL = "https://lh3.googleusercontent.com/pw/AMWts8CEDi2m6IeYf8S0FGfXum-T0_vsJIa1geotAKan_2NzfhOcgYgrtrfd8mjMtVfZ0BCUPDXoUPos9yV5VWgy8eSvzMBs-4jA3Xq0ocmQhpTqPSWQ8lXrK8LsMWISS3vZbZR6Y74ztKYybTTmXQ966bEx=s407-no?authuser=0";
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -31,10 +31,15 @@ public class MemberService {
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
+
+        member.setPicture(userPictureURL);
+
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
+
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+
         return memberRepository.save(member);
     }
 
@@ -42,23 +47,6 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if (findMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-    }
-
-    public Member createOauth2Member(Member member) {
-//        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
-//        if(findMember.isPresent()){
-//            return findMember.get();
-//        }
-        List<String> roles = authorityUtils.createRoles(member.getEmail());
-        member.setRoles(roles);
-
-        return memberRepository.save(member);
-    }
-
-    public boolean isPresentOauthMember(String email) {
-        Optional<Member> byEmail = memberRepository.findByEmail(email);
-
-        return byEmail.isPresent();
     }
 
     public Member updateMember(Member member) {
@@ -71,6 +59,7 @@ public class MemberService {
                 .ifPresent(findMember::setAddress);
         Optional.ofNullable(member.getEmail())
                 .ifPresent(findMember::setEmail);
+
         return memberRepository.save(findMember);
     }
 
@@ -91,6 +80,7 @@ public class MemberService {
         return findMember
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
     @Transactional(readOnly = true)
     public Member findMemberByOauth2Id(String oauthId) {
         Optional<Member> byOauthId = memberRepository.findByOauthId(oauthId);
@@ -98,13 +88,13 @@ public class MemberService {
         return verifiedMemberByOauthId(oauthId);
 
     }
+
     private Member verifiedMemberByOauthId(String oauthId) {
         Optional<Member> findMember = memberRepository.findByOauthId(oauthId);
 
         return findMember
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
-
 
     @Transactional(readOnly = true)
     public Member findMemberByMemberId(long memberId) {

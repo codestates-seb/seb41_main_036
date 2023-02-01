@@ -1,6 +1,7 @@
 package com.main36.pikcha.global.utils;
 
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
