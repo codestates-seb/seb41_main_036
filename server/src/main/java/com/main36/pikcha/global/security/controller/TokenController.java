@@ -8,7 +8,6 @@ import com.main36.pikcha.global.response.DataResponseDto;
 import com.main36.pikcha.global.security.dto.RenewTokenDto;
 import com.main36.pikcha.global.security.jwt.JwtGenerator;
 import com.main36.pikcha.global.security.jwt.JwtParser;
-import com.main36.pikcha.global.utils.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
