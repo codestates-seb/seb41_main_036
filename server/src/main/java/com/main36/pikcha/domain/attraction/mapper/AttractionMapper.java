@@ -24,6 +24,7 @@ public interface AttractionMapper {
                 .build();
     }
     List<AttractionMapsResponseDto> attractionsToAttractionMapsResponseDtos(List<Attraction> attractions);
+    List<AttractionRankingResponseDto> attractionsToAttractionRankResponseDtos(List<Attraction> attractions);
 }
 
 

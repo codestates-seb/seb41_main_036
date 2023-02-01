@@ -233,6 +233,16 @@ public class AttractionController {
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
+    @GetMapping("/main/rank")
+    public ResponseEntity getRankedAttractions(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                               @Positive @RequestParam(required = false, defaultValue = "10") int size,
+                                               @RequestParam(required = false, defaultValue = "likes") String sort){
+        Page<Attraction> pageAttractions = attractionService.findAllProvincesAttractions(page-1,size, convertSorting(sort));
+        List<Attraction> attractionList = pageAttractions.getContent();
+
+        return new ResponseEntity(new MultiResponseDto<>(mapper.attractionsToAttractionRankResponseDtos(attractionList), pageAttractions), HttpStatus.OK);
+    }
+
     private List<AttractionResponseDto> loginMapping(List<Attraction> attractionList, long memberId) {
         return attractionList.stream()
                 .map(attraction -> AttractionResponseDto.builder()
