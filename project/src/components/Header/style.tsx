@@ -196,7 +196,7 @@ const HeaderBodyMenu = styled.ul`
 const HeaderBodyMenuItem = styled.li<{ selected: boolean }>`
   font-size: var(--font-sm);
   list-style: none;
-  padding-left: 35px;
+  margin-left: 35px;
   white-space: nowrap;
   text-align: center;
   font-weight: 600;
