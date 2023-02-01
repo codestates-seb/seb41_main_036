@@ -1,9 +1,11 @@
-import { useState } from "react";
 import { Header } from ".";
 import { IoIosArrowDown as ArrowDownIcon } from "react-icons/io";
 import { HiddenHeaderBodyWrapper, HiddenHeaderTopWrapper } from "./style";
 import useClickDetect from "../../hooks/useClickDetect";
-const HiddenHeader = () => {
+interface HiddeHeaderProps {
+  selectedMenu?: number;
+}
+const HiddenHeader = ({ selectedMenu = 2 }: HiddeHeaderProps) => {
   const { ref, isVisible, setIsVisible } = useClickDetect();
 
   const handleArrowClick = () => {
@@ -24,7 +26,7 @@ const HiddenHeader = () => {
             searchBarOn={false}
             defaultValue={""}
             backgroundOn={false}
-            selectedMenu={2}
+            selectedMenu={selectedMenu}
           />
         </HiddenHeaderBodyWrapper>
       </Header>
