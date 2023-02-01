@@ -14,8 +14,8 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
-import OnWorking from "./OnWorking";
 import Charts from "../components/Charts";
+import OnWorking from "./OnWorking";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -328,7 +328,7 @@ const MyPage = () => {
         <>
           <h2>Posts</h2>
           <span>{userData && userData.totalMyPosts}개의 포스트</span>
-          {userData && <MyPageMyPostCard posts={userData.posts} limit={6} />}
+          {userData && <MyPageMyPostCard posts={userData.posts} limit={7} />}
         </>
       ),
     },
@@ -344,7 +344,7 @@ const MyPage = () => {
           <h2>My Favorite</h2>
           <span>{userData && userData.totalMySaves}개의 즐겨찾기</span>
           {userData && (
-            <MyPageMyFavoriteCard saves={userData.saves} limit={6} />
+            <MyPageMyFavoriteCard saves={userData.saves} limit={7} />
           )}
         </>
       ),
@@ -457,7 +457,7 @@ const MyPageCardContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  margin-bottom: 5px;
+  margin-bottom: 11px;
   background-color: #ffffff;
   border-radius: var(--br-m);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -528,7 +528,7 @@ const MyPageMyPostCard = ({
           </MyPageCardContainer>
         ))}
       <MyPagePagination
-        limit={6}
+        limit={7}
         props={posts}
         setCurPage={setCurPage}
         curPage={curPage}

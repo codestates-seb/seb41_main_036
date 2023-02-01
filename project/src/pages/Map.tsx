@@ -13,6 +13,7 @@ import { GiTalk } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
+import Modal from "../components/Modal";
 
 const Container = styled.div`
   display: flex;
@@ -331,25 +332,36 @@ const Map = () => {
   const URL_FOR_SAVES = `/attractions/saves/${modalDataId}`;
   const URL_FOR_LIKES = `/attractions/likes/${modalDataId}`;
   const ATTRACTIONS_URL = isLogin ? url3 : url2;
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleClickLiked = () => {
-    axios.post(URL_FOR_LIKES).then((res) => {
-      setIsVoted(res.data.data.isVoted);
-    });
-  };
+    if(isLogin){
+      axios.post(URL_FOR_LIKES).then((res) => {
+        setIsVoted(res.data.data.isVoted);
+        return;
+      }); 
+    }else{
+      setIsModalVisible(true);
+    }
+  }
 
   const handleClickSaved = () => {
-    axios.post(URL_FOR_SAVES).then((res) => {
-      setIsLiked(res.data.data.isSaved);
-    });
-  };
+    if(isLogin){
+      axios.post(URL_FOR_SAVES).then((res) => {
+        setIsLiked(res.data.data.isSaved);
+        return;
+      });
+    }else{
+      setIsModalVisible(true)
+    }
+  }
 
   useEffect(() => {
-    // 전체 데이터를 받아와서 반영
-    axios.get(ATTRACTIONS_URL).then((res) => {
-      setIsVoted(res.data.data.isVoted);
-      setIsLiked(res.data.data.isSaved);
-    });
+    axios.get(ATTRACTIONS_URL)
+    .then((res)=>{
+      setIsVoted(res.data.data.isVoted)
+      setIsLiked(res.data.data.isSaved)
+    })
 
     if (regionFilter === "전체") {
       axios
@@ -379,6 +391,7 @@ const Map = () => {
 
   return (
     <>
+      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <HiddenHeader></HiddenHeader>
       <Container>
         <PlaceList>
@@ -446,25 +459,21 @@ const Map = () => {
               </div>
               <div>
                 <p>서울 명소</p>
-                <div onClick={() => handleClickLiked()}>
+                <div onClick={handleClickLiked}>
                   <AiOutlineHeart
                     color={
                       isVoted === true
                         ? "var(--pink-heart)"
                         : "var(--black-400)"
                     }
-                  ></AiOutlineHeart>
-                  <p>{modalData.likes}</p>
+                    ></AiOutlineHeart>
+                  {/* <p>{ modalData.likes }</p> */}
                 </div>
-                <div
-                  onClick={() => {
-                    handleClickSaved();
-                  }}
-                >
-                  <BsBookmarkPlus
+                <div onClick={handleClickSaved}>
+                  <BsBookmarkPlus 
                     color={isLiked ? "green" : "var(--black-400)"}
-                  ></BsBookmarkPlus>
-                  <p>{modalData.saves}</p>
+                    ></BsBookmarkPlus>
+                  {/* <p>{modalData.saves}</p> */}
                 </div>
               </div>
               <div>

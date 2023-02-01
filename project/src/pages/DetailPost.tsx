@@ -345,6 +345,14 @@ const DetailPost = () => {
     if (!isLogin) setIsModalVisible(true);
   };
 
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("url이 성공적으로 복사되었습니다.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Header>
@@ -410,7 +418,7 @@ const DetailPost = () => {
               <strong>{post?.username}</strong>님의 포스트
             </div>
             <div>
-              <div>
+              <div onClick={()=>{handleCopyClipBoard(document.location.href)}}>
                 <AiOutlineShareAlt />
                 <span>공유</span>
               </div>
