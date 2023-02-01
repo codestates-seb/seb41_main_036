@@ -192,11 +192,12 @@ const HeaderBody = styled.div`
 const HeaderBodyMenu = styled.ul`
   margin-left: auto;
   display: flex;
+  justify-content: space-between;
 `;
 const HeaderBodyMenuItem = styled.li<{ selected: boolean }>`
   font-size: var(--font-sm);
   list-style: none;
-  margin-left: 25px;
+  margin-right: 25px;
   white-space: nowrap;
   text-align: center;
   font-weight: 600;
