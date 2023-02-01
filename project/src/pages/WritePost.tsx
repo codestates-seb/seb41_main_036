@@ -25,7 +25,7 @@ const Container = styled.div`
     outline: none;
     font-size: 25px;
     font-weight: var(--fw-bold);
-    background-color: #fcfcfc;
+    background-color: transparent;
     &:focus {
       border-color: transparent;
     }
@@ -120,10 +120,6 @@ const TagBox = styled.span`
   button {
     border: none;
     background-color: transparent;
-  }
-
-  svg {
-    padding-top: 3px;
   }
 `;
 

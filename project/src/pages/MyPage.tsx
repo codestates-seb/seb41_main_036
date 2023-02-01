@@ -361,7 +361,7 @@ const MyPage = () => {
 
   return (
     <>
-      <HiddenHeader />
+      <HiddenHeader selectedMenu={-1} />
       <MyPageWrapper>
         <MyPageTabBarContainer>
           {tabMenuBarList.map((menu, idx) => (

@@ -121,14 +121,14 @@ const Post = [
   { id: "15", Post: "서초구" },
   { id: "16", Post: "성동구" },
   { id: "17", Post: "성북구" },
-  { id: "18", Post: "성송파구" },
+  { id: "18", Post: "송파구" },
   { id: "19", Post: "양천구" },
   { id: "20", Post: "영등포구" },
   { id: "21", Post: "용산구" },
   { id: "22", Post: "은평구" },
   { id: "23", Post: "종로구" },
   { id: "24", Post: "중구" },
-  { id: "25", Post: "중량구" },
+  { id: "25", Post: "중랑구" },
 ];
 
 export default function LocationFilter({
