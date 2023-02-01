@@ -70,7 +70,6 @@ export const FilterButton = styled.button`
 
 const PlaceBox = styled.div`
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 25px 2%;
 `;
