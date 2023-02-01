@@ -89,9 +89,17 @@ const MyPageUserInfo = styled.aside`
         color: var(--purple-400);
       }
     }
-    button {
-      position: relative;
-      top: 13em;
+  }
+  input {
+    top: 10em;
+    height: 30px;
+    border-radius: var(--br-m);
+    padding: 6px 7px;
+    margin-top: 5px;
+    border-color: var(--purple-400);
+    :focus {
+      outline-color: var(--purple-300);
+      box-shadow: 0 0 5px blue;
     }
   }
 `;
@@ -160,6 +168,7 @@ const EditSubmitButton = styled.button`
   border-radius: var(--br-m);
   margin-top: 10px;
   color: white;
+  cursor: pointer;
 `;
 interface UserType {
   memberId: number;
@@ -475,8 +484,8 @@ const MyPageCardContainer = styled.div`
     border-radius: var(--br-s);
   }
   span {
-    flex-direction: row;
-    width: 130px;
+    display: flex;
+    align-items: center;
     line-height: 50px;
     margin-right: 10px;
   }
