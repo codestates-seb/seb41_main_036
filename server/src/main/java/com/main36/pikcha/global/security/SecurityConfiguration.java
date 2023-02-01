@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -64,6 +65,12 @@ public class SecurityConfiguration {
 
                 .and()
                 .apply(new CustomFilterConfigure())
+
+                .and()
+                .logout()
+                .deleteCookies("refreshToken")
+                .logoutSuccessHandler(new MemberLogoutSuccessHandler())
+                .logoutSuccessUrl("/")
 
                 .and()
                 .authorizeHttpRequests(authorize -> authorize

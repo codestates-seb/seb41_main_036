@@ -30,7 +30,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper mapper;
-
     private final CookieUtils cookieUtils;
 
     @PostMapping("/signup")
@@ -47,8 +46,8 @@ public class MemberController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity<?> test(HttpServletResponse response) {
+    @PostMapping("/users/logout")
+    public ResponseEntity<HttpStatus> logout(HttpServletResponse response) {
         cookieUtils.deleteCookie(response);
         return new ResponseEntity<>(HttpStatus.OK);
     }

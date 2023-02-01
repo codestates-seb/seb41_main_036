@@ -52,9 +52,11 @@ public class CookieUtils {
     }
 
     public void deleteCookie(HttpServletResponse response) {
-        Cookie deleteServletCookie = new Cookie("refreshToken", null);
-        deleteServletCookie.setMaxAge(0);
-        response.addCookie(deleteServletCookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+                .maxAge(0) // 쿠키 유효기간 설정 (3일)
+                .build();
+
+        response.setHeader(SET_COOKIE, String.valueOf(cookie));
     }
 
 }
