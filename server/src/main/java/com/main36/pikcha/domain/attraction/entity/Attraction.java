@@ -45,6 +45,7 @@ public class Attraction extends Auditable {
     @ColumnDefault("0")
     private Long numOfPosts;
 
+    @Lob
     @Column(name = "fixed_image")
     private String fixedImage;
 
