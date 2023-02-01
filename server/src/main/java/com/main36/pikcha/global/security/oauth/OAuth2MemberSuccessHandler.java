@@ -32,11 +32,13 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final CustomAuthorityUtils customAuthorityUtils;
+//    private final CustomAuthorityUtils customAuthorityUtils;
 
     private final MemberService memberService;
 
     private final JwtGenerator jwtGenerator;
+
+    private final CookieUtils cookieUtils;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -47,9 +49,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         log.info("Oauth member===================={}", member);
 //        String accessToken = BEARER_PREFIX + jwtGenerator.generateAccessToken(member.getEmail(), member.getRoles());
 //        log.info("accessToken ={}", accessToken);
-//        String refreshToken = jwtGenerator.generateRefreshToken(member.getMemberId().toString());
+        String refreshToken = jwtGenerator.generateRefreshToken(member.getMemberId().toString());
+        log.info("=========onAuthenticationSuccess {}========", refreshToken);
 //        log.info("refreshToken ={}", refreshToken);
-//        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        cookieUtils.setCookieInHeader(response, refreshToken);
 //        ResponseCookie cookie = CookieUtils.getResponseCookie(refreshToken);
 //        response.setHeader("Set-Cookie", String.valueOf(cookie));
 //        response.setHeader("Authorization", BEARER_PREFIX + accessToken);

@@ -37,10 +37,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/h2",
                     "/signup",
                     "/login",
+                    "/users/logout",
                     "/home",
                     "/attractions",
                     "/posts",
-//                    "/token/refresh",
                     "/oauth2/authorization/google",
                     "/oauth2/authorization/kakao"
             );

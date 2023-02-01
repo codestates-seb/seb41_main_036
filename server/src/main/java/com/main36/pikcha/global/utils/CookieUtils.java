@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CookieUtils {
 
     public static final String SET_COOKIE = "Set-Cookie";
-    public static void setCookieInHeader(HttpServletResponse response, String refreshToken) {
+    public void setCookieInHeader(HttpServletResponse response, String refreshToken) {
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(3 * 24 * 60 * 60) // 쿠키 유효기간 설정 (3일)
@@ -52,9 +52,11 @@ public class CookieUtils {
     }
 
     public void deleteCookie(HttpServletResponse response) {
-        Cookie deleteServletCookie = new Cookie("refreshToken", null);
-        deleteServletCookie.setMaxAge(0);
-        response.addCookie(deleteServletCookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+                .maxAge(0) // 쿠키 유효기간 설정 (3일)
+                .build();
+
+        response.setHeader(SET_COOKIE, String.valueOf(cookie));
     }
 
 }

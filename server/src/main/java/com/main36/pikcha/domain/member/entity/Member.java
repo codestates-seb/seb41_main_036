@@ -45,6 +45,7 @@ public class Member extends Auditable {
     @Column(length = 50, name = "member_title")
     private String memberTitle;
 
+    @Lob
     @Column(name = "picture")
     private String picture;
 
