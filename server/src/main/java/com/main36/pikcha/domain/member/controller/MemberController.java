@@ -46,12 +46,6 @@ public class MemberController {
                 HttpStatus.CREATED);
     }
 
-    @PostMapping("/users/logout")
-    public ResponseEntity<HttpStatus> logout(HttpServletResponse response) {
-        cookieUtils.deleteCookie(response);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @LoginUser
     @PatchMapping("/users/edit/{member-id}")
     public ResponseEntity<DataResponseDto<?>> patchMember(Member loginUser,
