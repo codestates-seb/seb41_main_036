@@ -290,20 +290,23 @@ const EditPost = () => {
       tags.forEach((tag) => {
         formData.append("postHashTags", tag);
       });
-      imgFiles.forEach((img) => {
-        formData.append("postImageFiles", img);
+      removeImgUrl.forEach((removeImg) => {
+        formData.append("deleteUrls", removeImg);
+      });
+      addImgUrl.forEach((addImg) => {
+        formData.append("postImageFiles", addImg);
       });
       content.forEach((text) => {
         formData.append("postContents", text);
       });
       axios
-        .post(`/posts/register/${id}`, formData, {
+        .patch(`/posts/edit/${memberId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
-          navigate(`/posts/detail/${res.data.data.postId}`);
+          if (res.status === 200) navigate(`/posts`);
         })
         .catch((err) => console.error(err));
     }
