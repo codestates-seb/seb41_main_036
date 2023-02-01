@@ -15,9 +15,9 @@ import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
-import { ReactComponent as NoSearchResultIcon } from "../data/NoSearchResult.svg";
 import { PageInfoType } from "./Place";
 import { getCurrentCount } from "../utils/utils";
+import EmptyResult from "../components/EmptyResult";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -257,28 +257,10 @@ const PostCardListWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Notification = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.02rem;
-  svg {
-    padding-top: 10px;
-    opacity: 0.8;
-  }
-  h3 {
-    color: var(--black-700);
-    padding: 0px 0 10px;
-    font-size: var(--font-sm);
-  }
-  p {
-    color: var(--black-700);
-    font-size: var(--font-xs);
-    margin-bottom: 53px;
-  }
+const PostWrapper = styled.div`
+  width: 100%;
+  background-color: #f8f9fa;
 `;
-
 type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
@@ -490,33 +472,31 @@ const PlaceDetail = (): JSX.Element => {
               ></KakaoMap>
             </LocationInfoContainer>
           </Container>
-          <Post ref={scrollRefContent}>
-            <PostHeader>
-              <h2>포스트</h2>
-              <button onClick={handlePostButtonClick}>포스트 작성</button>
-            </PostHeader>
-            <PostCardListWrapper>
-              {postData?.length ? (
-                <PostCardComponent
-                  posts={postData}
-                  margin="0%"
-                  width="24%"
-                ></PostCardComponent>
-              ) : (
-                <Notification>
-                  <NoSearchResultIcon />
-                  <h3>해당 명소에 등록된 포스트가 없습니다</h3>
-                  <p>첫번째 포스트를 남겨주세요</p>
-                </Notification>
+          <PostWrapper>
+            <Post ref={scrollRefContent}>
+              <PostHeader>
+                <h2>포스트</h2>
+                <button onClick={handlePostButtonClick}>포스트 작성</button>
+              </PostHeader>
+              <PostCardListWrapper>
+                {postData?.length ? (
+                  <PostCardComponent
+                    posts={postData}
+                    margin="0%"
+                    width="24%"
+                  ></PostCardComponent>
+                ) : (
+                  <EmptyResult message="해당 명소에 등록된 포스트가 없습니다" />
+                )}
+              </PostCardListWrapper>
+              {!!postData?.length && (
+                <Pagination
+                  props={totalInfoRef.current as PageInfoType}
+                  setCurPage={setCurPage}
+                />
               )}
-            </PostCardListWrapper>
-            {!!postData?.length && (
-              <Pagination
-                props={totalInfoRef.current as PageInfoType}
-                setCurPage={setCurPage}
-              />
-            )}
-          </Post>
+            </Post>
+          </PostWrapper>
         </>
       )}
       <Footer />
@@ -525,6 +505,3 @@ const PlaceDetail = (): JSX.Element => {
 };
 
 export default PlaceDetail;
-//현재 개수, 이전에 누른 상태였는지, 지금 상태는 뭔지
-//포스트 작성 연결하기, 페이지네이션 컴포넌트 데려와서 완성하기,
-//포스트 하트 데려와서 눌렀는지 연결시키기=> 포스트 컴포넌트에서 처리한다

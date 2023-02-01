@@ -23,11 +23,9 @@ const GoRight = keyframes`
 `;
 
 const Body = styled.div`
-  max-width: 1440px;
-  width: 83.5%;
-  margin: 0 auto;
   height: 100%;
-  padding: 20px 30px;
+  width: 100vw;
+  padding: 20px 0 70px 0;
   background-color: hsl(222, 24%, 98%);
 `;
 
@@ -46,17 +44,11 @@ const ViewsPlaceContainer = styled.div`
 
 const ViewsPostContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  //border: 1px solid black;
+
   > p {
     cursor: pointer;
     font-weight: bold;
     margin: 30px 0 0 83%;
-  }
-  > div {
-    justify-content: space-between;
   }
 `;
 const MoreLink = styled.div`
@@ -68,6 +60,7 @@ const MoreLink = styled.div`
     display: flex;
     align-items: center;
     font-size: var(--font-sm);
+    color: var(--black-800);
   }
   svg {
     width: 18px;
@@ -85,6 +78,12 @@ const PlaceCardWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+`;
+
+const BodyContent = styled.div`
+  margin: 0 auto;
+  max-width: 1440px;
+  width: 83.5%;
 `;
 
 function Main() {
@@ -118,36 +117,38 @@ function Main() {
       <Carousel />
       <Ranking />
       <Body>
-        <MainSubTitle>많이 다녀간 명소</MainSubTitle>
-        <ViewsPlaceContainer>
-          <PlaceCardWrapper>
-            {attractionData &&
-              attractionData.map((placeInfo) => (
-                <PlaceCard
-                  placeInfo={placeInfo}
-                  width="24%"
-                  key={placeInfo.attractionId}
-                />
-              ))}
-          </PlaceCardWrapper>
+        <BodyContent>
+          <MainSubTitle>많이 다녀간 명소</MainSubTitle>
+          <ViewsPlaceContainer>
+            <PlaceCardWrapper>
+              {attractionData &&
+                attractionData.map((placeInfo) => (
+                  <PlaceCard
+                    placeInfo={placeInfo}
+                    width="24%"
+                    key={placeInfo.attractionId}
+                  />
+                ))}
+            </PlaceCardWrapper>
+            <MoreLink>
+              <Link to={"/attractions"}>
+                더 많은 명소 둘러보기
+                <DoubleArrowIcon />
+              </Link>
+            </MoreLink>
+          </ViewsPlaceContainer>
+          <MainSubTitle>가장 많이 본 포스트</MainSubTitle>
+          <ViewsPostContainer>
+            {postData && (
+              <PostCardComponent posts={postData} margin="0" width="24%" />
+            )}
+          </ViewsPostContainer>
           <MoreLink>
-            <Link to={"/attractions"}>
-              더 많은 명소 둘러보기
-              <DoubleArrowIcon />
+            <Link to={"/posts"}>
+              더 많은 포스트 확인하기 <DoubleArrowIcon />
             </Link>
           </MoreLink>
-        </ViewsPlaceContainer>
-        <MainSubTitle>가장 많이 본 포스트</MainSubTitle>
-        <ViewsPostContainer>
-          {postData && (
-            <PostCardComponent posts={postData} margin="0" width="24%" />
-          )}
-        </ViewsPostContainer>
-        <MoreLink>
-          <Link to={"/posts"}>
-            더 많은 포스트 확인하기 <DoubleArrowIcon />
-          </Link>
-        </MoreLink>
+        </BodyContent>
       </Body>
       <Footer />
     </>

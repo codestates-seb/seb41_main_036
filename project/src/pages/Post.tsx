@@ -7,10 +7,10 @@ import axios from "../utils/axiosinstance";
 import Pagination from "../components/Pagination";
 import { PageInfoType } from "./Place";
 import Footer from "../components/Footer";
-
+import EmptyResult from "../components/EmptyResult";
 const ITEM_LIMIT = 9;
 const PostWrapper = styled.div`
-  padding-top: 40px;
+  padding-top: 70px;
   display: flex;
   width: 83.5%;
   margin: 0 auto;
@@ -23,13 +23,14 @@ const LocationWrapper = styled.nav`
   border-radius: var(--br-m);
   overflow: hidden;
   margin-top: 10px;
-  background-color: white;
-  border: 1px solid var(--black-275);
+  margin-bottom: 20px;
+  background-color: var(--black-200);
   overflow-y: auto;
   height: 100%;
 `;
 
 const PostContainer = styled.div`
+  min-height: 788px;
   margin: 20px 0 20px 30px;
   width: 100%;
 `;
@@ -130,9 +131,9 @@ const Post = () => {
   return (
     <>
       <div style={{ display: "fixed" }}>
-        <Header headerColor="var(--grey-background)">
+        <Header>
           <Header.HeaderTop />
-          <Header.HeaderBody selectedMenu={1} />
+          <Header.HeaderBody selectedMenu={1} backgroundOn={false} />
         </Header>
       </div>
       <PostWrapper>
@@ -168,11 +169,13 @@ const Post = () => {
               <PostCardComponent posts={postsData} margin="0" width="32.2%" />
             )}
           </PostCardContainer>
-          {postsData && (
+          {!!postsData?.length ? (
             <Pagination
               props={totalInfoRef.current as PageInfoType}
               setCurPage={setCurPage}
             ></Pagination>
+          ) : (
+            <EmptyResult message="등록된 포스트가 없습니다" />
           )}
         </PostContainer>
       </PostWrapper>

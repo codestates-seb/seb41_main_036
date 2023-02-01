@@ -4,7 +4,6 @@ import OverlayL from "../components/Login_Sign/OverlayLeft";
 import LoginSide from "../components/Login_Sign/LoginSide";
 import SignSide from "../components/Login_Sign/SignSide";
 import * as s from "../components/Login_Sign/LoginSignStyle";
-import Footer from "../components/Footer";
 
 const Body = styled.div`
   width: 83.5%;
@@ -23,7 +22,6 @@ function LoginSign() {
           <OverlayR />
         </s.Wrapper>
       </Body>
-      <Footer/>
     </>
   );
 }

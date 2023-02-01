@@ -133,6 +133,11 @@ const Place = styled.div<{ imgUrl: string }>`
     font-size: 11px;
     color: white;
     margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    svg {
+      margin: 0 5px;
+    }
   }
 `;
 
@@ -316,15 +321,14 @@ const Map = () => {
     "#테마 거리",
   ];
 
-
   const url = "/attractions/maps?page=1&size=99&sort=posts";
   const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
   const url2 = `/attractions/${modalDataId}`;
   const memberId = localStorage.getItem("memberId");
   const url3 = `/attractions/${modalDataId}/${memberId}`;
   const [isLogin] = useRecoilState(LoginState);
-  const [isVoted,setIsVoted] = useState();
-  const [isLiked,setIsLiked] = useState();
+  const [isVoted, setIsVoted] = useState();
+  const [isLiked, setIsLiked] = useState();
   const URL_FOR_SAVES = `/attractions/saves/${modalDataId}`;
   const URL_FOR_LIKES = `/attractions/likes/${modalDataId}`;
   const ATTRACTIONS_URL = isLogin ? url3 : url2;
@@ -379,7 +383,7 @@ const Map = () => {
     }
   }, [regionFilter, setDropdownView, modalData, ATTRACTIONS_URL]);
 
-  const handleModalData = (dataUrl: string|number) => {
+  const handleModalData = (dataUrl: string | number) => {
     axios.get(`/attractions/mapdetails/${dataUrl}`).then((res) => {
       setModalData(res.data.data);
     });
@@ -458,7 +462,9 @@ const Map = () => {
                 <div onClick={handleClickLiked}>
                   <AiOutlineHeart
                     color={
-                      isVoted === true ? "var(--pink-heart)" : "var(--black-400)"
+                      isVoted === true
+                        ? "var(--pink-heart)"
+                        : "var(--black-400)"
                     }
                     ></AiOutlineHeart>
                   {/* <p>{ modalData.likes }</p> */}

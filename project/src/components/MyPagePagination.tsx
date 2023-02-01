@@ -16,8 +16,6 @@ const Nav = styled.div`
   margin: 16px;
 `;
 
-// 사용할 때
-// MyPagePagination 임포트해서 사용하시면 됩니다.
 const MyPagePagination = ({
   props,
   limit,

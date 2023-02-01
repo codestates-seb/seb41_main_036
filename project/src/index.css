@@ -24,7 +24,7 @@ body {
   --black-300: hsl(0, 0%, 90%);
   --black-275: hsl(0, 0%, 95%);
   --black-250: hsl(0, 0%, 97%);
-  --black-200: hsl(0, 0, 98%);
+  --black-200: hsl(0, 0%, 98%);
   --white-header: hsl(210, 50%, 11%);
   --pink-heart: hsl(352, 100%, 65%);
   --lime-highlight: hsl(75, 100%, 50%);

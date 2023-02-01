@@ -102,10 +102,13 @@ const PostContentBox = styled.div`
     width: 100%;
     height: 30%;
     margin: 0 auto;
-    object-fit: scale-down;
+    object-fit: cover;
+    margin-bottom: 2em;
   }
   div > div:last-child {
     padding: 0 30px;
+    text-align: center;
+    margin-bottom: 2em;
   }
 `;
 const TagsButton = styled.button`
@@ -176,7 +179,6 @@ const AddComment = styled.form<{ isLogin: boolean }>`
     width: 94%;
     margin: 22px 30% 0 58px;
     display: flex;
-    //background-color: red;
   }
   > div > img {
     width: 40px;
@@ -210,6 +212,21 @@ const EmptyCommentContainer = styled.div`
   }
 `;
 
+const DetailPostAttractionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-lg);
+  font-weight: var(--fw-bold);
+  p {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    font-size: var(--font-sm);
+    svg {
+      color: var(--purple-400);
+    }
+  }
+`;
 export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
@@ -327,9 +344,15 @@ const DetailPost = () => {
   const handleCommentWrite = () => {
     if (!isLogin) setIsModalVisible(true);
   };
-  console.log(memberId);
-  console.log(post);
-  console.log(postComments);
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("url이 성공적으로 복사되었습니다.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <Header>
@@ -352,9 +375,12 @@ const DetailPost = () => {
           <h2>{post?.postTitle}</h2>
         </DetailPostTitle>
         <DetailPostInfo>
-          <div>
-            <MdPlace /> &nbsp;{post?.attractionAddress}
-          </div>
+          <DetailPostAttractionsContainer>
+            {post?.attractionName}
+            <p>
+              <MdPlace /> &nbsp;{post?.attractionAddress}
+            </p>
+          </DetailPostAttractionsContainer>
           <div>
             <button
               onClick={() =>
@@ -392,7 +418,7 @@ const DetailPost = () => {
               <strong>{post?.username}</strong>님의 포스트
             </div>
             <div>
-              <div>
+              <div onClick={()=>{handleCopyClipBoard(document.location.href)}}>
                 <AiOutlineShareAlt />
                 <span>공유</span>
               </div>
@@ -413,14 +439,19 @@ const DetailPost = () => {
             첫번째 댓글을 남겨주세요.
           </EmptyCommentContainer>
         ) : (
-          postComments?.map((comment, idx) => (
-            <PostComment key={idx} comment={comment} />
+          postComments?.map((comment) => (
+            <PostComment key={comment.commentId} comment={comment} />
           ))
         )}
         <AddComment isLogin={isLogin}>
           <h3>댓글 남기기</h3>
           <div>
-            <img src={post?.picture} alt="userImg" />
+            <img
+              src={
+                "https://drive.google.com/uc?id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
+              }
+              alt="userImg"
+            />
             <textarea
               placeholder="댓글을 남겨주세요!"
               value={comment}

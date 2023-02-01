@@ -36,7 +36,7 @@ const SuggestionBox = ({
   onSelectionChange,
 }: SuggestionBoxProps) => {
   const [mouseTriggered, setMouseTriggered] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (selected !== -1 && filteredAttractions.length && !mouseTriggered) {
       if (selected !== MAX_SUGGEST + 1)
@@ -54,6 +54,12 @@ const SuggestionBox = ({
   const handleMouseOver = () => {
     setMouseTriggered(true);
     onSelectionChange(MAX_SUGGEST + 1);
+  };
+
+  const handleMoreResultClick = () => {
+    navigate(
+      `/attractions/search?keyword=${trimmedSearchValue.replace(/\s/g, "+")}`
+    );
   };
   return (
     <SuggestionItemWrapper>
@@ -81,7 +87,11 @@ const SuggestionBox = ({
           selectedEl={selected === MAX_SUGGEST + 1}
           onMouseOver={handleMouseOver}
         >
-          <AttractionItemContent as="li" type="more-result">
+          <AttractionItemContent
+            as="li"
+            type="more-result"
+            onClick={handleMoreResultClick}
+          >
             <SearchMoreIcon className="more-search" />
             {`"${trimmedSearchValue}"에 대한 모든 검색결과 보기 `}
           </AttractionItemContent>

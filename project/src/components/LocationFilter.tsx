@@ -11,7 +11,7 @@ const SelectContainer = styled.div`
   border-bottom: 1px solid var(--black-300);
   display: flex;
   flex-direction: column;
-  padding: 20px 20px 20px 21px;
+  padding: 20px 20px 18px 21px;
   background-color: transparent;
 
   > div {
@@ -74,6 +74,7 @@ const SelectBox = styled.div`
 
   label {
     color: var(--black-800);
+    letter-spacing: 0.05rem;
   }
 `;
 
@@ -86,6 +87,7 @@ const SelectPost = styled.ul`
     align-items: center;
     font-size: var(--font-sm);
     padding-top: 12px;
+    letter-spacing: 0.05rem;
   }
 
   > li > button {
@@ -119,14 +121,14 @@ const Post = [
   { id: "15", Post: "서초구" },
   { id: "16", Post: "성동구" },
   { id: "17", Post: "성북구" },
-  { id: "18", Post: "성송파구" },
+  { id: "18", Post: "송파구" },
   { id: "19", Post: "양천구" },
   { id: "20", Post: "영등포구" },
   { id: "21", Post: "용산구" },
   { id: "22", Post: "은평구" },
   { id: "23", Post: "종로구" },
   { id: "24", Post: "중구" },
-  { id: "25", Post: "중량구" },
+  { id: "25", Post: "중랑구" },
 ];
 
 export default function LocationFilter({

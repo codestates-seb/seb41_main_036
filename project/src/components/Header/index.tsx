@@ -11,11 +11,22 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { LoginState, AuthToken, LoggedUser } from "../../recoil/state";
+import {
+  LoginState,
+  AuthToken,
+  LoggedUser,
+  MemberId,
+} from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
-import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
-
+import {
+  lazy,
+  ReactNode,
+  MouseEventHandler,
+  useEffect,
+  forwardRef,
+} from "react";
+import Logo from "../../data/Logo.png";
 const SearchBar = lazy(() => import("./SearchBar"));
 
 const IMG_SRC =
@@ -27,8 +38,8 @@ const HeaderTopBar = () => {
   const [auth, setAuth] = useRecoilState<string>(AuthToken);
   // const [refresh, setRefresh] = useRecoilState<string>(RefreshToken);
   const [loggedUser, setLoggedUser] = useRecoilState<string>(LoggedUser);
-
   const localLogin = localStorage.getItem("loginStatus");
+  const [memberId, setMemberId] = useRecoilState(MemberId);
   useEffect(() => {
     if (typeof localLogin === "string") {
       setIslogin(JSON.parse(localLogin));
@@ -39,14 +50,21 @@ const HeaderTopBar = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setIslogin(false);
-    setAuth("");
-    setLoggedUser("");
-    axios.defaults.headers.common["Authorization"] = null;
-    localStorage.removeItem("Authorization");
-    localStorage.setItem("loginStatus", "false");
-    localStorage.removeItem("memberId");
-    navigate("/");
+    axios
+      .post(`/logout`)
+      .then((res) => {
+        console.log(res);
+        setIslogin(false);
+        setAuth("");
+        setLoggedUser("");
+        setMemberId(undefined);
+        axios.defaults.headers.common["Authorization"] = null;
+        localStorage.removeItem("Authorization");
+        localStorage.setItem("loginStatus", "false");
+        localStorage.removeItem("memberId");
+        navigate("/");
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -111,11 +129,10 @@ const HeaderBodyBar = ({
           style={{ height: "70px", display: "flex", alignItems: "center" }}
         >
           <img
-            src={process.env.PUBLIC_URL + "/logo.png"}
+            src={Logo}
             alt="logo"
             style={{
-              width: "180px",
-              height: "30px",
+              width: "100px",
               backgroundSize: "cover",
             }}
           />
@@ -160,6 +177,7 @@ interface HeaderMainProps {
   mouseOutHandler?: MouseEventHandler<HTMLElement>;
   isVisible?: boolean;
   headerColor?: string;
+  ref?: React.RefObject<HTMLHeadElement>;
 }
 const HeaderMain = ({
   children,

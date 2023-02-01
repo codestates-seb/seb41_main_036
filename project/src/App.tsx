@@ -3,9 +3,8 @@ import { lazy, Suspense } from "react";
 import "./App.css";
 import { RecoilRoot } from "recoil";
 import Oauth from "./pages/Oauth";
-import Test from "./components/Test";
 import BeatLoader from "react-spinners/FadeLoader";
-
+import ScrollToTop from "./components/ScrollToTop";
 function App() {
   if (localStorage.getItem("loginStatus") === null) {
     localStorage.setItem("loginStatus", "false");
@@ -26,9 +25,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <RecoilRoot>
+          <ScrollToTop />
           <Suspense fallback={<BeatLoader color="var(--black-500)" />}>
             <Routes>
-              <Route path="/test" element={<Test />}></Route>
               <Route path="/login" element={<LoginSign />}></Route>
               <Route path="/" element={<Main />} />
               <Route path="/attractions" element={<Place />}>

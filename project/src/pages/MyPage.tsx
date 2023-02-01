@@ -15,52 +15,53 @@ import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
 import Charts from "../components/Charts";
+import OnWorking from "./OnWorking";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #f6f6f6b2;
 `;
 
 const MyPageContainer = styled.div`
   width: 83.5%;
-  height: 70vh;
+  height: 80vh;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: white;
   border-radius: var(--br-l);
   display: flex;
 `;
 const MyPageUserInfo = styled.aside`
-  width: 25%;
+  width: 20%;
   height: 100%;
+
   > div:first-child {
     svg {
       cursor: pointer;
     }
   }
+
   form {
     display: flex;
     flex-direction: column;
     height: 70%;
     margin-top: 4em;
     margin-left: 2em;
+
     div:nth-child(2) {
       svg {
         cursor: pointer;
-        width: 20px;
       }
     }
     > img {
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
+
     div {
-      margin: 3px 0 3px 0;
-      color: var(--black-750);
       margin-bottom: 10px;
       font-size: var(--font-sm);
     }
@@ -71,11 +72,7 @@ const MyPageUserInfo = styled.aside`
       font-size: var(--font-xl);
       margin-bottom: 20px;
       svg {
-        color: #868686;
         margin-left: 10px;
-        :hover {
-          color: var(--purple-400);
-        }
       }
     }
     div:nth-child(3) {
@@ -86,6 +83,7 @@ const MyPageUserInfo = styled.aside`
     div:nth-child(4) {
       display: flex;
       align-items: center;
+
       svg {
         margin-right: 5px;
         color: var(--purple-400);
@@ -93,6 +91,7 @@ const MyPageUserInfo = styled.aside`
     }
   }
   input {
+    top: 10em;
     height: 30px;
     border-radius: var(--br-m);
     padding: 6px 7px;
@@ -103,22 +102,20 @@ const MyPageUserInfo = styled.aside`
       box-shadow: 0 0 5px blue;
     }
   }
-  button {
-  }
 `;
 const MyPageMainContainer = styled.article`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  height: 70vh;
+  width: 60%;
   border-bottom-left-radius: var(--br-l);
   border-bottom-right-radius: var(--br-l);
-  border-top-right-radius: var(--br-l);
   background-color: var(--purple-100);
   color: var(--black-800);
+
   > div {
     height: 100%;
     padding: 30px;
+
     > span {
       display: block;
       text-align: right;
@@ -133,14 +130,13 @@ const MyPageTabBarContainer = styled.nav`
   display: flex;
   width: 50%;
   height: 50px;
-  margin-left: 6.2%;
 `;
 
 const MyPageTabBarMenu = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 27%;
+  width: 100%;
   height: 100%;
   border-top-left-radius: var(--br-l);
   border-top-right-radius: var(--br-l);
@@ -148,22 +144,22 @@ const MyPageTabBarMenu = styled.button`
   font-weight: var(--fw-bold);
   color: var(--black-700);
   border: none;
-  font-size: var(--font-sm);
+  font-size: var(--font-base);
   cursor: pointer;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   svg {
     margin-right: 10px;
     color: var(--black-500);
   }
+
   &.onToggle {
     color: var(--purple-400);
     background-color: var(--purple-200);
+
     svg {
       color: var(--purple-400);
     }
   }
 `;
-
 const EditSubmitButton = styled.button`
   width: 50px;
   height: 25px;
@@ -172,6 +168,7 @@ const EditSubmitButton = styled.button`
   border-radius: var(--br-m);
   margin-top: 10px;
   color: white;
+  cursor: pointer;
 `;
 interface UserType {
   memberId: number;
@@ -314,8 +311,9 @@ const MyPage = () => {
       ),
       content: (
         <div>
-          <div>님의 방문기록 입니다.</div>
-        {/* <Charts userData={userData}></Charts> */}
+          {/* <div>님의 방문기록 입니다.</div> */}
+          <OnWorking />
+          {/* <Charts userData={userData}></Charts> */}
         </div>
       ),
     },
@@ -363,7 +361,7 @@ const MyPage = () => {
 
   return (
     <>
-      <HiddenHeader />
+      <HiddenHeader selectedMenu={-1} />
       <MyPageWrapper>
         <MyPageTabBarContainer>
           {tabMenuBarList.map((menu, idx) => (
@@ -470,6 +468,8 @@ const MyPageCardContainer = styled.div`
     width: 75%;
   }
   div {
+    display: flex;
+    align-items: center;
     width: 85px;
     height: 100%;
     font-size: var(--font-sm);
@@ -478,13 +478,14 @@ const MyPageCardContainer = styled.div`
     }
   }
   img {
-    min-width: 100px;
-    height: 100%;
+    width: 100px;
+    height: 35px;
+    object-fit: cover;
     border-radius: var(--br-s);
   }
   span {
-    flex-direction: row;
-    width: 130px;
+    display: flex;
+    align-items: center;
     line-height: 50px;
     margin-right: 10px;
   }

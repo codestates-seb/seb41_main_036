@@ -24,9 +24,8 @@ const Container = styled.div`
     border: none;
     outline: none;
     font-size: 25px;
-    color: var(--black-200);
     font-weight: var(--fw-bold);
-    background-color: #fcfcfc;
+    background-color: transparent;
     &:focus {
       border-color: transparent;
     }
@@ -121,10 +120,6 @@ const TagBox = styled.span`
   button {
     border: none;
     background-color: transparent;
-  }
-
-  svg {
-    padding-top: 3px;
   }
 `;
 
@@ -252,8 +247,10 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (title === "") alert("제목을 입력해주세요");
-    if (title) {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+    } else if (imgFiles.length === 0) alert("이미지를 등록해주세요.");
+    else {
       const formData = new FormData();
       formData.append("postTitle", title);
       tags.forEach((tag) => {

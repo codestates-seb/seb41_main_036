@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styled from "styled-components";
@@ -10,28 +10,32 @@ import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../recoil/state";
+import EmptyResult from "../components/EmptyResult";
 
 const PlaceWrapper = styled.div`
   display: flex;
   max-width: 1280px;
   width: 83.5%;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 70px;
 `;
 
 const LocationWrapper = styled.nav`
   min-width: 190px;
   max-height: 850px;
   border-radius: var(--br-m);
+  border: 1px solid var(--black-200);
   overflow: hidden;
   margin-top: 10px;
-  background-color: white;
-  border: 1px solid var(--black-275);
+  background-color: transparent;
+  margin-bottom: 20px;
   overflow-y: auto;
   height: 100%;
+  background-color: var(--black-200);
 `;
 
 const PlaceContainer = styled.div`
+  min-height: 790px;
   margin: 20px 0 20px 30px;
   width: 100%;
 `;
@@ -109,7 +113,6 @@ export interface ArrayPlaceType extends Array<PlaceType> {}
 const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();
   const [checkedList, setCheckedlist] = useState<string[]>([]);
-  const [sortClick, setSortClick] = useState(false);
   const [onFilter, setOnFliter] = useState(0);
   const [curPage, setCurPage] = useState(1);
   const [sort, setSort] = useState("newest");
@@ -165,13 +168,15 @@ const Place = () => {
 
   return (
     <>
-      <Header headerColor="var(--black-200)">
-        <Header.HeaderTop />
-        <Header.HeaderBody
-          defaultValue={searchValue ? searchValue : undefined}
-          selectedMenu={0}
-        />
-      </Header>
+      <div style={{ display: "fixed" }}>
+        <Header headerColor="var(--black-200)">
+          <Header.HeaderTop />
+          <Header.HeaderBody
+            defaultValue={searchValue ? searchValue : undefined}
+            selectedMenu={0}
+          />
+        </Header>
+      </div>
       <PlaceWrapper>
         <LocationWrapper>
           {placesData && (
@@ -194,6 +199,7 @@ const Place = () => {
             ) : (
               <span>총 {totalInfoRef.current?.totalElements}개의 명소</span>
             )}
+
             <div>
               {sortList.map((sort, idx) => (
                 <FilterButton
@@ -209,14 +215,30 @@ const Place = () => {
             </div>
           </PlaceFilterContainer>
           <PlaceBox>
-            {placesData &&
+            {!totalInfoRef.current?.totalElements && searchValue && (
+              <EmptyResult
+                message="다른 검색어를 입력해보세요"
+                subtitle={false}
+              />
+            )}
+            {placesData?.length ? (
               placesData.map((placeInfo) => (
                 <PlaceCard
                   key={placeInfo.attractionId}
                   placeInfo={placeInfo}
                   width="32%"
                 />
-              ))}
+              ))
+            ) : (
+              <>
+                {!searchValue && (
+                  <EmptyResult
+                    message="등록된 명소가 없습니다"
+                    subtitle={false}
+                  />
+                )}
+              </>
+            )}
           </PlaceBox>
           {placesData && (
             <Pagination

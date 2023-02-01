@@ -1,6 +1,5 @@
 import { ReactComponent as NoAddressillustration } from "../data/NoAddressillustration.svg";
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
 const Move = keyframes`
   0% {
     transform: translate(0,0);
@@ -15,10 +14,7 @@ const Move = keyframes`
     transform: translate(-px, -2px);
   }
 `;
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
+
 const EmptyNotificationWrapper = styled.div`
   width: 100%;
   height: calc(100vh - 100px);
@@ -26,8 +22,10 @@ const EmptyNotificationWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   svg {
     transition: animation 1s ease;
+    width: 250px;
     :hover {
       animation: ${Move} 1s ease infinite alternate;
     }
@@ -38,6 +36,7 @@ const EmptyNotificationWrapper = styled.div`
     font-weight: var(--fw-reg);
     color: var(--black-680);
     letter-spacing: 0.2rem;
+    margin-bottom: 22%;
   }
   a {
     margin-top: 15px;
@@ -51,13 +50,10 @@ const EmptyNotificationWrapper = styled.div`
 `;
 const NoAddress = () => {
   return (
-    <Wrapper>
-      <EmptyNotificationWrapper>
-        <NoAddressillustration />
-        <h2>존재하지 않는 주소입니다</h2>
-        <Link to={"/"}>홈으로 돌아가기</Link>
-      </EmptyNotificationWrapper>
-    </Wrapper>
+    <EmptyNotificationWrapper>
+      <NoAddressillustration />
+      <h2>준비중입니다</h2>
+    </EmptyNotificationWrapper>
   );
 };
 export default NoAddress;

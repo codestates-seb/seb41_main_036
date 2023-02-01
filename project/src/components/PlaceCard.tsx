@@ -133,7 +133,7 @@ export const PlaceCardWrapper = styled.div<{ width: string }>`
   transition: all 0.3s cubic-bezier(0, 0, 0.6, 1);
   border-radius: var(--br-m);
   box-shadow: 0px 0px 8px rgb(0 0 0 / 8%);
-  overflow: hidden;
+
   img {
     aspect-ratio: 16/9;
     min-height: 80%;
