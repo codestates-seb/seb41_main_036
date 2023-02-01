@@ -212,6 +212,21 @@ const EmptyCommentContainer = styled.div`
   }
 `;
 
+const DetailPostAttractionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-lg);
+  font-weight: var(--fw-bold);
+  p {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    font-size: var(--font-sm);
+    svg {
+      color: var(--purple-400);
+    }
+  }
+`;
 export interface PostDetailType {
   attractionAddress: string;
   attractionId: number;
@@ -352,9 +367,12 @@ const DetailPost = () => {
           <h2>{post?.postTitle}</h2>
         </DetailPostTitle>
         <DetailPostInfo>
-          <div>
-            <MdPlace /> &nbsp;{post?.attractionAddress}
-          </div>
+          <DetailPostAttractionsContainer>
+            {post?.attractionName}
+            <p>
+              <MdPlace /> &nbsp;{post?.attractionAddress}
+            </p>
+          </DetailPostAttractionsContainer>
           <div>
             <button
               onClick={() =>
@@ -413,8 +431,8 @@ const DetailPost = () => {
             첫번째 댓글을 남겨주세요.
           </EmptyCommentContainer>
         ) : (
-          postComments?.map((comment, idx) => (
-            <PostComment key={idx} comment={comment} />
+          postComments?.map((comment) => (
+            <PostComment key={comment.commentId} comment={comment} />
           ))
         )}
         <AddComment isLogin={isLogin}>

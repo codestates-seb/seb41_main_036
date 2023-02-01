@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const SearchBarWrapper = styled.div`
   max-width: 420px;
