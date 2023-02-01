@@ -231,7 +231,14 @@ const Place = () => {
                 />
               ))
             ) : (
-              <EmptyResult message="등록된 명소가 없습니다" subtitle={false} />
+              <>
+                {!searchValue && (
+                  <EmptyResult
+                    message="등록된 명소가 없습니다"
+                    subtitle={false}
+                  />
+                )}
+              </>
             )}
           </PlaceBox>
           {placesData && (
