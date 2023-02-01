@@ -450,6 +450,7 @@ const MyPage = () => {
                       placeholder="주소" //체크체크
                       onClick={handleAddress.clickInput}
                       onChange={(e) => onChange(e)}
+                      readOnly
                     />
                   ) : (
                     <>
