@@ -4,12 +4,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
+import Axios from "axios"
+import axios from "./utils/axiosinstance"
+
+axios.defaults.withCredentials = true
+Axios.defaults.withCredentials = true
 
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
-);
-root.render(
+  );
+  root.render(
   <React.StrictMode>
     <RecoilRoot>
       <App />

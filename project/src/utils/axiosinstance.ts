@@ -12,6 +12,7 @@ axios.interceptors.request.use(
     axios.defaults.headers.common["Authorization"] = accessToken;
     originalRequest.headers["Authorization"] = accessToken;
     return originalRequest;
+    
   },
   (error) => {
     return Promise.reject(error);
@@ -35,7 +36,9 @@ axios.interceptors.response.use(
         headers: {
           Authorization: null,
         },
-      });
+      }
+      ) 
+      console.log("리프데이터 : ", data);
       const accessToken = data.data.accessToken;
       localStorage.setItem("Authorization", `${accessToken}`);
       originalRequest.headers.Authorization = accessToken;
