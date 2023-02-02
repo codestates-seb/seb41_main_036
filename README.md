@@ -38,17 +38,17 @@
 ## 👨‍👩‍👧‍👦 Team Members
 
 |김진주 (FE 팀장)   |정세민 (FE 팀원)
------------------------------|-----------------------------|
+:-----------------------------:|:-----------------------------:|
 |<img src='https://user-images.githubusercontent.com/110949256/216304897-c5375a33-6090-4f89-8658-7cba77911300.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216307068-5d8c22f4-1328-4e67-bd0f-c7b0bb95a375.png' width='150'/>
 |[@useusername1](https://github.com/useusername1)        |[@MINSE97](https://github.com/MINSE97) 
 
 |박혜수 (FE 팀원)   |이승현 (FE 팀원)
------------------------------|-----------------------------|
+:-----------------------------:|:-----------------------------:|
 |<img src='https://user-images.githubusercontent.com/110949256/216306552-08216ae2-f54e-4f9a-87e9-f18340319e8f.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216305538-65463170-bdb3-40c0-a84c-542bd33e5862.png' width='150'/>|>|                  
-|[@namnam-5799](https://github.com/namnam-5799)        |[@](https://github.com/NowVic99)
+|[@namnam-5799](https://github.com/namnam-5799)        |[@NowVic99](https://github.com/NowVic99)
 
 |이동우 (BE 서기)   |이상유 (BE 팀원)
------------------------------|-----------------------------|
+:-----------------------------:|:-----------------------------:|
 |<img src='https://user-images.githubusercontent.com/110949256/216305396-eb9d78ae-5dee-43d3-aaf0-f00f43820e1d.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216305385-cad94960-3151-4738-82bb-2b4e4d7a1ff7.png' width='150'/>|>|                  
 |[@eastmeet](https://github.com/eastmeet)        |[@Sangyoo](https://github.com/Sangyoo) 
 
