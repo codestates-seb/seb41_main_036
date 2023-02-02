@@ -1,76 +1,43 @@
-import styled from "styled-components";
-import React, { useCallback, useEffect, useState } from "react";
-import { PieChart, Pie, Cell } from "recharts";
-import axios from "../utils/axiosinstance";
+import React from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
 
-// const data = [
-//   { name: "Group A", value: 400 },
-//   { name: "Group B", value: 300 },
-//   { name: "Group C", value: 300 },
-//   { name: "Group D", value: 200 }
-// ];
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const COLORS = ["#96bbdb", "#86ccbf", "#efafaf", "#e7ff88"];
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  userData
-}: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  console.log('되나',userData);
-  return (
-    <text
-      // x={x}
-      // y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${userData}`}
-    </text>
-  );
+export const data = {
+  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
 };
 
-const ChartInfo = styled.div`
-  width:270px;
-  height: 400px;
-  background-color: red;
-  margin-left: 450px;
-  margin-top: -340px;
-`
-
 const Charts = ({userData}:{userData:any}) => {
-  // 나의 post 데이터들로 파이차트 구성 
-  console.log(userData.posts)
-  return (
+
+  return(
     <>
-    <PieChart width={400} height={400}>
-      <Pie
-        data={userData.posts}
-        cx={210}
-        cy={230}
-        labelLine={true}
-        label={renderCustomizedLabel}
-        outerRadius={150}
-        fill="#8884d8"
-        dataKey="postId"
-      >
-        {userData.posts.map((entry:any, index:any) => (
-          <Cell key={`cell-${entry.postTitle}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-    </PieChart>
-    <ChartInfo>이거</ChartInfo>
+      <Pie data={data}></Pie>
     </>
-  );
+  )
 }
 
-export default Charts;
+export default Charts; 
