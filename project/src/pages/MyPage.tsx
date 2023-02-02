@@ -15,7 +15,12 @@ import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
 import Charts from "../components/Charts";
+import DaumPostcode from "react-daum-postcode";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import OnWorking from "./OnWorking";
+import Logo from "../data/Logo.png";
+import Modal from "../components/Modal";
+
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -46,7 +51,6 @@ const MyPageUserInfo = styled.aside`
     display: flex;
     flex-direction: column;
     height: 70%;
-    margin-top: 4em;
     margin-left: 2em;
 
     div:nth-child(2) {
@@ -170,6 +174,34 @@ const EditSubmitButton = styled.button`
   color: white;
   cursor: pointer;
 `;
+
+const LogoContainer = styled.div`
+  width: 150px;
+  img {
+    width: 100%;
+    margin-bottom: 2em;
+    cursor: pointer;
+  }
+`;
+const CloseButton = styled.button`
+  z-index: 100;
+  background-color: white;
+  font-size: 25px;
+  color: var(--black-700);
+  width: 30px;
+  position: relative;
+  top: 2.5em;
+  left: 1.6em;
+  border: none;
+  background-color: transparent;
+  margin-left: 45%;
+  margin-top: 3%;
+  cursor: pointer;
+  &:hover {
+    color: #c3c3c3;
+  }
+`;
+
 interface UserType {
   memberId: number;
   username: string;
@@ -234,11 +266,12 @@ const MyPage = () => {
     address: "",
     phoneNumber: "",
   });
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   const { username, address, phoneNumber } = inputs;
   const [isLogin, setIsLogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [LoggerUser, setLoggedUser] = useRecoilState(LoggedUser);
+  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
 
   const getUserProfile = async () => {
     await axios
@@ -277,6 +310,7 @@ const MyPage = () => {
       })
       .then((res) => {
         if (res.status === 200) setIsEdit(false);
+        window.location.replace("/mypage");
       })
       .catch((err) => console.error(err));
   };
@@ -295,7 +329,7 @@ const MyPage = () => {
             localStorage.setItem("loginStatus", "false");
             localStorage.removeItem("memberId");
             alert("탈퇴가 완료되었습니다.");
-            naviate(`/`);
+            navigate(`/`);
           }
         })
         .catch((err) => console.error(err));
@@ -359,6 +393,20 @@ const MyPage = () => {
     });
   };
 
+  const handleAddress = {
+    clickInput: () => {
+      setOpenPostcode(!openPostcode);
+    },
+    selectAddress: (data: any) => {
+      setInputs({
+        username: username,
+        address: data.address,
+        phoneNumber: phoneNumber,
+      });
+      setOpenPostcode(false);
+    },
+  };
+
   return (
     <>
       <HiddenHeader selectedMenu={-1} />
@@ -378,10 +426,10 @@ const MyPage = () => {
           <MyPageContainer>
             <MyPageUserInfo>
               <form>
-                <img
-                  src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
-                  alt=""
-                />
+                <LogoContainer>
+                  <img src={Logo} alt="home" onClick={() => navigate("/")} />
+                </LogoContainer>
+                <img src={userData.picture} alt="" />
                 <div>
                   {isEdit ? (
                     <input
@@ -405,8 +453,10 @@ const MyPage = () => {
                       name="address"
                       type="text"
                       value={address}
-                      placeholder="주소"
+                      placeholder="주소" //체크체크
+                      onClick={handleAddress.clickInput}
                       onChange={(e) => onChange(e)}
+                      readOnly
                     />
                   ) : (
                     <>
@@ -444,6 +494,25 @@ const MyPage = () => {
               />
             </MyPageUserInfo>
             <MyPageMainContainer>
+              {openPostcode && (
+                <>
+                  <CloseButton onClick={handleAddress.clickInput}>
+                    <AiOutlineCloseCircle />
+                  </CloseButton>
+                  <DaumPostcode
+                    style={{
+                      // display: "block",
+                      position: "absolute",
+                      width: "30%",
+                      height: "50%",
+                      zIndex: 10,
+                    }}
+                    onComplete={handleAddress.selectAddress} // 값을 선택할 경우 실행되는 이벤트
+                    autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                    defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
+                  />
+                </>
+              )}
               <div>{tabMenuBarList[tab].content}</div>
             </MyPageMainContainer>
           </MyPageContainer>
@@ -502,14 +571,14 @@ const MyPageMyPostCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {posts &&
         currentPosts.map((post) => (
           <MyPageCardContainer
             key={post.postId}
-            onClick={() => naviate(`/posts/detail/${post.postId}`)}
+            onClick={() => navigate(`/posts/detail/${post.postId}`)}
           >
             <h3>{post.postTitle}</h3>
             <div>
@@ -548,14 +617,14 @@ const MyPageMyFavoriteCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {saves &&
         currentSaves.map((save) => (
           <MyPageCardContainer
             key={save.attractionId}
-            onClick={() => naviate(`/attractions/detail/${save.attractionId}`)}
+            onClick={() => navigate(`/attractions/detail/${save.attractionId}`)}
           >
             <h3>{save.attractionName}</h3>
             <div>
