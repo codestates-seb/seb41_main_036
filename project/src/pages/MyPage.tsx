@@ -15,7 +15,8 @@ import HiddenHeader from "../components/Header/HiddenHeader";
 import { useNavigate } from "react-router-dom";
 import MyPagePagination from "../components/MyPagePagination";
 import OnWorking from "./OnWorking";
-import Charts from "../components/Charts";
+import Logo from "../data/Logo.png";
+import Modal from "../components/Modal";
 const MyPageWrapper = styled.div`
   height: 96.5vh;
   display: flex;
@@ -46,7 +47,6 @@ const MyPageUserInfo = styled.aside`
     display: flex;
     flex-direction: column;
     height: 70%;
-    margin-top: 4em;
     margin-left: 2em;
 
     div:nth-child(2) {
@@ -170,6 +170,15 @@ const EditSubmitButton = styled.button`
   color: white;
   cursor: pointer;
 `;
+
+const LogoContainer = styled.div`
+  width: 150px;
+  img {
+    width: 100%;
+    margin-bottom: 2em;
+    cursor: pointer;
+  }
+`;
 interface UserType {
   memberId: number;
   username: string;
@@ -234,12 +243,11 @@ const MyPage = () => {
     address: "",
     phoneNumber: "",
   });
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   const { username, address, phoneNumber } = inputs;
   const [isLogin, setIsLogin] = useRecoilState(LoginState);
   const [auth, setAuth] = useRecoilState(AuthToken);
   const [LoggerUser, setLoggedUser] = useRecoilState(LoggedUser);
-
   const getUserProfile = async () => {
     await axios
       .get(`/users/profile/${memberId}`)
@@ -295,7 +303,7 @@ const MyPage = () => {
             localStorage.setItem("loginStatus", "false");
             localStorage.removeItem("memberId");
             alert("탈퇴가 완료되었습니다.");
-            naviate(`/`);
+            navigate(`/`);
           }
         })
         .catch((err) => console.error(err));
@@ -378,10 +386,10 @@ const MyPage = () => {
           <MyPageContainer>
             <MyPageUserInfo>
               <form>
-                <img
-                  src="http://drive.google.com/uc?export=view&amp;id=1OmsgU1GLU9iUBYe9ruw_Uy1AcrN57n4g"
-                  alt=""
-                />
+                <LogoContainer>
+                  <img src={Logo} alt="home" onClick={() => navigate("/")} />
+                </LogoContainer>
+                <img src={userData.picture} alt="" />
                 <div>
                   {isEdit ? (
                     <input
@@ -502,14 +510,14 @@ const MyPageMyPostCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {posts &&
         currentPosts.map((post) => (
           <MyPageCardContainer
             key={post.postId}
-            onClick={() => naviate(`/posts/detail/${post.postId}`)}
+            onClick={() => navigate(`/posts/detail/${post.postId}`)}
           >
             <h3>{post.postTitle}</h3>
             <div>
@@ -548,14 +556,14 @@ const MyPageMyFavoriteCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {saves &&
         currentSaves.map((save) => (
           <MyPageCardContainer
             key={save.attractionId}
-            onClick={() => naviate(`/attractions/detail/${save.attractionId}`)}
+            onClick={() => navigate(`/attractions/detail/${save.attractionId}`)}
           >
             <h3>{save.attractionName}</h3>
             <div>
