@@ -300,7 +300,7 @@ const EditPost = () => {
         formData.append("postContents", text);
       });
       axios
-        .patch(`/posts/edit/${memberId}`, formData, {
+        .patch(`/posts/edit/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
