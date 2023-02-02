@@ -183,7 +183,7 @@ const Login = () => {
         ></s.InputStyle>
         {signpasswordErr && signpassword.length !== 0 ? (
           <s.ErrMsg color="red" fontSize="12px" fontweight="normal">
-            비밀번호를 8자이상 입력해주세요.
+            영문과 특수문자를 포함하여 8자이상 입력해주세요.
           </s.ErrMsg>
         ) : null}
         <s.InputStyle
