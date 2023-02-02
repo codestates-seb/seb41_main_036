@@ -16,7 +16,7 @@
 
 쉬는날 가족 또는 친구, 연인과 어디를 가야할 지 잘 모른다면 Pikcha를 이용해보세요!
 
-## 왜 만들었을까요? 👀 
+## 👀 왜 만들었을까요?  
 <img src='https://user-images.githubusercontent.com/110949256/216319316-9f4fe715-3a66-40a9-9f4b-a7b33dbe69b2.jpg' width='1500' height='600'>
 
 
@@ -24,7 +24,7 @@
 
 저희가 선별한 멋지고 아름다운 다양한 명소들을  방문해보세요.
 
-## 기능⭐️
+## ⭐️ 기능
 <img src='https://user-images.githubusercontent.com/110949256/216318488-7818ed30-9351-423b-9723-5bf8490d1317.jpg' width='3000' height='600'>
 
 
@@ -54,7 +54,7 @@
 |[@eastmeet](https://github.com/eastmeet)        |[@Sangyoo](https://github.com/Sangyoo) 
 
 
-## Roles & Responsibility
+## 👑 Roles & Responsibility
 |Name   | Roles | Responsibility |
 -----------------------------|-----------------------------|-----------------------------|
 |김진주| Frontend | 헤더, 검색창 구현, 캐러셀, 실시간 랭킹 구현, 좋아요, 북마크 기능|
@@ -66,7 +66,7 @@
 
 
 ---
-## Document
+## 💼 Document
 [Figma](https://www.figma.com/file/iFs2WMfNlUTOA6ILnCljk3/main-project?node-id=0%3A1&t=54AppbXG2IH2Ven1-1)
 
 [UserFlow](https://github.com/codestates-seb/seb41_main_036/wiki/UserFlow)
@@ -76,7 +76,7 @@
 [API 명세](https://documenter.getpostman.com/view/23682192/2s935hQmqG)
 
 ---
-## 기술스택
+## 🛵 기술스택
 <img src="https://lh3.googleusercontent.com/pw/AMWts8BoQN19OS4K4QgDINS65jh193HCqKY6fXYRn7iChiJg0TANlkxvgnJU4pwHSkQsyJJreJ_uH-ywVfQ26CDIKnmhPONVvvSohKfWyP-JL36eXWHJ7sHJtux3onbwGD5xAQLrMOaOMl3Fj4-l8_IcXArc=w1311-h734-no?authuser=0" width="800" height="500">
 
 
