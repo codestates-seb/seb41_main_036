@@ -6,6 +6,7 @@ import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
+import WriteGuide from "../components/WriteGuide";
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ const Container = styled.div`
     outline: none;
     font-size: 25px;
     font-weight: var(--fw-bold);
-    background-color: #fcfcfc;
+    background-color: transparent;
     &:focus {
       border-color: transparent;
     }
@@ -121,10 +122,6 @@ const TagBox = styled.span`
     border: none;
     background-color: transparent;
   }
-
-  svg {
-    padding-top: 3px;
-  }
 `;
 
 const TagWrapper = styled.div`
@@ -158,6 +155,9 @@ const Header = styled.div`
     width: 45%;
     height: 100%;
     padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   > div:nth-child(2) {
     width: 55%;
@@ -188,6 +188,7 @@ const WritePost = () => {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const imgRef = useRef<HTMLInputElement>(null);
   const [isModal, setIsModal] = useState(false);
+  const [isWriteGuideModal, setIsWriteGuideModal] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -251,8 +252,10 @@ const WritePost = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (title === "") alert("제목을 입력해주세요");
-    if (title) {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+    } else if (imgFiles.length === 0) alert("이미지를 등록해주세요.");
+    else {
       const formData = new FormData();
       formData.append("postTitle", title);
       tags.forEach((tag) => {
@@ -284,9 +287,21 @@ const WritePost = () => {
 
   return (
     <>
+      {isWriteGuideModal ? (
+        <WriteGuide setIsWriteGuideModal={setIsWriteGuideModal} />
+      ) : null}
       <Header>
         <div>
-          <BsDot color="#6255F8" />새 포스트
+          <span>
+            <BsDot color="#6255F8" />새 포스트
+          </span>
+          <ButtonForm
+            type="violet"
+            width="80px"
+            height="20px"
+            text="가이드 보기"
+            onClick={() => setIsWriteGuideModal(true)}
+          />
         </div>
         <div onClick={() => navigate(-1)}>
           <IoArrowBackSharp />

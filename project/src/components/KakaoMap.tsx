@@ -54,7 +54,6 @@ const KakaoMap = ({
   dataList,
   position,
   left,
-  regionFilter,
   component,
   dataset,
   modalData,
@@ -62,52 +61,51 @@ const KakaoMap = ({
   setFilterOrPosition,
 }: Map) => {
   const container = useRef<any>();
+  const [myLocation, setMyLocation] = useState();
 
   const options = {
     center: new window.kakao.maps.LatLng(37.5575265973614, 127.175938009116),
     level: 5,
   };
 
-  const conditionPlace = (geocoder: any, map: any) => {
-    geocoder.addressSearch(dataList, function (result: any, status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        var marker = new window.kakao.maps.Marker({
-          map: map,
-          position: coords,
-        });
-        map.setCenter(coords);
-      }
-    });
-  };
+  const conditionPlace = (geocoder:any, map:any) => {
+    geocoder.addressSearch(dataList, function(result:any, status:any) {
+      if (status === window.kakao.maps.services.Status.OK) {    
+         var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+         var marker = new window.kakao.maps.Marker({
+             map: map,
+             position: coords
+         });
+         map.setCenter(coords);
+     } 
+    });    
+  }
 
   const conditionMap = (geocoder: any, map: any) => {
     if (filterOrPosition === true) {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude,
-            lon = position.coords.longitude;
-          var locPosition = new window.kakao.maps.LatLng(lat, lon);
-          map.setCenter(locPosition);
-        });
-      }
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var lat = position.coords.latitude, 
+              lon = position.coords.longitude; 
+            var locPosition = new window.kakao.maps.LatLng(lat, lon) 
+            setMyLocation(locPosition);
+            console.log(myLocation)
+            map.setCenter(locPosition);
+            });
+          }
+      
+           
+        dataset.forEach(function(addr:any,index:number){
+          geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
+             if (status === window.kakao.maps.services.Status.OK) {
+                var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                var marker = new window.kakao.maps.Marker({
+                  map: map,
+                  position: coords,
+                });
 
-      dataset.forEach(function (addr: any, index: number) {
-        geocoder.addressSearch(
-          addr.attractionAddress,
-          function (result: any, status: any) {
-            if (status === window.kakao.maps.services.Status.OK) {
-              var coords = new window.kakao.maps.LatLng(
-                result[0].y,
-                result[0].x
-              );
-              var marker = new window.kakao.maps.Marker({
-                map: map,
-                position: coords,
-              });
-
-              var infowindow = new window.kakao.maps.InfoWindow({
-                content: `<div 
+                var infowindow = new window.kakao.maps.InfoWindow({
+                  content: `<div 
                     style="
                       width:180px;
                       height:110px;

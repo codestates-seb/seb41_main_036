@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const SearchBarWrapper = styled.div`
   max-width: 420px;
@@ -183,7 +183,7 @@ const HeaderBody = styled.div`
   display: flex;
   align-items: center;
   display: flex;
-  max-width: 100%;
+  max-width: 100vw;
   padding: 0 75px;
   svg.logo {
     width: 200px;
@@ -192,11 +192,12 @@ const HeaderBody = styled.div`
 const HeaderBodyMenu = styled.ul`
   margin-left: auto;
   display: flex;
+  justify-content: space-between;
 `;
 const HeaderBodyMenuItem = styled.li<{ selected: boolean }>`
   font-size: var(--font-sm);
   list-style: none;
-  padding-left: 35px;
+  margin-right: 25px;
   white-space: nowrap;
   text-align: center;
   font-weight: 600;
@@ -246,6 +247,7 @@ const HeaderBodyWrapper = styled.div<{ backgroundOn: boolean }>`
 const HiddenHeaderBodyWrapper = styled.header<{
   isVisible: boolean;
 }>`
+  width: 100%;
   position: fixed;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
@@ -253,7 +255,6 @@ const HiddenHeaderBodyWrapper = styled.header<{
   -webkit-backdrop-filter: blur(11.5px);
   margin: 0 auto;
   left: 0;
-  right: 0;
   transition: all 0.8s ease;
   transform: ${(props) =>
     props.isVisible ? "translate(0,28px)" : "translate(0,-42px)"};
@@ -276,15 +277,15 @@ const HiddenHeaderTopWrapper = styled.div<{ isVisible: boolean }>`
     position: absolute;
     left: calc(50% - 8px);
     color: var(--purple-300);
-    :hover {
-      cursor: pointer;
-    }
     ::after {
       content: "";
       width: 50px;
       height: 30px;
       background-color: var(--grey-background);
     }
+  }
+  :hover {
+    cursor: pointer;
   }
 `;
 
