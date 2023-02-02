@@ -351,7 +351,7 @@ const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [bookmarkDelete, setBookmarkDelete] = useRecoilState(isDeleteMode);
   const [editPosts, setEditPosts] = useRecoilState(isEditMode);
-  console.log(userData);
+
   const [inputs, setInputs] = useState({
     username: "",
     address: "",
@@ -372,7 +372,6 @@ const MyPage = () => {
       .get(`/users/profile/${memberId}`)
       .then((res) => {
         setUserData(res.data.data);
-        console.log(res.data);
         const { data } = res.data;
         setInputs({
           username: data.username,
