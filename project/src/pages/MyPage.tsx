@@ -187,11 +187,11 @@ const CloseButton = styled.button`
   z-index: 100;
   background-color: white;
   font-size: 25px;
-  right: 1.6em;
-  bottom: 7em;
   color: var(--black-700);
   width: 30px;
-  /* position: relative; */
+  position: relative;
+  top: 2.5em;
+  left: 1.6em;
   border: none;
   background-color: transparent;
   margin-left: 45%;
@@ -407,7 +407,6 @@ const MyPage = () => {
     },
   };
 
-
   return (
     <>
       <HiddenHeader selectedMenu={-1} />
@@ -495,25 +494,25 @@ const MyPage = () => {
               />
             </MyPageUserInfo>
             <MyPageMainContainer>
-            {openPostcode && (
-        <>
-              <CloseButton onClick={handleAddress.clickInput}>
-                <AiOutlineCloseCircle />
-              </CloseButton>
-          <DaumPostcode
-            style={{
-              // display: "block",
-              position: "absolute" ,
-              width: "30%",
-              height: "50%",
-              zIndex: 10,
-            }}
-            onComplete={handleAddress.selectAddress} // 값을 선택할 경우 실행되는 이벤트
-            autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-            defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
-            />
-        </>
-      )}
+              {openPostcode && (
+                <>
+                  <CloseButton onClick={handleAddress.clickInput}>
+                    <AiOutlineCloseCircle />
+                  </CloseButton>
+                  <DaumPostcode
+                    style={{
+                      // display: "block",
+                      position: "absolute",
+                      width: "30%",
+                      height: "50%",
+                      zIndex: 10,
+                    }}
+                    onComplete={handleAddress.selectAddress} // 값을 선택할 경우 실행되는 이벤트
+                    autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                    defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
+                  />
+                </>
+              )}
               <div>{tabMenuBarList[tab].content}</div>
             </MyPageMainContainer>
           </MyPageContainer>
