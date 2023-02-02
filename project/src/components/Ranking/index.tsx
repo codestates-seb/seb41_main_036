@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-
+import axios from "../../utils/axiosinstance";
+import { getRandomInt } from "../../utils/utils";
 import {
   RankingWrapper,
   MainRankingWrapper,
@@ -9,7 +10,7 @@ import {
   RankingItemContent,
   CurrentTimeSpan,
 } from "./style";
-import rankingData from "../../data/RankingData";
+// import rankingData from "../../data/RankingData";
 import { RxDoubleArrowUp as DoubleUpIcon } from "react-icons/rx";
 import {
   TiArrowSortedUp as UpIcon,
@@ -24,12 +25,35 @@ const options: optionsType = {
   dateStyle: "medium",
   timeStyle: "short",
 };
+const RANKING_URL = `attractions/main/rank`;
+interface RankingDataType {
+  attractionName: string;
+  attractionAddress: string;
+  currentRank: number;
+  rankOrder: number;
+}
 const Ranking = () => {
+  const [RankingData, setRankingData] = useState(Array<RankingDataType>);
   const [currentAttraction, setCurrentAttraction] = useState(0);
   const [startAnimation, setStartAnimation] = useState(false);
   const timerIdRef = useRef<NodeJS.Timeout | null>(null);
-  const newRankingData = [...rankingData, ...rankingData.slice(0, 1)];
+  // const newRankingData = [...rankingData, ...rankingData.slice(0, 1)];
   const currentTime = new Intl.DateTimeFormat("ko", options).format(new Date());
+  useEffect(() => {
+    axios.get(RANKING_URL).then((res) => {
+      let newRankingData = res.data.data;
+      newRankingData = newRankingData.map(
+        (info: RankingDataType, i: number) => ({
+          ...info,
+          rankOrder: getRandomInt(i * -1, 20),
+          currentRank: i,
+        })
+      );
+      setRankingData([...newRankingData, ...newRankingData.slice(0, 1)]);
+      console.log(res.data.data);
+    });
+  }, []);
+
   useEffect(() => {
     timerIdRef.current = setInterval(() => {
       setStartAnimation(true);
@@ -47,17 +71,21 @@ const Ranking = () => {
           지금 뜨는 곳<DoubleUpIcon className="doubleup-icon" />
         </RankingTitle>
         <RankingItemWrapper startAnimation={startAnimation}>
-          {newRankingData
-            .slice(currentAttraction, (currentAttraction + 2) % 12)
-            .map((el) => (
-              <RankingItem key={el.id}>
+          {RankingData &&
+            RankingData.slice(
+              currentAttraction,
+              (currentAttraction + 2) % 12
+            ).map((el) => (
+              <RankingItem key={el.attractionName}>
                 <RankingItemContent currentRank>
-                  {el.currentRank}
+                  {el.currentRank + 1}
                 </RankingItemContent>
                 <RankingItemContent attractionName>
-                  {el.name}
+                  {el.attractionName}
                 </RankingItemContent>
-                <RankingItemContent address>{el.address}</RankingItemContent>
+                <RankingItemContent address>
+                  {el.attractionAddress}
+                </RankingItemContent>
                 <RankingItemContent rankOrder>
                   <ArrowIconGenerator difference={el.rankOrder} />
                 </RankingItemContent>

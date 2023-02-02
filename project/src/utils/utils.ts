@@ -98,4 +98,28 @@ const getCurrentCount = (
   return cur ? totalCount : (totalCount as number) - 1;
 };
 
-export { getfilteredAttractions, throttle, delaySetter, getCurrentCount };
+const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+interface optionsType {
+  dateStyle: "short";
+  timeStyle: "short";
+}
+const options: optionsType = {
+  dateStyle: "short",
+  timeStyle: "short",
+};
+const getTime = (time: string) => {
+  return new Intl.DateTimeFormat("ko", options).format(new Date(time));
+};
+export {
+  getfilteredAttractions,
+  throttle,
+  delaySetter,
+  getCurrentCount,
+  getRandomInt,
+  getTime,
+};

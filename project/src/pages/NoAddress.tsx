@@ -1,5 +1,5 @@
-import { ReactComponent as NoAddressillustration } from "../data/NoAddressillustration.svg";
 import styled, { keyframes } from "styled-components";
+import Notification from "../components/Notification";
 import { Link } from "react-router-dom";
 const Move = keyframes`
   0% {
@@ -53,8 +53,7 @@ const NoAddress = () => {
   return (
     <Wrapper>
       <EmptyNotificationWrapper>
-        <NoAddressillustration />
-        <h2>존재하지 않는 주소입니다</h2>
+        <Notification type="noAddress" message="존재하지 않는 주소입니다" />
         <Link to={"/"}>홈으로 돌아가기</Link>
       </EmptyNotificationWrapper>
     </Wrapper>

@@ -1,4 +1,5 @@
-import { ReactComponent as NoAddressillustration } from "../data/NoAddressillustration.svg";
+import { ReactComponent as NoAddressIcon } from "../data/NoAddressillustration.svg";
+import { ReactComponent as NotFoundIcon } from "../data/NotFound.svg";
 import styled, { keyframes } from "styled-components";
 const Move = keyframes`
   0% {
@@ -17,12 +18,11 @@ const Move = keyframes`
 
 const EmptyNotificationWrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 100px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   svg {
     transition: animation 1s ease;
     width: 250px;
@@ -32,11 +32,11 @@ const EmptyNotificationWrapper = styled.div`
   }
   h2 {
     padding-top: 20px;
+    margin-bottom: 20px;
     font-size: var(--font-sm);
     font-weight: var(--fw-reg);
     color: var(--black-680);
     letter-spacing: 0.2rem;
-    margin-bottom: 22%;
   }
   a {
     margin-top: 15px;
@@ -48,12 +48,19 @@ const EmptyNotificationWrapper = styled.div`
     color: var(--black-700);
   }
 `;
-const NoAddress = () => {
+
+interface NotificationProps {
+  type: string;
+  message: string;
+}
+
+const Notification = ({ type, message }: NotificationProps) => {
   return (
     <EmptyNotificationWrapper>
-      <NoAddressillustration />
-      <h2>준비중입니다</h2>
+      {type === "noAddress" && <NoAddressIcon />}
+      {type === "notFound" && <NotFoundIcon />}
+      <h2>{message}</h2>
     </EmptyNotificationWrapper>
   );
 };
-export default NoAddress;
+export default Notification;

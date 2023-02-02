@@ -388,7 +388,7 @@ const DetailPost = () => {
               }
             >
               <RxDoubleArrowLeft />
-              &nbsp; 이 명소 방문 리뷰 더보기
+              &nbsp; 이 명소 포스트 더보기
             </button>
             <span>{post?.createdAt.slice(0, 10)}</span>
           </div>

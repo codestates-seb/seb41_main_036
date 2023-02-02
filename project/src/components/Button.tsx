@@ -155,6 +155,20 @@ const Button = ({
       ) : (
         <></>
       )}
+      {type === "enabledGray" ? (
+        <GrayButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          hovercolor={hovercolor}
+          onClick={onClick}
+          margin={margin}
+        >
+          {text}
+        </GrayButton>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

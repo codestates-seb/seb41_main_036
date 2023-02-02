@@ -110,7 +110,30 @@ const LinkIconContainer = styled.a`
     transform: translate(40px, 2px);
   }
 `;
-const LinkWrapper = styled.div``;
+const LinkWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const EmailContainer = styled.span`
+  display: flex;
+  align-items: center;
+  color: var(--black-700);
+  font-size: var(--font-xs);
+  letter-spacing: 0.03rem;
+  margin: 0 10px 5px auto;
+  svg {
+    margin-right: 5px;
+  }
+  a {
+    color: var(--black-700);
+    :visited {
+      color: var(--black-700);
+    }
+    :hover {
+      color: var(--purple-300);
+    }
+  }
+`;
 export {
   Logo,
   FooterWrapper,
@@ -123,4 +146,5 @@ export {
   MadePeopleContainer,
   LinkIconContainer,
   LinkWrapper,
+  EmailContainer,
 };

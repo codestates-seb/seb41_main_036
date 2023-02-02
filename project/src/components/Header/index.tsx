@@ -148,7 +148,7 @@ const HeaderBodyBar = ({
             onClick={() => navigate("/posts")}
             selected={selectedMenu === 1}
           >
-            방문리뷰
+            포스트
           </HeaderBodyMenuItem>
           <HeaderBodyMenuItem
             onClick={() => navigate("/map")}

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
   FooterContainer,
-  FooterImage,
   FooterText,
   FooterWrapper,
   FooterBottomText,
@@ -10,9 +9,11 @@ import {
   FooterBottomContainer,
   LinkIconContainer,
   LinkWrapper,
+  EmailContainer,
 } from "./FooterStyled";
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CgFigma as FigmaIcon } from "react-icons/cg";
+import { IoMailOutline as EmailIcon } from "react-icons/io5";
 import Logo from "../data/Logo.png";
 const Footer = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const Footer = () => {
           <FooterText marginRight="10px">이승현 |</FooterText>
           <FooterText marginRight="10px">정세민</FooterText>
         </MadePeopleContainer>
+
         <LinkWrapper>
           <LinkIconContainer
             href="https://github.com/codestates-seb/seb41_main_036"
@@ -53,6 +55,11 @@ const Footer = () => {
           >
             <FigmaIcon />
           </LinkIconContainer>
+          <EmailContainer>
+            <EmailIcon />
+            명소 등록 & 사이트 문의 :
+            <a href="mailto:pikchainc@gmail.com"> &nbsp;pikchainc@gmail.com</a>
+          </EmailContainer>
         </LinkWrapper>
         <hr />
         <FooterBottomContainer>
