@@ -54,10 +54,15 @@
 |[@eastmeet](https://github.com/eastmeet)        |[@Sangyoo](https://github.com/Sangyoo) 
 
 
-## Team Culture
-
-asdfasdf
-
+## Roles & Responsibility
+|Name   | Roles | Responsibility |
+-----------------------------|-----------------------------|-----------------------------|
+|김진주| Frontend | 헤더, 검색창 구현, 캐러셀, 실시간 랭킹 구현, 좋아요, 북마크 기능|
+|정세민| Frontend | 명소 리스트 조회 및 필터링, 포스트 리스트 조회 및 필터링, 상세포스트 CRUD 기능 구현, 상세포스트 댓글 CRUD 기능 구현, 마이페이지 정보 CRUD 기능 구현|
+|박혜수| Frontend | 지도 페이지 구현, 명소 상세 페이지 구현 |
+|이승현| Frontend | 회원가입 및 로그인, 소셜 로그인, 로그아웃 페이지 및 로직, 토큰을 이용한 통신 로직 구현 (재발급 및 자동 로그아웃), 전역 상태 관리  |
+|이동우| Backend | 회원가입 및 로그인, 소셜 로그인, 로그아웃, NginX 웹서버 구축, AWS 배포, SSL 보안, 멤버프로필, 댓글 도메인 구현|
+|이상유| Backend | 명소, 포스트 도메인 구현, S3 이미지 업로드, 좋아요, 즐겨찾기, 필터링, 검색 기능|               
 
 
 ---
