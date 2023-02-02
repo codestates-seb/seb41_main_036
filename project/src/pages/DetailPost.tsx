@@ -63,6 +63,7 @@ const DetailPostInfo = styled.div`
     display: flex;
     align-items: center;
     color: var(--black-800);
+    margin-top: 25px;
   }
   > div:last-child {
     width: 100%;
@@ -72,6 +73,7 @@ const DetailPostInfo = styled.div`
     font-size: var(--font-sm);
   }
   > div:last-child > button {
+    display: flex;
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -122,7 +124,6 @@ const TagsButton = styled.button`
   background-color: var(--purple-tag);
   color: var(--purple-400);
   font-weight: var(--fw-bold);
-  box-shadow: 0 0 5px var(--purple-200);
   border-radius: var(--br-s);
   &:hover {
     background-color: var(--purple-300);
@@ -138,7 +139,7 @@ const PostContentBottom = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5em 0 3em 0;
-  border-bottom: 3px solid #9e95ec;
+  border-bottom: 1px solid var(--black-600);
   > div > img {
     width: 30px;
     height: 30px;
@@ -148,7 +149,7 @@ const PostContentBottom = styled.div`
   > div:first-child {
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: var(--font-base);
   }
   > div:last-child {
     width: 100px;
@@ -173,6 +174,8 @@ const AddComment = styled.form<{ isLogin: boolean }>`
   width: 80%;
   > h3 {
     margin-left: 7%;
+    font-size: var(--fw-reg);
+    color: var(--black-800);
   }
 
   > div {
@@ -205,8 +208,10 @@ const AddComment = styled.form<{ isLogin: boolean }>`
 const EmptyCommentContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 2em 0;
-
+  color: var(--black-700);
+  font-size: var(--font-sm);
   svg {
     margin-right: 1em;
   }
@@ -215,15 +220,18 @@ const EmptyCommentContainer = styled.div`
 const DetailPostAttractionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   font-weight: var(--fw-bold);
+  color: var(--black-500);
   p {
-    margin-top: 5px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     font-size: var(--font-sm);
+    font-weight: var(--fw-reg);
+    letter-spacing: 0.03rem;
     svg {
-      color: var(--purple-400);
+      color: var(--black-500);
     }
   }
 `;
@@ -288,14 +296,23 @@ const DetailPost = () => {
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
 
+  const [postId,setPostId] = useState<number>();
+  const [isVoted, setIsVoted] = useState<boolean>();
+
   const navigate = useNavigate();
+
+
   useEffect(() => {
     if (isLogin) {
       axios
         .get(`/posts/details/${id}/${memberId}`)
-        .then((res) => setPost(res.data.data))
+        .then((res) => {setPost(res.data.data)
+          const { comments, postId, isVoted} = res.data.data
+          setPostComments(comments);
+          setPostId(postId);
+          setIsVoted(isVoted);
+        })
         .catch((err) => console.error(err));
-      setPostComments(post?.comments);
     } else {
       axios
         .get(`/posts/details/${id}`)
@@ -303,7 +320,8 @@ const DetailPost = () => {
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
     }
-  }, [post === undefined]);
+  }, [isVoted]);
+
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
@@ -353,6 +371,16 @@ const DetailPost = () => {
       console.error(err);
     }
   };
+
+  const handleLikePost = () => {
+    if (!isLogin) setIsModalVisible(true);
+    
+    axios.post(`/posts/likes/${postId}`)
+    .then((res) => {
+      setIsVoted(res.data.data.isVoted)
+    })
+  }
+
   return (
     <>
       <Header>
@@ -396,9 +424,9 @@ const DetailPost = () => {
         <PostContentContainer>
           <PostContentBox>
             {data.map((post, idx) => (
-              <div key={idx}>
+              <div >
                 <div>
-                  <img src={post.imageURL} alt="picture" />
+                  <img src={post.imageURL} alt="picture" key={post.postId} />
                 </div>
                 <div>{post.content}</div>
               </div>
@@ -408,7 +436,7 @@ const DetailPost = () => {
             {post &&
               post?.postHashTags.map((tag, idx) => (
                 <>
-                  <TagsButton key={idx}>{tag}</TagsButton>
+                  <TagsButton key={post.postId}>{tag}</TagsButton>
                 </>
               ))}
           </div>
@@ -418,7 +446,11 @@ const DetailPost = () => {
               <strong>{post?.username}</strong>님의 포스트
             </div>
             <div>
-              <div onClick={()=>{handleCopyClipBoard(document.location.href)}}>
+              <div
+                onClick={() => {
+                  handleCopyClipBoard(document.location.href);
+                }}
+              >
                 <AiOutlineShareAlt />
                 <span>공유</span>
               </div>
@@ -427,7 +459,8 @@ const DetailPost = () => {
                 <span>{post?.views}</span>
               </div>
               <div>
-                <AiFillHeart />
+
+                <AiFillHeart onClick={handleLikePost} color={isVoted === true? "red" : "grey"}/>
                 <span>{post?.likes}</span>
               </div>
             </div>
@@ -461,8 +494,8 @@ const DetailPost = () => {
             {isLogin ? (
               <Button
                 type="violet"
-                width="80px"
-                height="35px"
+                width="75px"
+                height="30px"
                 text="등록"
                 onClick={(e) => handleCommentSubmit(e)}
               />

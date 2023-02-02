@@ -51,9 +51,14 @@ const MyPageUserInfo = styled.aside`
     flex-direction: column;
     height: 85%;
 
-    div:nth-child(2) {
+    div:nth-child(3) {
       svg {
         cursor: pointer;
+        margin-left: 25%;
+        color: var(--black-800);
+        :hover {
+          color: var(--purple-300);
+        }
       }
     }
     > img {
@@ -64,9 +69,14 @@ const MyPageUserInfo = styled.aside`
     }
 
     div {
+      display: flex;
+      align-items: center;
       margin-bottom: 10px;
       font-size: var(--font-sm);
       color: var(--black-900);
+      svg {
+        margin-right: 3px;
+      }
     }
     div:nth-child(2) {
       display: flex;
@@ -433,21 +443,6 @@ const MyPage = () => {
     {
       title: (
         <>
-          <AiTwotoneHome />
-          <span>나의 방문 기록</span>
-        </>
-      ),
-      content: (
-        <div style={{ height: "100%" }}>
-          {/* <div>님의 방문기록 입니다.</div> */}
-          <Notification type="noAddress" message="준비중입니다" />
-          {/* <Charts userData={userData}></Charts> */}
-        </div>
-      ),
-    },
-    {
-      title: (
-        <>
           <MdModeComment />
           <span>나의 포스트</span>
         </>
@@ -510,6 +505,21 @@ const MyPage = () => {
             />
           )}
         </>
+      ),
+    },
+    {
+      title: (
+        <>
+          <AiTwotoneHome />
+          <span>나의 방문 기록</span>
+        </>
+      ),
+      content: (
+        <div style={{ height: "100%" }}>
+          {/* <div>님의 방문기록 입니다.</div> */}
+          <Notification type="noAddress" message="준비중입니다" />
+          {/* <Charts userData={userData}></Charts> */}
+        </div>
       ),
     },
   ];
@@ -709,12 +719,8 @@ const MyPageMyPostCard = ({
     <>
       <MyPagePostCardWrapper>
         {posts &&
-          currentPosts.map((post, order) => (
-            <MyPagePostCardItem
-              key={post.postId}
-              postInfo={post}
-              order={order}
-            />
+          currentPosts.map((post) => (
+            <MyPagePostCardItem key={post.postId} postInfo={post} />
           ))}
       </MyPagePostCardWrapper>
       <MyPagePagination
@@ -743,11 +749,10 @@ const MyPageMyFavoriteCard = ({
     <>
       <FavoriteCardWrapper>
         {saves &&
-          currentSaves.map((save, order) => (
+          currentSaves.map((save) => (
             <MyPageFavoriteCardItem
               key={save.attractionId}
               attractionInfo={save}
-              order={order}
             />
           ))}
       </FavoriteCardWrapper>

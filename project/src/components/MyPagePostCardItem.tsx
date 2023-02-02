@@ -10,7 +10,6 @@ import axios from "../utils/axiosinstance";
 import { useState } from "react";
 interface MyPagePostCardItemProps {
   postInfo: MyPostsType;
-  order: number;
 }
 const MyPagePostCardWrapper = styled.div<{
   EditMode: boolean;
@@ -120,7 +119,7 @@ const IconWrapper = styled.div`
     opacity: 0.8;
   }
 `;
-const MyPagePostCardItem = ({ postInfo, order }: MyPagePostCardItemProps) => {
+const MyPagePostCardItem = ({ postInfo }: MyPagePostCardItemProps) => {
   const navigate = useNavigate();
   const [editPosts, setEditPosts] = useRecoilState(isEditMode);
   const [startDeleteAnimation, setStartDeleteAnimation] = useState(false);
@@ -142,10 +141,9 @@ const MyPagePostCardItem = ({ postInfo, order }: MyPagePostCardItemProps) => {
               () =>
                 setUserData({
                   ...userData,
-                  posts: [
-                    ...userData.posts.slice(0, order),
-                    ...userData.posts.slice(order + 1),
-                  ] as typeof userData.posts,
+                  posts: userData.posts.filter(
+                    (el) => el.postId !== postId
+                  ) as typeof userData.posts,
                   totalMyPosts: userData.totalMyPosts - 1,
                 }),
               500

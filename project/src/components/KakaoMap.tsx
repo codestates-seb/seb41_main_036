@@ -48,6 +48,26 @@ const MyPosition = styled.div`
   }
 `;
 
+const TrafficInfo = styled.div`
+  width: 109px;
+  height: 40px;
+  background-color: rgb(255, 248, 42);
+  z-index: 2;
+  position: absolute;
+  margin: 90px 5px;
+  text-align: center;
+  line-height: 40px;
+  box-shadow: #101010a0 0px 3px 10px;
+  color: #202020;
+  border-radius: var(--br-m);
+  font-size: 14px;
+  font-weight: 600;
+  :hover {
+    background-color: rgb(217, 210, 15);
+    cursor: pointer;
+  }
+`;
+
 const KakaoMap = ({
   width,
   height,
@@ -61,7 +81,7 @@ const KakaoMap = ({
   setFilterOrPosition,
 }: Map) => {
   const container = useRef<any>();
-  const [myLocation, setMyLocation] = useState();
+  const [traffic, setTraffic] = useState(false);
 
   const options = {
     center: new window.kakao.maps.LatLng(37.5575265973614, 127.175938009116),
@@ -82,14 +102,17 @@ const KakaoMap = ({
   }
 
   const conditionMap = (geocoder: any, map: any) => {
+
+    if(traffic){
+      map.addOverlayMapTypeId(window.kakao.maps.MapTypeId.TRAFFIC);  
+    }
+
     if (filterOrPosition === true) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           var lat = position.coords.latitude, 
               lon = position.coords.longitude; 
             var locPosition = new window.kakao.maps.LatLng(lat, lon) 
-            setMyLocation(locPosition);
-            console.log(myLocation)
             map.setCenter(locPosition);
             });
           }
@@ -103,6 +126,7 @@ const KakaoMap = ({
                   map: map,
                   position: coords,
                 });
+                  
 
                 var infowindow = new window.kakao.maps.InfoWindow({
                   content: `<div 
@@ -231,7 +255,7 @@ const KakaoMap = ({
 
     var mapTypeControl = new window.kakao.maps.MapTypeControl();
     map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPLEFT);
-  }, [filterOrPosition, dataset === undefined, modalData]);
+  }, [filterOrPosition, dataset === undefined, modalData, traffic]);
 
   return (
     <>
@@ -247,6 +271,8 @@ const KakaoMap = ({
         }}
       >
         {component === "map" ? (
+          <>
+          <TrafficInfo onClick={()=> {setTraffic(!traffic)}}>{traffic ? "교통 정보 OFF" : "교통 정보"}</TrafficInfo>
           <MyPosition
             onClick={() => {
               setFilterOrPosition(!filterOrPosition);
@@ -254,6 +280,7 @@ const KakaoMap = ({
           >
             {filterOrPosition ? "실시간 위치 OFF" : "실시간 위치"}
           </MyPosition>
+          </>
         ) : null}
       </div>
     </>
