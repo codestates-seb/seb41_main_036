@@ -22,7 +22,6 @@ const Login = () => {
   const [username, setUsername] = useState<string>("");
   const navigate = useNavigate();
 
-
   const handleSignEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const EMAIL_REGEX = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.[a-zA-Z]{2,4}$/;
     setSignEmailErr(!EMAIL_REGEX.test(e.target.value));
@@ -30,7 +29,9 @@ const Login = () => {
   };
 
   const handleSignPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSignPasswordErr(!(e.target.value.length >= 8));
+    const PASSWORD_REGEX =
+      /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=()|]).*$/;
+    setSignPasswordErr(!PASSWORD_REGEX.test(e.target.value));
     setSignPassword(e.target.value);
   };
 
@@ -88,7 +89,7 @@ const Login = () => {
         .then((res) => {
           if (res.status === 201) {
             setOverlays(false);
-            navigate(-1)
+            navigate(-1);
             // window.location.replace("/login")
           }
         })
@@ -165,7 +166,6 @@ const Login = () => {
         <s.InputStyle
           placeholder="이메일"
           defaultValue={""}
-
           onChange={handleSignEmailChange}
           onKeyDown={onPressEnter}
         ></s.InputStyle>
@@ -177,7 +177,6 @@ const Login = () => {
         <s.InputStyle
           placeholder="비밀번호"
           defaultValue={""}
-
           onChange={handleSignPasswordChange}
           onKeyDown={onPressEnter}
           type="password"
@@ -190,7 +189,6 @@ const Login = () => {
         <s.InputStyle
           placeholder="비밀번호확인"
           defaultValue={""}
-
           onChange={handlePasswordConfirm}
           onKeyDown={onPressEnter}
           type="password"
