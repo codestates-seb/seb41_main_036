@@ -104,3 +104,122 @@
 `test`: Adding tests, refactoring test; no production code change
 
  `chore`: Updating build tasks, package manager configs, etc; no production code change
+ 
+ <br>
+ 
+# :hamster: Pikcha 활용법!
+
+<br>
+
+## :mushroom: 1. 메인 페이지
+
+<details>
+<summary>메인</summary>
+<div markdown="1">
+
+|메인 페이지|
+|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332138-c559f162-9393-4ad2-a5ae-216a5948383a.gif" style="width:100%">
+
+</div>
+</details>
+
+<br>
+<details>
+<summary>메인 명소 & 포스트</summary>
+<div markdown="1">
+
+|메인 명소| 메인 포스트 |
+|:---:|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332312-2f663ce7-20a7-4b12-870f-d7e8ca82514a.gif" style="width:100%">|<img src="https://user-images.githubusercontent.com/26656507/216332317-c5f0ffb2-822c-4f78-b07c-73f3ea5ef063.gif" style="width:100%">
+
+</div>
+</details>
+<br>
+
+## :herb: 2. 회원
+<br>
+<details>
+<summary>&nbsp;회원가입&로그인</summary>
+<div markdown="1">
+
+|회원가입 | 로그인 |
+|:---:|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332396-43d4a4c3-ad09-4d98-87c8-d8446dca9fc9.gif" style="width:100%">|<img src="https://user-images.githubusercontent.com/26656507/216332303-1d9f3845-e4ad-4f8a-9448-51418c66644f.gif" style="width:100%">
+
+</div>
+</details>
+<br>
+
+## :blossom: 3. 회원 정보
+<br>
+<details>
+<summary>&nbsp;마이페이지</summary>
+<div markdown="1">
+
+|마이 페이지|
+|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332307-34c3ec23-67f7-4f76-b91b-795b2b6ae41d.gif" style="width:100%">
+
+</div>
+</details>
+<br>
+
+## :cactus: 4. 명소
+
+<br>
+<details>
+<summary>&nbsp;명소 페이지 & 명소 상세페이지</summary>
+<div markdown="1">
+
+|명소 페이지| 명소 상세페이지 |
+|:---:|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332367-4f8606cd-b08a-4968-9c3b-830c4da0868c.gif" style="width:100%">|<img src="https://user-images.githubusercontent.com/26656507/216332321-5d347864-588c-4821-89ec-c7a59c001556.gif" style="width:100%">
+
+</div>
+</details>
+
+<br>
+<details>
+<summary>&nbsp;명소 검색 & 좋아요 & 즐겨찾기</summary>
+<div markdown="1">
+
+|명소 검색| 명소 좋아요, 즐겨찾기|
+|:---:|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332373-541d056e-c863-427c-8c68-b6d79bf9b198.gif" style="width:100%">|<img src="https://user-images.githubusercontent.com/26656507/216332361-99cf3ef8-5a9c-4846-99f3-bf7228ce2ae0.gif" style="width:100%">|
+
+</div>
+</details>
+<br>
+
+## :speech_balloon: 5. 포스트
+<br>
+<details>
+<summary>포스트 페이지 & 상세 페이지</summary>
+<div markdown="1">
+
+|포스트 페이지| 포스트 상세페이지 |
+|:---:|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332392-ded69c5b-785c-441f-ab54-a7321a79b219.gif" style="width:100%">|<img src="https://user-images.githubusercontent.com/26656507/216332389-43b78105-3dfc-4401-876c-e48cd9ff0a80.gif" style="width:100%">
+
+</div>
+</details>
+
+<br>
+<details>
+<summary>포스트 댓글달기 & 수정, 삭제</summary>
+<div markdown="1">
+
+|포스트 댓글등록|
+|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332379-f48a4166-c706-4807-9cbe-2d2f3240b800.gif" style="width:100%">
+
+|포스트 댓글수정|
+|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332385-22c3d5b5-ec7b-4870-8f13-650af709b6af.gif" style="width:100%">
+
+|포스트 댓글삭제|
+|:---:|
+|<img src="https://user-images.githubusercontent.com/26656507/216332382-06d5725c-66a8-4cec-8065-b98a20070371.gif" style="width:100%">
+</div>
+</details>
