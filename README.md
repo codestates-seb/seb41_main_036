@@ -10,7 +10,7 @@
 
 # About Pikcha
 ## Pikcha(픽차)?
-<img src='https://user-images.githubusercontent.com/110949256/216319359-8c31dead-d9b7-467b-aa8d-7db864b2963b.jpg' width='1500' height='600'>
+<img src='https://user-images.githubusercontent.com/110949256/216342582-e72694f5-5cef-4ed1-a905-693966e0aa22.jpg' width='1000' height='600'>
 
 `Pikcha`는 소중한 사람과 다녀온 기록을 기억할 수 있는 공간입니다.
 
@@ -19,13 +19,12 @@
 ## 👀 왜 만들었을까요?  
 <img src='https://user-images.githubusercontent.com/110949256/216319316-9f4fe715-3a66-40a9-9f4b-a7b33dbe69b2.jpg' width='1500' height='600'>
 
-
 `Pikcha`는 서울 내 명소가 어디인지 잘 모르는 당신을 위해 만들어졌습니다.
 
 저희가 선별한 멋지고 아름다운 다양한 명소들을  방문해보세요.
 
 ## ⭐️ 기능
-<img src='https://user-images.githubusercontent.com/110949256/216318488-7818ed30-9351-423b-9723-5bf8490d1317.jpg' width='3000' height='600'>
+<img src='https://user-images.githubusercontent.com/110949256/216318488-7818ed30-9351-423b-9723-5bf8490d1317.jpg' width='1500' height='600'>
 
 
 `포스팅`을 통해 자신이 다녀온 명소를 공유하고 사랑하는 사람들과 소통하세요.
