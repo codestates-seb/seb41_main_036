@@ -119,7 +119,6 @@ const KakaoMap = ({
       
            
         dataset.forEach(function(addr:any,index:number){
-
           geocoder.addressSearch(addr.attractionAddress, function(result:any, status:any) {
              if (status === window.kakao.maps.services.Status.OK) {
                 var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
