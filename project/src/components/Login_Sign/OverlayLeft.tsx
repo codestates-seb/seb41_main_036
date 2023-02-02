@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { setOverlay } from "../../recoil/setOverlay";
 import * as l from "./LoginSignStyle";
-import Logo from "../../data/Logo.png";
-
+import { ReactComponent as Logo } from "../../data/Logo.svg";
 const OverlayLeft = () => {
   const [overlays, setOverlays] = useRecoilState<boolean>(setOverlay);
   const navigate = useNavigate();
@@ -16,12 +15,11 @@ const OverlayLeft = () => {
 
   return (
     <l.Leftoverlay overlay={overlays}>
-      <l.TextStyle color="white" fontSize="20px" fontweight="normal">
-        welcome to the
-      </l.TextStyle>
-      <l.Logo src={Logo} alt="logo" onClick={() => navigate("/")} />
+      <l.LogoContainer>
+        <Logo onClick={() => navigate("/")} />
+      </l.LogoContainer>
       <l.TextStyle color="white" fontSize="20px" fontweight="bold">
-        <l.CustomPadding padding="70px 0px 0px 0px"></l.CustomPadding>
+        <l.CustomPadding padding="30px 0px 0px 0px"></l.CustomPadding>
         사진찍기 가장 좋은 장소는 어디일까요?
       </l.TextStyle>
       <l.CustomPadding padding="30px 0px 0px 0px"></l.CustomPadding>
@@ -31,7 +29,6 @@ const OverlayLeft = () => {
       <l.TextStyle color="white" fontSize="18px" fontweight="normal">
         다양한 정보를 통해 나만의 사진을 찍어보세요.
       </l.TextStyle>
-      <l.CustomPadding padding="70px 0px 0px 0px"></l.CustomPadding>
       <l.TextStyle color="white" fontSize="16px" fontweight="bold">
         이미 회원이시라면?
       </l.TextStyle>

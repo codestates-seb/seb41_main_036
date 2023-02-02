@@ -25,16 +25,13 @@ const FooterContainer = styled.div`
 `;
 
 const LogoContainer = styled.div`
-  display: inline-flex;
-  align-items: center;
-  color: var(--purple-300);
-  opacity: 0.8;
-  font-weight: 700;
-  letter-spacing: 0.5rem;
-  img {
-    filter: invert(100%);
-
-    transform: translateX(-8px);
+  margin-top: 10px;
+  svg {
+    width: 80px;
+    height: 23px;
+    path {
+      fill: var(--black-500);
+    }
     :hover {
       cursor: pointer;
     }

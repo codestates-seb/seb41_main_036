@@ -19,14 +19,8 @@ import {
 } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
 import ButtonForm from "../Button";
-import {
-  lazy,
-  ReactNode,
-  MouseEventHandler,
-  useEffect,
-  forwardRef,
-} from "react";
-import Logo from "../../data/Logo.png";
+import { lazy, ReactNode, MouseEventHandler, useEffect } from "react";
+import { ReactComponent as Logo } from "../../data/Logo.svg";
 const SearchBar = lazy(() => import("./SearchBar"));
 
 const IMG_SRC =
@@ -127,14 +121,7 @@ const HeaderBodyBar = ({
           href="/"
           style={{ height: "70px", display: "flex", alignItems: "center" }}
         >
-          <img
-            src={Logo}
-            alt="logo"
-            style={{
-              width: "100px",
-              backgroundSize: "cover",
-            }}
-          />
+          <Logo style={{ width: "80px", height: "50px" }} />
         </a>
         <HeaderBodyMenu>
           <HeaderBodyMenuItem

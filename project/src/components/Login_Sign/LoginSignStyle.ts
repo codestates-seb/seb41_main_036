@@ -215,3 +215,17 @@ export const LoginHeaderContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const LogoContainer = styled.div`
+  margin-top: 10px;
+  svg {
+    width: 120px;
+    height: 55px;
+    path {
+      fill: white;
+    }
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;

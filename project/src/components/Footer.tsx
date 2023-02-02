@@ -14,7 +14,7 @@ import {
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CgFigma as FigmaIcon } from "react-icons/cg";
 import { IoMailOutline as EmailIcon } from "react-icons/io5";
-import Logo from "../data/Logo.png";
+import { ReactComponent as Logo } from "../data/Logo.svg";
 const Footer = () => {
   const navigate = useNavigate();
 
@@ -22,17 +22,8 @@ const Footer = () => {
     <FooterWrapper>
       <FooterContainer>
         <LogoContainer>
-          <img
-            src={Logo}
-            alt="logo"
-            style={{
-              width: "100px",
-              backgroundSize: "cover",
-            }}
-            onClick={() => navigate("/")}
-          />
+          <Logo onClick={() => navigate("/")} />
         </LogoContainer>
-
         <MadePeopleContainer>
           <FooterText marginRight="10px">김진주 |</FooterText>
           <FooterText marginRight="10px">박혜수 |</FooterText>

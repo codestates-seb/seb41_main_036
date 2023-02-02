@@ -75,6 +75,7 @@ const MyPageUserInfo = styled.aside`
       font-size: var(--font-sm);
       color: var(--black-900);
       svg {
+        color: var(--black-500);
         margin-right: 3px;
       }
     }
@@ -648,7 +649,7 @@ const MyPage = () => {
                       position: "absolute",
                       width: "30%",
                       height: "50%",
-                      zIndex: 10,
+                      zIndex: 100,
                     }}
                     onComplete={handleAddress.selectAddress} // 값을 선택할 경우 실행되는 이벤트
                     autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
@@ -714,7 +715,7 @@ const MyPageMyPostCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const navigate = useNavigate();
+
   return (
     <>
       <MyPagePostCardWrapper>
