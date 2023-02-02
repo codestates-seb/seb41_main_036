@@ -9,5 +9,4 @@ public class AttractionPostDto {
     private String attractionAddress;
 //    private MultipartFile attractionImage;
     private String province;
-
 }

@@ -30,11 +30,8 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-
     private final JwtGenerator jwtGenerator;
     private final AuthenticationManager authenticationManager;
-
     private final CookieUtils cookieUtils;
 
     @SneakyThrows
@@ -60,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         TokenDto tokenDto = jwtGenerator.generateTokenDto(authMember);
         String accessToken = tokenDto.getAccessToken(); // accessToken 만들기
         String refreshToken = tokenDto.getRefreshToken(); // refreshToken 만들기
-        log.info("=========successfulAuth {}========", refreshToken);
+
         content(response);
 
         cookieUtils.setCookieInHeader(response, refreshToken);
@@ -82,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // response.setHeader("Content-type", "text/plain;charset=utf-8"); // 한글이 깨질 수 있으므로 utf-8로 설정
 
         // #3
-         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
     }
 }

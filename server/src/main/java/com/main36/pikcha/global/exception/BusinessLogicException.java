@@ -1,9 +1,9 @@
 package com.main36.pikcha.global.exception;
 
 import lombok.Getter;
+
 @Getter
 public class BusinessLogicException extends RuntimeException {
-
     private final ExceptionCode exceptionCode;
 
     public BusinessLogicException(String message, ExceptionCode exceptionCode) {
@@ -15,6 +15,4 @@ public class BusinessLogicException extends RuntimeException {
         super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
     }
-
-
 }

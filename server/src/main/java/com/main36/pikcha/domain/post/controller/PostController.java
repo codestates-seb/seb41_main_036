@@ -45,14 +45,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/posts")
 @Slf4j
 public class PostController {
-
     private final PostService postService;
     private final PostMapper mapper;
     private final MemberService memberService;
     private final AttractionService attractionService;
     private final HashTagService hashTagService;
     private final PostImageService postImageService;
-
 
     // 1. 포스트 등록
     @LoginUser
@@ -202,7 +200,6 @@ public class PostController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
 
     // 3. 포스트 상세페이지 (비로그인/로그인)
     @GetMapping(value = {"/details/{post-id}", "/details/{post-id}/{member-id}"})
@@ -369,4 +366,5 @@ public class PostController {
         }
         return sort;
     }
+
 }

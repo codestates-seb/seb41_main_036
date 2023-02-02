@@ -59,6 +59,7 @@ public class AttractionService {
                 page,size, Sort.by("attractionId").ascending()
                 ));
     }
+
     @Transactional(readOnly = true)
     public Page<Attraction> findFilteredAttractions(List<String> provinces, int page, int size, String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
@@ -76,12 +77,12 @@ public class AttractionService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         return attractionRepository.findByAttractionNameContainingIgnoreCaseAndProvinceIn(keyword, provinces, pageable);
     }
+
     @Transactional(readOnly = true)
     public Page<Attraction> findAllSearchedAttractions(String keyword, int page, int size, String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         return attractionRepository.findByAttractionNameContainingIgnoreCase(keyword, pageable);
     }
-
 
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
@@ -157,6 +158,5 @@ public class AttractionService {
             throw new BusinessLogicException(ExceptionCode.ATTRACTION_EXISTS);
         }
     }
-
 
 }

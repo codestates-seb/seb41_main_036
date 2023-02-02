@@ -13,7 +13,6 @@ import lombok.Getter;
 
 @Getter
 public class AuthMember extends Member implements UserDetails {
-
     private final Long memberId;
     private final String email;
     private final String password;
@@ -47,10 +46,6 @@ public class AuthMember extends Member implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
     }
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of(new SimpleGrantedAuthority(roles.get(0)));
-//    }
 
     @Override
     public String getUsername() {

@@ -72,6 +72,7 @@ public class CommentController {
                 mapper.commentToCommentResponseDto(commentService.findComment(commentId));
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }
+
     @GetMapping()
     public ResponseEntity<MultiResponseDto<?>> getComment(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                           @Positive @RequestParam(required = false, defaultValue = "10") int size) {

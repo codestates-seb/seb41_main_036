@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
+
     @Query(value= "select p from Post as p where p.attraction.attractionId = :attractionId")
     Page<Post> findAllByAttractionId(long attractionId, Pageable pageable);
 

@@ -27,7 +27,6 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
-
     private final PostRepository postRepository;
     private final PostLikesRepository postLikesRepository;
     private final PostImageService postImageService;

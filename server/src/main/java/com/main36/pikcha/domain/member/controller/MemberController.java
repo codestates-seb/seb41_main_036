@@ -27,8 +27,6 @@ import javax.validation.constraints.Positive;
 @Validated
 @RequiredArgsConstructor
 public class MemberController {
-
-
     private final MemberService memberService;
     private final MemberMapper mapper;
     private final CookieUtils cookieUtils;

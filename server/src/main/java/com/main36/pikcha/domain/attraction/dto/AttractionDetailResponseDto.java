@@ -17,7 +17,6 @@ public class AttractionDetailResponseDto {
     private String fixedImage;
 
 //    private List<PostResponseDto> posts;
-
     @Builder
     public AttractionDetailResponseDto(Long attractionId, Long likes, Long saves, String attractionName, String attractionDescription, String attractionAddress, String fixedImage) {
         this.attractionId = attractionId;

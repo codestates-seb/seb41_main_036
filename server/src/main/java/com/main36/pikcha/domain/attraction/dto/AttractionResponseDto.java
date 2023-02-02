@@ -15,5 +15,4 @@ public class AttractionResponseDto {
     private Boolean isSaved;
     private Long likes;
     private Long saves;
-
 }

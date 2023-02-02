@@ -16,15 +16,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class Save {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long saveId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
     @ManyToOne
     @JoinColumn(name = "attraction_id")
     private Attraction attraction;

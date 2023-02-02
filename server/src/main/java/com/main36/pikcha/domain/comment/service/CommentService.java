@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -24,7 +22,9 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Comment updateComment(Comment comment){ return commentRepository.save(comment);}
+    public Comment updateComment(Comment comment) {
+        return commentRepository.save(comment);
+    }
 
     @Transactional(readOnly = true)
     public Comment findComment(long commentId) {
@@ -37,6 +37,7 @@ public class CommentService {
                 page, size, Sort.by("commentId").ascending()
         ));
     }
+
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
     }
@@ -50,13 +51,12 @@ public class CommentService {
     public Comment verifyClientId(long clientId, long commentId) {
 
         Comment comment = findComment(commentId);
-        if(clientId == 1) return comment;
+        if (clientId == 1) return comment;
         if (!(comment.getMember().getMemberId().equals(clientId))) {
             throw new BusinessLogicException(ExceptionCode.USER_IS_NOT_EQUAL);
         }
 
         return comment;
     }
-
 
 }

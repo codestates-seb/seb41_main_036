@@ -61,7 +61,6 @@ public class PostResponseDto {
     @Data
     @Builder
     public static class Profile {
-
         private Long postId;
         private String postTitle;
         private String pictureUrl;
@@ -70,4 +69,5 @@ public class PostResponseDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+
 }

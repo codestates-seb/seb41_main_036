@@ -6,6 +6,7 @@ import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Getter
 @Setter
 @Builder

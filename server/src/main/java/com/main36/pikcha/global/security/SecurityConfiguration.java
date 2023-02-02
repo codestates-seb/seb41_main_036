@@ -1,7 +1,5 @@
 package com.main36.pikcha.global.security;
 
-
-import com.main36.pikcha.domain.member.repository.MemberRepository;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.global.security.filter.JwtAuthenticationFilter;
 import com.main36.pikcha.global.security.filter.JwtVerificationFilter;
@@ -21,7 +19,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,18 +26,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtParser jwtParser;
     private final JwtGenerator jwtGenerator;
-    private final CustomAuthorityUtils customAuthorityUtils;
     private final MemberService memberService;
     private final OauthService oauthService;
-
     private final CookieUtils cookieUtils;
 
     @Bean

@@ -21,7 +21,6 @@ public class MemberLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
                                 Authentication authentication) throws IOException, ServletException {
 
         log.info("# Logout successfully!");
-
     }
 }
 

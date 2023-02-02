@@ -24,7 +24,7 @@ public class Post extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(name = "post_title", nullable = false)
+    @Column(length = 30, name = "post_title", nullable = false)
     private String postTitle;
 
     @Column(name = "views", nullable = false, columnDefinition = "integer default 0")

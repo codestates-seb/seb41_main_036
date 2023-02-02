@@ -11,20 +11,16 @@ import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class AmazonS3Config {
-
-
     @Value("${cloud.aws.credentials.accesskey}")
     private String accessKey;
-
     @Value("${cloud.aws.credentials.secretkey}")
     private String secretKey;
-
     @Value("${cloud.aws.region.static}")
     private String region;
 
     @Bean
     @Primary
-    public BasicAWSCredentials awsCredentialsProvider(){
+    public BasicAWSCredentials awsCredentialsProvider() {
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
         return basicAWSCredentials;
     }
@@ -37,4 +33,5 @@ public class AmazonS3Config {
                 .build();
         return s3Builder;
     }
+
 }

@@ -25,13 +25,9 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtParser {
-
-    private JwtGenerator jwtGenerator;
-
     @Getter
     @Value("${jwt.secret-key}")
     private String secretKey;
-
     private Key key;
 
     @PostConstruct

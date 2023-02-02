@@ -23,12 +23,13 @@ public class JobController {
 
     @PostMapping("/run/rank")
     @SneakyThrows
-    public ExitStatus runJob(){
+    public ExitStatus runJob() {
         Job job = context.getBean("CalcJob", Job.class);
         JobParameters jobParameters = new JobParametersBuilder()
                 .addDate("date", new Date())
                 .toJobParameters();
         return jobLauncher.run(job, jobParameters).getExitStatus();
     }
+
 }
 

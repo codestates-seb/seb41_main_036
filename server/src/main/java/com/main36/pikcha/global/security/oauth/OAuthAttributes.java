@@ -15,6 +15,7 @@ public enum OAuthAttributes {
                 (String) attributes.get("picture")
         );
     }),
+
     KAKAO("kakao", (attributes) -> {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile"); // 이미지 profile_image_url
@@ -27,6 +28,7 @@ public enum OAuthAttributes {
 
         );
     }),
+
     NAVER("naver", (attributes) -> {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
@@ -37,6 +39,7 @@ public enum OAuthAttributes {
                 (String) response.get("profile_image")
         );
     });
+
     private final String registrationId;
     private final Function<Map<String, Object>, UserProfile> of;
 

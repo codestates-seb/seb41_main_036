@@ -21,16 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @Validated
 @RequiredArgsConstructor
 public class TokenController {
-
     private final JwtGenerator jwtGenerator;
     private final JwtParser jwtParser;
     private final MemberService memberService;
-
     @GetMapping("/token/refresh/{member-id}")
     public ResponseEntity<?> findCookie(@PathVariable("member-id") Long memberId,
                                         @CookieValue(value = "refreshToken") String refresh) {
-        log.info("memberId= {}", memberId);
-        log.info("refresh= {}", refresh);
+
         if (refresh.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
         }
@@ -46,37 +43,4 @@ public class TokenController {
 
         return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
     }
-
-    @GetMapping("/token/test/{member-id}")
-    public ResponseEntity<?> test(@PathVariable("member-id") Long memberId,
-                                  @CookieValue(value = "refreshToken") String refresh) {
-
-        log.info("memberId= {}", memberId);
-        log.info("refresh= {}", refresh);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-
-
-
-
-//    @LoginUser
-//    @GetMapping("/token/refresh")
-//    public ResponseEntity<?> findCookie(Member loginUser,
-//                                        @CookieValue(value = "refreshToken") String refresh) {
-//        log.info("refresh= {}", refresh);
-//        if (refresh.isEmpty()) {
-//            throw new BusinessLogicException(ExceptionCode.TOKEN_EMPTY);
-//        }
-//
-//        jwtParser.verifyToken(refresh);
-//        RenewTokenDto.RenewTokenDtoBuilder builder = RenewTokenDto.builder();
-//        RenewTokenDto renewTokenDto =
-//                builder.memberId(loginUser.getMemberId())
-//                        .email(loginUser.getEmail())
-//                        .accessToken("Bearer " + jwtGenerator.generateAccessToken(loginUser.getEmail(), loginUser.getRoles()))
-//                        .build();
-//
-//        return ResponseEntity.ok(new DataResponseDto<>(renewTokenDto));
-//    }
 }

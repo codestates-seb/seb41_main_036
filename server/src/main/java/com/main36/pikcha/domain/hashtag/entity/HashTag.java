@@ -13,15 +13,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class HashTag extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long hashTagId;
-
     @Setter
     @Column(length = 10, name = "hashtag_content")
     private String hashTagContent;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

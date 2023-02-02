@@ -22,11 +22,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
     private final MemberRepository memberRepository;
-
     private final CustomAuthorityUtils customAuthorityUtils;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -41,7 +38,7 @@ public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
                 .getUserInfoEndpoint().getUserNameAttributeName(); // OAuth 로그인 시 키(pk)가 되는 값
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
-//{sub=106028432914978568484, name=DongWoo Lee, given_name=DongWoo, family_name=Lee, picture=https://lh3.googleusercontent.com/a/AEdFTp68KaSr161YqBFVS7fIB0VeLhvFWsXJUU8Mm_nxfA=s96-c, email=ys932184@gmail.com, email_verified=true, locale=ko}
+
         UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes); // registrationId에 따라 유저 정보를 통해 공통된 UserProfile 객체로 만들어 줌
 
         Member member = saveOrUpdate(userProfile);
@@ -50,7 +47,6 @@ public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
                 Collections.singleton(new SimpleGrantedAuthority(customAuthorityUtils.createRoles(member.getEmail()).toString())),
                 attributes,
                 userNameAttributeName);
-
     }
 
     private Member saveOrUpdate(UserProfile userProfile) {

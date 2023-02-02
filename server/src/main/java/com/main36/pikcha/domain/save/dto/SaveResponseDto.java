@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @Builder
 public class SaveResponseDto {
-
     private Long attractionId;
     private String attractionName;
     private String fixedImage;

@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class LoginResponseDto {
-
     private Long memberId;
     private String email;
     private String roles;

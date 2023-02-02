@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Getter
 public class RenewTokenDto {
-
     private Long memberId;
     private String email;
     private String accessToken;

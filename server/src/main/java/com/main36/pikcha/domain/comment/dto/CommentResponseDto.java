@@ -6,7 +6,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 public class CommentResponseDto {
     private Long commentId;
     private Long memberId;
@@ -15,4 +14,16 @@ public class CommentResponseDto {
     private String commentContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    @Builder
+    public CommentResponseDto(Long commentId, Long memberId, String username, String memberPicture,
+                              String commentContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.commentId = commentId;
+        this.memberId = memberId;
+        this.username = username;
+        this.memberPicture = memberPicture;
+        this.commentContent = commentContent;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 }

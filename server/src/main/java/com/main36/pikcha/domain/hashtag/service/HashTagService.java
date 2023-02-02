@@ -16,11 +16,13 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class HashTagService{
+public class HashTagService {
     private final HashTagRepository hashTagRepository;
+
     public HashTag createHashTag(HashTag hashTag) {
         return hashTagRepository.save(hashTag);
     }
+
     /*public HashTag updateHashTag(HashTag hashTag) {
         HashTag findHashTag = findVerifiedHashTag(hashTag.getHashTagContent());
 
@@ -29,23 +31,26 @@ public class HashTagService{
 
         return hashTagRepository.save(findHashTag);
     }*/
-    public void deleteHashTag(HashTag hashTag, long postId){
+
+    public void deleteHashTag(HashTag hashTag, long postId) {
         HashTag findHashTag = findVerifiedHashTag(hashTag.getHashTagContent(), postId);
         log.info("will delete hashTag : {}", findHashTag.getHashTagContent());
         hashTagRepository.deleteById(findHashTag.getHashTagId());
     }
-    public void deleteHashTags(List<HashTag> hashTags, long postId){
-        for(HashTag hashTag: hashTags){
+
+    public void deleteHashTags(List<HashTag> hashTags, long postId) {
+        for (HashTag hashTag : hashTags) {
             HashTag findHashTag = findVerifiedHashTag(hashTag.getHashTagContent(), postId);
             hashTagRepository.delete(findHashTag);
         }
     }
-    public HashTag findVerifiedHashTag(String content, long postId){
+
+    public HashTag findVerifiedHashTag(String content, long postId) {
         return hashTagRepository.findByPost(content, postId)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.HASHTAG_NOT_FOUND));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HASHTAG_NOT_FOUND));
     }
 
-    public Optional<HashTag> findHashTag(String content){
+    public Optional<HashTag> findHashTag(String content) {
         return hashTagRepository.findByHashTagContent(content);
     }
 }

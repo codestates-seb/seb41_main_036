@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 @RequiredArgsConstructor
 @EnableAspectJAutoProxy
 public class LoginAspect {
-
     private final JwtParser jwtParser;
     private final MemberService memberService;
 
@@ -38,8 +37,7 @@ public class LoginAspect {
         args[0] = email;
 
         return joinPoint.proceed(args);
-
-}
+    }
 
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUser)")
     public Object getUser(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -51,4 +49,5 @@ public class LoginAspect {
 
         return joinPoint.proceed(args);
     }
+
 }

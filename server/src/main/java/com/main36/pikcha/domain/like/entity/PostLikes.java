@@ -12,15 +12,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class PostLikes {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long postLikesId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

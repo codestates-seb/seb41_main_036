@@ -55,4 +55,5 @@ public interface PostMapper {
                 .modifiedAt(post.getModifiedAt())
                 .build();
     }
+
 }

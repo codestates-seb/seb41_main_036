@@ -31,13 +31,8 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @Slf4j
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-
-//    private final CustomAuthorityUtils customAuthorityUtils;
-
     private final MemberService memberService;
-
     private final JwtGenerator jwtGenerator;
-
     private final CookieUtils cookieUtils;
 
     @Override
@@ -51,7 +46,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         cookieUtils.setCookieInHeader(response, refreshToken);
 
-        redirect(request, response, member.getEmail(), member.getMemberId(),member.getRoles());
+        redirect(request, response, member.getEmail(), member.getMemberId(), member.getRoles());
 
         log.info("# Oauth2 Login successfully!");
     }
@@ -61,9 +56,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                           String username,
                           Long memberId,
                           List<String> authorities) throws IOException {
-//
+
         String accessToken = jwtGenerator.generateAccessToken(username, authorities);
-//        String refreshToken = jwtGenerator.generateRefreshToken(username);
         String uri = createURI(request, accessToken, memberId).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
@@ -73,8 +67,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("accessToken", accessToken);
         queryParams.add("id", memberId.toString());
 //        queryParams.add("refresh_token", refreshToken);
-        String serverName = request.getServerName();
-        log.info("serverName = {}", serverName);
+
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("https")
@@ -86,10 +79,5 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .queryParams(queryParams)
                 .build()
                 .toUri();
-
-//        http://localhost:3000/oauth2/redirect/"+token
-        // 리다이렉트에는 바디를 확인 할 수 없음
-        // -> 컨트롤러를 활용
-        // -> 쿼리파람으로
     }
 }

@@ -5,9 +5,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.main36.pikcha.global.security.dto.TokenDto;
@@ -33,9 +31,6 @@ import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEA
 @Component
 @RequiredArgsConstructor
 public class JwtGenerator {
-    /* 유저 정보로 JWT 토큰을 만들거나 토큰을 바탕으로 유저 정보를 가져옴
-     *  JWT 토큰 관련 암호화, 복호화, 검증 로직
-     */
 
     @Getter
     @Value("${jwt.secret-key}")
@@ -64,8 +59,7 @@ public class JwtGenerator {
         Claims claims = Jwts.claims().setSubject(payload);
         claims.put("roles", roles);
         Date now = new Date();
-        //TODO: 시간 변경할것
-        Date validity = new Date(now.getTime() + 30 * 60 * 1000); // 단위 100ns 0.1ms -> 30분
+        Date validity = new Date(now.getTime() + accessTokenExpireTimeMinute * 60 * 1000); // 단위 100ns 0.1ms -> 30분
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -77,8 +71,7 @@ public class JwtGenerator {
 
     public String generateRefreshToken(String payload) {
         Date now = new Date();
-        //TODO: 시간 변경할것
-        Date validity = new Date(now.getTime() + 420 * 60 * 1000); // 420분
+        Date validity = new Date(now.getTime() + refreshTokenExpireTimeMinute * 60 * 1000); // 420분
         return Jwts.builder()
                 .setSubject(payload)
                 .setIssuedAt(Calendar.getInstance().getTime())
@@ -125,13 +118,22 @@ public class JwtGenerator {
         Claims claims = parseClaims(accessToken);
 
         if (claims.get("roles") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            throw new RuntimeException("an unauthorized token");
         }
 
-        // 클레임에서 권한 정보 가져오기
-//        List<String> authorities = Arrays.stream(claims.get("roles").toString().split(","))
-//                .collect(Collectors.toList());
+        List<String> authorities = getAuthorities(claims);
 
+        AuthMember auth = AuthMember.of(
+                claims.get("id", Long.class),
+                claims.get("sub", String.class),
+                authorities);
+
+        auth.getRoles().stream().forEach(authMember -> log.info("# Authorities = {}", authMember));
+
+        return new UsernamePasswordAuthenticationToken(auth, null, auth.getAuthorities());
+    }
+
+    private static List<String> getAuthorities(Claims claims) {
         List<String> authorities = Arrays.stream(
                         claims.get("roles")
                                 .toString()
@@ -140,34 +142,15 @@ public class JwtGenerator {
                                 .replace(" ", "")
                                 .split(","))
                 .collect(Collectors.toList());
-
-        AuthMember auth = AuthMember.of(
-                claims.get("id", Long.class),
-                claims.get("sub", String.class),
-                authorities);
-
-        auth.getRoles().stream().forEach(authMember -> log.info("# AuthMember.getRoles 권한 체크 = {}", authMember));
-
-        return new UsernamePasswordAuthenticationToken(auth, null, auth.getAuthorities());
+        return authorities;
     }
 
-    public Claims parseClaims(String token)  {
+    public Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    public String encodeBase64SecretKey(String secretKey) {
-        return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
-    private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
-
-        return key;
     }
 
 }

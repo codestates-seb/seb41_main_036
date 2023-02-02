@@ -8,5 +8,4 @@ public class TokenExpired extends BusinessLogicException {
     public TokenExpired() {
         super(ExceptionCode.TOKEN_EXPIRED.getMessage(), ExceptionCode.TOKEN_EXPIRED);
     }
-
 }
