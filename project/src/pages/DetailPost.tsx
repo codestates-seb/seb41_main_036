@@ -288,14 +288,23 @@ const DetailPost = () => {
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
 
+  const [postId,setPostId] = useState<number>();
+  const [isVoted, setIsVoted] = useState<boolean>();
+
   const navigate = useNavigate();
+
+
   useEffect(() => {
     if (isLogin) {
       axios
         .get(`/posts/details/${id}/${memberId}`)
-        .then((res) => setPost(res.data.data))
+        .then((res) => {setPost(res.data.data)
+          const { comments, postId, isVoted} = res.data.data
+          setPostComments(comments);
+          setPostId(postId);
+          setIsVoted(isVoted);
+        })
         .catch((err) => console.error(err));
-      setPostComments(post?.comments);
     } else {
       axios
         .get(`/posts/details/${id}`)
@@ -303,7 +312,8 @@ const DetailPost = () => {
         .catch((err) => console.error(err));
       setPostComments(post?.comments);
     }
-  }, [post === undefined]);
+  }, [isVoted]);
+
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
@@ -353,6 +363,16 @@ const DetailPost = () => {
       console.error(err);
     }
   };
+
+  const handleLikePost = () => {
+    if (!isLogin) setIsModalVisible(true);
+    
+    axios.post(`/posts/likes/${postId}`)
+    .then((res) => {
+      setIsVoted(res.data.data.isVoted)
+    })
+  }
+
   return (
     <>
       <Header>
@@ -388,7 +408,7 @@ const DetailPost = () => {
               }
             >
               <RxDoubleArrowLeft />
-              &nbsp; 이 명소 방문 리뷰 더보기
+              &nbsp; 이 명소 포스트 더보기
             </button>
             <span>{post?.createdAt.slice(0, 10)}</span>
           </div>
@@ -396,9 +416,9 @@ const DetailPost = () => {
         <PostContentContainer>
           <PostContentBox>
             {data.map((post, idx) => (
-              <div key={idx}>
+              <div >
                 <div>
-                  <img src={post.imageURL} alt="picture" />
+                  <img src={post.imageURL} alt="picture" key={post.postId} />
                 </div>
                 <div>{post.content}</div>
               </div>
@@ -408,7 +428,7 @@ const DetailPost = () => {
             {post &&
               post?.postHashTags.map((tag, idx) => (
                 <>
-                  <TagsButton key={idx}>{tag}</TagsButton>
+                  <TagsButton key={post.postId}>{tag}</TagsButton>
                 </>
               ))}
           </div>
@@ -427,7 +447,8 @@ const DetailPost = () => {
                 <span>{post?.views}</span>
               </div>
               <div>
-                <AiFillHeart />
+
+                <AiFillHeart onClick={handleLikePost} color={isVoted === true? "red" : "grey"}/>
                 <span>{post?.likes}</span>
               </div>
             </div>

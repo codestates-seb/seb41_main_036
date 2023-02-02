@@ -7,6 +7,7 @@ const Notification = styled.div`
   align-items: center;
   justify-content: center;
   letter-spacing: 0.02rem;
+  width: 100%;
   svg {
     padding-top: 10px;
     opacity: 0.8;

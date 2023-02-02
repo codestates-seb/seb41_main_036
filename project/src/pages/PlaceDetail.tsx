@@ -172,6 +172,9 @@ const LocationInfoContainer = styled.div`
   flex-direction: column;
   margin: 30px 0;
   letter-spacing: 0.03rem;
+  * {
+    box-sizing: content-box !important;
+  }
   h3 {
     display: flex;
     justify-content: center;

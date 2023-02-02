@@ -148,7 +148,7 @@ const Post = () => {
         </LocationWrapper>
         <PostContainer>
           <PostFilterContainer>
-            <span>총 {totalInfoRef.current?.totalElements}개의 방문 리뷰</span>
+            <span>총 {totalInfoRef.current?.totalElements}개의 포스트</span>
             <div>
               {sortList.map((sort, idx) => (
                 <FilterButton

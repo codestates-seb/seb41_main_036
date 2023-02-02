@@ -227,10 +227,10 @@ const EditPost = () => {
 
   useEffect(() => {
     getPostList();
-  }, [data === undefined]);
+  }, []);
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (title && title.length > 20) alert("20자 이내로 작성해주세요.");
+    if (title && title.length > 30) alert("30자 이내로 작성해주세요.");
     setTitle(e.target.value);
   };
 
