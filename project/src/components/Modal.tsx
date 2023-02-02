@@ -14,7 +14,7 @@ const ModalBackground = styled.div`
   z-index: 1000;
 `;
 const Container = styled.div`
-  width: 380px;
+  width: 390px;
   height: 135px;
   border-radius: 9px;
   margin: 0 auto;
@@ -38,6 +38,10 @@ const ContainerInfo = styled.div`
     margin: 20px 0 10px 20px;
   }
   > div:nth-child(2) {
+    >h3{
+      margin-top: 5px;
+      font-weight: 700;
+    }
     padding: 5px 15px;
     margin-top: 10px;
   }
@@ -72,6 +76,7 @@ const ContainerButton = styled.div`
     :hover {
       background-color: #3f8ef1;
       color: white;
+      font-weight: 600;
     }
   }
 `;
@@ -93,10 +98,10 @@ const Modal = ({
         <Container>
           <ContainerInfo>
             <div>
-              <FcInfo size="50" />
+              <FcInfo size="50" fill="red" />
             </div>
             <div>
-              <h3>로그인이 필요한 서비스입니다.</h3>
+              <h3>로그인이 필요한 서비스입니다. </h3>
               <p>로그인 하시겠습니까?</p>
             </div>
           </ContainerInfo>
