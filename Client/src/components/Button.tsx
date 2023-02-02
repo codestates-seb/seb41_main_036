@@ -4,11 +4,11 @@ import styled from "styled-components";
 interface ButtonProps {
   width?: string;
   height?: string;
-  backgroundcolor?: string;
+  backgroundColor?: string;
   border?: string;
   color?: string;
   fontsize?: string;
-  hoverbackgroundcolor?: string;
+  hoverBackgroundColor?: string;
   hovercolor?: string;
   text?: string;
   type?: string;
@@ -86,6 +86,22 @@ const NoneButton = styled.button<ButtonProps>`
     pointer-events: none;
   }
 `;
+const CustomButton = styled.button<ButtonProps>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  background-color: ${(props) => props.backgroundColor};
+  border-radius: var(--br-l);
+  border: none;
+  font-weight: var(--fw-bold);
+  color: var(--purple-400);
+  font-size: var(--font-sm);
+  margin: ${(props) => props.margin};
+  cursor: pointer;
+  :hover {
+    color: ${(props) => props.hovercolor};
+    background-color: ${(props) => props.hoverBackgroundColor};
+  }
+`;
 
 const Button = ({
   width,
@@ -96,6 +112,8 @@ const Button = ({
   type,
   onClick,
   margin,
+  backgroundColor,
+  hoverBackgroundColor,
 }: ButtonProps) => {
   return (
     <>
@@ -166,6 +184,22 @@ const Button = ({
         >
           {text}
         </GrayButton>
+      ) : (
+        <></>
+      )}
+      {type === "custom" ? (
+        <CustomButton
+          width={width}
+          height={height}
+          fontsize={fontsize}
+          hovercolor={hovercolor}
+          backgroundColor={backgroundColor}
+          onClick={onClick}
+          margin={margin}
+          hoverBackgroundColor={hoverBackgroundColor}
+        >
+          {text}
+        </CustomButton>
       ) : (
         <></>
       )}

@@ -5,20 +5,27 @@ import ButtonForm from "../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoArrowBackSharp } from "react-icons/io5";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import WriteGuide from "../components/WriteGuide";
 
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 92vh;
+  height: 100vh;
   background-color: #fcfcfc;
-  > form {
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    padding: 10px 40px;
-  }
+`;
+
+const WritePostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+`;
+
+const WritePostFormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 40px;
+
   input {
     padding-left: 10px;
     width: 80%;
@@ -163,9 +170,8 @@ const Header = styled.div`
     width: 55%;
     background-color: #f0f0f0;
     padding: 20px;
-    text-align: right;
     font-size: 20px;
-    cursor: pointer;
+    font-weight: var(--fw-bold);
   }
 `;
 
@@ -175,6 +181,27 @@ const PreviewImgWrapper = styled.div`
   height: 400px;
   margin: 0 auto;
   object-fit: cover;
+`;
+
+const HandleBackAndSubmitContainer = styled.div`
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--black-200);
+  position: fixed;
+  bottom: 0;
+  width: 45%;
+  height: 60px;
+  box-shadow: 0 -5px 3px -5px #adadad;
+
+  svg {
+    font-size: var(--font-xxxl);
+    :hover {
+      cursor: pointer;
+      color: var(--black-600);
+    }
+  }
 `;
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
@@ -303,63 +330,66 @@ const WritePost = () => {
             onClick={() => setIsWriteGuideModal(true)}
           />
         </div>
-        <div onClick={() => navigate(-1)}>
-          <IoArrowBackSharp />
-        </div>
+        <div>미리보기</div>
       </Header>
       <Container>
-        <form>
-          <div>
-            <input
-              value={title}
-              onChange={(e) => {
-                handleTitle(e);
-              }}
-              placeholder="제목을 입력하세요"
-            ></input>
-            <ButtonForm
-              type="violet"
-              width="100px"
-              height="40px"
-              text="이미지 등록"
-              onClick={(e) => handleImageModal(e)}
-            />
-          </div>
+        <WritePostWrapper>
+          <WritePostFormContainer>
+            <div>
+              <input
+                value={title}
+                onChange={(e) => {
+                  handleTitle(e);
+                }}
+                placeholder="제목을 입력하세요"
+              ></input>
+              <ButtonForm
+                type="custom"
+                width="100px"
+                height="40px"
+                text="이미지 등록"
+                backgroundColor="var(--purple-200)"
+                onClick={(e) => handleImageModal(e)}
+                hoverBackgroundColor="var(--purple-300)"
+                hovercolor="white"
+              />
+            </div>
 
-          <TagWrapper>
-            {tags.map((tag, idx) => (
-              <TagButton tag={tag} key={idx} idx={idx}></TagButton>
-            ))}
-            <input
-              type="text"
-              value={tag}
-              onKeyUp={(e) => tagMakeHandler(e)}
-              onKeyDown={(e) => noRemoveTagHandler(e)}
-              onChange={(e) => setTag(e.target.value)}
-              placeholder={tags.length ? "" : "태그를 입력하세요"}
-            ></input>
-          </TagWrapper>
-          {isModal ? (
-            <Modal
-              setImgFiles={setImgFiles}
-              previewText={previewText}
-              setPreviewText={setPreviewText}
-              setPreviewList={setPreviewList}
-              previewList={previewList}
-              imgRef={imgRef}
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
-              setContent={setContent}
-              content={content}
-              imgFiles={imgFiles}
-              imgFile={imgFile}
-              setImgFile={setImgFile}
-            />
-          ) : null}
-        </form>
-        <PreviewContainer>
-          <div>
-            <h2>{title}</h2>
+            <TagWrapper>
+              {tags.map((tag, idx) => (
+                <TagButton tag={tag} key={idx} idx={idx}></TagButton>
+              ))}
+              <input
+                type="text"
+                value={tag}
+                onKeyUp={(e) => tagMakeHandler(e)}
+                onKeyDown={(e) => noRemoveTagHandler(e)}
+                onChange={(e) => setTag(e.target.value)}
+                placeholder={tags.length ? "" : "태그를 입력하세요"}
+              ></input>
+            </TagWrapper>
+            {isModal ? (
+              <Modal
+                setImgFiles={setImgFiles}
+                previewText={previewText}
+                setPreviewText={setPreviewText}
+                setPreviewList={setPreviewList}
+                previewList={previewList}
+                imgRef={imgRef}
+                imageUrl={imageUrl}
+                setImageUrl={setImageUrl}
+                setContent={setContent}
+                content={content}
+                imgFiles={imgFiles}
+                imgFile={imgFile}
+                setImgFile={setImgFile}
+              />
+            ) : null}
+          </WritePostFormContainer>
+          <HandleBackAndSubmitContainer>
+            <div onClick={() => navigate(-1)}>
+              <MdOutlineKeyboardBackspace />
+            </div>
             <ButtonForm
               type="violet"
               onClick={(e) => handleSubmit(e)}
@@ -367,6 +397,11 @@ const WritePost = () => {
               height="40px"
               text="포스트 등록"
             />
+          </HandleBackAndSubmitContainer>
+        </WritePostWrapper>
+        <PreviewContainer>
+          <div>
+            <h2>{title}</h2>
           </div>
           {previewList &&
             previewList.map((el, index) => {
@@ -376,10 +411,7 @@ const WritePost = () => {
                     <img src={el[0]} />
                   </PreviewImgWrapper>
                   <div>
-                    <button
-                      onClick={(e) => handleRemovePreview(e, index)}
-                      style={{ color: "red" }}
-                    >
+                    <button onClick={(e) => handleRemovePreview(e, index)}>
                       X
                     </button>
                     <p>{el[1]}</p>

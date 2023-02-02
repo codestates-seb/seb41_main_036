@@ -118,9 +118,9 @@ const Place = () => {
   const [sort, setSort] = useState("newest");
   const { search } = useLocation();
   const totalInfoRef = useRef<PageInfoType | null>(null);
-
   const [isLogin] = useRecoilState(LoginState);
   const memberId = localStorage.getItem("memberId");
+  const location = useLocation();
 
   const searchValue = useMemo(
     () => new URLSearchParams(search).get("keyword"),
@@ -131,6 +131,7 @@ const Place = () => {
   const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
   const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
   const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const searchUrl = localStorage.setItem("searchUrl", location.search);
 
   useEffect(() => {
     setCurPage(1);
@@ -139,6 +140,12 @@ const Place = () => {
   useEffect(() => {
     const search_url = isLogin ? url1_loggedIn : url1;
     const url = isLogin ? url2_loggedIn : url2;
+    window.history.pushState(
+      "",
+      "",
+      `?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`
+    );
+
     if (searchValue) {
       axios
         .post(search_url, { provinces: checkedList })

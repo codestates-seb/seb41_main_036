@@ -69,7 +69,6 @@ const DetailPostInfo = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 20px;
     font-size: var(--font-sm);
   }
   > div:last-child > button {
@@ -223,6 +222,7 @@ const DetailPostAttractionsContainer = styled.div`
   font-size: var(--font-md);
   font-weight: var(--fw-bold);
   color: var(--black-500);
+  margin-bottom: 3em;
   p {
     margin-top: 10px;
     display: flex;
@@ -296,18 +296,18 @@ const DetailPost = () => {
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
 
-  const [postId,setPostId] = useState<number>();
+  const [postId, setPostId] = useState<number>();
   const [isVoted, setIsVoted] = useState<boolean>();
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (isLogin) {
       axios
         .get(`/posts/details/${id}/${memberId}`)
-        .then((res) => {setPost(res.data.data)
-          const { comments, postId, isVoted} = res.data.data
+        .then((res) => {
+          setPost(res.data.data);
+          const { comments, postId, isVoted } = res.data.data;
           setPostComments(comments);
           setPostId(postId);
           setIsVoted(isVoted);
@@ -374,12 +374,10 @@ const DetailPost = () => {
 
   const handleLikePost = () => {
     if (!isLogin) setIsModalVisible(true);
-    
-    axios.post(`/posts/likes/${postId}`)
-    .then((res) => {
-      setIsVoted(res.data.data.isVoted)
-    })
-  }
+    axios.post(`/posts/likes/${postId}`).then((res) => {
+      setIsVoted(res.data.data.isVoted);
+    });
+  };
 
   return (
     <>
@@ -424,7 +422,7 @@ const DetailPost = () => {
         <PostContentContainer>
           <PostContentBox>
             {data.map((post, idx) => (
-              <div >
+              <div>
                 <div>
                   <img src={post.imageURL} alt="picture" key={post.postId} />
                 </div>
@@ -459,8 +457,10 @@ const DetailPost = () => {
                 <span>{post?.views}</span>
               </div>
               <div>
-
-                <AiFillHeart onClick={handleLikePost} color={isVoted === true? "red" : "grey"}/>
+                <AiFillHeart
+                  onClick={handleLikePost}
+                  color={isVoted === true ? "red" : "grey"}
+                />
                 <span>{post?.likes}</span>
               </div>
             </div>
