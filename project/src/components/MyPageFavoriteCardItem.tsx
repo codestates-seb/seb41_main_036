@@ -109,11 +109,9 @@ const AttractionTextInfo = styled.div`
 `;
 interface MyPageFavoriteCardItemProps {
   attractionInfo: MySavesType;
-  order: number;
 }
 const MyPageFavoriteCardItem = ({
   attractionInfo,
-  order,
 }: MyPageFavoriteCardItemProps) => {
   const navigate = useNavigate();
   const [BookmarkDelete, setBookmarkDelete] = useRecoilState(isDeleteMode);
@@ -129,7 +127,6 @@ const MyPageFavoriteCardItem = ({
   const URL_FOR_SAVES = `/attractions/saves/${attractionId}`;
 
   const handleDeleteClick = () => {
-    console.log(userData, "들어옴");
     setStartDeleteAnimation(true);
     setTimeout(
       () =>
@@ -139,10 +136,9 @@ const MyPageFavoriteCardItem = ({
             if (userData) {
               setUserData({
                 ...userData,
-                saves: [
-                  ...userData.saves.slice(0, order),
-                  ...userData.saves.slice(order + 1),
-                ] as typeof userData.saves,
+                saves: userData.saves.filter(
+                  (el) => el.attractionId !== attractionId
+                ) as typeof userData.saves,
                 totalMySaves: userData.totalMySaves - 1,
               });
             }

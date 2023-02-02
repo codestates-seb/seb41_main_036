@@ -709,12 +709,8 @@ const MyPageMyPostCard = ({
     <>
       <MyPagePostCardWrapper>
         {posts &&
-          currentPosts.map((post, order) => (
-            <MyPagePostCardItem
-              key={post.postId}
-              postInfo={post}
-              order={order}
-            />
+          currentPosts.map((post) => (
+            <MyPagePostCardItem key={post.postId} postInfo={post} />
           ))}
       </MyPagePostCardWrapper>
       <MyPagePagination
@@ -743,11 +739,10 @@ const MyPageMyFavoriteCard = ({
     <>
       <FavoriteCardWrapper>
         {saves &&
-          currentSaves.map((save, order) => (
+          currentSaves.map((save) => (
             <MyPageFavoriteCardItem
               key={save.attractionId}
               attractionInfo={save}
-              order={order}
             />
           ))}
       </FavoriteCardWrapper>
