@@ -210,10 +210,12 @@ const EditPost = () => {
       .get(`/posts/details/${id}/${memberId}`)
       .then((res) => {
         setData(res.data.data);
-        const { postTitle, postHashTags, postImageUrls } = res.data.data;
+        const { postTitle, postHashTags, postImageUrls, postContents } =
+          res.data.data;
         setTitle(postTitle);
         setTags(postHashTags);
         setImgFiles(postImageUrls);
+        setContent(postContents);
       })
       .catch((err) => console.error(err));
     if (data) {
@@ -306,7 +308,7 @@ const EditPost = () => {
           },
         })
         .then((res) => {
-          if (res.status === 200) navigate(`/posts`);
+          if (res.status === 200) navigate(`/posts/detail/${id}`);
         })
         .catch((err) => console.error(err));
     }
