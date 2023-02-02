@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import KakaoMap from "../components/KakaoMap";
-import { regionDummy } from "../regionDummyData";
+import { regionDummy } from "../data/regionData";
 import { useState, useEffect } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkPlus, BsFillChatLeftFill } from "react-icons/bs";
 import HiddenHeader from "../components/Header/HiddenHeader";
 import "../index.css";
+import tags from "../data/tagData";
 import axios from "../utils/axiosinstance";
 import { GiTalk } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
@@ -297,6 +298,29 @@ const PostNone = styled.div`
   }
 `;
 
+  interface RegionType {
+    attractionAddress:string, 
+    attractionId:number,
+    attractionName:string,
+    fixedImage:string
+  }
+
+  interface ModalDataType {
+    attractionAddress:string, 
+    attractionId:number,
+    attractionName:string, 
+    fixedImage:string|undefined, 
+    isSaved:boolean,
+    isVoted:boolean,
+    likes:number,
+    numOfPosts:number,
+    postIdAndUrls: string|number[]
+  }
+
+  interface RegionDummyType {
+    Post:string
+  }
+
 const Map = () => {
   const [dropdownView, setDropdownView] = useState(false);
   const [regionFilter, setRegionFilter] = useState("전체");
@@ -306,33 +330,19 @@ const Map = () => {
   const [modalDataId, setModalDataId] = useState<number>(1);
   const [wholeData, setWholeData] = useState<any>();
   const navigate = useNavigate();
-
-  const tags = [
-    "#가족 여행지",
-    "#야경이 아름다운 곳",
-    "#여름 여행지",
-    "#체험 학습",
-    "#겨울 여행 추천",
-    "#야경이 아름다운 곳",
-    "#가을 여행지",
-    "#친구와 방문하기 좋은 곳",
-    "#연인과 함께",
-    "#가을에 방문하기 좋은 곳",
-    "#테마 거리",
-  ];
-
-  const url = "/attractions/maps?page=1&size=99&sort=posts";
-  const [filterOrPosition, setFilterOrPosition] = useState<any>(false);
-  const url2 = `/attractions/${modalDataId}`;
-  const memberId = localStorage.getItem("memberId");
-  const url3 = `/attractions/${modalDataId}/${memberId}`;
+  const [filterOrPosition, setFilterOrPosition] = useState<boolean>(false);
   const [isLogin] = useRecoilState(LoginState);
-  const [isVoted, setIsVoted] = useState();
-  const [isLiked, setIsLiked] = useState();
+  const [isVoted, setIsVoted] = useState<boolean>();
+  const [isLiked, setIsLiked] = useState<boolean>();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const memberId = localStorage.getItem("memberId");
+  const url = "/attractions/maps?page=1&size=104&sort=posts";
+  const url2 = `/attractions/${modalDataId}`;
+  const url3 = `/attractions/${modalDataId}/${memberId}`;
   const URL_FOR_SAVES = `/attractions/saves/${modalDataId}`;
   const URL_FOR_LIKES = `/attractions/likes/${modalDataId}`;
   const ATTRACTIONS_URL = isLogin ? url3 : url2;
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const handleClickLiked = () => {
     if(isLogin){
@@ -411,10 +421,10 @@ const Map = () => {
             </button>
             {dropdownView ? (
               <SelectList>
-                {regionDummy.map((el: any, index: number) => {
+                {regionDummy.map((el: RegionDummyType, index: number) => {
                   return (
                     <button
-                      key={el.id}
+                      key={index}
                       onClick={() => {
                         setRegionFilter(el.Post);
                         setDropdownView(false);
@@ -429,7 +439,7 @@ const Map = () => {
           </DropDown>
           <PlaceComponent>
             {regionList !== undefined &&
-              regionList.map((el: any, index: any) => {
+              regionList.map((el: RegionType , index: number) => {
                 return (
                   <Place
                     onClick={() => {
@@ -455,7 +465,7 @@ const Map = () => {
           <PlaceDetailModal>
             <PlaceDetailModalHeader>
               <div>
-                <img src={modalData.fixedImage}></img>
+                <img src={modalData.fixedImage} alt={'modalImg'}></img>
               </div>
               <div>
                 <p>서울 명소</p>
@@ -499,12 +509,13 @@ const Map = () => {
               <div>방문자 포토리뷰</div>
               <PostImgContainer>
                 {modalData.numOfPosts > 1 ? (
-                  modalData.postIdAndUrls.map((el: any, index: any) => {
+                  modalData.postIdAndUrls.map((el: any, index: number) => {
                     return (
                       <>
                         <img
                           src={el.imageUrls}
                           key={index}
+                          alt={'Img'}
                           onClick={() => {
                             navigate(`/posts/detail/${el.postId}`);
                           }}

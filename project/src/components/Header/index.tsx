@@ -53,7 +53,6 @@ const HeaderTopBar = () => {
     axios
       .post(`/logout`)
       .then((res) => {
-        console.log(res);
         setIslogin(false);
         setAuth("");
         setLoggedUser("");

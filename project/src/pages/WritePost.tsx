@@ -193,7 +193,7 @@ const WritePost = () => {
   const navigate = useNavigate();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    if (title.length > 20) alert("20자 이내로 작성해주세요.");
+    if (title.length > 30) alert("30자 이내로 작성해주세요.");
   };
 
   const TagButton = ({ tag, idx }: { tag: string; idx: number }) => {
