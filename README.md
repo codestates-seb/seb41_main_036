@@ -45,7 +45,7 @@
 |박혜수 (FE 팀원)   |이승현 (FE 팀원)
 -----------------------------|-----------------------------|
 |<img src='https://user-images.githubusercontent.com/110949256/216306552-08216ae2-f54e-4f9a-87e9-f18340319e8f.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216305538-65463170-bdb3-40c0-a84c-542bd33e5862.png' width='150'/>|>|                  
-|[@namnam-5799](https://github.com/namnam-5799)        |[@]()
+|[@namnam-5799](https://github.com/namnam-5799)        |[@](https://github.com/NowVic99)
 
 |이동우 (BE 서기)   |이상유 (BE 팀원)
 -----------------------------|-----------------------------|
