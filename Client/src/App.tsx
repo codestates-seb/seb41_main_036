@@ -11,15 +11,15 @@ function App() {
   }
 
   const Main = lazy(() => import("./pages/Main"));
-  const Place = lazy(() => import("./pages/Place"));
-  const Post = lazy(() => import("./pages/Post"));
-  const MyPage = lazy(() => import("./pages/MyPage"));
-  const WritePost = lazy(() => import("./pages/WritePost"));
+  const Place = lazy(() => import("./pages/Place/Place"));
+  const Post = lazy(() => import("./pages/Post/Post"));
+  const MyPage = lazy(() => import("./pages/MyPage/MyPage"));
+  const WritePost = lazy(() => import("./pages/WritePost/WritePost"));
   const PlaceDetail = lazy(() => import("./pages/PlaceDetail"));
-  const DetailPost = lazy(() => import("./pages/DetailPost"));
+  const DetailPost = lazy(() => import("./pages/DetailPost/DetailPost"));
   const Map = lazy(() => import("./pages/Map"));
   const LoginSign = lazy(() => import("./pages/LoginSign"));
-  const EditPost = lazy(() => import("./pages/EditPost "));
+  const EditPost = lazy(() => import("./pages/WritePost/EditPost "));
   const NoAddress = lazy(() => import("./pages/NoAddress"));
   return (
     <div className="App">

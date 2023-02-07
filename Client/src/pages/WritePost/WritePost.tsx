@@ -1,199 +1,14 @@
-import axios from "../utils/axiosinstance";
+import axios from "../../utils/axiosinstance";
 import React, { useState, useRef, SetStateAction, Dispatch } from "react";
-import styled from "styled-components";
-import ButtonForm from "../components/Button";
+import ButtonForm from "../../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import WriteGuide from "../components/WriteGuide";
+import WriteGuide from "../../components/WriteGuide";
+import * as wp from './WritePostStyled'
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  background-color: #fcfcfc;
-`;
 
-const WritePostWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 45%;
-`;
-
-const WritePostFormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 40px;
-  input {
-    padding-left: 10px;
-    width: 80%;
-    border: none;
-    outline: none;
-    font-size: 25px;
-    font-weight: var(--fw-bold);
-    background-color: transparent;
-    &:focus {
-      border-color: transparent;
-    }
-    &::placeholder {
-      font-size: 30px;
-      font-weight: var(--fw-bold);
-    }
-  }
-  hr {
-    margin-top: 10px;
-    height: 1px;
-    border: 0;
-    background: #b8b8b8;
-  }
-  div:first-child {
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
-const PreviewContainer = styled.div`
-  width: 55%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background-color: #f0f0f0;
-  padding: 10px 40px;
-  word-break: break-all;
-  div:first-child {
-    h2 {
-      margin-top: 5px;
-      margin-bottom: 25px;
-      height: 44px;
-      padding-left: 20px;
-    }
-    button {
-      margin-right: 10px;
-    }
-  }
-`;
-
-const Preview = styled.div`
-  display: flex;
-  flex-direction: column;
-  > div {
-    display: flex;
-    flex-direction: column;
-    > p {
-      width: 84%;
-      margin-top: -20px;
-      font-size: 15px;
-      margin-left: 38px;
-      margin-bottom: 100px;
-      text-align: start;
-      color: #2d2d2d;
-      line-height: 24px;
-    }
-    > button {
-      margin-top: 20px;
-      width: 94.5%;
-      height: 20px;
-      font-size: 14px;
-      border: none;
-      background-color: transparent;
-      font-weight: bold;
-      color: var(--purple-400);
-      cursor: pointer;
-      text-align: right;
-    }
-  }
-`;
-
-const TagBox = styled.span`
-  padding: 5px 7px;
-  border: none;
-  background-color: transparent;
-  background-color: var(--purple-tag);
-  color: var(--purple-400);
-  font-weight: var(--fw-bold);
-  box-shadow: 0 0 5px var(--purple-200);
-  border-radius: var(--br-l);
-  margin: 0 10px;
-  font-size: var(--font-xs);
-  &:hover {
-    background-color: var(--purple-300);
-    color: var(--purple-tag);
-  }
-  button {
-    border: none;
-    background-color: transparent;
-  }
-`;
-
-const TagWrapper = styled.div`
-  width: 100%;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-  color: #2d2d2d;
-  > input {
-    width: 200px;
-    padding-left: 10px;
-    font-size: var(--font-base);
-    height: 30px;
-    outline: none;
-    color: #2d2d2d;
-    &::placeholder {
-      font-size: 18px;
-      font-weight: 500;
-    }
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  width: 100%;
-  background-color: #fcfcfc;
-  > div:nth-child(1) {
-    width: 45%;
-    height: 100%;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  > div:nth-child(2) {
-    width: 55%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    font-size: 20px;
-    font-weight: var(--fw-bold);
-  }
-`;
-
-const PreviewImgWrapper = styled.div`
-  overflow: scroll;
-  width: 90%;
-  height: 400px;
-  margin: 0 auto;
-  object-fit: cover;
-`;
-
-const HandleBackAndSubmitContainer = styled.div`
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--black-200);
-  position: fixed;
-  bottom: 0;
-  width: 45%;
-  height: 60px;
-  box-shadow: 0 -5px 3px -5px #adadad;
-  svg {
-    font-size: var(--font-xxxl);
-    :hover {
-      cursor: pointer;
-      color: var(--black-600);
-    }
-  }
-`;
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
   const [previewList, setPreviewList] = useState<string[][]>([]); // 프리뷰 map 돌릴 값 저장용
@@ -221,18 +36,18 @@ const WritePost = () => {
     };
 
     return (
-      <TagBox>
+      <wp.TagBox>
         <span>{tag} </span>
         <button onClick={(e) => removeClickTagHandler(e)}>
           <svg width="14" height="14" fill="hsl(237.931, 43%, 87%)">
             <path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path>
           </svg>
         </button>
-      </TagBox>
+      </wp.TagBox>
     );
   };
 
-  <TagWrapper>
+  <wp.TagWrapper>
     {tags.map((tag, idx) => (
       <TagButton tag={tag} key={idx} idx={idx}></TagButton>
     ))}
@@ -244,7 +59,7 @@ const WritePost = () => {
       onChange={(e) => setTag(e.target.value)}
       placeholder={tags.length ? "" : "태그를 입력해주세요!"}
     ></input>
-  </TagWrapper>;
+  </wp.TagWrapper>;
   const noRemoveTagHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") e.preventDefault();
   };
@@ -308,7 +123,7 @@ const WritePost = () => {
       {isWriteGuideModal ? (
         <WriteGuide setIsWriteGuideModal={setIsWriteGuideModal} />
       ) : null}
-      <Header>
+      <wp.Header>
         <div>
           <span>
             <BsDot color="#6255F8" />새 포스트
@@ -322,10 +137,10 @@ const WritePost = () => {
           />
         </div>
         <div>미리보기</div>
-      </Header>
-      <Container>
-        <WritePostWrapper>
-          <WritePostFormContainer>
+      </wp.Header>
+      <wp.Container>
+        <wp.WritePostWrapper>
+          <wp.WritePostFormContainer>
             <div>
               <input
                 value={title}
@@ -346,7 +161,7 @@ const WritePost = () => {
               />
             </div>
 
-            <TagWrapper>
+            <wp.TagWrapper>
               {tags.map((tag, idx) => (
                 <TagButton tag={tag} key={idx} idx={idx}></TagButton>
               ))}
@@ -358,7 +173,7 @@ const WritePost = () => {
                 onChange={(e) => setTag(e.target.value)}
                 placeholder={tags.length ? "" : "태그를 입력하세요"}
               ></input>
-            </TagWrapper>
+            </wp.TagWrapper>
             {isModal ? (
               <Modal
                 setImgFiles={setImgFiles}
@@ -376,8 +191,8 @@ const WritePost = () => {
                 setImgFile={setImgFile}
               />
             ) : null}
-          </WritePostFormContainer>
-          <HandleBackAndSubmitContainer>
+          </wp.WritePostFormContainer>
+          <wp.HandleBackAndSubmitContainer>
             <div onClick={() => navigate(-1)}>
               <MdOutlineKeyboardBackspace />
             </div>
@@ -388,114 +203,35 @@ const WritePost = () => {
               height="40px"
               text="포스트 등록"
             />
-          </HandleBackAndSubmitContainer>
-        </WritePostWrapper>
-        <PreviewContainer>
+          </wp.HandleBackAndSubmitContainer>
+        </wp.WritePostWrapper>
+        <wp.PreviewContainer>
           <div>
             <h2>{title}</h2>
           </div>
           {previewList &&
             previewList.map((el, index) => {
               return (
-                <Preview key={index}>
-                  <PreviewImgWrapper>
+                <wp.Preview key={index}>
+                  <wp.PreviewImgWrapper>
                     <img src={el[0]} />
-                  </PreviewImgWrapper>
+                  </wp.PreviewImgWrapper>
                   <div>
                     <button onClick={(e) => handleRemovePreview(e, index)}>
                       X
                     </button>
                     <p>{el[1]}</p>
                   </div>
-                </Preview>
+                </wp.Preview>
               );
             })}
-        </PreviewContainer>
-      </Container>
+        </wp.PreviewContainer>
+      </wp.Container>
     </>
   );
 };
 
-const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  margin: 30px auto;
-  padding: 20px;
-  width: 400px;
-  height: 300px;
-  border: 0.5px solid var(--purple-300);
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 25px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8.5px);
-  -webkit-backdrop-filter: blur(8.5px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  input {
-    color: var(--purple-400);
-    border: none;
-    background-color: transparent;
-    display: none;
-  }
-  textarea {
-    width: 300px;
-    resize: none;
-    height: 150px;
-    padding: 10px;
-    border-radius: var(--br-m);
-    border-color: var(--black-500);
-    &:focus {
-      box-shadow: 0 0 10px var(--purple-300);
-      border: 0;
-      outline: none;
-    }
-  }
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    border: none;
-    margin-bottom: 20px;
-    background-color: var(--black-200);
-    border-radius: var(--br-l);
-    color: var(--black-700);
-    font-weight: var(--fw-bold);
-    padding: 10px 0;
-    cursor: pointer;
-    transition: all 0.5s ease;
-    &:hover {
-      color: var(--purple-300);
-      transform: translateY(-5px);
-    }
-  }
-  svg {
-    width: 15px;
-    height: 15px;
-    margin-left: 5px;
-  }
-  button:last-child {
-    padding-top: 30px;
-    background-color: transparent;
-  }
-`;
 
-const AddButton = styled.button`
-  width: 30px;
-  height: 30px;
-`;
-
-const SelectImageContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  > img {
-    width: 200px;
-    height: 200px;
-  }
-`;
 const Modal = ({
   setImgFiles,
   previewText,
@@ -556,12 +292,12 @@ const Modal = ({
   return (
     <>
       {imageUrl && (
-        <SelectImageContainer>
+        <wp.SelectImageContainer>
           선택한 이미지
           <img src={imageUrl} alt="preview" />
-        </SelectImageContainer>
+        </wp.SelectImageContainer>
       )}
-      <ModalContainer>
+      <wp.ModalContainer>
         <input
           type="file"
           accept="image/*"
@@ -577,8 +313,8 @@ const Modal = ({
           onChange={(e) => setPreviewText(e.target.value)}
           placeholder="사진에 대해 설명해주세요!"
         />
-        <AddButton onClick={(e) => addPreview(e)}>추가하기</AddButton>
-      </ModalContainer>
+        <wp.AddButton onClick={(e) => addPreview(e)}>추가하기</wp.AddButton>
+      </wp.ModalContainer>
     </>
   );
 };

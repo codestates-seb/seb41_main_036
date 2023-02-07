@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import { AiFillHeart, AiFillEye as EyeIcon } from "react-icons/ai";
-import { ArrayPostType } from "../pages/Post";
-import { useNavigate } from "react-router-dom";
 
-const PostContainer = styled.div<{ margin: string }>`
+export const PostContainer = styled.div<{ margin: string }>`
   margin-left: ${(props) => (props.margin === "0" ? "0" : props.margin)};
   display: flex;
   flex-wrap: wrap;
@@ -14,7 +11,7 @@ const PostContainer = styled.div<{ margin: string }>`
   }
 `;
 
-const PostCard = styled.div<{ width: string }>`
+export const PostCard = styled.div<{ width: string }>`
   width: ${(props) => props.width};
   max-width: 350px;
   height: 230px;
@@ -65,7 +62,6 @@ const PostCard = styled.div<{ width: string }>`
         object-fit: cover;
       }
       > div {
-      
         > div {
           color: #323232;
           font-weight: bold;
@@ -112,54 +108,3 @@ const PostCard = styled.div<{ width: string }>`
     color: var(--pink-heart);
   }
 `;
-
-const PostCardComponent = ({
-  posts,
-  margin,
-  width,
-}: {
-  posts: ArrayPostType;
-  margin: string;
-  width: string;
-}) => {
-  const navigate = useNavigate();
-  return (
-    <>
-      <PostContainer margin={margin}>
-        {posts.map((post: any) => {
-          return (
-            <PostCard key={post.postId} width={width}>
-              <div>
-                <img
-                  src={post.pictureUrl}
-                  onClick={() => navigate(`/posts/detail/${post.postId}`)}
-                  alt={post.attractionsTitle}
-                ></img>
-              </div>
-              <div>
-                <div>
-                  <img src={post.memberPicture}></img>
-                  <div>
-                    <div>{post.username}</div>
-                    <span>{post.createdAt.slice(0, 10)}</span>
-                  </div>
-                </div>
-                <div>
-                  <EyeIcon className="eye-icon" />
-                  <p>{post.views}</p>
-                  <AiFillHeart className="heart-icon"></AiFillHeart>
-                  <p>{post.likes}</p>
-                </div>
-              </div>
-              <div onClick={() => navigate(`/posts/detail/${post.postId}`)}>
-                {post.postTitle}
-              </div>
-            </PostCard>
-          );
-        })}
-      </PostContainer>
-    </>
-  );
-};
-
-export default PostCardComponent;

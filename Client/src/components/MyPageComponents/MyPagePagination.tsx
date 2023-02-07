@@ -1,20 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import styled from "styled-components";
-import { ArrayMyPostsType, ArrayMySavesType } from "../pages/MyPage";
-import { Button } from "./Pagination";
-
-const Page = styled.nav`
-  width: 300px;
-  margin: 0 auto;
-`;
-
-const Nav = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  margin: 16px;
-`;
+import { ArrayMyPostsType, ArrayMySavesType } from "../../pages/MyPage/MyPage";
+import { Button } from "../Pagination";
+import * as mpc from "./MyPageComtentsStyled";
 
 const MyPagePagination = ({
   props,
@@ -35,8 +22,8 @@ const MyPagePagination = ({
   }
   return (
     <>
-      <Page>
-        <Nav>
+      <mpc.Page>
+        <mpc.Nav>
           <Button
             style={{ width: "44px", fontSize: "14px" }}
             onClick={() => {
@@ -66,8 +53,8 @@ const MyPagePagination = ({
           >
             {">"}
           </Button>
-        </Nav>
-      </Page>
+        </mpc.Nav>
+      </mpc.Page>
     </>
   );
 };

@@ -1,79 +1,16 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import styled from "styled-components";
-import LocationFilter from "../components/LocationFilter";
-import { Header } from "../components/Header";
-import axios from "../utils/axiosinstance";
-import PlaceCard from "../components/PlaceCard";
-import Pagination from "../components/Pagination";
-import Footer from "../components/Footer";
+import LocationFilter from "../../components/LocationFilter";
+import { Header } from "../../components/Header";
+import axios from "../../utils/axiosinstance";
+import PlaceCard from "../../components/PlaceCard/PlaceCard";
+import Pagination from "../../components/Pagination";
+import Footer from "../../components/Footer";
 import { useRecoilState } from "recoil";
-import { LoginState } from "../recoil/state";
-import EmptyResult from "../components/EmptyResult";
-
-const PlaceWrapper = styled.div`
-  display: flex;
-  max-width: 1280px;
-  width: 83.5%;
-  margin: 0 auto;
-  padding-top: 70px;
-`;
-
-const LocationWrapper = styled.nav`
-  min-width: 190px;
-  max-height: 850px;
-  border-radius: var(--br-m);
-  border: 1px solid var(--black-200);
-  overflow: hidden;
-  margin-top: 10px;
-  background-color: transparent;
-  margin-bottom: 20px;
-  overflow-y: auto;
-  height: 100%;
-  background-color: var(--black-200);
-`;
-
-const PlaceContainer = styled.div`
-  min-height: 790px;
-  margin: 20px 0 20px 30px;
-  width: 100%;
-`;
-
-const PlaceFilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 5px;
-  height: 50px;
-  padding-bottom: 10px;
-  > span {
-    font-size: var(--font-sm);
-    color: var(--black-800);
-    font-weight: var(--fw-medium);
-  }
-`;
-
-export const FilterButton = styled.button`
-  margin: 0 10px;
-  padding-bottom: 3px;
-  border: none;
-  background-color: transparent;
-  color: var(--black-900);
-  font-weight: var(--fw-bold);
-  cursor: pointer;
-  &.active {
-    color: var(--purple-400);
-    border-bottom: 1px solid var(--purple-300);
-  }
-`;
-
-const PlaceBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px 2%;
-`;
-const ITEM_LIMIT = 9;
+import { LoginState } from "../../recoil/state";
+import EmptyResult from "../../components/EmptyResult";
+import * as pl from "./PlaceStyled";
 
 export interface PlaceType {
   attractionId: number;
@@ -118,7 +55,7 @@ const Place = () => {
   const [sort, setSort] = useState("newest");
   const { search } = useLocation();
   const totalInfoRef = useRef<PageInfoType | null>(null);
-
+  const ITEM_LIMIT = 9;
   const [isLogin] = useRecoilState(LoginState);
   const memberId = localStorage.getItem("memberId");
 
@@ -178,8 +115,8 @@ const Place = () => {
           />
         </Header>
       </div>
-      <PlaceWrapper>
-        <LocationWrapper>
+      <pl.PlaceWrapper>
+        <pl.LocationWrapper>
           {placesData && (
             <LocationFilter
               setCurPage={setCurPage}
@@ -187,9 +124,9 @@ const Place = () => {
               setCheckedList={setCheckedlist}
             />
           )}
-        </LocationWrapper>
-        <PlaceContainer>
-          <PlaceFilterContainer>
+        </pl.LocationWrapper>
+        <pl.PlaceContainer>
+          <pl.PlaceFilterContainer>
             {searchValue ? (
               <span>
                 <strong
@@ -203,7 +140,7 @@ const Place = () => {
 
             <div>
               {sortList.map((sort, idx) => (
-                <FilterButton
+                <pl.FilterButton
                   className={onFilter === idx ? "active" : ""}
                   key={idx}
                   onClick={() => {
@@ -211,11 +148,11 @@ const Place = () => {
                   }}
                 >
                   {sort.kor}
-                </FilterButton>
+                </pl.FilterButton>
               ))}
             </div>
-          </PlaceFilterContainer>
-          <PlaceBox>
+          </pl.PlaceFilterContainer>
+          <pl.PlaceBox>
             {!totalInfoRef.current?.totalElements && searchValue && (
               <EmptyResult
                 message="다른 검색어를 입력해보세요"
@@ -240,15 +177,15 @@ const Place = () => {
                 )}
               </>
             )}
-          </PlaceBox>
+          </pl.PlaceBox>
           {placesData && (
             <Pagination
               props={totalInfoRef.current as PageInfoType}
               setCurPage={setCurPage}
             />
           )}
-        </PlaceContainer>
-      </PlaceWrapper>
+        </pl.PlaceContainer>
+      </pl.PlaceWrapper>
       <Footer />
     </>
   );

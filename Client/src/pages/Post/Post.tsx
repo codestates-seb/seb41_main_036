@@ -1,67 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import LocationFilter from "../components/LocationFilter";
-import { Header } from "../components/Header";
-import PostCardComponent from "../components/PostCardComponent";
-import axios from "../utils/axiosinstance";
-import Pagination from "../components/Pagination";
-import { PageInfoType } from "./Place";
-import Footer from "../components/Footer";
-import EmptyResult from "../components/EmptyResult";
+import { useEffect, useState, useRef } from "react";
+import LocationFilter from "../../components/LocationFilter";
+import { Header } from "../../components/Header";
+import PostCardComponent from "../../components/PostCard/PostCardComponent";
+import axios from "../../utils/axiosinstance";
+import Pagination from "../../components/Pagination";
+import { PageInfoType } from "../Place/Place";
+import Footer from "../../components/Footer";
+import EmptyResult from "../../components/EmptyResult";
+import * as po from "./PostStyled";
 const ITEM_LIMIT = 9;
-const PostWrapper = styled.div`
-  padding-top: 70px;
-  display: flex;
-  width: 83.5%;
-  margin: 0 auto;
-  max-width: 1280px;
-`;
-
-const LocationWrapper = styled.nav`
-  min-width: 190px;
-  max-height: 850px;
-  border-radius: var(--br-m);
-  overflow: hidden;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  background-color: var(--black-200);
-  overflow-y: auto;
-  height: 100%;
-`;
-
-const PostContainer = styled.div`
-  min-height: 788px;
-  margin: 20px 0 20px 30px;
-  width: 100%;
-`;
-
-const PostFilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 5px;
-  height: 50px;
-  padding-bottom: 10px;
-  > span {
-    font-size: var(--font-sm);
-    color: var(--black-800);
-    font-weight: var(--fw-medium);
-  }
-`;
-
-const FilterButton = styled.button`
-  margin: 0 10px;
-  padding-bottom: 3px;
-  border: none;
-  background-color: transparent;
-  color: var(--black-900);
-  font-weight: var(--fw-bold);
-  cursor: pointer;
-  &.active {
-    color: var(--purple-400);
-    border-bottom: 1px solid var(--purple-300);
-  }
-`;
 
 export interface PostType {
   postId: number;
@@ -74,9 +21,6 @@ export interface PostType {
   modifiedAt: number;
   views: number;
 }
-const PostCardContainer = styled.div`
-  width: 100%;
-`;
 
 const sortList: { kor: string; eng: string }[] = [
   {
@@ -136,8 +80,8 @@ const Post = () => {
           <Header.HeaderBody selectedMenu={1} backgroundOn={false} />
         </Header>
       </div>
-      <PostWrapper>
-        <LocationWrapper>
+      <po.PostWrapper>
+        <po.LocationWrapper>
           {postsData && (
             <LocationFilter
               setCurPage={setCurPage}
@@ -145,13 +89,13 @@ const Post = () => {
               setCheckedList={setCheckedlist}
             />
           )}
-        </LocationWrapper>
-        <PostContainer>
-          <PostFilterContainer>
+        </po.LocationWrapper>
+        <po.PostContainer>
+          <po.PostFilterContainer>
             <span>총 {totalInfoRef.current?.totalElements}개의 포스트</span>
             <div>
               {sortList.map((sort, idx) => (
-                <FilterButton
+                <po.FilterButton
                   className={onFilter === idx ? "active" : ""}
                   key={idx}
                   onClick={() => {
@@ -160,15 +104,15 @@ const Post = () => {
                   }}
                 >
                   {sort.kor}
-                </FilterButton>
+                </po.FilterButton>
               ))}
             </div>
-          </PostFilterContainer>
-          <PostCardContainer>
+          </po.PostFilterContainer>
+          <po.PostCardContainer>
             {postsData && (
               <PostCardComponent posts={postsData} margin="0" width="32.2%" />
             )}
-          </PostCardContainer>
+          </po.PostCardContainer>
           {!!postsData?.length ? (
             <Pagination
               props={totalInfoRef.current as PageInfoType}
@@ -177,8 +121,8 @@ const Post = () => {
           ) : (
             <EmptyResult message="등록된 포스트가 없습니다" />
           )}
-        </PostContainer>
-      </PostWrapper>
+        </po.PostContainer>
+      </po.PostWrapper>
       <Footer />
     </>
   );
