@@ -21,14 +21,12 @@ const Container = styled.div`
   width: 100%;
   height: 92vh;
   background-color: #fcfcfc;
-
   > form {
     width: 45%;
     display: flex;
     flex-direction: column;
     padding: 10px 40px;
   }
-
   input {
     padding-left: 10px;
     width: 80%;
@@ -36,7 +34,6 @@ const Container = styled.div`
     outline: none;
     font-size: 25px;
     font-weight: var(--fw-bold);
-
     &:focus {
       border-color: transparent;
     }
@@ -51,7 +48,6 @@ const Container = styled.div`
     border: 0;
     background: #b8b8b8;
   }
-
   div:first-child {
     display: flex;
     justify-content: space-between;
@@ -81,11 +77,9 @@ const PreviewContainer = styled.div`
 const Preview = styled.div`
   display: flex;
   flex-direction: column;
-
   > div {
     display: flex;
     flex-direction: column;
-
     > p {
       width: 84%;
       font-size: 15px;
@@ -121,17 +115,14 @@ const TagBox = styled.span`
   border-radius: var(--br-l);
   margin: 0 10px;
   font-size: var(--font-xs);
-
   &:hover {
     background-color: var(--purple-300);
     color: var(--purple-tag);
   }
-
   button {
     border: none;
     background-color: transparent;
   }
-
   svg {
     padding-top: 3px;
   }
@@ -144,7 +135,6 @@ const TagWrapper = styled.div`
   align-items: center;
   margin-top: 20px;
   color: #2d2d2d;
-
   > input {
     width: 200px;
     padding-left: 10px;
@@ -152,7 +142,6 @@ const TagWrapper = styled.div`
     height: 30px;
     outline: none;
     color: #2d2d2d;
-
     &::placeholder {
       font-size: 18px;
       font-weight: 500;
@@ -216,15 +205,15 @@ const EditPost = () => {
         setTags(postHashTags);
         setImgFiles(postImageUrls);
         setContent(postContents);
+        if (data) {
+          let array: any[] = [];
+          for (let i = 0; i < data?.postImageUrls.length!; i++) {
+            array.push([data?.postImageUrls[i], data?.postContents[i]]);
+          }
+          setPreviewList(array);
+        }
       })
       .catch((err) => console.error(err));
-    if (data) {
-      let array: any[] = [];
-      for (let i = 0; i < data?.postImageUrls.length!; i++) {
-        array.push([data?.postImageUrls[i], data?.postContents[i]]);
-      }
-      setPreviewList(array);
-    }
   };
 
   useEffect(() => {
@@ -441,21 +430,18 @@ const ModalContainer = styled.div`
     background-color: transparent;
     display: none;
   }
-
   textarea {
     resize: none;
     height: 150px;
     padding: 10px;
     border-radius: var(--br-m);
     border-color: var(--black-500);
-
     &:focus {
       box-shadow: 0 0 10px var(--purple-300);
       border: 0;
       outline: none;
     }
   }
-
   button {
     display: flex;
     align-items: center;
@@ -475,13 +461,11 @@ const ModalContainer = styled.div`
       transform: translateY(-5px);
     }
   }
-
   svg {
     width: 15px;
     height: 15px;
     margin-left: 5px;
   }
-
   button:last-child {
     padding-top: 30px;
     background-color: transparent;
@@ -498,7 +482,6 @@ const SelectImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   > img {
     width: 200px;
     height: 200px;

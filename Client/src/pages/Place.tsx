@@ -139,6 +139,7 @@ const Place = () => {
   useEffect(() => {
     const search_url = isLogin ? url1_loggedIn : url1;
     const url = isLogin ? url2_loggedIn : url2;
+
     if (searchValue) {
       axios
         .post(search_url, { provinces: checkedList })

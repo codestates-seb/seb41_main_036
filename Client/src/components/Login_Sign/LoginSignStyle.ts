@@ -202,7 +202,6 @@ export const LoginInputContainer = styled.form`
   align-items: center;
   width: 80%;
   margin-bottom: 130px;
-
   span {
     width: 70%;
     text-align: left;
