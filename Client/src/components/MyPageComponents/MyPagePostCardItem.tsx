@@ -1,4 +1,3 @@
-import { MyPostsType } from "../../pages/MyPage/MyPage";
 import { getTime } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { MdDeleteForever as DeleteIcon } from "react-icons/md";
@@ -8,6 +7,7 @@ import { isEditMode, UserData } from "../../recoil/MyPageState";
 import axios from "../../utils/axiosinstance";
 import { useState } from "react";
 import * as mpc from './MyPageComtentsStyled'
+import { MyPostsType } from "../../utils/d";
 interface MyPagePostCardItemProps {
   postInfo: MyPostsType;
 }
@@ -35,7 +35,7 @@ const MyPagePostCardItem = ({ postInfo }: MyPagePostCardItemProps) => {
                 setUserData({
                   ...userData,
                   posts: userData.posts.filter(
-                    (el) => el.postId !== postId
+                    (el:MyPostsType) => el.postId !== postId
                   ) as typeof userData.posts,
                   totalMyPosts: userData.totalMyPosts - 1,
                 }),

@@ -23,61 +23,9 @@ import MyPagePostCardItem from "../../components/MyPageComponents/MyPagePostCard
 import DaumPostcode from "react-daum-postcode";
 import { IoChevronBackOutline as BackIcon } from "react-icons/io5";
 import * as mp from "./MyPageStyled";
+import { ArrayMyPostsType, ArrayMySavesType } from "../../utils/d";
 
-export interface UserType {
-  memberId: number;
-  username: string;
-  memberTitle: null;
-  phoneNumber: string;
-  address: string;
-  picture: string;
-  email: string;
-  totalMyPosts: number;
-  totalMySaves: number;
-  posts:
-    | [
-        {
-          postId: number;
-          postTitle: string;
-          pictureUrl: string;
-          views: number;
-          likes: number;
-          createdAt: string;
-          modifiedAt: string;
-        }
-      ];
-  saves:
-    | {
-        attractionId: number;
-        attractionName: string;
-        fixedImage: string;
-        likes: number;
-        saves: number;
-      }[];
-  createdAt: string;
-  modifiedAt: string;
-}
 
-export interface MyPostsType {
-  postId: number;
-  postTitle: string;
-  pictureUrl: string;
-  views: number;
-  likes: number;
-  createdAt: string;
-  modifiedAt: string;
-}
-
-export interface MySavesType {
-  attractionId: number;
-  attractionName: string;
-  fixedImage: string;
-  likes: number;
-  saves: number;
-}
-
-export interface ArrayMyPostsType extends Array<MyPostsType> {}
-export interface ArrayMySavesType extends Array<MySavesType> {}
 const MyPage = () => {
   const [tab, setTab] = useState(0);
   // const [userData, setUserData] = useState<UserType>();

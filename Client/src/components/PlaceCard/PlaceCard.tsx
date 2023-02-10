@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { AiFillHeart as LikeIcon } from "react-icons/ai";
 import { BsFillBookmarkFill as BookmarkIcon } from "react-icons/bs";
 import { MdModeComment } from "react-icons/md";
-import { PlaceType } from "../../pages/Place/Place";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../../recoil/state";
 import Axios from "../../utils/axiosinstance";
 import Modal from "../Modal";
 import { getCurrentCount } from "../../utils/utils";
 import * as plc from "./PlaceCardStyled";
+import { PlaceType } from "../../utils/d";
 
 const PlaceCard = ({
   placeInfo,

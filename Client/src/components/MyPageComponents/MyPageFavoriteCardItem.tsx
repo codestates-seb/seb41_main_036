@@ -1,5 +1,3 @@
-import { MySavesType } from "../../pages/MyPage/MyPage";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isDeleteMode, UserData } from "../../recoil/MyPageState";
@@ -7,6 +5,7 @@ import { MdDeleteForever as DeleteIcon } from "react-icons/md";
 import axios from "../../utils/axiosinstance";
 import { useState } from "react";
 import * as mpc from './MyPageComtentsStyled'
+import { MySavesType } from "../../utils/d";
 
 
 interface MyPageFavoriteCardItemProps {
@@ -39,7 +38,7 @@ const MyPageFavoriteCardItem = ({
               setUserData({
                 ...userData,
                 saves: userData.saves.filter(
-                  (el) => el.attractionId !== attractionId
+                  (el: MySavesType) => el.attractionId !== attractionId
                 ) as typeof userData.saves,
                 totalMySaves: userData.totalMySaves - 1,
               });

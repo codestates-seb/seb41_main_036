@@ -4,40 +4,12 @@ import { Header } from "../../components/Header";
 import PostCardComponent from "../../components/PostCard/PostCardComponent";
 import axios from "../../utils/axiosinstance";
 import Pagination from "../../components/Pagination";
-import { PageInfoType } from "../Place/Place";
 import Footer from "../../components/Footer";
 import EmptyResult from "../../components/EmptyResult";
 import * as po from "./PostStyled";
+import { ArrayPostType, PageInfoType } from "../../utils/d";
 const ITEM_LIMIT = 9;
 
-export interface PostType {
-  postId: number;
-  postTitle: string;
-  memberId: number;
-  username: string;
-  picture: string | string[];
-  createdAt: string;
-  likes: number;
-  modifiedAt: number;
-  views: number;
-}
-
-const sortList: { kor: string; eng: string }[] = [
-  {
-    kor: "최신순",
-    eng: "newest",
-  },
-  {
-    kor: "인기순",
-    eng: "likes",
-  },
-  {
-    kor: "조회순",
-    eng: "views",
-  },
-];
-
-export interface ArrayPostType extends Array<PostType> {}
 const Post = () => {
   const [postsData, setPostsData] = useState<ArrayPostType>();
   const [curPage, setCurPage] = useState(1);
@@ -45,6 +17,22 @@ const Post = () => {
   const [onFilter, setOnFliter] = useState(0);
   const [sort, setSort] = useState("newest");
   const totalInfoRef = useRef<PageInfoType | null>(null);
+
+  const sortList: { kor: string; eng: string }[] = [
+    {
+      kor: "최신순",
+      eng: "newest",
+    },
+    {
+      kor: "인기순",
+      eng: "likes",
+    },
+    {
+      kor: "조회순",
+      eng: "views",
+    },
+  ];
+
   useEffect(() => {
     axios
       .post(`/posts/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`, {

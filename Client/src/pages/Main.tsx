@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
-import { ArrayPlaceType } from "./Place/Place";
-import { ArrayPostType } from "./Post/Post";
 import PostCardComponent from "../components/PostCard/PostCardComponent";
 import PlaceCard from "../components/PlaceCard/PlaceCard";
 import Carousel from "../components/Carousel";
@@ -13,6 +11,7 @@ import { HiOutlineChevronDoubleRight as DoubleArrowIcon } from "react-icons/hi";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../recoil/state";
+import { ArrayPlaceType, ArrayPostType } from "../utils/d";
 const GoRight = keyframes`
   0% {
     transform: translateX(0);

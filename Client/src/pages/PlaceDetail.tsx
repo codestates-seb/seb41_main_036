@@ -9,15 +9,14 @@ import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
 import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCard/PostCardComponent";
-import { ArrayPostType } from "./Post/Post";
 import Footer from "../components/Footer";
 import { LoginState } from "../recoil/state";
 import { useRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
-import { PageInfoType } from "./Place/Place";
 import { getCurrentCount } from "../utils/utils";
 import EmptyResult from "../components/EmptyResult";
+import { ArrayPostType, PageInfoType } from "../utils/d";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;

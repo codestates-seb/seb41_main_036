@@ -11,24 +11,7 @@ import { useRecoilState } from "recoil";
 import { LoginState } from "../../recoil/state";
 import EmptyResult from "../../components/EmptyResult";
 import * as pl from "./PlaceStyled";
-
-export interface PlaceType {
-  attractionId: number;
-  attractionName: string;
-  fixedImage: string;
-  likes: number;
-  numOfPosts: number;
-  saves: number;
-  isSaved: boolean;
-  isVoted: boolean;
-}
-
-export interface PageInfoType {
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-}
+import { ArrayPlaceType, PageInfoType } from "../../utils/d";
 
 const sortList: { kor: string; eng: string }[] = [
   {
@@ -44,8 +27,6 @@ const sortList: { kor: string; eng: string }[] = [
     eng: "likes",
   },
 ];
-
-export interface ArrayPlaceType extends Array<PlaceType> {}
 
 const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();

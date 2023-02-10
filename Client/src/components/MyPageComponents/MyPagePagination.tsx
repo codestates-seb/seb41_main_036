@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ArrayMyPostsType, ArrayMySavesType } from "../../pages/MyPage/MyPage";
+import { ArrayMyPostsType, ArrayMySavesType } from "../../utils/d";
 import { Button } from "../Pagination";
 import * as mpc from "./MyPageComtentsStyled";
 
