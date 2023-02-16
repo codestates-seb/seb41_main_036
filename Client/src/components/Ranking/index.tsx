@@ -50,7 +50,6 @@ const Ranking = () => {
         })
       );
       setRankingData([...newRankingData, ...newRankingData.slice(0, 1)]);
-      console.log(res.data.data);
     });
   }, []);
 
