@@ -42,6 +42,12 @@ const Carousel = () => {
           transitionOnRef.current = false;
           break;
         default:
+          if (currentPhoto === 1 && textTransition === 1) break;
+          if (
+            currentPhoto === newCarouselData.length - 2 &&
+            textTransition === newCarouselData.length - 2
+          )
+            break;
           transitionOnRef.current = false;
           setTextTransition(currentPhoto);
       }
