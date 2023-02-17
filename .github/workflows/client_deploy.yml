@@ -9,7 +9,7 @@ on:
       - "Client/**"
 
 jobs:
-  build: # job의 이름
+  build: # job의 이름 
     runs-on: ubuntu-latest # 액션을 실행 할 OS 지정
     steps: # 인스턴스에서 실행 할 각 절차
       - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
