@@ -31,6 +31,16 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
         return PageableExecutionUtils.getPage(commentList, pageable, ()-> countQuery.fetchOne());
     }
 
+    @Override
+    public List<Comment> findCommentByPost(Post post) {
+        return jpaQueryFactory.selectFrom(comment)
+                .leftJoin(comment.parent)
+                .fetchJoin()
+                .where(comment.post.postId.eq(post.getPostId()))
+                .orderBy(comment.parent.commentId.asc().nullsFirst(), comment.createdAt.asc())
+                .fetch();
+    }
+
     private JPAQuery<Long> getCount(Post post) {
         JPAQuery<Long> countQuery = jpaQueryFactory
                 .select(comment.count())
