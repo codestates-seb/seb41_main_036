@@ -79,15 +79,13 @@ public class CommentController {
     }
 
     @GetMapping("/listof/{post-id}")
-    public ResponseEntity<MultiResponseDto<?>> getComment(@PathVariable("post-id") @Positive long postId,
+    public ResponseEntity<DataResponseDto<?>> getComment(@PathVariable("post-id") @Positive long postId,
                                                           @Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                           @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         Post findPost = postService.findPostNoneSetView(postId);
-        Page<Comment> commentPage = commentService.findComments(page - 1, size, findPost);
-        List<Comment> commentList = commentPage.getContent();
-        for(Comment c : commentList) {
-            log.info(c.getCommentContent());
-        }
+//        Page<Comment> commentPage = commentService.findComments(page - 1, size, findPost);
+//        List<Comment> commentList = commentPage.getContent();
+        List<Comment> commentList = commentService.findComments(findPost);
         List<CommentDetailResponseDto> result = new ArrayList<>();
         Map<Long, CommentDetailResponseDto> map = new HashMap<>();
 
@@ -111,7 +109,8 @@ public class CommentController {
             }
         });
 
-        return ResponseEntity.ok(new MultiResponseDto<>(result, commentPage));
+//        return ResponseEntity.ok(new MultiResponseDto<>(result, commentPage));
+        return ResponseEntity.ok(new DataResponseDto<>(result));
     }
 
     @LoginUser

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,10 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<Comment> findComments(int page, int size, Post post){
         return customRepository.findCommentByPost(post, PageRequest.of(page, size));
+    }
+    @Transactional(readOnly = true)
+    public List<Comment> findComments(Post post){
+        return customRepository.findCommentByPost(post);
     }
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
