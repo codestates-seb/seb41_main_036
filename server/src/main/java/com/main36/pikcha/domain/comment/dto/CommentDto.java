@@ -11,6 +11,7 @@ public class CommentDto {
 
     @Getter
     public static class Post {
+        private Long parentId;
         @NotBlank(message = "댓글 내용을 입력해주세요.")
         private String commentContent;
     }

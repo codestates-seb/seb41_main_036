@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentResponseDto {
     private Long commentId;
+    private Long parentId;
     private Long memberId;
     private String username;
     private String memberPicture;
