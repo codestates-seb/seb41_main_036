@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class CommentResponseDto {
     private Long commentId;
+    private Long parentId;
     private Long memberId;
     private String username;
     private String memberPicture;

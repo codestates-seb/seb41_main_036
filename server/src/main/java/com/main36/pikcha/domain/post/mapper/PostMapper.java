@@ -43,6 +43,7 @@ public interface PostMapper {
                         .map(comment -> {
                             return CommentResponseDto.builder()
                                     .commentId(comment.getCommentId())
+                                    .parentId(comment.getParent().getCommentId())
                                     .memberId(comment.getMember().getMemberId())
                                     .username(comment.getMember().getUsername())
                                     .memberPicture(comment.getMember().getPicture())

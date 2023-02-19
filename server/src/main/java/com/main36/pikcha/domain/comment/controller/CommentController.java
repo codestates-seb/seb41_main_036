@@ -1,11 +1,13 @@
 package com.main36.pikcha.domain.comment.controller;
 
+import com.main36.pikcha.domain.comment.dto.CommentDetailResponseDto;
 import com.main36.pikcha.domain.comment.dto.CommentDto;
 import com.main36.pikcha.domain.comment.dto.CommentResponseDto;
 import com.main36.pikcha.domain.comment.entity.Comment;
 import com.main36.pikcha.domain.comment.mapper.CommentMapper;
 import com.main36.pikcha.domain.comment.service.CommentService;
 import com.main36.pikcha.domain.member.entity.Member;
+import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.domain.post.service.PostService;
 import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.response.DataResponseDto;
@@ -20,7 +22,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -44,9 +49,9 @@ public class CommentController {
                         commentBuilder
                                 .commentContent(commentPostDto.getCommentContent())
                                 .member(loginUser)
-                                .post(postService.findPost(postId))
+                                .post(postService.findPostNoneSetView(postId))
                                 .build()
-                );
+                ,commentPostDto.getParentId());
 
         CommentResponseDto commentResponseDto = mapper.commentToCommentResponseDto(comment);
 
@@ -73,15 +78,40 @@ public class CommentController {
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }
 
-    @GetMapping()
-    public ResponseEntity<MultiResponseDto<?>> getComment(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+    @GetMapping("/listof/{post-id}")
+    public ResponseEntity<MultiResponseDto<?>> getComment(@PathVariable("post-id") @Positive long postId,
+                                                          @Positive @RequestParam(required = false, defaultValue = "1") int page,
                                                           @Positive @RequestParam(required = false, defaultValue = "10") int size) {
-        Page<Comment> commentPage = commentService.findComments(page - 1, size);
-        List<Comment> comments = commentPage.getContent();
+        Post findPost = postService.findPostNoneSetView(postId);
+        Page<Comment> commentPage = commentService.findComments(page - 1, size, findPost);
+        List<Comment> commentList = commentPage.getContent();
+        for(Comment c : commentList) {
+            log.info(c.getCommentContent());
+        }
+        List<CommentDetailResponseDto> result = new ArrayList<>();
+        Map<Long, CommentDetailResponseDto> map = new HashMap<>();
 
-        List<CommentResponseDto> commentResponseDtos = mapper.commentsToCommentResponseDtos(comments);
+        commentList.stream().forEach(c-> {
+            CommentDetailResponseDto rDto = CommentDetailResponseDto.convertCommentToDto(c);
+            // map <댓글Id, responseDto>
+            map.put(c.getCommentId(), rDto);
+            // 댓글이 부모가 있다면
+            if(c.getParent() != null) {
+                // 부모 댓글의 id의 responseDto를 조회한다음
+                map.get(c.getParent().getCommentId())
+                        // 부모 댓글 responseDto의 자식으로
+                        .getChildren()
+                        // rDto를 추가한다.
+                        .add(rDto);
+            }
+            // 댓글이 최상위 댓글이라면
+            else{
+                // 그냥 result에 추가한다.
+                result.add(rDto);
+            }
+        });
 
-        return ResponseEntity.ok(new MultiResponseDto<>(commentResponseDtos, commentPage));
+        return ResponseEntity.ok(new MultiResponseDto<>(result, commentPage));
     }
 
     @LoginUser
