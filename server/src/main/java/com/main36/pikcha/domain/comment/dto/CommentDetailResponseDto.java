@@ -19,6 +19,7 @@ public class CommentDetailResponseDto {
     private String username;
     private String memberPicture;
     private String commentContent;
+    private Comment.CommentStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentDetailResponseDto> children;
@@ -31,6 +32,7 @@ public class CommentDetailResponseDto {
                 .username(comment.getMember().getUsername())
                 .memberPicture(comment.getMember().getPicture())
                 .commentContent(comment.getCommentContent())
+                .status(comment.getStatus())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .children(new ArrayList<>())
