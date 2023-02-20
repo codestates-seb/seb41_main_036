@@ -72,11 +72,11 @@ server:
   servlet:
     encoding:
       force-response: true
-#  ssl:
-#    key-store: classpath:keystore.p12
-#    key-store-type: PKCS12
-#    key-store-password: ${SSL_PASSWORD}
-#  port: 8080
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: ${SSL_PASSWORD}
+  port: 8080
 
 mail:
   address:
