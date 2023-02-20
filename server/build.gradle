@@ -64,13 +64,6 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
 	// QueryDsl
-//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-//	annotationProcessor(
-//			"jakarta.persistence:jakarta.persistence-api",
-//			"jakarta.annotation:jakarta-annotation-api",
-//			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
-//	)
-
 	implementation "com.querydsl:querydsl-jpa"
 	implementation "com.querydsl:querydsl-core"
 	implementation "com.querydsl:querydsl-collections"
