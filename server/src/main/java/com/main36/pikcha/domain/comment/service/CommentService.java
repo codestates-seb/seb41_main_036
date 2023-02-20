@@ -59,7 +59,26 @@ public class CommentService {
         return customRepository.findCommentByPost(post);
     }
     public void deleteComment(Comment comment) {
-        commentRepository.delete(comment);
+        // 자식이 있는 댓글이라면
+        if(comment.getChildren().size() != 0) {
+            // 삭제 상태로 변경
+            comment.changeStatus(Comment.CommentStatus.Dead);
+        }
+        // 자식이 없는 댓글이라면
+        else {
+            // 삭제 가능한 조상 댓글을 전부 삭제
+            commentRepository.delete(getDeletableAncestorComment(comment));
+        }
+    }
+
+    public Comment getDeletableAncestorComment(Comment comment) {
+        Comment parent = comment.getParent();
+        // 1. 부모 댓글이 존재하고 2. 부모의 자식이 1개이며 3. 부모가 상태가 dead인 경우
+        if(parent != null && parent.getChildren().size() == 1 && parent.getStatus() == Comment.CommentStatus.Dead){
+            // 재귀로 삭제할 조상을 모두 리턴한다
+            return getDeletableAncestorComment(parent);
+        }
+        return comment;
     }
 
     @Transactional(readOnly = true)

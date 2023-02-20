@@ -50,6 +50,7 @@ public class CommentController {
                                 .commentContent(commentPostDto.getCommentContent())
                                 .member(loginUser)
                                 .post(postService.findPostNoneSetView(postId))
+                                .status(Comment.CommentStatus.Alive)
                                 .build()
                 ,commentPostDto.getParentId());
 

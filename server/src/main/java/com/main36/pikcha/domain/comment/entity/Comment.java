@@ -57,6 +57,10 @@ public class Comment extends Auditable {
         return this.children;
     }
 
+    public void changeStatus(CommentStatus commentStatus) {
+        this.status = commentStatus;
+    }
+
     @Getter
     public enum CommentStatus {
         Alive("생존", "1"),
