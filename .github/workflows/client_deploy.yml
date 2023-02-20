@@ -1,62 +1,106 @@
-name: Client Build and Deploy to S3 # 실행할 액션의 이름
+# name: Client Build and Deploy to S3 # 실행할 액션의 이름
 
-# 액션이 실행되는 조건(이벤트)
+# # 액션이 실행되는 조건(이벤트)
+# on:
+#   push:
+#     branches:
+#       - dev_front # dev 브랜치에 push가 생길 때 실행된다.
+#     path:
+#       - "Client/**"
+
+# jobs:
+#   build: # job의 이름 
+#     runs-on: ubuntu-latest # 액션을 실행 할 OS 지정
+#     steps: # 인스턴스에서 실행 할 각 절차
+#       - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
+#         uses: actions/checkout@v3
+#       - name: Get npm cache directory
+#         id: npm-cache-dir
+#         shell: bash
+#         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+#       - name: Cache node modules
+#         uses: actions/cache@v3
+#         with:
+#           path: ${{ steps.npm-cache-dir.outputs.dir }}
+#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+#       - name: Install dependencies # npm package install
+#         run: npm install
+#         working-directory: ./Client # 경로를 지정할 수도 있다.
+#       - name: Set .env # .env 파일 생성
+#         run: |
+#           echo "REACT_APP_BASE_URL=${{ secrets.BASE_URL }}" >> .env
+#           cat .env
+#         working-directory: ./Client
+#       - name: Build # react build 실행
+#         run: npm run build
+#         working-directory: ./Client
+#       - name: SHOW AWS CLI VERSION # 기본적으로 설치된 AWS CLI의 버전 확인
+#         env: # 레포지토리의 secret을 이용해 env로 지정할 수 있다.
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
+#           AWS_EC2_METADATA_DISABLED: true
+#         run: |
+#           aws --version
+#       - name: Sync Bucket # AWS S3 버켓에 Build된 파일 업로드
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
+#           AWS_EC2_METADATA_DISABLED: true
+#         run: |
+#           aws s3 sync \
+#             --region ap-northeast-2 \
+#             build s3://pikcha36 \
+#             --delete
+#         working-directory: ./Client
+#       - name: Invalidate CloudFront Cache
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
+#           AWS_EC2_METADATA_DISABLED: true
+#         run: aws cloudfront create-invalidation --distribution-id E3LT2FK5707VBA --paths "/index.html" "/static/*"
+name: Auto Deploy after push
+
 on:
   push:
     branches:
-      - dev_front # dev 브랜치에 push가 생길 때 실행된다.
-    path:
-      - "Client/**"
+      - dev_front
 
 jobs:
-  build: # job의 이름 
-    runs-on: ubuntu-latest # 액션을 실행 할 OS 지정
-    steps: # 인스턴스에서 실행 할 각 절차
-      - name: Checkout source code. # Github Checkout Action : 레포지토리에서 코드를 내려받는다.
-        uses: actions/checkout@v3
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        shell: bash
-        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-      - name: Cache node modules
-        uses: actions/cache@v3
+  deploy:
+    name: Build, Deploy to S3 bucket
+    runs-on: [ubuntu-latest]
+
+    strategy:
+      matrix:
+        node-version: [16.15.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies # npm package install
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm install
         run: npm install
-        working-directory: ./Client # 경로를 지정할 수도 있다.
-      - name: Set .env # .env 파일 생성
-        run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.BASE_URL }}" >> .env
-          cat .env
-        working-directory: ./Client
-      - name: Build # react build 실행
+        working-directory: ./
+
+      - name: Build
         run: npm run build
-        working-directory: ./Client
-      - name: SHOW AWS CLI VERSION # 기본적으로 설치된 AWS CLI의 버전 확인
-        env: # 레포지토리의 secret을 이용해 env로 지정할 수 있다.
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
-          AWS_EC2_METADATA_DISABLED: true
-        run: |
-          aws --version
-      - name: Sync Bucket # AWS S3 버켓에 Build된 파일 업로드
+        working-directory: ./
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
-          AWS_EC2_METADATA_DISABLED: true
-        run: |
-          aws s3 sync \
-            --region ap-northeast-2 \
-            build s3://pikcha36 \
-            --delete
-        working-directory: ./Client
-      - name: Invalidate CloudFront Cache
+          CI: ""
+
+      - name: Transfer to S3 for serving static
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
         env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_FE_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_ACCESS_SECRET_KEY }}
-          AWS_EC2_METADATA_DISABLED: true
-        run: aws cloudfront create-invalidation --distribution-id E3LT2FK5707VBA --paths "/index.html" "/static/*"
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_FE_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "./Client/build"
