@@ -14,6 +14,7 @@ public enum ExceptionCode {
     ATTRACTION_IMAGE_EXISTS(409, "Attraction image exists"),
 
     COMMENT_NOT_FOUND(404, "Comment not found"),
+    COMMENT_STATUS_INVALID(404, "Comment status is inValid"),
     COMMENT_EXISTS(409, "Comment exists"),
 
     NOT_AUTHOR(403, "This Member didn't write the Comment"),

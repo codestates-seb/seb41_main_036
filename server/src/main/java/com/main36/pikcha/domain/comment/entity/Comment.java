@@ -3,10 +3,16 @@ package com.main36.pikcha.domain.comment.entity;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.global.audit.Auditable;
+import com.main36.pikcha.global.exception.BusinessLogicException;
+import com.main36.pikcha.global.exception.ExceptionCode;
+import com.main36.pikcha.global.utils.CommentStatusConverter;
 import lombok.*;
+import org.springframework.batch.item.validator.SpringValidator;
 
 import javax.persistence.*;
+import java.net.http.HttpClient;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -29,6 +35,9 @@ public class Comment extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Convert(converter = CommentStatusConverter.class)
+    private CommentStatus status = CommentStatus.Alive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
@@ -46,5 +55,26 @@ public class Comment extends Auditable {
 
     public List<Comment> getChildren(){
         return this.children;
+    }
+
+    @Getter
+    public enum CommentStatus {
+        Alive("생존", "1"),
+        Dead("사망", "2");
+
+        private String status;
+        private String code;
+
+        CommentStatus(String status, String code) {
+            this.status = status;
+            this.code = code;
+        }
+
+        public static CommentStatus ofCode(String code) {
+            return Arrays.stream(CommentStatus.values())
+                    .filter(v-> v.getCode().equals(code))
+                    .findAny()
+                    .orElseThrow(()-> new BusinessLogicException(ExceptionCode.COMMENT_STATUS_INVALID));
+        }
     }
 }
