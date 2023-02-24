@@ -39,19 +39,19 @@ public interface PostMapper {
                 .likes(post.getLikes())
                 .username(post.getMember().getUsername())
                 .picture(post.getMember().getPicture())
-                .comments(post.getComments().stream()
-                        .map(comment -> {
-                            return CommentResponseDto.builder()
-                                    .commentId(comment.getCommentId())
-                                    .parentId(comment.getParent().getCommentId())
-                                    .memberId(comment.getMember().getMemberId())
-                                    .username(comment.getMember().getUsername())
-                                    .memberPicture(comment.getMember().getPicture())
-                                    .commentContent(comment.getCommentContent())
-                                    .createdAt(comment.getCreatedAt())
-                                    .modifiedAt(comment.getModifiedAt())
-                                    .build();
-                        }).collect(Collectors.toList()))
+//                .comments(post.getComments().stream()
+//                        .map(comment -> {
+//                            return CommentResponseDto.builder()
+//                                    .commentId(comment.getCommentId())
+//                                    .parentId(comment.getParent().getCommentId())
+//                                    .memberId(comment.getMember().getMemberId())
+//                                    .username(comment.getMember().getUsername())
+//                                    .memberPicture(comment.getMember().getPicture())
+//                                    .commentContent(comment.getCommentContent())
+//                                    .createdAt(comment.getCreatedAt())
+//                                    .modifiedAt(comment.getModifiedAt())
+//                                    .build();
+//                        }).collect(Collectors.toList()))
                 .createdAt(post.getCreatedAt())
                 .modifiedAt(post.getModifiedAt())
                 .build();

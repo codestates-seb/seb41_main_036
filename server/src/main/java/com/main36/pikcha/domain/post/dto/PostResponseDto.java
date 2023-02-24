@@ -46,7 +46,7 @@ public class PostResponseDto {
         private Boolean isVoted;
         private String username;
         private String picture;
-        private List<CommentResponseDto> comments;
+//        private List<CommentResponseDto> comments;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }

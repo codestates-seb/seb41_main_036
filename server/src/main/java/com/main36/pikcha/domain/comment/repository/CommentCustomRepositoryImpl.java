@@ -50,7 +50,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
         return countQuery;
     }
 
-    private List<Comment> findCommnetList(Post post, Pageable pageable){
+    private List<Comment> findCommentList(Post post, Pageable pageable){
         return jpaQueryFactory.selectFrom(comment)
                 .leftJoin(comment.parent)
                 .fetchJoin()
