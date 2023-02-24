@@ -24,7 +24,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
 
     @Override
     public Page<Comment> findCommentByPost(Post post, Pageable pageable) {
-        List<Comment> commentList = findCommnetList(post, pageable);
+        List<Comment> commentList = findCommentList(post, pageable);
 
         JPAQuery<Long> countQuery = getCount(post);
 
