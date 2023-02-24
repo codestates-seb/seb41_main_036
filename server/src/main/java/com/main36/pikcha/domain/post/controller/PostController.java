@@ -213,7 +213,7 @@ public class PostController {
         if (memberId.isEmpty()) {
             response.setIsVoted(false);
         } else response.setIsVoted(postService.isVoted(memberId.get(), postId));
-        response.setCommentCount(commentService.countAllComments());
+        response.setCommentCount(commentService.countAllCommentsByPost(post));
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }

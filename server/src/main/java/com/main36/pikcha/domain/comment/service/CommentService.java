@@ -98,8 +98,8 @@ public class CommentService {
         return comment;
     }
 
-    public Long countAllComments(){
-        return commentRepository.countBy();
+    public Long countAllCommentsByPost(Post post){
+        return commentRepository.countByPost(post);
     }
 
 
