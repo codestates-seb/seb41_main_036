@@ -98,5 +98,9 @@ public class CommentService {
         return comment;
     }
 
+    public Long countAllComments(){
+        return commentRepository.countBy();
+    }
+
 
 }

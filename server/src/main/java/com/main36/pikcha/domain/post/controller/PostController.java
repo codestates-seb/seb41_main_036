@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.main36.pikcha.domain.attraction.dto.ProvinceFilterDto;
 import com.main36.pikcha.domain.attraction.service.AttractionService;
 
+import com.main36.pikcha.domain.comment.service.CommentService;
 import com.main36.pikcha.domain.hashtag.entity.HashTag;
 import com.main36.pikcha.domain.hashtag.service.HashTagService;
 import com.main36.pikcha.domain.member.entity.Member;
@@ -51,6 +52,7 @@ public class PostController {
     private final AttractionService attractionService;
     private final HashTagService hashTagService;
     private final PostImageService postImageService;
+    private final CommentService commentService;
 
     // 1. 포스트 등록
     @LoginUser
@@ -211,6 +213,7 @@ public class PostController {
         if (memberId.isEmpty()) {
             response.setIsVoted(false);
         } else response.setIsVoted(postService.isVoted(memberId.get(), postId));
+        response.setCommentCount(commentService.countAllComments());
 
         return ResponseEntity.ok(new DataResponseDto<>(response));
     }
