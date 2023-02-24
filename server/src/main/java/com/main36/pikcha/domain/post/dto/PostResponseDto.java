@@ -47,6 +47,7 @@ public class PostResponseDto {
         private String username;
         private String picture;
 //        private List<CommentResponseDto> comments;
+        private long commentCount;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
