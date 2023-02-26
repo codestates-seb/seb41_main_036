@@ -69,7 +69,7 @@ server:
     encoding:
       force-response: true
   ssl:
-    key-store: server/src/main/resources:keystore.p12
+    key-store: /home/ubuntu/action/server/src/main/resources/keystore.p12
     key-store-type: PKCS12
     key-store-password: ${SSL_PASSWORD}
 
