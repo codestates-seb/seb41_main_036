@@ -25,9 +25,9 @@ jobs:
 
     runs-on: ubuntu-latest
     
-#     defaults:
-#         run: 
-#           working-directory: ./server
+    defaults:
+        run: 
+          working-directory: /server
 
     steps:
     - uses: actions/checkout@v3
@@ -36,8 +36,8 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: init with Gradle
-      uses: gradle/gradle-build-action@v2
+#     - name: init with Gradle
+#       uses: gradle/gradle-build-action@v2
     - run: gradle init
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
@@ -48,10 +48,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - uses: actions/upload-artifact@v3
-      with:
-        name: Package
-        path: build/libs
+    - name: checking directory
+      run: cd server;ls -l
         
    # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
