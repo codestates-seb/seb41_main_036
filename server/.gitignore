@@ -9,10 +9,8 @@ build/
 application.yml
 application-local.yml
 application-server.yml
-*.yml
 *.p12
 /*.p12
-/*.yml
 ### STS ###
 .apt_generated
 .classpath
