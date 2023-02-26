@@ -25,9 +25,9 @@ jobs:
 
     runs-on: ubuntu-latest
     
-#     defaults:
-#         run: 
-#           working-directory: ./server
+    defaults:
+        run: 
+          working-directory: ./server
 
     steps:
     - uses: actions/checkout@v3
@@ -49,7 +49,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: checking directory
-      run: cd server;ls -l
+      run: ls -l
         
 #    # build한 후 프로젝트를 압축합니다.
 #     - name: Make zip file
