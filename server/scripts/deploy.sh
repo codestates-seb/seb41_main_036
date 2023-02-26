@@ -25,9 +25,9 @@ cd /home/ubuntu/action/server/build/libs
 list=$(ls -al)
 echo "> 내역: $list"    >> /home/ubuntu/action/deploy.log
 sudo chmod 755 project-0.0.1-SNAPSHOT.jar
-nohup java -jar project-0.0.1-SNAPSHOT.jar &
+# nohup java -jar project-0.0.1-SNAPSHOT.jar &
 
-#nohup java -jar $JAR_NAME &
+sudo nohup java -jar $JAR_NAME &
 
 CUR=$(pwd)
 echo "> DEPLOY_JAR 배포완료: $CUR"    >> /home/ubuntu/action/deploy.log
