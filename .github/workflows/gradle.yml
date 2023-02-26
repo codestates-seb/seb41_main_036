@@ -42,7 +42,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
-#         gradle-version: 7.5.1
+        gradle-version: 7.5.1
         arguments: build
     - name: permission for gradlew
       run: chmod +x gradlew
