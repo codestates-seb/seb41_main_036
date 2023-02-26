@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/posts")
 @Slf4j
 public class PostController {
+
     private final PostService postService;
     private final PostMapper mapper;
     private final MemberService memberService;
