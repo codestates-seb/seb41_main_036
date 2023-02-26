@@ -49,7 +49,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: checking directory
-      run: ls -l
+      run: cd server;ls -l
         
 #    # build한 후 프로젝트를 압축합니다.
 #     - name: Make zip file
