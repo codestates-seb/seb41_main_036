@@ -1,8 +1,7 @@
 #!/bin/bash
 # 빌드 파일의 이름이 콘텐츠와 다르다면 다음 줄의 .jar 파일 이름을 수정하시기 바랍니다.
-BUILD_JAR=$(/home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
-SOURCE_JAR=$(ls /home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar)
 
 echo "> 현재 시간: $(date)" >> /home/ubuntu/action/deploy.log
 
@@ -10,7 +9,7 @@ echo "> build 파일명: $JAR_NAME" >> /home/ubuntu/action/deploy.log
 
 echo "> build 파일 복사" >> /home/ubuntu/action/deploy.log
 DEPLOY_PATH=/home/ubuntu/action/
-cp $SOURCE_JAR $DEPLOY_PATH
+cp $BUILD_JAR $DEPLOY_PATH
 
 echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ubuntu/action/deploy.log
 CURRENT_PID=$(pgrep -f $JAR_NAME)
@@ -27,5 +26,4 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-# sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/action/deploy_err.log &
-sudo nohup java -jar $DEPLOY_JAR &
+sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
