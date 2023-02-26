@@ -20,4 +20,5 @@ else
 fi
 
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-nohup java -jar /home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar &
+cd /home/ubuntu/action/server/build/libs
+nohup java -jar project-0.0.1-SNAPSHOT.jar &
