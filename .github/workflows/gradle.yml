@@ -46,8 +46,8 @@ jobs:
         arguments: build
     - name: permission for gradlew
       run: chmod +x ./gradlew
-#     - name: Build with Gradle
-#       run: ./gradlew clean build
+    - name: Build with Gradle
+      run: ./gradlew clean build
         
    # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
