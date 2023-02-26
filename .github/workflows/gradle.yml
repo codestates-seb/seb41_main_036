@@ -70,10 +70,10 @@ jobs:
     - name: Upload to S3
       run: aws s3 cp --region ${{ secrets.AWS_REGION }} ./server-deploy.zip s3://${{ secrets.AWS_S3_BUCKET }}/server-deploy.zip
       
-#     # CodeDeploy에게 배포 명령을 내립니다.
-#     - name: Code Deploy
-#       run: >
-#         aws deploy create-deployment --application-name pikcha36
-#         --deployment-config-name CodeDeployDefault.AllAtOnce
-#         --deployment-group-name pikcha36-group
-#         --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=server-deploy.zip
+    # CodeDeploy에게 배포 명령을 내립니다.
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name pikcha36
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name pikcha36-group
+        --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=server-deploy.zip
