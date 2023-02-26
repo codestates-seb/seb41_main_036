@@ -2,7 +2,6 @@
 # 빌드 파일의 이름이 콘텐츠와 다르다면 다음 줄의 .jar 파일 이름을 수정하시기 바랍니다.
 BUILD_JAR=$(ls /home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
-EXECUTE_JAR=/home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar
 
 echo "> 현재 시간: $(date)" >> /home/ubuntu/action/deploy.log
 
@@ -20,7 +19,5 @@ else
   sleep 5
 fi
 
-# DEPLOY_PATH=/home/ubuntu/action/server/build/libs/
-# DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-nohup java -jar $EXECUTE_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
+nohup java -jar /home/ubuntu/action/server/build/libs/project-0.0.1-SNAPSHOT.jar &
