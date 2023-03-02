@@ -26,7 +26,6 @@ public class CommentService {
     private final CommentCustomRepositoryImpl customRepository;
 
     public Comment createComment(Comment comment, Long parentId) {
-        // 부모가 있는 댓글이라면
         if(parentId != null) {
             // 부모댓글의 유효성 검증
             Comment parent = findVerifiedComment(parentId);

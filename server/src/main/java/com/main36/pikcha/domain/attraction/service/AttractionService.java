@@ -2,6 +2,7 @@ package com.main36.pikcha.domain.attraction.service;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.attraction.repository.AttractionRepository;
+import com.main36.pikcha.domain.image.service.AttractionImageService;
 import com.main36.pikcha.domain.like.entity.AttractionLikes;
 import com.main36.pikcha.domain.like.repository.AttractionLikesRepository;
 import com.main36.pikcha.domain.member.entity.Member;
@@ -27,6 +28,7 @@ public class AttractionService {
     private final AttractionRepository attractionRepository;
     private final AttractionLikesRepository attractionLikesRepository;
     private final SaveRepository saveRepository;
+    private final AttractionImageService attractionImageService;
 
     public Attraction createAttraction(Attraction attraction){
         verifyExistsAttraction(attraction.getAttractionAddress());
@@ -44,6 +46,13 @@ public class AttractionService {
                 .ifPresent(findAttraction::setAttractionDescription);
         Optional.ofNullable(attraction.getProvince())
                 .ifPresent(findAttraction::setProvince);
+        // 바꿀 사진이 있다면 교체
+        Optional.ofNullable(attraction.getAttractionImage())
+                .ifPresent((attractionImage)->{
+                    attractionImageService.deleteAttractionImage(findAttraction.getAttractionImage());
+                    findAttraction.setAttractionImage(attractionImage);
+                    findAttraction.setFixedImage(attractionImage.getAttractionImageUrl());
+                });
 
         return attractionRepository.save(findAttraction);
     }
@@ -86,7 +95,11 @@ public class AttractionService {
 
     public void deleteAttraction(long attractionId){
         Attraction findAttraction = findVerifiedAttraction(attractionId);
-
+        // 이미지가 S3에 올라가 있는 명소라면
+        if(findAttraction.getAttractionImage()!=null){
+            // s3에서 이미지 삭제 & 데이터베이스에서도 이미지 데이터 삭제
+            attractionImageService.deleteAttractionImage(findAttraction.getAttractionImage());
+        }
         attractionRepository.delete(findAttraction);
     }
 

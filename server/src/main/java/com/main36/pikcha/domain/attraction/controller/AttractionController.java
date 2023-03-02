@@ -5,6 +5,8 @@ import com.main36.pikcha.domain.attraction.dto.*;
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.attraction.mapper.AttractionMapper;
 import com.main36.pikcha.domain.attraction.service.AttractionService;
+import com.main36.pikcha.domain.image.entity.AttractionImage;
+import com.main36.pikcha.domain.image.service.AttractionImageService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
 import com.main36.pikcha.domain.post.dto.PostResponseDto;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.validation.constraints.Positive;
@@ -39,16 +42,29 @@ public class AttractionController {
     private final AttractionService attractionService;
     private final AttractionMapper mapper;
     private final MemberService memberService;
+    private final AttractionImageService attractionImageService;
 
     // 1. 관리자 페이지(명소 등록)
-    @PostMapping("/upload")
+    @PostMapping("/register")
     public ResponseEntity<DataResponseDto<?>> postAttraction(AttractionPostDto attractionPostDto) throws IOException {
 
         Attraction attraction = mapper.attractionPostDtoToAttraction(attractionPostDto);
+
+        // 이미지 파일이 존재한다면
+        if(!attractionPostDto.getAttractionImage().isEmpty()){
+            // 이미지 파일 저장 후 명소에 넣어준다
+            MultipartFile attractionImage = attractionPostDto.getAttractionImage();
+            attraction.setAttractionImage(attractionImageService.createAttractionImage(attractionImage));
+            attraction.setFixedImage(attraction.getAttractionImage().getAttractionImageUrl());
+        }
+        // 이미지 파일이 없으면 빈 객체 생성 후 넣어준다
+        else attraction.setAttractionImage(new AttractionImage());
+
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.createAttraction(attraction));
 
         return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.CREATED);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // 2. 관리자 페이지(명소 수정)
@@ -58,6 +74,12 @@ public class AttractionController {
 
         attractionPatchDto.setAttractionId(attractionId);
         Attraction attraction = mapper.attractionPatchDtoToAttraction(attractionPatchDto);
+        // 이미지 파일이 존재한다면
+        if(!attractionPatchDto.getAttractionImage().isEmpty()){
+            // 이미지 파일 저장 후 명소에 넣어준다
+            MultipartFile attractionImage = attractionPatchDto.getAttractionImage();
+            attraction.setAttractionImage(attractionImageService.createAttractionImage(attractionImage));
+        }
         AttractionResponseDto response =
                 mapper.attractionToAttractionResponseDto(attractionService.updateAttraction(attraction));
 
