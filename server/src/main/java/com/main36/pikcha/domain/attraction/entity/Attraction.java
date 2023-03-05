@@ -1,5 +1,6 @@
 package com.main36.pikcha.domain.attraction.entity;
 
+import com.main36.pikcha.domain.image.entity.AttractionImage;
 import com.main36.pikcha.domain.post.entity.Post;
 import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
@@ -32,6 +33,10 @@ public class Attraction extends Auditable {
 
     @Column(length = 50, name = "attraction_address", nullable = false)
     private String attractionAddress;
+
+    @OneToOne
+    @JoinColumn(name = "attraction_image_id")
+    private AttractionImage attractionImage;
 
     @Column(name = "likes", nullable = false)
     @ColumnDefault("0")

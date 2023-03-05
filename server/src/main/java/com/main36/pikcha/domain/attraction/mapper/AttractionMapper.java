@@ -4,6 +4,7 @@ import com.main36.pikcha.domain.attraction.dto.*;
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.member.entity.Member;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public interface AttractionMapper {
     Attraction attractionPostDtoToAttraction(AttractionPostDto postDto);
     Attraction attractionPatchDtoToAttraction(AttractionPatchDto patchDto);
+
+    @Mapping(target = "fixedImage", source = "attractionImage.attractionImageUrl")
     AttractionResponseDto attractionToAttractionResponseDto(Attraction attraction);
     default AttractionDetailResponseDto attractionToAttractionDetailResponseDto(Attraction attraction){
         return AttractionDetailResponseDto.builder()

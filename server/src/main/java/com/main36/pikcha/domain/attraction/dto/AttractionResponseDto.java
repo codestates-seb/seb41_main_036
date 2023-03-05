@@ -10,6 +10,7 @@ public class AttractionResponseDto {
     private Long attractionId;
     private String attractionName;
     private String fixedImage;
+    private String province;
     private Long numOfPosts;
     private Boolean isVoted;
     private Boolean isSaved;

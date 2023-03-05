@@ -48,9 +48,10 @@ public class Comment extends Auditable {
 
     public void updateParent(Comment parent){
         this.parent = parent;
+        parent.getChildren().add(this);
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
     public List<Comment> getChildren(){
