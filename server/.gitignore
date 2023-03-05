@@ -6,9 +6,6 @@ build/
 !**/src/test/**/build/
 
 # yml
-application.yml
-application-local.yml
-application-server.yml
 *.p12
 /*.p12
 ### STS ###
