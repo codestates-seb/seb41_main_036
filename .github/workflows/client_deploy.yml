@@ -21,7 +21,7 @@ jobs:
 
       - name: npm install
         run: npm install
-        working-directory: ./client
+        working-directory: ./Client
 	@@ -32,11 +49,18 @@ jobs:
         env:
           CI: ""
