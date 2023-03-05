@@ -10,11 +10,11 @@ import ButtonForm from "../../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { PostDetailType } from "../DetailPost/DetailPost";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { useRecoilState } from "recoil";
 import { MemberId } from "../../recoil/state";
 import * as ep from './EditPostStyled'
+import { PostDetailType } from "../../utils/d";
 
 
 const EditPost = () => {

@@ -1,18 +1,23 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { CommentType } from "../../pages/DetailPost/DetailPost";
 import { MemberId } from "../../recoil/state";
 import axios from "../../utils/axiosinstance";
+import { CommentType } from "../../utils/d";
 import * as poc from "./PostCommentStyled";
 
 const PostComment = ({ comment }: { comment: CommentType }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [commentContent, setCommentcontent] = useState(comment.commentContent);
+  const [isRecomment, setIsRecomment] = useState(false);
+  const [commentContent, setCommentcontent] = useState("");
+  const [recomment, setRecomment] = useState("");
   const [memberId] = useRecoilState(MemberId);
+  const commentId = comment.commentId;
+  const { id } = useParams();
+
   const commentContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentcontent(e.target.value);
   };
-  const commentId = comment.commentId;
 
   const deleteComment = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
@@ -27,7 +32,6 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
         .catch((err) => console.error(err));
     }
   };
-
   const modifiedComment = () => {
     axios
       .patch(`/comments/edit/${commentId}`, {
@@ -41,24 +45,42 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
       })
       .catch((err) => console.error(err));
   };
+  const handleSubmitRecomment = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === "Enter") {
+      axios
+        .post(`/comments/upload/${id}`, {
+          commentContent: recomment,
+          parentId: comment.parentId,
+        })
+        .then((res) => console.log(res));
+    }
+  };
   return (
     <>
-      <poc.PostCommentContainer>
-        <div>
-          <div>
-            <img alt="userImg" src={comment.memberPicture} />
+      <poc.PostCommentWrapper key={comment.commentId}>
+        <poc.PostCommentBox>
+          <poc.PostCommentTitle>
+            <poc.PostCommentImg alt="userImg" src={comment.memberPicture} />
             <div>
-              {comment.username}
-              <span>
+              <poc.PostCommentUserName>
+                {comment.username}
+              </poc.PostCommentUserName>
+              <poc.PostCommentDate>
                 {comment.createdAt.slice(0, 4)}년{" "}
                 {comment.createdAt.slice(5, 7)}월{" "}
-                {comment.createdAt.slice(8, 10)}일 /{" "}
-                {comment.createdAt.slice(11, 19)}에 작성
-              </span>
+                {comment.createdAt.slice(8, 10)}일
+              </poc.PostCommentDate>
             </div>
-          </div>
-          {memberId === comment.memberId || memberId === 1 ? (
-            <div>
+          </poc.PostCommentTitle>
+          {memberId === memberId || memberId === 1 ? (
+            <poc.PostManageButtonContainer>
+              <poc.PostManageButton
+                onClick={() => setIsRecomment(!isRecomment)}
+              >
+                답글 쓰기
+              </poc.PostManageButton>
               {isEdit ? (
                 <poc.PostManageButton onClick={modifiedComment}>
                   완료
@@ -68,22 +90,42 @@ const PostComment = ({ comment }: { comment: CommentType }) => {
                   수정
                 </poc.PostManageButton>
               )}
-
-              <poc.PostManageButton onClick={deleteComment}>삭제</poc.PostManageButton>
-            </div>
+              <poc.PostManageButton onClick={deleteComment}>
+                삭제
+              </poc.PostManageButton>
+            </poc.PostManageButtonContainer>
           ) : null}
-        </div>
+        </poc.PostCommentBox>
         {isEdit ? (
-          <form>
+          <poc.PostCommentInputContainer
+            padding="20px 40px"
+            width="100%"
+            height="100px"
+          >
             <textarea
-              value={commentContent}
+              value={comment.commentContent}
               onChange={commentContentHandler}
             ></textarea>
-          </form>
+          </poc.PostCommentInputContainer>
         ) : (
-          <div> {comment.commentContent}</div>
+          <poc.PostCommentContentContainer>
+            {comment.commentContent}
+            {isRecomment ? (
+              <poc.PostCommentInputContainer
+                padding="20px 0"
+                width="70%"
+                height="45px"
+              >
+                <textarea
+                  value={recomment}
+                  onChange={(e) => setRecomment(e.target.value)}
+                  onKeyDown={handleSubmitRecomment}
+                ></textarea>
+              </poc.PostCommentInputContainer>
+            ) : null}
+          </poc.PostCommentContentContainer>
         )}
-      </poc.PostCommentContainer>
+      </poc.PostCommentWrapper>
     </>
   );
 };
