@@ -2,11 +2,17 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/test/front
-file_exists_behavior: OVERWRITE
+    destination: /home/ubuntu/front
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
   ApplicationStart:
     - location: Client/scripts/deploy.sh
-      timeout: 300
+      timeout: 60
       runas: ubuntu
