@@ -1,0 +1,12 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/test/front
+file_exists_behavior: OVERWRITE
+
+hooks:
+  ApplicationStart:
+    - location: Client/scripts/deploy.sh
+      timeout: 300
+      runas: ubuntu
