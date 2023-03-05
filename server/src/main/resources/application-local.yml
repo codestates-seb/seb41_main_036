@@ -9,7 +9,6 @@ spring:
     job:
       enabled: false # spring 실행시 배치 자동실행 끄기
 
-
   h2:
     console:
       enabled: true
@@ -73,7 +72,8 @@ server:
     encoding:
       force-response: true
   ssl:
-    key-store: classpath:keystore.p12
+#    key-store: classpath:keystore.p12
+#    key-store: /Users/idong-u/Desktop/education/CodeStates/main-pjt/seb41_main_036/server/src/main/resources/keystore.p12
     key-store-type: PKCS12
     key-store-password: ${SSL_PASSWORD}
   port: 8080

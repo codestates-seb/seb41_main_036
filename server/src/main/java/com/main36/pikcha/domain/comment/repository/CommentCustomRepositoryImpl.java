@@ -5,7 +5,6 @@ import com.main36.pikcha.domain.post.entity.Post;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -16,6 +15,7 @@ import static com.main36.pikcha.domain.comment.entity.QComment.comment;
 
 @Repository
 public class CommentCustomRepositoryImpl implements CommentCustomRepository{
+
     private JPAQueryFactory jpaQueryFactory;
 
     public CommentCustomRepositoryImpl(JPAQueryFactory jpaQueryFactory) {

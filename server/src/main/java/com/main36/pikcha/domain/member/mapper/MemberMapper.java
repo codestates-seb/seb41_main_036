@@ -69,7 +69,6 @@ public interface MemberMapper {
     @Mapping(target = "memberTitle", constant = "")
     Member oauthMemberDtoToMember(MemberDto.Oauth oauthMemberDto);
 
-
     default LoginResponseDto memberToLoginResponseDto(Member member) {
         return LoginResponseDto.builder()
                 .memberId(member.getMemberId())
