@@ -126,7 +126,8 @@ function Main() {
 
   return (
     <>
-    {Mobile ? <MainMobile></MainMobile> :
+    {Mobile 
+    ? <MainMobile></MainMobile> :
         <>
       <FixedOnScrollUpHeader />
       <Carousel />

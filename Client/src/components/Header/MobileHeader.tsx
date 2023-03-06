@@ -1,16 +1,17 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../data/Logo.svg";
+import { BsSearch } from 'react-icons/bs';
 
 // 헤더의 큰 프레임
 const HeaderBox = styled.div`
   width: 100%;
   height: 45px;
-  border-bottom: 1px solid #c7c7c7;
+  //border-bottom: 1px solid #c7c7c7;
   display: flex;
   background-color:white;
 `
-
+// 햄버거 메뉴바
 const MenuBar = styled.div<{isChecked:boolean}>`
   width: 40px;
   margin:10px 0 10px 10px;
@@ -34,8 +35,9 @@ const MenuBar = styled.div<{isChecked:boolean}>`
     margin: 5px;
     transition: all 600ms;
     background-color: black;
+    cursor: pointer;
 
-      :nth-child(1){
+    :nth-child(1){
         top: ${(props)=> props.isChecked? '5px' : '-3px' };
         transform: ${(props) => props.isChecked? 'translate(0, -50%)' : null};
         transform: ${(props)=> props.isChecked ? 'rotate(45deg)' : null};
@@ -55,13 +57,22 @@ const MenuBar = styled.div<{isChecked:boolean}>`
   }
 }
 `
-
+// 로고 이미지
 const LogoWindow = styled.div`
-  width: 100px;
-  height: 50px;
   margin: 0 auto;
+  padding: 0 0 0 50px;
+  cursor: pointer;
 `
-const Button = styled.div`
+// 검색창 아이콘 버튼 -> 누르면 검색창 출력
+const SearchButton = styled.div`
+  width: 40px;
+  height: 50px;
+  cursor: pointer;
+  padding: 8px;
+`
+
+// 로그인 버튼
+const LoginButton = styled.div`
   background-color: #565656;
   width: 80px;
   height: 30px;
@@ -71,13 +82,15 @@ const Button = styled.div`
   margin: auto 10px;
   border-radius: 30px;
   font-size: 14px;
+  cursor: pointer;
 `
+interface HeaderType {
+  isNavbarChecked:boolean;
+  setIsNavbarChecked:any;
+}
 
-
-
-const MobileHeader = () => {
-
-  const [isNavbarChecked, setIsNavbarChecked] = useState(false);
+const MobileHeader = (
+  {isNavbarChecked,setIsNavbarChecked}:HeaderType) => {
 
   return (
     <>
@@ -96,7 +109,11 @@ const MobileHeader = () => {
         <LogoWindow>
           <Logo style={{ width: "75px", height: "50px", color:"white", margin:"auto"}}></Logo>
         </LogoWindow>
-        <Button>로그인</Button>
+        {!isNavbarChecked?
+        <SearchButton>
+          <BsSearch size="28"></BsSearch>
+        </SearchButton>:null}
+        <LoginButton>로그인</LoginButton>
       </HeaderBox>
     </>
   )
