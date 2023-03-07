@@ -107,7 +107,10 @@ const MobileHeader = (
           </label>
         </MenuBar>
         <LogoWindow>
-          <Logo style={{ width: "75px", height: "50px", color:"white", margin:"auto"}}></Logo>
+          <Logo 
+            style={ !isNavbarChecked ? 
+              { marginLeft :"40px", width: "75px", height: "50px", color:"white", margin:"auto"} : 
+              { width: "75px", height: "50px", color:"white", margin:"auto"}}></Logo>
         </LogoWindow>
         {!isNavbarChecked?
         <SearchButton>
