@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const DetailPostWrapper = styled.div`
   width: 83.5%;
-  margin: 30px auto;
+  /* margin: 30px auto; */
 `;
 
 export const PostMangeButtnContainer = styled.div`
@@ -26,7 +26,7 @@ export const PostManageButton = styled.button`
 `;
 
 export const DetailPostTitle = styled.div`
-  width: 80%;
+  /* width: 80%; */
   margin: 0 auto;
   display: flex;
   justify-content: center;

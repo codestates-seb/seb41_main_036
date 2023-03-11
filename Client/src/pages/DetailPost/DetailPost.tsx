@@ -6,13 +6,16 @@ import { FaRegCommentDots } from "react-icons/fa";
 import PostComment from "../../components/Postcomment/PostComment";
 import axios from "../../utils/axiosinstance";
 import Button from "../../components/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, MemberId } from "../../recoil/state";
 import Modal from "../../components/Modal";
 import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
 import * as dp from "./DetailPostStyled";
+import { useMediaQuery } from "react-responsive";
+import MobileHeader from "../../components/Header/MobileHeader";
+import { MenuSideBar, MenuButton } from "../MainResponsive";
 
 export interface PostDetailType {
   attractionAddress: string;
@@ -74,11 +77,15 @@ const DetailPost = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
+  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
 
   const [postId, setPostId] = useState<number>();
   const [isVoted, setIsVoted] = useState<boolean>();
-
   const navigate = useNavigate();
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+
 
   useEffect(() => {
     if (isLogin) {
@@ -161,11 +168,24 @@ const DetailPost = () => {
 
   return (
     <>
-      <Header>
+     { Mobile ? 
+     <MobileHeader
+     isNavbarChecked={isNavbarChecked}
+     setIsNavbarChecked={setIsNavbarChecked}
+     ></MobileHeader>:
+     <Header>
         <Header.HeaderTop />
         <Header.HeaderBody />
       </Header>
-      <dp.DetailPostWrapper>
+      }
+      {isNavbarChecked ? 
+        <MenuSideBar>
+          <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
+          <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
+          <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
+        </MenuSideBar> : null}
+
+      <dp.DetailPostWrapper style = { Mobile ? { width: "100%" }: {margin:"30px auto"}}>
         {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
         {(post && post.memberId === memberId) || memberId === 1 ? (
           <dp.PostMangeButtnContainer>
@@ -177,9 +197,10 @@ const DetailPost = () => {
             </dp.PostManageButton>
           </dp.PostMangeButtnContainer>
         ) : null}
-        <dp.DetailPostTitle>
+        <dp.DetailPostTitle style = { Mobile ? { width : "100%", marginTop:"20px"} : {width : "80%"}  } >
           <h2>{post?.postTitle}</h2>
         </dp.DetailPostTitle>
+       
         <dp.DetailPostInfo>
           <dp.DetailPostAttractionsContainer>
             {post?.attractionName}
@@ -187,7 +208,8 @@ const DetailPost = () => {
               <MdPlace /> &nbsp;{post?.attractionAddress}
             </p>
           </dp.DetailPostAttractionsContainer>
-          <div>
+
+          <div style = { Mobile ? { width : "100%", marginTop:"25px", marginRight : "40px"}: {width : "80%"}  }>
             <button
               onClick={() =>
                 navigate(`/attractions/detail/${post?.attractionId}`)
@@ -198,7 +220,9 @@ const DetailPost = () => {
             </button>
             <span>{post?.createdAt.slice(0, 10)}</span>
           </div>
+
         </dp.DetailPostInfo>
+
         <dp.PostContentContainer>
           <dp.PostContentBox>
             {data.map((post, idx) => (

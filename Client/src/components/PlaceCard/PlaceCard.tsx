@@ -10,6 +10,7 @@ import Modal from "../Modal";
 import { getCurrentCount } from "../../utils/utils";
 import * as plc from "./PlaceCardStyled";
 import { PlaceType } from "../../utils/d";
+import { useMediaQuery } from "react-responsive";
 
 const PlaceCard = ({
   placeInfo,
@@ -30,6 +31,11 @@ const PlaceCard = ({
     isSaved,
     isVoted,
   } = placeInfo;
+  
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+
   const URL_FOR_SAVES = `/attractions/saves/${attractionId}`;
   const URL_FOR_LIKES = `/attractions/likes/${attractionId}`;
   const handleBookmarkClick = () => {
@@ -53,12 +59,14 @@ const PlaceCard = ({
   return (
     <>
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+
       <plc.PlaceCardWrapper key={attractionId} width={width}>
         <img
           alt={placeInfo.attractionName}
           src={placeInfo.fixedImage}
           onClick={() => navigate(`/attractions/detail/${attractionId}`)}
         ></img>
+
         <plc.PlaceCardInfoContainer>
           <div>
             <div
@@ -67,13 +75,16 @@ const PlaceCard = ({
               {placeInfo.attractionName}
             </div>
             <div>
+              {Mobile ? null : 
               <plc.PlaceCardTopIcon changeColor={currentBookmark}>
                 <BookmarkIcon
                   className="place-bookmark-icon"
                   onClick={handleBookmarkClick}
                 />
                 {getCurrentCount(savesData, isSaved, currentBookmark)}
-              </plc.PlaceCardTopIcon>
+              </plc.PlaceCardTopIcon>}
+
+              {Mobile ? null : 
               <plc.PlaceCardTopIcon changeColor={currentLike}>
                 <LikeIcon
                   className="place-like-icon"
@@ -81,7 +92,7 @@ const PlaceCard = ({
                   style={{ color: currentLike ? "red" : "grey" }}
                 />
                 {getCurrentCount(likesData, isVoted, currentLike)}
-              </plc.PlaceCardTopIcon>
+              </plc.PlaceCardTopIcon>}
             </div>
           </div>
           <div>
