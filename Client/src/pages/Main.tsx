@@ -137,47 +137,48 @@ function Main() {
 
   return (
     <>
-    {Mobile 
-    ? 
-    <>
-      <MainMobile/>
-      <CardBox>
-        <InfoBox>
-        <h2>많이 다녀간 명소</h2>
-        <div> {'>'} 더 보러가기</div>
-        </InfoBox>
-        <ImgContainer>
-        {attractionData && attractionData.map((el)=>{
-          return(
-            <>
-            <Card key={el.attractionId}>
-              <span>{el.attractionName}</span>
-              <img src={el.fixedImage} alt="명소 이미지"></img>
-            </Card>
-            </>
-          )
-        })}
-        </ImgContainer>
-      </CardBox>
-      <CardBox>
-        <InfoBox>
-        <h2>가장 많이 본 포스트</h2>
-        <div> {'>'} 더 보러가기</div>
-        </InfoBox>
-        <ImgContainer>
-        {postData && postData.map((el:any)=>{
-          return(
-            <>
-            <Card key={el.postId}>
-              <span>{el.postTitle}</span>
-              <img src={el.pictureUrl} alt="명소 이미지"></img>
-            </Card>
-            </>
-          )
-        })}
-        </ImgContainer>
-      </CardBox>
-    </>
+    { Mobile 
+        ? 
+        <>
+          <MainMobile/>
+          <CardBox>
+            <InfoBox>
+            <h2>많이 다녀간 명소</h2>
+            <div><Link to="/attractions"> {'>'} 더 보러가기</Link></div>
+            </InfoBox>
+            <ImgContainer>
+            {attractionData && attractionData.map((el)=>{
+              return(
+                <>
+                <Card key={el.attractionId}>
+                  <span>{el.attractionName}</span>
+                  <img src={el.fixedImage} alt="명소 이미지"></img>
+                </Card>
+                </>
+              )
+            })}
+            </ImgContainer>
+          </CardBox>
+          <CardBox>
+            <InfoBox>
+            <h2>가장 많이 본 포스트</h2>
+            <div><Link to="/posts"> {'>'} 더 보러가기</Link></div>
+            </InfoBox>
+            <ImgContainer>
+            {postData && postData.map((el:any)=>{
+              return(
+                <>
+                <Card key={el.postId}>
+                  <span>{el.postTitle}</span>
+                  <img src={el.pictureUrl} alt="명소 이미지"></img>
+                </Card>
+                </>
+              )
+            })}
+            </ImgContainer>
+          </CardBox>
+          <Footer></Footer>
+        </>
       :
       <>
       <FixedOnScrollUpHeader />
