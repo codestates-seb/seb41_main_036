@@ -15,7 +15,7 @@ import { ArrayPlaceType, ArrayPostType } from "../utils/d";
 import { FaAndroid } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import MainMobile from "./MainResponsive";
-import { CardBox, InfoBox, Card } from "./MainResponsive";
+import { CardBox, InfoBox, ImgContainer ,Card } from "./MainResponsive";
 
 const GoRight = keyframes`
   0% {
@@ -137,24 +137,36 @@ function Main() {
         <h2>많이 다녀간 명소</h2>
         <div> {'>'} 더 보러가기</div>
         </InfoBox>
-        {/* 아래는 테스트용 */}
-        {/* {attractionData &&
-          attractionData.map((el)=>{
-            return(
-              <div>{el.attractionName}</div>
-            )
-          })
-        <Card>
-          <img src={attractionData[2]?.fixedImage}></img>
-        </Card>
-        } */}
+        <ImgContainer>
+        {attractionData && attractionData.map((el)=>{
+          return(
+            <>
+            <Card>
+              <span>{el.attractionName}</span>
+              <img src={el.fixedImage} alt="명소 이미지"></img>
+              </Card>
+            </>
+          )
+        })}
+        </ImgContainer>
       </CardBox>
       <CardBox>
         <InfoBox>
         <h2>가장 많이 본 포스트</h2>
         <div> {'>'} 더 보러가기</div>
         </InfoBox>
-        <Card></Card>
+        <ImgContainer>
+        {postData && postData.map((el:any)=>{
+          return(
+            <>
+            <Card>
+              <span>{el.postTitle}</span>
+              <img src={el.pictureUrl} alt="명소 이미지"></img>
+              </Card>
+            </>
+          )
+        })}
+        </ImgContainer>
       </CardBox>
     </>
       :
