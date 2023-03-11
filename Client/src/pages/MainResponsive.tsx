@@ -2,9 +2,10 @@ import MobileHeader from "../components/Header/MobileHeader";
 import styled, { keyframes } from "styled-components";
 import Carousel from "../components/Carousel";
 import { useState } from "react";
+import {Link} from 'react-router-dom'
 
 // 매끄럽게 메뉴 열리는 모션
-const menuMotion = keyframes`
+export const menuMotion = keyframes`
   from{
     height: 0px;
   }
@@ -14,7 +15,7 @@ const menuMotion = keyframes`
 ` 
 
 // 햄버거바를 누르면 나오는 메뉴창 
-const MenuSideBar = styled.div`
+export const MenuSideBar = styled.div`
   width: 100%;
   height: 30vh;
   background-color: white;
@@ -32,7 +33,7 @@ const MenuSideBar = styled.div`
 `
 
 // 메뉴바 버튼입니다.
-const MenuButton = styled.div`
+export const MenuButton = styled.div`
   width: 100%;
   font-size: 20px;
   margin: 30px auto;
@@ -45,16 +46,14 @@ const MenuButton = styled.div`
 export const CardBox = styled.div`
   width: 100%;
   height: 70vh;
-  /* background-color: #896464; */
   `
 
 // 제목 및 더보러가기 버튼 묶음
 export const InfoBox = styled.div`
   width: 100%;
   height: 50px;
-  /* background-color: skyblue; */
   display: flex;
-  padding: 50px 0 40px 10px;
+  padding: 50px 0 15px 10px;
   cursor: pointer;
   >div{
     position: absolute;
@@ -66,7 +65,6 @@ export const InfoBox = styled.div`
 export const ImgContainer = styled.div`
   width: 100%;
   height: 400px;
-  /* background-color: red; */
   display: flex;
   flex-wrap: wrap;
 `
@@ -98,7 +96,7 @@ export const Card = styled.div`
 `
 
 const MainMobile = () => {
-  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
+ const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
 
   return(
     <>
@@ -108,13 +106,11 @@ const MainMobile = () => {
       ></MobileHeader>
         {isNavbarChecked ? 
           <MenuSideBar>
-    -         {/* 이쪽에 검색창 붙여주세용 */}
-            <MenuButton>명소</MenuButton>
-            <MenuButton>포스트</MenuButton>
-            <MenuButton>내 주변 명소찾기</MenuButton>
+            <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
+            <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
+            <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
           </MenuSideBar> : null}
       <Carousel></Carousel>
-      {/* 이쪽에 랭킹 붙여주세욥 */}
     </>
   )
 }

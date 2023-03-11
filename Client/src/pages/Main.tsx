@@ -12,7 +12,6 @@ import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../recoil/state";
 import { ArrayPlaceType, ArrayPostType } from "../utils/d";
-import { FaAndroid } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import MainMobile from "./MainResponsive";
 import { CardBox, InfoBox, ImgContainer ,Card } from "./MainResponsive";
@@ -92,11 +91,20 @@ const BodyContent = styled.div`
   width: 83.5%;
 `;
 
+interface AttractionType {
+  attractionId:number,
+  attractionName:string,
+  fixedImage:string,
+  postId:number,
+  isSaved: boolean,
+  isVoted:boolean,
+  likes:number,
+  saves:number,
+  numOfPosts:number
+}
+
 function Main() {
 
-  const Tablet = useMediaQuery({
-    query: "(min-width:768px, max-width:991px)"
-  })
   const Mobile = useMediaQuery({
     query: "(max-width: 768px)",
   });
@@ -126,6 +134,7 @@ function Main() {
   }, []);
 
 
+
   return (
     <>
     {Mobile 
@@ -141,10 +150,10 @@ function Main() {
         {attractionData && attractionData.map((el)=>{
           return(
             <>
-            <Card>
+            <Card key={el.attractionId}>
               <span>{el.attractionName}</span>
               <img src={el.fixedImage} alt="명소 이미지"></img>
-              </Card>
+            </Card>
             </>
           )
         })}
@@ -159,10 +168,10 @@ function Main() {
         {postData && postData.map((el:any)=>{
           return(
             <>
-            <Card>
+            <Card key={el.postId}>
               <span>{el.postTitle}</span>
               <img src={el.pictureUrl} alt="명소 이미지"></img>
-              </Card>
+            </Card>
             </>
           )
         })}

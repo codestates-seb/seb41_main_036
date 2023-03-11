@@ -1,7 +1,7 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../data/Logo.svg";
 import { BsSearch } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 // 헤더의 큰 프레임
 const HeaderBox = styled.div`
@@ -97,7 +97,7 @@ const MobileHeader = (
       <HeaderBox>
         <MenuBar 
           isChecked={isNavbarChecked}
-          onClick={()=>{setIsNavbarChecked(!isNavbarChecked); console.log(isNavbarChecked)}}
+          onClick={()=>{setIsNavbarChecked(!isNavbarChecked)}}
           >
           <input type="checkbox"></input>
           <label>
@@ -107,16 +107,15 @@ const MobileHeader = (
           </label>
         </MenuBar>
         <LogoWindow>
-          <Logo 
-            style={ !isNavbarChecked ? 
-              { marginLeft :"40px", width: "75px", height: "50px", color:"white", margin:"auto"} : 
-              { width: "75px", height: "50px", color:"white", margin:"auto"}}></Logo>
+          <Link to ='/'>
+            <Logo style={ {width: "75px", height: "50px" , position:"absolute", left:"40%"} }></Logo>
+          </Link>
         </LogoWindow>
         {!isNavbarChecked?
         <SearchButton>
           <BsSearch size="28"></BsSearch>
         </SearchButton>:null}
-        <LoginButton>로그인</LoginButton>
+        <LoginButton><Link to='/login'>로그인</Link></LoginButton>
       </HeaderBox>
     </>
   )
