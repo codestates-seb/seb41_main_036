@@ -18,7 +18,7 @@ import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
 import EmptyResult from "../components/EmptyResult";
 import { ArrayPostType, PageInfoType } from "../utils/d";
-import Share from "../components/Share";
+import FloatingMenu from "../components/FloatingMenu";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -303,7 +303,7 @@ const PlaceDetail = (): JSX.Element => {
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
-          <Share
+          <FloatingMenu
             inverted={fixBar < 470}
             handlePostButtonClick={handlePostButtonClick}
             onModalVisible={setIsModalVisible}

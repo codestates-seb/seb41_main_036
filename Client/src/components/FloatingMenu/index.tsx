@@ -2,7 +2,6 @@ import {
   MouseEventHandler,
   Dispatch,
   SetStateAction,
-  useState,
   useLayoutEffect,
 } from "react";
 import { FixBoxVertical, IconContainer, MarkerCount, ShareBox } from "./style";
@@ -31,7 +30,7 @@ interface ShareProps {
   onModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-const Share = ({
+const FloatingMenu = ({
   inverted,
   handlePostButtonClick,
   onModalVisible,
@@ -169,4 +168,4 @@ const Share = ({
     </>
   );
 };
-export default Share;
+export default FloatingMenu;
