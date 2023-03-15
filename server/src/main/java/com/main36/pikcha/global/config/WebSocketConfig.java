@@ -27,11 +27,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp-websocket")
-                .setAllowedOrigins("http://localhost:8080",
-                        "http://pikcha36.o-r.kr:8080",
-                        "https://pikcha36.o-r.kr:8080",
-                        "http://pikcha36.o-r.kr:8080",
-                        "https://pikcha36.o-r.kr")
+                .setAllowedOrigins("*")
+//                .setAllowedOrigins("http://localhost:8080",
+//                        "http://pikcha36.o-r.kr:8080",
+//                        "https://pikcha36.o-r.kr:8080",
+//                        "http://pikcha36.o-r.kr:8080",
+//                        "https://pikcha36.o-r.kr",
+//                        "chrome-extension://cbcbkhdmedgianpaifchdaddpnmgnknn/index.html")
                 .withSockJS();
 
         // ws://localhost:8080/stomp-websocket

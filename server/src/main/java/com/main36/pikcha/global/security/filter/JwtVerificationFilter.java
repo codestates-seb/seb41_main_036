@@ -41,7 +41,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/attractions/main/rank",
                     "/attractions/maps",
                     "/oauth2/authorization/google",
-                    "/oauth2/authorization/kakao"
+                    "/oauth2/authorization/kakao",
+                    "/stomp-websocket"
             );
 
     @Override
