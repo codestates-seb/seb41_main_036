@@ -1,9 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BsShareFill, BsBookmarkFill } from "react-icons/bs";
-import { MdEditNote as NoteIcon } from "react-icons/md";
-import { AiFillHeart } from "react-icons/ai";
 import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
@@ -11,12 +8,17 @@ import axios from "../utils/axiosinstance";
 import PostCardComponent from "../components/PostCard/PostCardComponent";
 import Footer from "../components/Footer";
 import { LoginState } from "../recoil/state";
-import { useRecoilState } from "recoil";
+import {
+  BookmarkSavesState,
+  LikesState,
+  AttractionDataState,
+} from "../recoil/PlaceDetailState";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Modal from "../components/Modal";
 import Pagination from "../components/Pagination";
-import { getCurrentCount } from "../utils/utils";
 import EmptyResult from "../components/EmptyResult";
 import { ArrayPostType, PageInfoType } from "../utils/d";
+import Share from "../components/Share";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
@@ -189,69 +191,6 @@ const LocationInfoContainer = styled.div`
     font-size: 15px;
   }
 `;
-const FixBoxVertical = styled.div<{ inverted: boolean }>`
-  padding: 27px 30px 20px 30px;
-  background-color: white;
-  color: grey;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 40px;
-  height: 220px;
-  border-radius: 85px;
-  box-shadow: 0px 0px 21px rgba(180, 180, 180, 0.25);
-  position: ${(props) => (props.inverted ? "fixed" : "absolute")};
-  left: ${(props) => (props.inverted ? "87%" : "87%")};
-  top: ${(props) => (props.inverted ? "62%" : "1000px")};
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: transform 0.5 ease;
-    font-weight: var(--fw-bold);
-    svg {
-      transition: all 0.3s ease;
-      :hover {
-        cursor: pointer;
-        color: var(--black-800);
-      }
-    }
-    .share-icon {
-      width: 15px;
-      height: 15px;
-    }
-    .post-icon {
-      margin-top: 8px;
-      margin-left: 7px;
-      width: 26px;
-      height: 26px;
-    }
-    .bookmark-icon {
-      width: 17px;
-      height: 17px;
-      margin-top: 9px;
-      :hover {
-        fill: var(--black-800);
-        transform: scale(1.05);
-      }
-    }
-    .heart-icon {
-      height: 19px;
-      width: 19px;
-      :hover {
-        fill: var(--pink-heart);
-        transform: scale(1.1);
-      }
-    }
-  }
-`;
-
-const MarkerCount = styled.p`
-  color: var(--black-700);
-  font-size: var(--font-xs);
-  margin: 2px auto;
-`;
 
 const PostCardListWrapper = styled.div`
   width: 85%;
@@ -263,7 +202,7 @@ const PostWrapper = styled.div`
   width: 100%;
   background-color: #f8f9fa;
 `;
-type PlaceData = {
+export type PlaceData = {
   attractionId: number | undefined;
   attractionAddress: string | undefined;
   attractionDescription: string | undefined;
@@ -279,11 +218,12 @@ const PlaceDetail = (): JSX.Element => {
   let [view, setView] = useState<string>("info");
   const scrollRefContent = useRef<HTMLDivElement>(null);
   const [fixBar, setFixBar] = useState(0);
-  const [attractionData, setAttractionData] = useState<PlaceData>(); // 명소 정보 저장
   const [postData, setPostData] = useState<ArrayPostType>();
-  const [bookmarkSaves, setBookmarkSaves] = useState(false); //로컬 북마트 상태 저장
-  const [likes, setLikes] = useState(false);
+  const [attractionData, setAttractionData] =
+    useRecoilState(AttractionDataState); // 명소 정보 저장
   const [isLogin] = useRecoilState(LoginState);
+  const setBookmarkSaves = useSetRecoilState(BookmarkSavesState);
+  const setLikes = useSetRecoilState(LikesState);
   const [curPage, setCurPage] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const totalInfoRef = useRef<PageInfoType | null>(null);
@@ -293,8 +233,7 @@ const PlaceDetail = (): JSX.Element => {
   const url2 = `/attractions/${id}/${memberId}`;
   const url3 = `/posts/${id}?page=${curPage}&size=8`;
   const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
-  const URL_FOR_SAVES = `/attractions/saves/${id}`;
-  const URL_FOR_LIKES = `/attractions/likes/${id}`;
+  console.log(fixBar);
   const ATTRACTIONS_URL = isLogin ? url2 : url;
   const POSTS_URL = isLogin ? url4 : url3;
   const navigate = useNavigate();
@@ -305,12 +244,10 @@ const PlaceDetail = (): JSX.Element => {
       setLikes(res.data.data.isVoted);
       setBookmarkSaves(res.data.data.isSaved);
     });
-    window.addEventListener("scroll", updateScroll);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [ATTRACTIONS_URL]);
 
@@ -321,16 +258,21 @@ const PlaceDetail = (): JSX.Element => {
     });
   }, [POSTS_URL]);
 
-  function onScroll() {
+  const onScroll = () => {
     if (window.scrollY <= 700) {
       setTimeout(function () {
         setView("info");
       }, 2000);
     }
-  }
+  };
 
   const updateScroll = () => {
     setFixBar(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  const handleScroll = () => {
+    onScroll();
+    updateScroll();
   };
 
   const handleView = (setting: string) => {
@@ -341,35 +283,6 @@ const PlaceDetail = (): JSX.Element => {
         block: "start",
       });
     }
-  };
-
-  const handleCopyClipBoard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("url이 성공적으로 복사되었습니다.");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleClickBookmark = () => {
-    if (!isLogin) {
-      setIsModalVisible(true);
-      return;
-    }
-    axios.post(URL_FOR_SAVES).then((res) => {
-      setBookmarkSaves(res.data.data.isSaved);
-    });
-  };
-
-  const handleClickLikes = () => {
-    if (!isLogin) {
-      setIsModalVisible(true);
-      return;
-    }
-    axios.post(URL_FOR_LIKES).then((res) => {
-      setLikes(res.data.data.isVoted);
-    });
   };
 
   const handlePostButtonClick = () => {
@@ -390,48 +303,11 @@ const PlaceDetail = (): JSX.Element => {
           <ImageBox>
             <img src={attractionData!.fixedImage} alt="배경이미지"></img>
           </ImageBox>
-          <FixBoxVertical inverted={fixBar < 470 ? true : false}>
-            <div
-              className="icon"
-              onClick={() => {
-                handleCopyClipBoard(document.location.href);
-              }}
-            >
-              <BsShareFill className="share-icon" />
-            </div>
-            <div onClick={handlePostButtonClick}>
-              {" "}
-              <NoteIcon className="post-icon" />
-            </div>
-            <div onClick={() => handleClickBookmark()}>
-              <BsBookmarkFill
-                className="bookmark-icon"
-                fill={bookmarkSaves ? "var(--black-800)" : "var(--black-400)"}
-              />
-              <MarkerCount>
-                {getCurrentCount(
-                  attractionData.saves,
-                  attractionData.isSaved,
-                  bookmarkSaves
-                )}
-              </MarkerCount>
-            </div>
-            <div onClick={() => handleClickLikes()}>
-              <AiFillHeart
-                className="heart-icon"
-                color={
-                  likes === true ? "var(--pink-heart)" : "var(--black-400)"
-                }
-              />
-              <MarkerCount>
-                {getCurrentCount(
-                  attractionData.likes,
-                  attractionData.isVoted,
-                  likes
-                )}
-              </MarkerCount>
-            </div>
-          </FixBoxVertical>
+          <Share
+            inverted={fixBar < 470}
+            handlePostButtonClick={handlePostButtonClick}
+            onModalVisible={setIsModalVisible}
+          />
           <NavBar>
             <button
               className={view === "info" ? "active" : ""}
