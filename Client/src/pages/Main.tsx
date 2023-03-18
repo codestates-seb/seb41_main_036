@@ -12,6 +12,10 @@ import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../recoil/state";
 import { ArrayPlaceType, ArrayPostType } from "../utils/d";
+import { useMediaQuery } from "react-responsive";
+import MainMobile from "./MainResponsive";
+import { CardBox, InfoBox, ImgContainer ,Card } from "./MainResponsive";
+
 const GoRight = keyframes`
   0% {
     transform: translateX(0);
@@ -21,11 +25,13 @@ const GoRight = keyframes`
   }
 `;
 
+
 const Body = styled.div`
   height: 100%;
   width: 100vw;
   padding: 20px 0 70px 0;
   background-color: hsl(222, 24%, 98%);
+  
 `;
 
 const MainSubTitle = styled.h3`
@@ -85,7 +91,24 @@ const BodyContent = styled.div`
   width: 83.5%;
 `;
 
+interface AttractionType {
+  attractionId:number,
+  attractionName:string,
+  fixedImage:string,
+  postId:number,
+  isSaved: boolean,
+  isVoted:boolean,
+  likes:number,
+  saves:number,
+  numOfPosts:number
+}
+
 function Main() {
+
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+  
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
   const [postData, setPostData] = useState<ArrayPostType>();
   const [isLogin] = useRecoilState(LoginState);
@@ -110,8 +133,54 @@ function Main() {
       );
   }, []);
 
+
+
   return (
     <>
+    { Mobile 
+        ? 
+        <>
+          <MainMobile/>
+          <CardBox>
+            <InfoBox>
+            <h2>많이 다녀간 명소</h2>
+            <div><Link to="/attractions"> {'>'} 더 보러가기</Link></div>
+            </InfoBox>
+            <ImgContainer>
+            {attractionData && attractionData.map((el)=>{
+              return(
+                <>
+                <Card key={el.attractionId}>
+                  <span>{el.attractionName}</span>
+                  <img src={el.fixedImage} alt="명소 이미지"></img>
+                </Card>
+                </>
+              )
+            })}
+            </ImgContainer>
+          </CardBox>
+          <CardBox>
+            <InfoBox>
+            <h2>가장 많이 본 포스트</h2>
+            <div><Link to="/posts"> {'>'} 더 보러가기</Link></div>
+            </InfoBox>
+            <ImgContainer>
+            {postData && postData.map((el:any)=>{
+              return(
+                <>
+                <Card key={el.postId}>
+                  <span>{el.postTitle}</span>
+                  <img src={el.pictureUrl} alt="명소 이미지"></img>
+                </Card>
+                </>
+              )
+            })}
+            </ImgContainer>
+          </CardBox>
+          <Footer></Footer>
+        </>
+      :
+      <>
       <FixedOnScrollUpHeader />
       <Carousel />
       <Ranking />
@@ -150,6 +219,7 @@ function Main() {
         </BodyContent>
       </Body>
       <Footer />
+      </>}
     </>
   );
 }
