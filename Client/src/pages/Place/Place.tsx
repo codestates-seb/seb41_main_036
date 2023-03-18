@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useState } from "react";
 import LocationFilter from "../../components/LocationFilter";
 import { Header } from "../../components/Header";
@@ -12,6 +12,10 @@ import { LoginState } from "../../recoil/state";
 import EmptyResult from "../../components/EmptyResult";
 import * as pl from "./PlaceStyled";
 import { ArrayPlaceType, PageInfoType } from "../../utils/d";
+import { useMediaQuery } from "react-responsive";
+import MobileHeader from "../../components/Header/MobileHeader";
+import { MenuSideBar, MenuButton } from "../MainResponsive";
+
 
 const sortList: { kor: string; eng: string }[] = [
   {
@@ -39,6 +43,10 @@ const Place = () => {
   const ITEM_LIMIT = 9;
   const [isLogin] = useRecoilState(LoginState);
   const memberId = localStorage.getItem("memberId");
+
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
 
   const searchValue = useMemo(
     () => new URLSearchParams(search).get("keyword"),
@@ -84,10 +92,16 @@ const Place = () => {
     setOnFliter(idx);
     setSort(sort);
   };
+  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
 
   return (
     <>
-      <div style={{ display: "fixed" }}>
+      {Mobile?
+        <MobileHeader
+        isNavbarChecked={isNavbarChecked}
+        setIsNavbarChecked={setIsNavbarChecked}
+        ></MobileHeader>
+      :<div style={{ display: "fixed" }}>
         <Header headerColor="var(--black-200)">
           <Header.HeaderTop />
           <Header.HeaderBody
@@ -96,7 +110,18 @@ const Place = () => {
           />
         </Header>
       </div>
+      }
+    {isNavbarChecked ? 
+      <MenuSideBar>
+        <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
+        <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
+        <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
+      </MenuSideBar> : null}
+
+
+
       <pl.PlaceWrapper>
+        {Mobile? null : 
         <pl.LocationWrapper>
           {placesData && (
             <LocationFilter
@@ -105,7 +130,7 @@ const Place = () => {
               setCheckedList={setCheckedlist}
             />
           )}
-        </pl.LocationWrapper>
+        </pl.LocationWrapper>}
         <pl.PlaceContainer>
           <pl.PlaceFilterContainer>
             {searchValue ? (
