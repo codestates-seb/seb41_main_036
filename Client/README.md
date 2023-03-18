@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# 🌈 Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 👨‍👩‍👧‍👦 Members
 
-## Available Scripts
+|김진주 (팀장, FE) |정세민(FE)
+:-----------------------------:|:-----------------------------:|
+|<img src='https://user-images.githubusercontent.com/110949256/216304897-c5375a33-6090-4f89-8658-7cba77911300.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216307068-5d8c22f4-1328-4e67-bd0f-c7b0bb95a375.png' width='150'/>
+|[@useusername1](https://github.com/useusername1)        |[@MINSE97](https://github.com/MINSE97) 
 
-In the project directory, you can run:
+|박혜수 (FE) |이승현 (FE)
+:-----------------------------:|:-----------------------------:|
+|<img src='https://user-images.githubusercontent.com/110949256/216306552-08216ae2-f54e-4f9a-87e9-f18340319e8f.png' width='150'>|<img src='https://user-images.githubusercontent.com/110949256/216305538-65463170-bdb3-40c0-a84c-542bd33e5862.png' width='150'/>|>|                  
+|[@namnam-5799](https://github.com/namnam-5799) |[@NowVic99](https://github.com/NowVic99) |
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 👑 Roles & Responsibility
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| Name | Roles | Responsibility |
+--------------------------------|--------------------------------|--------------------------------|
+|김진주| Frontend | 헤더, 검색창 구현, 캐러셀, 실시간 랭킹 구현, 좋아요, 북마크 기능|
+|정세민| Frontend | 명소 리스트 조회 및 필터링, 포스트 리스트 조회 및 필터링, 상세포스트 CRUD 기능 구현, 상세포스트 댓글 CRUD 기능 구현, 마이페이지 정보 CRUD 기능 구현|
+|박혜수| Frontend | 지도 페이지 구현, 명소 상세 페이지 구현 |
+|이승현| Frontend | 회원가입 및 로그인, 소셜 로그인, 로그아웃 페이지 및 로직, 토큰을 이용한 통신 로직 구현 (재발급 및 자동 로그아웃), 전역 상태 관리  |
+     
+# 💼 Document
 
-### `npm test`
+### [Figma](https://www.figma.com/file/iFs2WMfNlUTOA6ILnCljk3/main-project?node-id=0%3A1&t=54AppbXG2IH2Ven1-1)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### [UserFlow](https://github.com/codestates-seb/seb41_main_036/wiki/UserFlow)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 🛵 Development Tools
+<img src="https://lh3.googleusercontent.com/pw/AMWts8BoQN19OS4K4QgDINS65jh193HCqKY6fXYRn7iChiJg0TANlkxvgnJU4pwHSkQsyJJreJ_uH-ywVfQ26CDIKnmhPONVvvSohKfWyP-JL36eXWHJ7sHJtux3onbwGD5xAQLrMOaOMl3Fj4-l8_IcXArc=w1311-h734-no?authuser=0" width="800" height="500">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 🕹️ commit convention
 
-### `npm run eject`
+`feat`: A new feature
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`fix`: A bug fix
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`docs`: Changes to documentation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`style`: Formatting, missing semi colons, etc; no code change
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+`refactor`: Refactoring production code
 
-## Learn More
+`test`: Adding tests, refactoring test; no production code change
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+`chore`: Updating build tasks, package manager configs, etc; no production code change
+ 
