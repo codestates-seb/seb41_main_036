@@ -126,11 +126,13 @@ const Post = () => {
               ))}
             </div>
           </po.PostFilterContainer>
+
           <po.PostCardContainer>
             {postsData && (
               <PostCardComponent posts={postsData} margin="0" width="32.2%" />
             )}
           </po.PostCardContainer>
+          
           {!!postsData?.length ? (
             <Pagination
               props={totalInfoRef.current as PageInfoType}
