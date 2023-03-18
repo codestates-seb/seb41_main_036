@@ -106,7 +106,7 @@ interface AttractionType {
 function Main() {
 
   const Mobile = useMediaQuery({
-    query: "(max-width: 768px)",
+    query: "(max-width: 599px)",
   });
   
   const [attractionData, setAttractionData] = useState<ArrayPlaceType>();
