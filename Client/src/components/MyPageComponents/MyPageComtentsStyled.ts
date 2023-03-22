@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const FavoriteCardContainer = styled.div<{
   DeleteMode: boolean;
@@ -6,18 +6,21 @@ export const FavoriteCardContainer = styled.div<{
 }>`
   position: relative;
   height: 185px;
-  width: 32%;
   background-color: white;
   border-radius: var(--br-m);
-  border: 1px solid var(--black-275);
+  transition: all 0.5s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
-  padding: 5px;
-  transition: all 0.5s ease;
+  box-sizing: border-box !important;
+  border: ${(props) =>
+    props.startAnimation ? "0" : "1px solid var(--black-275)"};
+  margin: ${(props) => (props.startAnimation ? "10px 0 0" : "10px 3px 0 3px")};
+  padding: ${(props) => (props.startAnimation ? "0" : "5px")};
+  width: ${(props) => (props.startAnimation ? "0" : "32%")};
   transform: ${(props) => (props.startAnimation ? "scale(0)" : "none")};
   opacity: ${(props) => (props.startAnimation ? "0" : "1")};
+  overflow: hidden;
   svg {
     position: absolute;
     transform: translateY(50px);
@@ -119,16 +122,16 @@ export const MyPagePostCardWrapper = styled.div<{
   startTransition: boolean;
 }>`
   position: relative;
-  height: 18.3%;
   width: 100%;
-  margin: 3px;
+  margin: ${(props) => (props.startTransition ? "0" : "3px")};
   border-radius: var(--br-m);
   transition: all 0.5s ease;
-  border: 1px solid white;
   display: flex;
   align-items: center;
-  padding: 2px 5px;
+  border: ${(props) => (props.startTransition ? "0" : "1px solid white")};
+  padding: ${(props) => (props.startTransition ? "0" : "2px 5px")};
   background-color: hsl(230, 60%, 99%);
+  height: ${(props) => (props.startTransition ? "0" : "18.3%")};
   transform: ${(props) => (props.startTransition ? "scale(0)" : "none")};
   opacity: ${(props) => (props.startTransition ? "0" : "1")};
   :hover {

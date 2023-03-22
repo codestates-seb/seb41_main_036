@@ -16,6 +16,7 @@ const MyPagePagination = ({
 }) => {
   const numPages = Math.ceil(props.length / limit);
   const [start, setStart] = useState(1);
+
   const list: number[] = [];
   for (let i = 1; i <= numPages; i++) {
     list.push(i);

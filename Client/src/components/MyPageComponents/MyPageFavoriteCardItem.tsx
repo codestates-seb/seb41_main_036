@@ -4,9 +4,8 @@ import { isDeleteMode, UserData } from "../../recoil/MyPageState";
 import { MdDeleteForever as DeleteIcon } from "react-icons/md";
 import axios from "../../utils/axiosinstance";
 import { useState } from "react";
-import * as mpc from './MyPageComtentsStyled'
+import * as mpc from "./MyPageComtentsStyled";
 import { MySavesType } from "../../utils/d";
-
 
 interface MyPageFavoriteCardItemProps {
   attractionInfo: MySavesType;

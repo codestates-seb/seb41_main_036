@@ -25,7 +25,6 @@ import { IoChevronBackOutline as BackIcon } from "react-icons/io5";
 import * as mp from "./MyPageStyled";
 import { ArrayMyPostsType, ArrayMySavesType } from "../../utils/d";
 
-
 const MyPage = () => {
   const [tab, setTab] = useState(0);
   // const [userData, setUserData] = useState<UserType>();
@@ -359,6 +358,10 @@ const MyPageMyPostCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const numPages = Math.ceil(posts.length / limit);
+  if (numPages < curPage) {
+    setCurPage((p) => p - 1);
+  }
 
   return (
     <>
@@ -389,6 +392,10 @@ const MyPageMyFavoriteCard = ({
   const indexOfLastPost = curPage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentSaves = saves.slice(indexOfFirstPost, indexOfLastPost);
+  const numPages = Math.ceil(saves.length / limit);
+  if (numPages < curPage) {
+    setCurPage((p) => p - 1);
+  }
 
   return (
     <>
