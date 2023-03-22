@@ -15,6 +15,7 @@ import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CgFigma as FigmaIcon } from "react-icons/cg";
 import { IoMailOutline as EmailIcon } from "react-icons/io5";
 import { ReactComponent as Logo } from "../data/Logo.svg";
+import contributors from "../data/contributorData";
 const Footer = () => {
   const navigate = useNavigate();
 
@@ -25,12 +26,11 @@ const Footer = () => {
           <Logo onClick={() => navigate("/")} />
         </LogoContainer>
         <MadePeopleContainer>
-          <FooterText marginRight="10px">김진주 |</FooterText>
-          <FooterText marginRight="10px">박혜수 |</FooterText>
-          <FooterText marginRight="10px">이동우 |</FooterText>
-          <FooterText marginRight="10px">이상유 |</FooterText>
-          <FooterText marginRight="10px">이승현 |</FooterText>
-          <FooterText marginRight="10px">정세민</FooterText>
+          {contributors.map((person, i) => (
+            <a href={person.link} target="_blank" rel="noreferrer">
+              <FooterText>&nbsp;{`${person.name} |`}</FooterText>
+            </a>
+          ))}
         </MadePeopleContainer>
 
         <LinkWrapper>
