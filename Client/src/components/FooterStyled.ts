@@ -67,6 +67,22 @@ const MadePeopleContainer = styled.div`
   align-items: center;
   margin: 10px 0 45px 0;
 `;
+
+const ContributorLink = styled.a`
+  display: flex;
+  align-items: color-interpolation-filters;
+  :after {
+    font-size: var(--font-xs);
+    position: relative;
+    top: 1.5px;
+    left: -0.5px;
+    content: "|";
+    color: var(--black-700);
+  }
+  :last-of-type:after {
+    content: "";
+  }
+`;
 const FooterBottomText = styled.span`
   color: var(--black-700);
   font-size: var(--font-xs);
@@ -141,6 +157,7 @@ export {
   FooterBottomText,
   FooterBottomContainer,
   MadePeopleContainer,
+  ContributorLink,
   LinkIconContainer,
   LinkWrapper,
   EmailContainer,
