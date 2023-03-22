@@ -1,58 +1,50 @@
 import styled from "styled-components";
 
-export const PostCommentContainer = styled.div`
+export const PostCommentWrapper = styled.div`
   width: 70%;
   margin: 20px auto;
+`;
+
+export const PostCommentBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+`;
+
+export const PostCommentTitle = styled.div`
+  display: flex;
+
   > div {
     display: flex;
-    justify-content: space-between;
-  }
-  > div > div > img {
-    width: 30px;
-    height: 30px;
-    border-radius: var(--br-l);
-    margin-right: 10px;
-  }
-  > div > div:first-child {
-    display: flex;
-  }
-  > div > div:first-child > div {
-    display: flex;
     flex-direction: column;
-    font-weight: bold;
   }
-  > div > div:first-child > div > span {
-    font-size: var(--font-xxs);
-    font-weight: 200;
-    margin-top: 4px;
-  }
-  > div > div:last-child {
-    display: flex;
-  }
-  > form {
-    width: 100%;
-  }
-  > div:last-child {
-    padding: 20px 40px;
-    border-bottom: 1px solid var(--black-600);
-  }
-  > form {
-    padding: 20px 40px;
-  }
-  > form > textarea {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    resize: none;
-    padding: 10px;
-    border-radius: var(--br-m);
-    border-color: var(--purple-300);
-    font-size: var(--font-base);
-    &:focus {
-      outline-color: var(--purple-400);
-      box-shadow: 0 0 6px var(--purple-300);
-    }
-  }
+`;
+
+export const PostCommentImg = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: var(--br-l);
+  margin-right: 10px;
+`;
+
+export const PostCommentUserName = styled.span`
+  font-size: var(--font-sm);
+  font-weight: var(--fw-bold);
+  margin-bottom: 3px;
+`;
+
+export const PostCommentDate = styled.span`
+  font-size: var(--font-xxs);
+`;
+
+export const PostCommentContentContainer = styled.div`
+  padding-left: 2.5em;
+  border-bottom: 1px solid var(--black-600);
+  padding-bottom: 20px;
+`;
+
+export const PostManageButtonContainer = styled.div`
+  display: flex;
 `;
 
 export const PostManageButton = styled.button`
@@ -66,4 +58,26 @@ export const PostManageButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+`;
+
+export const PostCommentInputContainer = styled.form<{
+  padding: string;
+  width: string;
+  height: string;
+}>`
+  padding: ${(props) => props.padding};
+  > textarea {
+    width: ${(props) => props.width};
+    height: ${(props) => props.height};
+    display: flex;
+    resize: none;
+    padding: 10px;
+    border-radius: var(--br-m);
+    border-color: var(--purple-300);
+    font-size: var(--font-base);
+    &:focus {
+      outline-color: var(--purple-400);
+      box-shadow: 0 0 6px var(--purple-300);
+    }
+  }
 `;

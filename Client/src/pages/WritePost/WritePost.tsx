@@ -6,8 +6,7 @@ import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import WriteGuide from "../../components/WriteGuide";
-import * as wp from './WritePostStyled'
-
+import * as wp from "./WritePostStyled";
 
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
@@ -198,7 +197,7 @@ const WritePost = () => {
             </div>
             <ButtonForm
               type="violet"
-              onClick={(e) => handleSubmit(e)}
+              onClick={handleSubmit}
               width="100px"
               height="40px"
               text="포스트 등록"
@@ -230,7 +229,6 @@ const WritePost = () => {
     </>
   );
 };
-
 
 const Modal = ({
   setImgFiles,

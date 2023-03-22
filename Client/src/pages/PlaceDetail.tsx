@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { FaMapMarkerAlt as MarkIcon } from "react-icons/fa";
 import FixedOnScrollUpHeader from "../components/Header/FixedOnScrollUpHeader";
 import KakaoMap from "../components/KakaoMap";
@@ -19,12 +19,17 @@ import Pagination from "../components/Pagination";
 import EmptyResult from "../components/EmptyResult";
 import { ArrayPostType, PageInfoType } from "../utils/d";
 import FloatingMenu from "../components/FloatingMenu";
+import { useMediaQuery } from "react-responsive";
+import MobileHeader from "../components/Header/MobileHeader";
+import { MenuSideBar, MenuButton } from "../pages/MainResponsive";
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: content-box;
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   }
 `;
+
 
 const ImageBox = styled.div`
   width: 100%;
@@ -42,11 +47,6 @@ const ImageBox = styled.div`
     right: 0;
     bottom: 0;
     content: "";
-    background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 0) 70%
-    );
     mix-blend-mode: normal;
     opacity: 0.2;
   }
@@ -238,6 +238,11 @@ const PlaceDetail = (): JSX.Element => {
   const POSTS_URL = isLogin ? url4 : url3;
   const navigate = useNavigate();
 
+
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+
   useEffect(() => {
     axios.get(ATTRACTIONS_URL).then((res) => {
       setAttractionData(res.data.data);
@@ -293,10 +298,25 @@ const PlaceDetail = (): JSX.Element => {
     navigate(`/write/${id}`);
   };
 
+  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
+
   return (
     <>
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
-      <FixedOnScrollUpHeader />
+
+      {Mobile ? <MobileHeader
+        isNavbarChecked={isNavbarChecked}
+        setIsNavbarChecked={setIsNavbarChecked}
+        ></MobileHeader> : <FixedOnScrollUpHeader />}
+
+      {isNavbarChecked ? 
+        <MenuSideBar>
+          <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
+          <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
+          <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
+        </MenuSideBar> : null}
+
+
       <GlobalStyle />
       {attractionData && (
         <>

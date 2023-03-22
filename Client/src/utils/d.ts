@@ -92,3 +92,61 @@ export interface PostType {
   
   export interface ArrayMyPostsType extends Array<MyPostsType> {}
   export interface ArrayMySavesType extends Array<MySavesType> {}
+
+
+export interface PostDetailType {
+  attractionAddress: string;
+  attractionId: number;
+  attractionName: string;
+  memberId: number;
+  commentCount: number;
+  createdAt: string;
+  isVoted: boolean;
+  likes: number;
+  modifiedAt: string;
+  picture: string;
+  postContents: string[];
+  postHashTags: string[];
+  postId: number;
+  postImageUrls: string[];
+  postTitle: string;
+  username: string;
+  views: number;
+}
+
+export interface CommentType {
+  commentId: number;
+  parentId: null | number;
+  memberId: number;
+  username: string;
+  memberPicture: string;
+  commentContent: string;
+  createdAt: string;
+  modifiedAt: string;
+  children: [{
+    commentId: number;
+    parentId: number;
+    memberId: number;
+    username: string;
+    memberPicture: string;
+    commentCount: string;
+    status: string;
+    createdAt: string;
+    modifiedAt: string;
+    children: []
+  }];
+}
+
+// DetailPost
+
+export interface ArrayCommentType extends Array<CommentType> {}
+// PostContent 리팩토링 예정
+// interface PostContentsType {
+//   imageURL: string;
+//   content: string;
+//   imageId: number;
+// }
+// interface ArrayPostCotentsType extends Array<PostContentsType> {}
+// const [postContents, setPostContents] = useState<
+//   ArrayPostCotentsType | PostContentsType
+// >([]);

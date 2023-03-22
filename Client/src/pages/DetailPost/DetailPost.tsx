@@ -13,81 +13,27 @@ import Modal from "../../components/Modal";
 import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
 import * as dp from "./DetailPostStyled";
-
-export interface PostDetailType {
-  attractionAddress: string;
-  attractionId: number;
-  attractionName: string;
-  memberId: number;
-  comments: [
-    {
-      commentId: number;
-      memberId: number;
-      username: string;
-      memberPicture: string;
-      commentContent: string;
-      createdAt: string;
-      modifiedAt: string;
-    }
-  ];
-  createdAt: string;
-  isVoted: boolean;
-  likes: number;
-  modifiedAt: string;
-  picture: string;
-  postContents: string[];
-  postHashTags: string[];
-  postId: number;
-  postImageUrls: string[];
-  postTitle: string;
-  username: string;
-  views: number;
-}
-
-export interface CommentType {
-  commentId: number;
-  memberId: number;
-  username: string;
-  memberPicture: string;
-  commentContent: string;
-  createdAt: string;
-  modifiedAt: string;
-}
-
-export interface ArrayCommentType extends Array<CommentType> {}
-// PostContent 리팩토링 예정
-// interface PostContentsType {
-//   imageURL: string;
-//   content: string;
-//   imageId: number;
-// }
-// interface ArrayPostCotentsType extends Array<PostContentsType> {}
-// const [postContents, setPostContents] = useState<
-//   ArrayPostCotentsType | PostContentsType
-// >([]);
+import { ArrayCommentType, PostDetailType } from "../../utils/d";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
-  const [postComments, setPostComments] = useState<ArrayCommentType>();
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState<ArrayCommentType>();
+  const [addComment, setAddComment] = useState("");
   const [isLogin] = useRecoilState(LoginState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
-
   const [postId, setPostId] = useState<number>();
   const [isVoted, setIsVoted] = useState<boolean>();
 
   const navigate = useNavigate();
-
   useEffect(() => {
     if (isLogin) {
       axios
         .get(`/posts/details/${id}/${memberId}`)
         .then((res) => {
           setPost(res.data.data);
-          const { comments, postId, isVoted } = res.data.data;
-          setPostComments(comments);
+          const { postId, isVoted } = res.data.data;
           setPostId(postId);
           setIsVoted(isVoted);
         })
@@ -97,19 +43,27 @@ const DetailPost = () => {
         .get(`/posts/details/${id}`)
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
-      setPostComments(post?.comments);
     }
   }, [isVoted]);
+
+  useEffect(() => {
+    axios
+      .get(`/comments/listof/${id}`)
+      .then((res) => {
+        setComment(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   const handleCommentSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
       .post(`/comments/upload/${id}`, {
-        commentContent: comment,
+        commentContent: addComment,
       })
       .then((res) => {
         if (res.status === 201) {
-          setComment("");
+          setAddComment("");
           window.location.reload();
         }
       })
@@ -202,7 +156,7 @@ const DetailPost = () => {
         <dp.PostContentContainer>
           <dp.PostContentBox>
             {data.map((post, idx) => (
-              <div>
+              <div key={idx}>
                 <div>
                   <img src={post.imageURL} alt="picture" key={post.postId} />
                 </div>
@@ -212,7 +166,7 @@ const DetailPost = () => {
           </dp.PostContentBox>
           <div>
             {post &&
-              post?.postHashTags.map((tag, idx) => (
+              post.postHashTags.map((tag) => (
                 <>
                   <dp.TagsButton key={post.postId}>{tag}</dp.TagsButton>
                 </>
@@ -246,13 +200,14 @@ const DetailPost = () => {
             </div>
           </dp.PostContentBottom>
         </dp.PostContentContainer>
-        {postComments && postComments.length === 0 ? (
+        {post && post.commentCount === 0 ? (
           <dp.EmptyCommentContainer>
             <FaRegCommentDots />
             첫번째 댓글을 남겨주세요.
           </dp.EmptyCommentContainer>
         ) : (
-          postComments?.map((comment) => (
+          comment &&
+          comment.map((comment) => (
             <PostComment key={comment.commentId} comment={comment} />
           ))
         )}
@@ -267,8 +222,8 @@ const DetailPost = () => {
             />
             <textarea
               placeholder="댓글을 남겨주세요!"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              value={addComment}
+              onChange={(e) => setAddComment(e.target.value)}
               onClick={handleCommentWrite}
             />
             {isLogin ? (
