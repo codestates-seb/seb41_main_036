@@ -16,7 +16,6 @@ import { useMediaQuery } from "react-responsive";
 import MobileHeader from "../../components/Header/MobileHeader";
 import { MenuSideBar, MenuButton } from "../MainResponsive";
 
-
 const sortList: { kor: string; eng: string }[] = [
   {
     kor: "최신순",
@@ -35,9 +34,8 @@ const sortList: { kor: string; eng: string }[] = [
 const Place = () => {
   const [placesData, setPlacesData] = useState<ArrayPlaceType>();
   const [checkedList, setCheckedlist] = useState<string[]>([]);
-  const [onFilter, setOnFliter] = useState(0);
   const [curPage, setCurPage] = useState(1);
-  const [sort, setSort] = useState("newest");
+  const [sort, setSort] = useState(0);
   const { search } = useLocation();
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const ITEM_LIMIT = 9;
@@ -52,11 +50,11 @@ const Place = () => {
     () => new URLSearchParams(search).get("keyword"),
     [search]
   );
-
-  const url1 = `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
-  const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
-  const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
-  const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sort}`;
+  const sortValue = sortList[sort].eng;
+  const url1 = `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
+  const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
+  const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
+  const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
 
   useEffect(() => {
     setCurPage(1);
@@ -88,49 +86,55 @@ const Place = () => {
     }
   }, [searchValue, curPage, checkedList, sort]);
 
-  const handleSortClick = (idx: number, sort: string) => {
-    setOnFliter(idx);
+  const handleSortClick = (sort: number) => {
     setSort(sort);
   };
   const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
 
   return (
     <>
-      {Mobile?
+      {Mobile ? (
         <MobileHeader
-        isNavbarChecked={isNavbarChecked}
-        setIsNavbarChecked={setIsNavbarChecked}
+          isNavbarChecked={isNavbarChecked}
+          setIsNavbarChecked={setIsNavbarChecked}
         ></MobileHeader>
-      :<div style={{ display: "fixed" }}>
-        <Header headerColor="var(--black-200)">
-          <Header.HeaderTop />
-          <Header.HeaderBody
-            defaultValue={searchValue ? searchValue : undefined}
-            selectedMenu={0}
-          />
-        </Header>
-      </div>
-      }
-    {isNavbarChecked ? 
-      <MenuSideBar>
-        <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
-        <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
-        <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
-      </MenuSideBar> : null}
-
-
+      ) : (
+        <div style={{ display: "fixed" }}>
+          <Header headerColor="var(--black-200)">
+            <Header.HeaderTop />
+            <Header.HeaderBody
+              defaultValue={searchValue ? searchValue : undefined}
+              selectedMenu={0}
+            />
+          </Header>
+        </div>
+      )}
+      {isNavbarChecked ? (
+        <MenuSideBar>
+          <Link to="/attractions">
+            <MenuButton>명소</MenuButton>
+          </Link>
+          <Link to="/posts">
+            <MenuButton>포스트</MenuButton>
+          </Link>
+          <Link to="/map">
+            <MenuButton>내 주변 명소찾기</MenuButton>
+          </Link>
+        </MenuSideBar>
+      ) : null}
 
       <pl.PlaceWrapper>
-        {Mobile? null : 
-        <pl.LocationWrapper>
-          {placesData && (
-            <LocationFilter
-              setCurPage={setCurPage}
-              checkedList={checkedList}
-              setCheckedList={setCheckedlist}
-            />
-          )}
-        </pl.LocationWrapper>}
+        {Mobile ? null : (
+          <pl.LocationWrapper>
+            {placesData && (
+              <LocationFilter
+                setCurPage={setCurPage}
+                checkedList={checkedList}
+                setCheckedList={setCheckedlist}
+              />
+            )}
+          </pl.LocationWrapper>
+        )}
         <pl.PlaceContainer>
           <pl.PlaceFilterContainer>
             {searchValue ? (
@@ -145,15 +149,15 @@ const Place = () => {
             )}
 
             <div>
-              {sortList.map((sort, idx) => (
+              {sortList.map((sortEl, idx) => (
                 <pl.FilterButton
-                  className={onFilter === idx ? "active" : ""}
+                  className={sort === idx ? "active" : ""}
                   key={idx}
                   onClick={() => {
-                    handleSortClick(idx, sort.eng);
+                    handleSortClick(idx);
                   }}
                 >
-                  {sort.kor}
+                  {sortEl.kor}
                 </pl.FilterButton>
               ))}
             </div>
