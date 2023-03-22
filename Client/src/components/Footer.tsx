@@ -10,6 +10,7 @@ import {
   LinkIconContainer,
   LinkWrapper,
   EmailContainer,
+  ContributorLink,
 } from "./FooterStyled";
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CgFigma as FigmaIcon } from "react-icons/cg";
@@ -27,9 +28,14 @@ const Footer = () => {
         </LogoContainer>
         <MadePeopleContainer>
           {contributors.map((person, i) => (
-            <a href={person.link} target="_blank" rel="noreferrer">
-              <FooterText>&nbsp;{`${person.name} |`}</FooterText>
-            </a>
+            <ContributorLink
+              href={person.link}
+              target="_blank"
+              rel="noreferrer"
+              key={i}
+            >
+              <FooterText>&nbsp;{`${person.name}`}&nbsp;</FooterText>
+            </ContributorLink>
           ))}
         </MadePeopleContainer>
 
