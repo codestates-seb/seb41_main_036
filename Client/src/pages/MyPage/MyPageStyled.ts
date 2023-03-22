@@ -259,6 +259,7 @@ export const MyPageMainTopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
   span {
     font-size: var(--font-sm);
   }
@@ -286,42 +287,42 @@ export const EditButton = styled.button<{ EditPosts: boolean }>`
 `;
 
 export const DeleteButton = styled.button<{
-    BookMarkDelete?: boolean;
-    EditPosts?: boolean;
-  }>`
-    display: inline-flex;
-    align-items: center;
-    border: none;
-    background-color: var(--black-275);
-    cursor: pointer;
+  BookMarkDelete?: boolean;
+  EditPosts?: boolean;
+}>`
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background-color: var(--black-275);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  padding: 7px 8px 5px;
+
+  color: ${(props) => (props.BookMarkDelete ? "var(--black-800)" : "red")};
+  opacity: 0.7;
+
+  :hover {
+    background-color: ${(props) =>
+      props.BookMarkDelete ? "var(--black-600)" : "red"};
+    opacity: 0.8;
     border-radius: 10px;
-    transition: all 0.3s ease;
-    padding: 7px 8px 5px;
-  
-    color: ${(props) => (props.BookMarkDelete ? "var(--black-800)" : "red")};
-    opacity: 0.7;
-  
-    :hover {
-      background-color: ${(props) =>
-        props.BookMarkDelete ? "var(--black-600)" : "red"};
-      opacity: 0.8;
-      border-radius: 10px;
-      color: white;
-    }
-  `;
+    color: white;
+  }
+`;
 
 export const FavoriteCardWrapper = styled.div`
-display: flex;
-flex-wrap: wrap;
-gap: 5px 2%;
-height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 400px;
+  transition: all 0.5s ease;
 `;
 export const MyPagePostCardWrapper = styled.div`
-display: flex;
-justify-content: flex-start;
-align-items: center;
-flex-direction: column;
-height: 390px;
-margin-top: 10px;
-gap: 1px 2%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 390px;
+  margin-top: 10px;
+  gap: 1px 2%;
 `;
