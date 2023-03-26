@@ -6,8 +6,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@EnableWebSocketMessageBroker
 @Configuration
+@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
@@ -26,18 +26,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stomp-websocket")
-                .setAllowedOrigins("*")
+            // WebSocket 전용 엔드포인트 추가
+            registry.addEndpoint("/stomp-websocket")
+                    .setAllowedOrigins("*");
+
+            // SockJS를 사용한 엔드포인트 추가
+            registry.addEndpoint("/stomp-websocket-sockjs")
+                    .setAllowedOrigins("*")
+                    .withSockJS();
+        }
+
 //                .setAllowedOrigins("http://localhost:8080",
-//                        "http://pikcha36.o-r.kr:8080",
-//                        "https://pikcha36.o-r.kr:8080",
-//                        "http://pikcha36.o-r.kr:8080",
-//                        "https://pikcha36.o-r.kr",
+//                        "http://localhost:3000",
+////                        "http://pikcha36.o-r.kr:8080",
+////                        "https://pikcha36.o-r.kr:8080",
+////                        "http://pikcha36.o-r.kr:8080",
+////                        "https://pikcha36.o-r.kr",
 //                        "chrome-extension://cbcbkhdmedgianpaifchdaddpnmgnknn/index.html")
-                .withSockJS();
-
         // ws://localhost:8080/stomp-websocket
-    }
-
 }
 
