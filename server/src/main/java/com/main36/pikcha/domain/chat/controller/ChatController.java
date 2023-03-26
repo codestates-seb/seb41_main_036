@@ -1,9 +1,11 @@
 package com.main36.pikcha.domain.chat.controller;
 
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
+import com.main36.pikcha.domain.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -16,15 +18,21 @@ import org.springframework.web.util.HtmlUtils;
 import javax.annotation.PostConstruct;
 
 //@RestController
-@RestController
+@Controller
+@RequiredArgsConstructor
 public class ChatController {
-
-    @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    private ChatService chatService;
 
     @MessageMapping("/chat")
 //  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
     public void processMessage(@Payload ChatMessage chatMessage) {
+
+        ChatMessage message = new ChatMessage();
+        message.setContent(chatMessage.getContent());
+        message.setSender(chatMessage.getSender());
+        message.setTimestamp(chatMessage.getTimestamp());
+        chatService.saveMessage(message);
 
 //        명시적으로 메시지를 변환하고 대상에게 전송할 수 있습니다.
         messagingTemplate.convertAndSend("/topic/messages", chatMessage);
