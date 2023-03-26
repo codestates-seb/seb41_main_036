@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
@@ -14,6 +14,7 @@ import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
 import * as dp from "./DetailPostStyled";
 import { ArrayCommentType, PostDetailType } from "../../utils/d";
+import { getCurrentCount } from "../../utils/utils";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
@@ -25,7 +26,7 @@ const DetailPost = () => {
   const [memberId] = useRecoilState(MemberId);
   const [postId, setPostId] = useState<number>();
   const [isVoted, setIsVoted] = useState<boolean>();
-
+  const initialLikesRef = useRef(post?.isVoted); //로컬 좋아요 상태 저장
   const navigate = useNavigate();
   useEffect(() => {
     if (isLogin) {
@@ -44,7 +45,7 @@ const DetailPost = () => {
         .then((res) => setPost(res.data.data))
         .catch((err) => console.error(err));
     }
-  }, [isVoted]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -195,7 +196,13 @@ const DetailPost = () => {
                   onClick={handleLikePost}
                   color={isVoted === true ? "red" : "grey"}
                 />
-                <span>{post?.likes}</span>
+                <span>
+                  {getCurrentCount(
+                    post?.likes,
+                    initialLikesRef.current as boolean,
+                    isVoted as boolean
+                  )}
+                </span>
               </div>
             </div>
           </dp.PostContentBottom>
