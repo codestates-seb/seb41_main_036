@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useState } from "react";
 import LocationFilter from "../../components/LocationFilter";
 import { Header } from "../../components/Header";
 import axios from "../../utils/axiosinstance";
@@ -11,7 +10,7 @@ import { useRecoilState } from "recoil";
 import { LoginState } from "../../recoil/state";
 import EmptyResult from "../../components/EmptyResult";
 import * as pl from "./PlaceStyled";
-import { ArrayPlaceType, PageInfoType } from "../../utils/d";
+import { ArrayPlaceType, PageInfoType, PageSessionType } from "../../utils/d";
 import { useMediaQuery } from "react-responsive";
 import MobileHeader from "../../components/Header/MobileHeader";
 import { MenuSideBar, MenuButton } from "../MainResponsive";
@@ -32,64 +31,84 @@ const sortList: { kor: string; eng: string }[] = [
 ];
 
 const Place = () => {
-  const [placesData, setPlacesData] = useState<ArrayPlaceType>();
-  const [checkedList, setCheckedlist] = useState<string[]>([]);
-  const [curPage, setCurPage] = useState(1);
-  const [sort, setSort] = useState(0);
-  const { search } = useLocation();
-  const totalInfoRef = useRef<PageInfoType | null>(null);
-  const ITEM_LIMIT = 9;
-  const [isLogin] = useRecoilState(LoginState);
-  const memberId = localStorage.getItem("memberId");
+  const { pageId, pageDataArr } = useMemo(() => {
+    const pageId = window.history.state.key;
+    const sessionStorageData = JSON.parse(
+      sessionStorage.getItem("pageData") as string
+    );
+    const pageDataArr = sessionStorageData?.[pageId];
 
-  const Mobile = useMediaQuery({
-    query: "(max-width: 768px)",
-  });
+    return { pageId, pageDataArr };
+  }, []);
+
+  const [checkedList, setCheckedlist] = useState<string[]>(() =>
+    pageDataArr ? pageDataArr.checkedList : []
+  );
+
+  const [curPage, setCurPage] = useState(() =>
+    pageDataArr ? pageDataArr.curPage : 1
+  );
+
+  const [sort, setSort] = useState(() => (pageDataArr ? pageDataArr.sort : 0));
+  const [placesData, setPlacesData] = useState<ArrayPlaceType>();
+  const [isLogin] = useRecoilState(LoginState);
+  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
+  const totalInfoRef = useRef<PageInfoType | null>(null);
+  const curPageRef = useRef<PageSessionType | null>(null);
+  const memberId = localStorage.getItem("memberId");
+  const { search } = useLocation();
+  const ITEM_LIMIT = 9;
 
   const searchValue = useMemo(
     () => new URLSearchParams(search).get("keyword"),
     [search]
   );
+  const Mobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+  curPageRef.current = {
+    curPage: curPage,
+    sort: sort,
+    checkedList: checkedList,
+  };
+
   const sortValue = sortList[sort].eng;
   const url1 = `/attractions/search?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
   const url1_loggedIn = `/attractions/search/${memberId}?keyword=${searchValue}&page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
   const url2 = `/attractions/filter?page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
   const url2_loggedIn = `/attractions/filter/${memberId}?page=${curPage}&size=${ITEM_LIMIT}&sort=${sortValue}`;
 
-  useEffect(() => {
-    setCurPage(1);
-  }, [checkedList]);
+  const cleanupFunction = () => {
+    const totalSessionData = JSON.parse(
+      sessionStorage.getItem("pageData") as string
+    );
+    const newData = { ...totalSessionData, [pageId]: curPageRef.current };
+    sessionStorage.setItem("pageData", JSON.stringify(newData));
+  };
 
   useEffect(() => {
-    const search_url = isLogin ? url1_loggedIn : url1;
-    const url = isLogin ? url2_loggedIn : url2;
+    return () => cleanupFunction();
+  }, []);
 
+  useEffect(() => {
+    let url;
     if (searchValue) {
-      axios
-        .post(search_url, { provinces: checkedList })
-        .then((res) => {
-          setPlacesData(res.data.data);
-          totalInfoRef.current = res.data.pageInfo;
-        })
-        .catch((err) => console.error(err));
+      url = isLogin ? url1_loggedIn : url1;
     } else {
-      axios
-        .post(url, {
-          provinces: checkedList,
-        })
-        .then((res) => {
-          setPlacesData(res.data.data);
-          totalInfoRef.current = res.data.pageInfo;
-        })
-        .catch((err) => console.error(err));
-      return;
+      url = isLogin ? url2_loggedIn : url2;
     }
+    axios
+      .post(url, { provinces: checkedList })
+      .then((res) => {
+        setPlacesData(res.data.data);
+        totalInfoRef.current = res.data.pageInfo;
+      })
+      .catch((err) => console.error(err));
   }, [searchValue, curPage, checkedList, sort]);
 
   const handleSortClick = (sort: number) => {
     setSort(sort);
   };
-  const [isNavbarChecked, setIsNavbarChecked] = useState<boolean>(false);
 
   return (
     <>
