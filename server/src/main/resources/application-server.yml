@@ -11,10 +11,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # localhost 금지
-    url: jdbc:mysql://seb41-main-036.cofrzunhrbrs.ap-northeast-2.rds.amazonaws.com:3306/pikcha36?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
-    username: admin # 유저네임
-    password: ${RDS_PASSWORD} # 비밀번호
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   jpa:
     hibernate:
