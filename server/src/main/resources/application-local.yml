@@ -2,6 +2,7 @@ spring:
   main:
     allow-circular-references: true
 
+
   servlet:
     multipart:
       max-file-size: 10MB  # 2MB 제한

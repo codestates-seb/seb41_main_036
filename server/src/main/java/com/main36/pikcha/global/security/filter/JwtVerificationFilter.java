@@ -42,7 +42,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     "/attractions/maps",
                     "/oauth2/authorization/google",
                     "/oauth2/authorization/kakao",
-                    "/stomp-websocket"
+                    "/stomp-websocket",
+                    "/stomp-websocket/info",
+                    "/stomp-websocket-sockjs",
+                    "/stomp-websocket-sockjs/info"
+
             );
 
     @Override

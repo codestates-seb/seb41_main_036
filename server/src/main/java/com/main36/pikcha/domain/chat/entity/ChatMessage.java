@@ -23,7 +23,6 @@ public class ChatMessage extends Auditable {
     private Long Id;
     private String content;
     private String sender;
-    private LocalDateTime timestamp;
 
 //    public enum MessageType {
 //        ENTER, TALK

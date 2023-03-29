@@ -14,7 +14,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
         // 메시지 브로커가 처리하는 메시지의 경로의 접두사 설정
-        registry.enableSimpleBroker("/queue", "/topic");
+        registry.enableSimpleBroker("/topic");
 
         // 클라이언트에서 서버로 전송된 메시지를 처리하는 경로의 접두사 설정
         registry.setApplicationDestinationPrefixes("/app");
@@ -32,17 +32,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             // SockJS를 사용한 엔드포인트 추가
             registry.addEndpoint("/stomp-websocket-sockjs")
-                    .setAllowedOrigins("*")
+                    .setAllowedOriginPatterns("*")
+//                    .setAllowedOrigins("*")
                     .withSockJS();
         }
-
-//                .setAllowedOrigins("http://localhost:8080",
-//                        "http://localhost:3000",
-////                        "http://pikcha36.o-r.kr:8080",
-////                        "https://pikcha36.o-r.kr:8080",
-////                        "http://pikcha36.o-r.kr:8080",
-////                        "https://pikcha36.o-r.kr",
-//                        "chrome-extension://cbcbkhdmedgianpaifchdaddpnmgnknn/index.html")
-        // ws://localhost:8080/stomp-websocket
 }
 

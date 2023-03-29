@@ -23,25 +23,33 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
-    private SimpMessagingTemplate messagingTemplate;
-    private ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final ChatService chatService;
 
-    @MessageMapping("/chat")
-//  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
-    public void processMessage(@Payload ChatMessage chatMessage) {
-        log.info("chatMessage.getContent()) = {}", chatMessage.getContent());
-        log.info("chatMessage.getSender()) = {}", chatMessage.getSender());
-        ChatMessage message = new ChatMessage();
-        message.setContent(chatMessage.getContent());
-        message.setSender(chatMessage.getSender());
-        message.setTimestamp(chatMessage.getTimestamp());
-        chatService.saveMessage(message);
+//    @MessageMapping("/chat") // front : publish destination: '/app/chat'
+////  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
+//    public void processMessage(@Payload ChatMessage chatMessage) {
+//
+//        log.info("chatMessage.getContent()) = {}", chatMessage.getContent());
+//        log.info("chatMessage.getSender()) = {}", chatMessage.getSender());
+//
+////        ChatMessage message = new ChatMessage();
+////        message.setContent(chatMessage.getContent());
+////        message.setSender(chatMessage.getSender());
+////        chatService.saveMessage(message);
+//
+////        명시적으로 메시지를 변환하고 대상에게 전송할 수 있습니다.
+//        messagingTemplate.convertAndSend("/topic/messages", chatMessage);
+//
+//        //두 방법 모두 메시지를 클라이언트에게 전송하는 데 사용되지만,
+//        // convertAndSend()를 사용하면 메시지 전송 시점을 더 세밀하게 제어할 수 있습니다.
+//        // 이를 통해 더 복잡한 시나리오에서 메시지 전송을 관리할 수 있습니다.
+//    }
 
-//        명시적으로 메시지를 변환하고 대상에게 전송할 수 있습니다.
+    @MessageMapping("/chat") // front : publish destination: '/app/chat'
+    public void processMessage(@Payload String chatMessage) {
+        log.info("chatMessage.getContent()) = {}", chatMessage);
         messagingTemplate.convertAndSend("/topic/messages", chatMessage);
 
-        //두 방법 모두 메시지를 클라이언트에게 전송하는 데 사용되지만,
-        // convertAndSend()를 사용하면 메시지 전송 시점을 더 세밀하게 제어할 수 있습니다.
-        // 이를 통해 더 복잡한 시나리오에서 메시지 전송을 관리할 수 있습니다.
     }
 }
