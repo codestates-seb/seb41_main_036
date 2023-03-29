@@ -44,5 +44,3 @@ out/
 
 # env
 env.yml
-*.env
-.env
