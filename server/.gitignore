@@ -44,5 +44,4 @@ out/
 *.log
 
 # env
-/env.yml
 env.yml
