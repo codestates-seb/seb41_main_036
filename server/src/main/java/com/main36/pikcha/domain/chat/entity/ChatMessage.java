@@ -1,5 +1,7 @@
 package com.main36.pikcha.domain.chat.entity;
 
+import com.main36.pikcha.global.audit.Auditable;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+public class ChatMessage extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;

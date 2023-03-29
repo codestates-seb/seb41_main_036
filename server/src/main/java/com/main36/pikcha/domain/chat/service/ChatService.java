@@ -32,5 +32,4 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-
 }
