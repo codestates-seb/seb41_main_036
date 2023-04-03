@@ -4,11 +4,8 @@ import com.main36.pikcha.global.audit.Auditable;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 
@@ -20,11 +17,12 @@ import java.time.LocalDateTime;
 public class ChatMessage extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long messageId;
     private String content;
     private String sender;
-
-//    public enum MessageType {
-//        ENTER, TALK
-//    }
+    private MessageType type;
+    @Getter
+    public enum MessageType {
+        JOIN ,CHAT, LEAVE
+    }
 }

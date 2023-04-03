@@ -1,7 +1,13 @@
 package com.main36.pikcha.domain.chat.controller;
 
+import com.main36.pikcha.domain.chat.dto.ChatPostDto;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.service.ChatService;
+import com.main36.pikcha.domain.member.entity.Member;
+import com.main36.pikcha.global.aop.LoginUser;
+import com.main36.pikcha.global.aop.LoginUserEmail;
+import com.main36.pikcha.global.exception.BusinessLogicException;
+import com.main36.pikcha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.Null;
 
 //@RestController
 @Controller
@@ -47,9 +54,19 @@ public class ChatController {
 //    }
 
     @MessageMapping("/chat") // front : publish destination: '/app/chat'
-    public void processMessage(@Payload String chatMessage) {
-        log.info("chatMessage.getContent()) = {}", chatMessage);
-        messagingTemplate.convertAndSend("/topic/messages", chatMessage);
+//    @LoginUser
+    public void processMessage(@Payload ChatPostDto chatPostDto) {
+        // 내가 보낸 메시지 도달이 안됐을 때만 !
+        if (chatPostDto == null) {
+            throw new BusinessLogicException(ExceptionCode.CHAT_NOT_FOUND);
+        }
+
+        log.info("chatMessage.getContent()) = {}", chatPostDto.getContent());
+        log.info("chatMessage.getVerifyKey()) = {}", chatPostDto.getVerifyKey());
+        log.info("chatMessage.getVerifyKey()) = {}", chatPostDto.getType());
+
+        // nickname
+        messagingTemplate.convertAndSend("/topic/messages", chatPostDto);
 
     }
 }
