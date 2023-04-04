@@ -95,7 +95,6 @@ export interface MySavesType {
   likes: number;
   saves: number;
 }
-
 export interface ArrayMyPostsType extends Array<MyPostsType> {}
 export interface ArrayMySavesType extends Array<MySavesType> {}
 
@@ -121,32 +120,32 @@ export interface PostDetailType {
 
 export interface CommentType {
   commentId: number;
-  parentId: null | number;
+  parentId: number;
   memberId: number;
   username: string;
   memberPicture: string;
   commentContent: string;
   createdAt: string;
   modifiedAt: string;
-  children: [
-    {
-      commentId: number;
-      parentId: number;
-      memberId: number;
-      username: string;
-      memberPicture: string;
-      commentCount: string;
-      status: string;
-      createdAt: string;
-      modifiedAt: string;
-      children: [];
-    }
-  ];
+  children: [];
+}
+export interface ArrayCommentType extends Array<CommentType> {}
+
+export interface ReCommentType {
+  children: [];
+  commentContent: string;
+  commentId: number;
+  createdAt: string;
+  memberId: number;
+  memberPicture: string;
+  modifiedAt: string;
+  parentId: number;
+  status: string;
+  username: string;
 }
 
 // DetailPost
 
-export interface ArrayCommentType extends Array<CommentType> {}
 // PostContent 리팩토링 예정
 // interface PostContentsType {
 //   imageURL: string;
