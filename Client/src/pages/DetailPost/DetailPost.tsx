@@ -3,7 +3,7 @@ import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
-import PostComment from "../../components/DetailPost/Comment/Comment";
+import Comment from "../../components/DetailPost/Comment/Comment";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { LoginState, MemberId } from "../../recoil/state";
@@ -11,14 +11,15 @@ import Modal from "../../components/Modal";
 import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
 import * as dp from "./DetailPostStyled";
-import { PostDetailType } from "../../utils/d";
+import { ArrayCommentType, PostDetailType } from "../../utils/d";
 import AddComment from "../../components/DetailPost/AddComment";
 import { deletePostHandler } from "../../API/BlogDetail/Delete/Delete";
-import { getPost } from "../../API/BlogDetail/Get/Get";
+import { getPost, getPostCommentList } from "../../API/BlogDetail/Get/Get";
 import { handleLikePost } from "../../API/BlogDetail/Post/Post";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
+  const [commentList, setCommentList] = useState<ArrayCommentType>();
   const [isLogin] = useRecoilState(LoginState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
@@ -42,6 +43,14 @@ const DetailPost = () => {
       imgageId: i + 1,
     });
   }
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getPostCommentList(id);
+      setCommentList(response);
+    };
+    getData();
+  }, []);
 
   const handleCopyClipBoard = async (text: string) => {
     try {
@@ -145,7 +154,14 @@ const DetailPost = () => {
             첫번째 댓글을 남겨주세요.
           </dp.EmptyCommentContainer>
         ) : (
-          <PostComment />
+          commentList &&
+          commentList.map((comments) => (
+            <Comment
+              key={comments.commentId}
+              comments={comments}
+              postWriter={post?.memberId}
+            />
+          ))
         )}
         <AddComment setIsModalVisible={setIsModalVisible} />
       </dp.DetailPostWrapper>

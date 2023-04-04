@@ -23,76 +23,75 @@ export interface ArrayPlaceType extends Array<PlaceType> {}
 //Post
 
 export interface PostType {
-    postId: number;
-    postTitle: string;
-    memberId: number;
-    username: string;
-    picture: string | string[];
-    createdAt: string;
-    likes: number;
-    modifiedAt: number;
-    views: number;
-  }
+  postId: number;
+  postTitle: string;
+  memberId: number;
+  username: string;
+  picture: string | string[];
+  createdAt: string;
+  likes: number;
+  modifiedAt: number;
+  views: number;
+}
 
-  export interface ArrayPostType extends Array<PostType> {}
+export interface ArrayPostType extends Array<PostType> {}
 
-  //MyPage
+//MyPage
 
-  export interface UserType {
-    memberId: number;
-    username: string;
-    memberTitle: null;
-    phoneNumber: string;
-    address: string;
-    picture: string;
-    email: string;
-    totalMyPosts: number;
-    totalMySaves: number;
-    posts:
-      | [
-          {
-            postId: number;
-            postTitle: string;
-            pictureUrl: string;
-            views: number;
-            likes: number;
-            createdAt: string;
-            modifiedAt: string;
-          }
-        ];
-    saves:
-      | {
-          attractionId: number;
-          attractionName: string;
-          fixedImage: string;
+export interface UserType {
+  memberId: number;
+  username: string;
+  memberTitle: null;
+  phoneNumber: string;
+  address: string;
+  picture: string;
+  email: string;
+  totalMyPosts: number;
+  totalMySaves: number;
+  posts:
+    | [
+        {
+          postId: number;
+          postTitle: string;
+          pictureUrl: string;
+          views: number;
           likes: number;
-          saves: number;
-        }[];
-    createdAt: string;
-    modifiedAt: string;
-  }
-  
-  export interface MyPostsType {
-    postId: number;
-    postTitle: string;
-    pictureUrl: string;
-    views: number;
-    likes: number;
-    createdAt: string;
-    modifiedAt: string;
-  }
-  
-  export interface MySavesType {
-    attractionId: number;
-    attractionName: string;
-    fixedImage: string;
-    likes: number;
-    saves: number;
-  }
-  
-  export interface ArrayMyPostsType extends Array<MyPostsType> {}
-  export interface ArrayMySavesType extends Array<MySavesType> {}
+          createdAt: string;
+          modifiedAt: string;
+        }
+      ];
+  saves:
+    | {
+        attractionId: number;
+        attractionName: string;
+        fixedImage: string;
+        likes: number;
+        saves: number;
+      }[];
+  createdAt: string;
+  modifiedAt: string;
+}
 
+export interface MyPostsType {
+  postId: number;
+  postTitle: string;
+  pictureUrl: string;
+  views: number;
+  likes: number;
+  createdAt: string;
+  modifiedAt: string;
+}
+
+export interface MySavesType {
+  attractionId: number;
+  attractionName: string;
+  fixedImage: string;
+  likes: number;
+  saves: number;
+}
+
+export interface ArrayMyPostsType extends Array<MyPostsType> {}
+export interface ArrayMySavesType extends Array<MySavesType> {}
 
 export interface PostDetailType {
   attractionAddress: string;
@@ -116,30 +115,32 @@ export interface PostDetailType {
 
 export interface CommentType {
   commentId: number;
-  parentId: null | number;
+  parentId: number;
   memberId: number;
   username: string;
   memberPicture: string;
   commentContent: string;
   createdAt: string;
   modifiedAt: string;
-  children: [{
-    commentId: number;
-    parentId: number;
-    memberId: number;
-    username: string;
-    memberPicture: string;
-    commentCount: string;
-    status: string;
-    createdAt: string;
-    modifiedAt: string;
-    children: []
-  }];
+  children: [];
+}
+export interface ArrayCommentType extends Array<CommentType> {}
+
+export interface ReCommentType {
+  children: [];
+  commentContent: string;
+  commentId: number;
+  createdAt: string;
+  memberId: number;
+  memberPicture: string;
+  modifiedAt: string;
+  parentId: number;
+  status: string;
+  username: string;
 }
 
 // DetailPost
 
-export interface ArrayCommentType extends Array<CommentType> {}
 // PostContent 리팩토링 예정
 // interface PostContentsType {
 //   imageURL: string;
