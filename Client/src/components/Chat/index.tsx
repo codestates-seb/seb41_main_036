@@ -14,7 +14,7 @@ const Chat = () => {
     TOPIC
   );
   const [text, setText] = useState("");
-
+  const [isComposing, setIsComposing] = useState(false);
   useEffect(() => {
     console.log(chatData, "서버응답 body");
   }, [chatData]);
@@ -32,6 +32,7 @@ const Chat = () => {
   };
 
   const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (isComposing) return;
     if (e.key === "Enter") {
       sendMessage(text);
       setText("");
@@ -48,6 +49,8 @@ const Chat = () => {
         value={text}
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
       ></input>
       <button onClick={(e) => clickHandler(e)}>전송</button>
     </>
