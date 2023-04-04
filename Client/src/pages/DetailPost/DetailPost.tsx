@@ -143,7 +143,13 @@ const DetailPost = () => {
                   onClick={() => handleLikePost(id, setIsVoted)}
                   color={post && post.isVoted ? "red" : "grey"}
                 />
-                <span>{post?.likes}</span>
+                <span>
+                  {getCurrentCount(
+                    post?.likes,
+                    initialLikesRef.current as boolean,
+                    isVoted as boolean
+                  )}
+                </span>
               </div>
             </div>
           </dp.PostContentBottom>
