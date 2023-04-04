@@ -5,6 +5,6 @@ export const modifiedComment = (commentId: number, commentContent: string) => {
     .patch(`/comments/edit/${commentId}`, {
       commentContent: commentContent,
     })
-    .then((res) => console.log(res.data.data))
+    .then(() => window.location.reload())
     .catch((err) => console.error(err));
 };

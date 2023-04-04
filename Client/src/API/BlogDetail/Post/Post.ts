@@ -1,13 +1,17 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import axios from "../../../utils/axiosinstance";
 
 export const handleCommentSubmit = async (
   id: string | undefined,
-  addComment: string
+  addComment: string,
+  e: React.MouseEvent<HTMLButtonElement>,
+  parentId?: number | null
 ) => {
+  e.preventDefault();
   axios
     .post(`/comments/upload/${id}`, {
       commentContent: addComment,
+      parentId: parentId,
     })
     .then(() => window.location.reload())
     .catch((err) => console.error(err));
@@ -20,20 +24,4 @@ export const handleLikePost = (
   axios
     .post(`/posts/likes/${postId}`)
     .then((res) => setIsVoted(res.data.data.isVoted));
-};
-
-export const handleSubmitRecomment = (
-  e: React.KeyboardEvent<HTMLTextAreaElement>,
-  id: string | undefined,
-  parentId: number,
-  recomment: string
-) => {
-  if (e.key === "Enter") {
-    axios
-      .post(`/comments/upload/${id}`, {
-        commentContent: recomment,
-        parentId: parentId,
-      })
-      .then((res) => console.log(res));
-  }
 };
