@@ -15,8 +15,8 @@ import {
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CgFigma as FigmaIcon } from "react-icons/cg";
 import { IoMailOutline as EmailIcon } from "react-icons/io5";
-import { ReactComponent as Logo } from "../data/Logo.svg";
-import contributors from "../data/contributorData";
+import { ReactComponent as Logo } from "../..//data/Logo.svg";
+import contributors from "../../data/contributorData";
 const Footer = () => {
   const navigate = useNavigate();
 
