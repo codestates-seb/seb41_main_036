@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../../utils/axiosinstance";
 import { ArrayCommentType, PostDetailType } from "../../../utils/d";
 
 export const getPost = async (
