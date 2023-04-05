@@ -1,14 +1,13 @@
 import axios from "../../utils/axiosinstance";
 
 export const handlePostSubmit = async (
-  e: React.MouseEvent<HTMLButtonElement>,
   title: string,
   tags: string[],
   imgList: File[],
   content: string[],
   postId: string | undefined
 ) => {
-  e.preventDefault();
+  let result = "";
   if (title === "") {
     alert("제목을 입력해주세요");
   } else if (imgList.length === 0) alert("이미지를 등록해주세요.");
@@ -30,7 +29,8 @@ export const handlePostSubmit = async (
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => res.data.data)
+      .then((res) => (result = res.data.data.postId))
       .catch((err) => console.error(err));
   }
+  return result;
 };
