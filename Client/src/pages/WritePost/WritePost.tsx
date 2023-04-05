@@ -1,20 +1,20 @@
-import axios from "../../utils/axiosinstance";
 import React, { useState, useRef, SetStateAction, Dispatch } from "react";
 import ButtonForm from "../../components/Button";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import WriteGuide from "../../components/WriteGuide";
+import WriteGuide from "../../components/WritePost/WriteGuide";
 import * as wp from "./WritePostStyled";
+import { handlePostSubmit } from "../../API/Post/handlePostSubmit";
+import Tag from "../../components/WritePost/Tag";
 
 const WritePost = () => {
   const [title, setTitle] = useState(""); // 제목
-  const [previewList, setPreviewList] = useState<string[][]>([]); // 프리뷰 map 돌릴 값 저장용
+  const [tags, setTags] = useState<string[]>([]);
+  const [previewList, setPreviewList] = useState<string[][]>([]);
   const [previewText, setPreviewText] = useState("");
   const [content, setContent] = useState<string[]>([]);
-  const [tag, setTag] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [imgFile, setImgFile] = useState<any>();
   const [imgFiles, setImgFiles] = useState<File[]>([]);
@@ -28,51 +28,6 @@ const WritePost = () => {
     if (title.length > 30) alert("30자 이내로 작성해주세요.");
   };
 
-  const TagButton = ({ tag, idx }: { tag: string; idx: number }) => {
-    const removeClickTagHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      setTags(tags.filter((_, i) => i !== idx));
-    };
-
-    return (
-      <wp.TagBox>
-        <span>{tag} </span>
-        <button onClick={(e) => removeClickTagHandler(e)}>
-          <svg width="14" height="14" fill="hsl(237.931, 43%, 87%)">
-            <path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path>
-          </svg>
-        </button>
-      </wp.TagBox>
-    );
-  };
-
-  <wp.TagWrapper>
-    {tags.map((tag, idx) => (
-      <TagButton tag={tag} key={idx} idx={idx}></TagButton>
-    ))}
-    <input
-      type="text"
-      value={tag}
-      onKeyUp={(e) => tagMakeHandler(e)}
-      onKeyDown={(e) => noRemoveTagHandler(e)}
-      onChange={(e) => setTag(e.target.value)}
-      placeholder={tags.length ? "" : "태그를 입력해주세요!"}
-    ></input>
-  </wp.TagWrapper>;
-  const noRemoveTagHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") e.preventDefault();
-  };
-  const tagMakeHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.code === "Space" || e.key === "Enter") {
-      if (tag === "" || tag === " ") setTag("");
-      else if (tags.length >= 5)
-        alert("태그는 5개 이하까지만 사용할 수 있습니다.");
-      else setTags([...tags, tag]);
-      setTag("");
-    }
-  };
-
   const handleRemovePreview = (
     e: React.MouseEvent<HTMLButtonElement>,
     idx: number
@@ -82,41 +37,16 @@ const WritePost = () => {
     setImgFiles(imgFiles.filter((file) => imgFiles[idx] !== file));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (title === "") {
-      alert("제목을 입력해주세요");
-    } else if (imgFiles.length === 0) alert("이미지를 등록해주세요.");
-    else {
-      const formData = new FormData();
-      formData.append("postTitle", title);
-      tags.forEach((tag) => {
-        formData.append("postHashTags", tag);
-      });
-      imgFiles.forEach((img) => {
-        formData.append("postImageFiles", img);
-      });
-      content.forEach((text) => {
-        formData.append("postContents", text);
-      });
-      axios
-        .post(`/posts/register/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          navigate(`/posts/detail/${res.data.data.postId}`);
-        })
-        .catch((err) => console.error(err));
-    }
-  };
-
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsModal(!isModal);
   };
 
+  const actionPostSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const post = await handlePostSubmit(title, tags, imgFiles, content, id);
+    navigate(`/posts/detail/${post}`);
+  };
   return (
     <>
       {isWriteGuideModal ? (
@@ -159,20 +89,7 @@ const WritePost = () => {
                 hovercolor="white"
               />
             </div>
-
-            <wp.TagWrapper>
-              {tags.map((tag, idx) => (
-                <TagButton tag={tag} key={idx} idx={idx}></TagButton>
-              ))}
-              <input
-                type="text"
-                value={tag}
-                onKeyUp={(e) => tagMakeHandler(e)}
-                onKeyDown={(e) => noRemoveTagHandler(e)}
-                onChange={(e) => setTag(e.target.value)}
-                placeholder={tags.length ? "" : "태그를 입력하세요"}
-              ></input>
-            </wp.TagWrapper>
+            <Tag tags={tags} setTags={setTags} />
             {isModal ? (
               <Modal
                 setImgFiles={setImgFiles}
@@ -197,10 +114,10 @@ const WritePost = () => {
             </div>
             <ButtonForm
               type="violet"
-              onClick={handleSubmit}
               width="100px"
               height="40px"
               text="포스트 등록"
+              onClick={(e) => actionPostSubmit(e)}
             />
           </wp.HandleBackAndSubmitContainer>
         </wp.WritePostWrapper>
