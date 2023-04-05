@@ -86,6 +86,7 @@ const Modal = () => {
   const navigate = useNavigate();
   const HandleLoginModalViewer = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsModal(false);
     navigate(`/login`);
   };
   const [_, setIsModal] = useRecoilState(isModalVisiable);
