@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { TfiClose } from "react-icons/tfi";
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -12,33 +12,35 @@ const ModalBackground = styled.div`
   z-index: 1000;
 `;
 
+const ModalWrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
+
 const ModalContainer = styled.div`
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  img {
+    width: 40rem;
+  }
 `;
 
 const ModalGuideText = styled.div`
-  width: 21%;
+  width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 1rem;
 
   p {
     font-size: var(--font-md);
     font-weight: var(--fw-bold);
     color: #585ac6;
-    margin-bottom: 15px;
-  }
-
-  button {
-    font-size: var(--font-md);
-    width: 20px;
-    height: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
   }
 `;
 const WriteGuide = ({
@@ -49,15 +51,18 @@ const WriteGuide = ({
   return (
     <>
       <ModalBackground>
-        <ModalContainer>
-          <ModalGuideText>
-            <p>하나 이상의 이미지를 꼭 등록해주세요.</p>
-            <button onClick={() => setIsWriteGuideModal(false)}>
-              <TfiClose />
-            </button>
-          </ModalGuideText>
-          <img src={process.env.PUBLIC_URL + "/WriteGuide.gif"} />
-        </ModalContainer>
+        <ModalWrapper>
+          <ModalContainer>
+            <ModalGuideText>
+              <p>하나 이상의 이미지를 꼭 등록해주세요.</p>
+              <TfiClose
+                cursor={"pointer"}
+                onClick={() => setIsWriteGuideModal(false)}
+              />
+            </ModalGuideText>
+            <img src={process.env.PUBLIC_URL + "/WriteGuide.gif"} />
+          </ModalContainer>
+        </ModalWrapper>
       </ModalBackground>
     </>
   );
