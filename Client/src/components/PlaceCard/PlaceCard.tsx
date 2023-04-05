@@ -10,6 +10,7 @@ import Modal from "../Modal";
 import { getCurrentCount } from "../../utils/utils";
 import * as plc from "./PlaceCardStyled";
 import { PlaceType } from "../../utils/d";
+import { isModalVisiable } from "../../recoil/setOverlay";
 
 const PlaceCard = ({
   placeInfo,
@@ -21,7 +22,7 @@ const PlaceCard = ({
   const [currentBookmark, setCurrentBookmark] = useState(placeInfo.isSaved); //로컬 북마트 상태 저장
   const [currentLike, setCurrentLike] = useState(placeInfo.isVoted);
   const [isLogin] = useRecoilState(LoginState);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
   const navigate = useNavigate();
   const {
     attractionId,
@@ -34,7 +35,7 @@ const PlaceCard = ({
   const URL_FOR_LIKES = `/attractions/likes/${attractionId}`;
   const handleBookmarkClick = () => {
     if (!isLogin) {
-      setIsModalVisible(true);
+      setIsModal(true);
       return;
     }
     Axios.post(URL_FOR_SAVES).then((res) => {
@@ -43,7 +44,7 @@ const PlaceCard = ({
   };
   const handleLikeClick = () => {
     if (!isLogin) {
-      setIsModalVisible(true);
+      setIsModal(true);
       return;
     }
     Axios.post(URL_FOR_LIKES).then((res) => {
@@ -52,7 +53,7 @@ const PlaceCard = ({
   };
   return (
     <>
-      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+      {isModal && <Modal />}
       <plc.PlaceCardWrapper key={attractionId} width={width}>
         <img
           alt={placeInfo.attractionName}

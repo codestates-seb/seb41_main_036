@@ -1,23 +1,17 @@
 import * as dp from "../../pages/DetailPost/DetailPostStyled";
 import Button from "../../components/Button";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { LoginState } from "../../recoil/state";
 import { useParams } from "react-router-dom";
 import { handleCommentSubmit } from "../../API/BlogDetail/Post/Post";
+import { isModalVisiable } from "../../recoil/setOverlay";
 
-const AddComment = ({
-  setIsModalVisible,
-}: {
-  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
-}) => {
+const AddComment = () => {
   const [addComment, setAddComment] = useState("");
   const [isLogin] = useRecoilState(LoginState);
   const { id } = useParams();
-
-  const handleCommentWrite = () => {
-    if (!isLogin) setIsModalVisible(true);
-  };
+  const [_, setIsModal] = useRecoilState(isModalVisiable);
 
   return (
     <dp.AddComment isLogin={isLogin}>
@@ -30,10 +24,14 @@ const AddComment = ({
           alt="userImg"
         />
         <textarea
-          placeholder="댓글을 남겨주세요!"
+          placeholder={
+            isLogin ? "댓글을 남겨주세요!" : "로그인 후 사용해주세요."
+          }
           value={addComment}
           onChange={(e) => setAddComment(e.target.value)}
-          onClick={handleCommentWrite}
+          onClick={() => {
+            if (!isLogin) setIsModal(true);
+          }}
         />
         {isLogin ? (
           <Button

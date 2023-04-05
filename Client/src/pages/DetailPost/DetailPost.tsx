@@ -16,16 +16,17 @@ import AddComment from "../../components/DetailPost/AddComment";
 import { deletePostHandler } from "../../API/BlogDetail/Delete/Delete";
 import { getPost, getPostCommentList } from "../../API/BlogDetail/Get/Get";
 import { handleLikePost } from "../../API/BlogDetail/Post/Post";
+import { isModalVisiable } from "../../recoil/setOverlay";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
   const [commentList, setCommentList] = useState<ArrayCommentType>();
   const [isLogin] = useRecoilState(LoginState);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
+  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
 
   useEffect(() => {
     const get = async () => {
@@ -68,7 +69,7 @@ const DetailPost = () => {
         <Header.HeaderBody />
       </Header>
       <dp.DetailPostWrapper>
-        {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+        {isModal && <Modal />}
         {(post && post.memberId === memberId) || memberId === 1 ? (
           <dp.PostMangeButtnContainer>
             <dp.PostManageButton onClick={() => navigate(`/edit/${id}`)}>
@@ -140,7 +141,11 @@ const DetailPost = () => {
               </div>
               <div>
                 <AiFillHeart
-                  onClick={() => handleLikePost(id, setIsVoted)}
+                  onClick={() =>
+                    !memberId
+                      ? setIsModal(true)
+                      : handleLikePost(id, setIsVoted)
+                  }
                   color={post && post.isVoted ? "red" : "grey"}
                 />
                 <span>{post?.likes}</span>
@@ -163,7 +168,7 @@ const DetailPost = () => {
             />
           ))
         )}
-        <AddComment setIsModalVisible={setIsModalVisible} />
+        <AddComment />
       </dp.DetailPostWrapper>
       <Footer />
     </>
