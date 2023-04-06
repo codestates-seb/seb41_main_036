@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { AiOutlineCloudUpload as UploadIcon } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { PostContent, PostPreviewList } from "../../recoil/WritePostState";
-import * as wp from "../../pages/WritePost/WritePostStyled";
+import * as wp from "../../pages/Write_EditPost/Write_EditPostStyled";
 
 export default function ContentRegister({
   setImgFiles,
