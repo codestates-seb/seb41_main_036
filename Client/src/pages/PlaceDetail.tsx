@@ -233,7 +233,6 @@ const PlaceDetail = (): JSX.Element => {
   const url2 = `/attractions/${id}/${memberId}`;
   const url3 = `/posts/${id}?page=${curPage}&size=8`;
   const url4 = `/posts/${id}/${memberId}?page=${curPage}&size=8`;
-  console.log(fixBar);
   const ATTRACTIONS_URL = isLogin ? url2 : url;
   const POSTS_URL = isLogin ? url4 : url3;
   const navigate = useNavigate();

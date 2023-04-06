@@ -56,7 +56,6 @@ export default function WritePost() {
     navigate(`/posts/detail/${post}`);
   };
 
-  console.log(previewList);
   return (
     <>
       {isWriteGuideModal ? (
