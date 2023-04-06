@@ -17,16 +17,21 @@ import javax.annotation.PostConstruct;
 
 //@RestController
 @RestController
+@RequiredArgsConstructor
 public class ChatController {
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat")
 //  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
     public void processMessage(@Payload ChatMessage chatMessage) {
 
 //        명시적으로 메시지를 변환하고 대상에게 전송할 수 있습니다.
+        if (chatMessage.getType().equals("JOIN")) {
+            messagingTemplate.convertAndSend("/topic/messages", chatMessage);
+        }
+
+
         messagingTemplate.convertAndSend("/topic/messages", chatMessage);
 
         //두 방법 모두 메시지를 클라이언트에게 전송하는 데 사용되지만,

@@ -18,6 +18,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
 
     private JPAQueryFactory jpaQueryFactory;
 
+
     public CommentCustomRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }

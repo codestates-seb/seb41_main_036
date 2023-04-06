@@ -39,7 +39,8 @@ public enum ExceptionCode {
     TOKEN_SIGNATURE_INVALID(400, "Token Signature Invalid"),
     TOKEN_MALFORMED(400, "Token Malformed"),
     TOKEN_UNSUPPORTED(400, "Token Unsupported"),
-    TOKEN_ILLEGAL_ARGUMENT(400, "Token Illegal Argument");
+    TOKEN_ILLEGAL_ARGUMENT(400, "Token Illegal Argument"),
+    CHAT_NOT_FOUND(400, "Chat not found" );
 
     @Getter
     private int status;
