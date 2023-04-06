@@ -19,7 +19,8 @@ import javax.persistence.Id;
 public class ChatMessage extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long chatId;
+    private Long memberId;
     private String picture;
     private String username;
     private MessageType type;

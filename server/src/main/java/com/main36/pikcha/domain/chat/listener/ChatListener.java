@@ -1,4 +1,4 @@
-package com.main36.pikcha.domain.chat.listener;
+/*package com.main36.pikcha.domain.chat.listener;
 
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
@@ -48,4 +48,4 @@ public class ChatListener {
             messagingTemplate.convertAndSend("/topic/messages", chatMessage);
         }
     }
-}
+}*/

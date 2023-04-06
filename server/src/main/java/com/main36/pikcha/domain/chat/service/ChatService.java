@@ -23,7 +23,7 @@ public class ChatService {
     public ChatMessage createMessage(ChatMessage chatMessage) {
         return chatRepository.save(chatMessage);
     }
-//
+
 //    // 2. 채팅 수정하기
 //    public ChatMessage updateMessage(ChatMessage chatMessage) {
 //        ChatMessage findMessage = findVerifiedChatMessage(chatMessage.getId());
@@ -50,7 +50,7 @@ public class ChatService {
 //    public ChatMessage findVerifiedChatMessage(Long messageId) {
 //
 //        return chatRepository.findById(messageId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.CHAT_NOT_FOUND));
-//    }
+//    }/
 
 
 

@@ -42,8 +42,6 @@ public class LoginAspect {
     @Around("@annotation(com.main36.pikcha.global.aop.LoginUser)")
     public Object getUser(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-
-        log.info("Token in AOP = {}", request.getHeader("Authorization"));
         Object[] args = joinPoint.getArgs();
         Member loginUser = memberService.getLoginMember(request);
         args[0] = loginUser;
