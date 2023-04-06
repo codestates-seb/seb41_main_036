@@ -1,10 +1,7 @@
 package com.main36.pikcha.domain.chat.entity;
 
 import com.main36.pikcha.global.audit.Auditable;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 
@@ -17,6 +14,8 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class ChatMessage extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
