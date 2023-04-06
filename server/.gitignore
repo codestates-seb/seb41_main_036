@@ -41,3 +41,6 @@ out/
 
 # Log file
 *.log
+
+#env
+env.yml
