@@ -1,15 +1,11 @@
 import { TfiClose } from "react-icons/tfi";
-import { Dispatch, SetStateAction } from "react";
 import * as wp from "../../pages/WritePost/WritePostStyled";
+import { useRecoilState } from "recoil";
+import { PostTags } from "../../recoil/WritePostState";
 
-const CreateTag = ({
-  tags,
-  setTags,
-}: {
-  tags: string[];
-  setTags: Dispatch<SetStateAction<string[]>>;
-}) => {
-    
+export default function CreateTag() {
+  const [tags, setTags] = useRecoilState(PostTags);
+
   const handleTagRemover = (selectTag: number) => {
     setTags(tags.filter((_, tag) => selectTag !== tag));
   };
@@ -17,7 +13,7 @@ const CreateTag = ({
   return (
     <>
       {tags.map((tag, idx) => (
-        <wp.TagBox>
+        <wp.TagBox key={tag}>
           {tag}
           <TfiClose
             cursor="pointer"
@@ -29,6 +25,4 @@ const CreateTag = ({
       ))}
     </>
   );
-};
-
-export default CreateTag;
+}

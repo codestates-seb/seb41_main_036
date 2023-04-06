@@ -25,5 +25,4 @@ export const MemberId = atom({
   key: "MemberId",
   default: Number(localStorage.getItem("memberId")),
   effects_UNSTABLE: [persistAtom],
-
 });

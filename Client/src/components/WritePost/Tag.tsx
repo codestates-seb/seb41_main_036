@@ -1,15 +1,12 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import CreateTag from "./CreateTag";
 import * as wp from "../../pages/WritePost/WritePostStyled";
+import { PostTags } from "../../recoil/WritePostState";
+import { useRecoilState } from "recoil";
 
-const Tag = ({
-  tags,
-  setTags,
-}: {
-  tags: string[];
-  setTags: Dispatch<SetStateAction<string[]>>;
-}) => {
+export default function Tag() {
   const [tag, setTag] = useState<string>("");
+  const [tags, setTags] = useRecoilState(PostTags);
 
   const tagMakeHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -22,9 +19,7 @@ const Tag = ({
   };
   return (
     <wp.TagWrapper>
-      {tags.length !== 0 ? (
-        <CreateTag tags={tags} setTags={setTags}></CreateTag>
-      ) : null}
+      <CreateTag />
       <input
         type="text"
         value={tag}
@@ -34,6 +29,4 @@ const Tag = ({
       />
     </wp.TagWrapper>
   );
-};
-
-export default Tag;
+}
