@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
@@ -7,18 +7,19 @@ import {
   PostTags,
 } from "../../recoil/WritePostState";
 import ButtonForm from "../../components/Button";
-import ContentRegister from "../../components/WritePost/ContentRegister";
-import WriteGuide from "../../components/WritePost/WriteGuide";
-import Tag from "../../components/WritePost/Tag";
-import { handlePostSubmit } from "../../API/Post/handlePostSubmit";
+import ContentRegister from "../../components/Wirte_EditPost/ContentRegister";
+import WriteGuide from "../../components/Wirte_EditPost/WriteGuide";
+import Tag from "../../components/Wirte_EditPost/Tag";
+import { handlePostSubmit } from "../../API/Write_EditPost/handlePostSubmit";
 import { BsDot } from "react-icons/bs";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { CgClose } from "react-icons/cg";
-import * as wp from "./WritePostStyled";
+import { getPost } from "../../API/BlogDetail/Get/Get";
+import * as wp from "./Write_EditPostStyled";
 
-export default function WritePost() {
-  const [title, setTitle] = useState(""); // 제목
-  const [tags] = useRecoilState(PostTags);
+export default function EditPost() {
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useRecoilState(PostTags);
   const [previewList, setPreviewList] = useRecoilState(PostPreviewList);
   const [content] = useRecoilState(PostContent);
   const [imgFiles, setImgFiles] = useState<File[]>([]);
@@ -26,6 +27,17 @@ export default function WritePost() {
   const [isWriteGuideModal, setIsWriteGuideModal] = useState(true);
   const { postId } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getData = async () => {
+      const result = await getPost(postId);
+      const previewContents = result.postImageUrls.concat(result.postContents);
+      setTitle(result.postTitle);
+      setTags(result.postHashTags);
+      setPreviewList((preview) => [...preview, previewContents]);
+    };
+    getData();
+  }, []);
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -64,7 +76,8 @@ export default function WritePost() {
       <wp.Header>
         <div>
           <span>
-            <BsDot color="#6255F8" />새 포스트
+            <BsDot color="#6255F8" />
+            수정 포스트
           </span>
           <ButtonForm
             type="violet"
@@ -81,7 +94,7 @@ export default function WritePost() {
           <wp.WritePostFormContainer>
             <div>
               <input
-                value={title}
+                defaultValue={title}
                 onChange={(e) => {
                   handleTitle(e);
                 }}

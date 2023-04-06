@@ -57,7 +57,6 @@ export const PreviewContainer = styled.div`
       margin-top: 5px;
       margin-bottom: 25px;
       height: 44px;
-      padding-left: 20px;
     }
     button {
       margin-right: 10px;
@@ -144,6 +143,7 @@ export const PreviewTextContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 4rem;
 `;
 
 export const HandleBackAndSubmitContainer = styled.div`
