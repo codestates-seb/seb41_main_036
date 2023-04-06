@@ -78,7 +78,7 @@ export default function WritePost() {
       </wp.Header>
       <wp.Container>
         <wp.WritePostWrapper>
-          <wp.WritePostFormContainer>
+          <wp.WritePostContainer>
             <div>
               <input
                 value={title}
@@ -100,7 +100,7 @@ export default function WritePost() {
             </div>
             <Tag />
             {isModal ? <ContentRegister setImgFiles={setImgFiles} /> : null}
-          </wp.WritePostFormContainer>
+          </wp.WritePostContainer>
           <wp.HandleBackAndSubmitContainer>
             <div onClick={() => navigate(-1)}>
               <MdOutlineKeyboardBackspace />

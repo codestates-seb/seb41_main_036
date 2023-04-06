@@ -23,7 +23,7 @@ export default function EditPost() {
   const [previewList, setPreviewList] = useRecoilState(PostPreviewList);
   const [content] = useRecoilState(PostContent);
   const [imgFiles, setImgFiles] = useState<File[]>([]);
-  const [isModal, setIsModal] = useState(false);
+  const [isAddContentsModal, setIsAddContentsModal] = useState(false);
   const [isWriteGuideModal, setIsWriteGuideModal] = useState(true);
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ export default function EditPost() {
 
   const handleImageModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setIsModal(!isModal);
+    setIsAddContentsModal(!isAddContentsModal);
   };
 
   const actionPostSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,7 +91,7 @@ export default function EditPost() {
       </wp.Header>
       <wp.Container>
         <wp.WritePostWrapper>
-          <wp.WritePostFormContainer>
+          <wp.WritePostContainer>
             <div>
               <input
                 defaultValue={title}
@@ -112,8 +112,10 @@ export default function EditPost() {
               />
             </div>
             <Tag />
-            {isModal ? <ContentRegister setImgFiles={setImgFiles} /> : null}
-          </wp.WritePostFormContainer>
+            {isAddContentsModal ? (
+              <ContentRegister setImgFiles={setImgFiles} />
+            ) : null}
+          </wp.WritePostContainer>
           <wp.HandleBackAndSubmitContainer>
             <div onClick={() => navigate(-1)}>
               <MdOutlineKeyboardBackspace />

@@ -13,7 +13,7 @@ export const WritePostWrapper = styled.div`
   width: 45%;
 `;
 
-export const WritePostFormContainer = styled.form`
+export const WritePostContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 40px;
