@@ -1,4 +1,4 @@
-import { TfiClose } from "react-icons/tfi";
+import { CgClose } from "react-icons/cg";
 import { Dispatch, SetStateAction } from "react";
 import * as wp from "../../pages/WritePost/WritePostStyled";
 
@@ -14,8 +14,9 @@ const WriteGuide = ({
           <wp.WriteGuideModalContainer>
             <wp.WriteGuideModalGuideText>
               <p>하나 이상의 이미지를 꼭 등록해주세요.</p>
-              <TfiClose
+              <CgClose
                 cursor="pointer"
+                size="25px"
                 onClick={() => setIsWriteGuideModal(false)}
               />
             </wp.WriteGuideModalGuideText>
