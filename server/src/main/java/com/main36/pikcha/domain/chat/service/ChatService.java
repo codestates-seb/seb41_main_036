@@ -23,34 +23,34 @@ public class ChatService {
     public ChatMessage createMessage(ChatMessage chatMessage) {
         return chatRepository.save(chatMessage);
     }
-
-    // 2. 채팅 수정하기
-    public ChatMessage updateMessage(ChatMessage chatMessage) {
-        ChatMessage findMessage = findVerifiedChatMessage(chatMessage.getId());
-        // 메세지만 수정가능
-        Optional.ofNullable(chatMessage.getContent())
-                .ifPresent(findMessage::setContent);
-        return chatRepository.save(findMessage);
-    }
-
-    // 3. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
-    public List<ChatMessage> getInitialChats(){
-        return chatRepository.findTop10ByIdOrderByIdDesc();
-    }
-
-    // 4. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
-    public List<ChatMessage> getMoreChats(Long lastMessageId){
-        return chatRepository.findTop10ByIdLessThanOrderByIdDesc(lastMessageId);
-    }
-
-    // 5. 채팅 삭제하기
-//    public ChatMessage deleteMessage(ChatMessage chatMessage){
 //
+//    // 2. 채팅 수정하기
+//    public ChatMessage updateMessage(ChatMessage chatMessage) {
+//        ChatMessage findMessage = findVerifiedChatMessage(chatMessage.getId());
+//        // 메세지만 수정가능
+//        Optional.ofNullable(chatMessage.getContent())
+//                .ifPresent(findMessage::setContent);
+//        return chatRepository.save(findMessage);
 //    }
-    public ChatMessage findVerifiedChatMessage(Long messageId) {
-
-        return chatRepository.findById(messageId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.CHAT_NOT_FOUND));
-    }
+//
+//    // 3. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
+//    public List<ChatMessage> getInitialChats(){
+//        return chatRepository.findTop10ByIdOrderByIdDesc();
+//    }
+//
+//    // 4. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
+//    public List<ChatMessage> getMoreChats(Long lastMessageId){
+//        return chatRepository.findTop10ByIdLessThanOrderByIdDesc(lastMessageId);
+//    }
+//
+//    // 5. 채팅 삭제하기
+////    public ChatMessage deleteMessage(ChatMessage chatMessage){
+////
+////    }
+//    public ChatMessage findVerifiedChatMessage(Long messageId) {
+//
+//        return chatRepository.findById(messageId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.CHAT_NOT_FOUND));
+//    }
 
 
 
