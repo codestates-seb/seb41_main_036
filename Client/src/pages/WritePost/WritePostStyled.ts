@@ -65,35 +65,9 @@ export const PreviewContainer = styled.div`
   }
 `;
 
-export const Preview = styled.div`
+export const PreviewContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  > div {
-    display: flex;
-    flex-direction: column;
-    > p {
-      width: 84%;
-      margin-top: -20px;
-      font-size: 15px;
-      margin-left: 38px;
-      margin-bottom: 100px;
-      text-align: start;
-      color: #2d2d2d;
-      line-height: 24px;
-    }
-    > button {
-      margin-top: 20px;
-      width: 94.5%;
-      height: 20px;
-      font-size: 14px;
-      border: none;
-      background-color: transparent;
-      font-weight: bold;
-      color: var(--purple-400);
-      cursor: pointer;
-      text-align: right;
-    }
-  }
 `;
 
 export const TagBox = styled.span`
@@ -155,12 +129,21 @@ export const Header = styled.div`
   }
 `;
 
-export const PreviewImgWrapper = styled.div`
+export const PreviewImgContainer = styled.div`
+  width: 100%;
+  height: 350px;
   overflow: scroll;
-  width: 90%;
-  height: 400px;
-  margin: 0 auto;
-  object-fit: cover;
+
+  > img {
+    width: 100%;
+  }
+`;
+
+export const PreviewTextContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const HandleBackAndSubmitContainer = styled.div`
