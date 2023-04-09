@@ -24,4 +24,6 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
         //throw new MessagingException("no permission! ");
         return message;
     }
+
+
 }

@@ -11,4 +11,6 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 //    List<ChatMessage> findTop10ByIdOrderByIdDesc();
 //    List<ChatMessage> findTop10ByIdLessThanOrderByIdDesc(Long Id);
 //    List<ChatMessage> findAllByCreatedAtBetweenOOrderByCreatedAtAsc(LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+
 }
