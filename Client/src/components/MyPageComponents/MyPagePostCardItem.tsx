@@ -21,7 +21,6 @@ const MyPagePostCardItem = ({ postInfo }: MyPagePostCardItemProps) => {
   const { postId, postTitle, pictureUrl, views, likes, createdAt, modifiedAt } =
     postInfo;
   const URL_FOR_POSTS = `/posts/detail/${postId}`;
-  console.log(createdAt, modifiedAt, createdAt === modifiedAt);
 
   const handleDeleteClick = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {

@@ -82,7 +82,6 @@ const FloatingMenu = ({
       setLikes(res.data.data.isVoted);
     });
   };
-  console.log(showSharebox);
   return (
     <>
       <FixBoxVertical inverted={inverted}>
@@ -125,7 +124,6 @@ const FloatingMenu = ({
               className="kakao-icon"
               onClick={() => {
                 if (window.Kakao) {
-                  console.log(window.Kakao);
                   window.Kakao.Share.sendScrap({
                     requestUrl: document.location.href,
                   });

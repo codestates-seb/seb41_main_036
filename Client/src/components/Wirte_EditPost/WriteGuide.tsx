@@ -1,6 +1,6 @@
 import { CgClose } from "react-icons/cg";
 import { Dispatch, SetStateAction } from "react";
-import * as wp from "../../pages/WritePost/WritePostStyled";
+import * as wp from "../../pages/Write_EditPost/Write_EditPostStyled";
 
 const WriteGuide = ({
   setIsWriteGuideModal,

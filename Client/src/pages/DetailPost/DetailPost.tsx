@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
@@ -24,7 +24,7 @@ const DetailPost = () => {
   const [commentList, setCommentList] = useState<ArrayCommentType>();
   const [isLogin] = useRecoilState(LoginState);
   const [isVoted, setIsVoted] = useState(false);
-  const { id } = useParams();
+  const { postId } = useParams();
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
   const [isModal, setIsModal] = useRecoilState(isModalVisiable);
@@ -32,7 +32,7 @@ const DetailPost = () => {
 
   useEffect(() => {
     const get = async () => {
-      const response = await getPost(isLogin, id, memberId);
+      const response = await getPost(postId, memberId, isLogin);
       setPost(response);
     };
     get();
@@ -49,7 +49,7 @@ const DetailPost = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const response = await getPostCommentList(id);
+      const response = await getPostCommentList(postId);
       setCommentList(response);
     };
     getData();
@@ -74,10 +74,10 @@ const DetailPost = () => {
         {isModal && <Modal />}
         {(post && post.memberId === memberId) || memberId === 1 ? (
           <dp.PostMangeButtnContainer>
-            <dp.PostManageButton onClick={() => navigate(`/edit/${id}`)}>
+            <dp.PostManageButton onClick={() => navigate(`/edit/${postId}`)}>
               <MdModeEdit /> 수정
             </dp.PostManageButton>
-            <dp.PostManageButton onClick={() => deletePostHandler(id)}>
+            <dp.PostManageButton onClick={() => deletePostHandler(postId)}>
               <MdDelete /> 삭제
             </dp.PostManageButton>
           </dp.PostMangeButtnContainer>
@@ -146,7 +146,7 @@ const DetailPost = () => {
                   onClick={() =>
                     !memberId
                       ? setIsModal(true)
-                      : handleLikePost(id, setIsVoted)
+                      : handleLikePost(postId, setIsVoted)
                   }
                   color={post && post.isVoted ? "red" : "grey"}
                 />
