@@ -24,6 +24,10 @@ const Recomment = ({
         <div key={recomments.commentId}>
           <poc.PostCommentBox>
             <poc.PostCommentTitle>
+              <poc.PostCommentImg
+                alt="userImg"
+                src={recomments.memberPicture}
+              />
               <div>
                 <poc.PostCommentUserName
                   writer={postWriter === recomments.memberId ? "writer" : ""}

@@ -22,6 +22,7 @@ import FloatingMenu from "../components/FloatingMenu";
 import { useMediaQuery } from "react-responsive";
 import MobileHeader from "../components/Header/MobileHeader";
 import { MenuSideBar, MenuButton } from "../pages/MainResponsive";
+import { isModalVisiable } from "../recoil/setOverlay";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -29,7 +30,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   }
 `;
-
 
 const ImageBox = styled.div`
   width: 100%;
@@ -225,7 +225,7 @@ const PlaceDetail = (): JSX.Element => {
   const setBookmarkSaves = useSetRecoilState(BookmarkSavesState);
   const setLikes = useSetRecoilState(LikesState);
   const [curPage, setCurPage] = useState(1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
   const { id } = useParams();
@@ -237,7 +237,6 @@ const PlaceDetail = (): JSX.Element => {
   const ATTRACTIONS_URL = isLogin ? url2 : url;
   const POSTS_URL = isLogin ? url4 : url3;
   const navigate = useNavigate();
-
 
   const Mobile = useMediaQuery({
     query: "(max-width: 768px)",
@@ -292,7 +291,7 @@ const PlaceDetail = (): JSX.Element => {
 
   const handlePostButtonClick = () => {
     if (!isLogin) {
-      setIsModalVisible(true);
+      setIsModal(true);
       return;
     }
     navigate(`/write/${id}`);
@@ -302,20 +301,30 @@ const PlaceDetail = (): JSX.Element => {
 
   return (
     <>
-      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+      {isModal && <Modal />}
 
-      {Mobile ? <MobileHeader
-        isNavbarChecked={isNavbarChecked}
-        setIsNavbarChecked={setIsNavbarChecked}
-        ></MobileHeader> : <FixedOnScrollUpHeader />}
+      {Mobile ? (
+        <MobileHeader
+          isNavbarChecked={isNavbarChecked}
+          setIsNavbarChecked={setIsNavbarChecked}
+        ></MobileHeader>
+      ) : (
+        <FixedOnScrollUpHeader />
+      )}
 
-      {isNavbarChecked ? 
+      {isNavbarChecked ? (
         <MenuSideBar>
-          <Link to='/attractions'><MenuButton>명소</MenuButton></Link>
-          <Link to='/posts'><MenuButton>포스트</MenuButton></Link>
-          <Link to='/map'><MenuButton>내 주변 명소찾기</MenuButton></Link>
-        </MenuSideBar> : null}
-
+          <Link to="/attractions">
+            <MenuButton>명소</MenuButton>
+          </Link>
+          <Link to="/posts">
+            <MenuButton>포스트</MenuButton>
+          </Link>
+          <Link to="/map">
+            <MenuButton>내 주변 명소찾기</MenuButton>
+          </Link>
+        </MenuSideBar>
+      ) : null}
 
       <GlobalStyle />
       {attractionData && (
@@ -326,7 +335,7 @@ const PlaceDetail = (): JSX.Element => {
           <FloatingMenu
             inverted={fixBar < 470}
             handlePostButtonClick={handlePostButtonClick}
-            onModalVisible={setIsModalVisible}
+            onModalVisible={setIsModal}
           />
           <NavBar>
             <button

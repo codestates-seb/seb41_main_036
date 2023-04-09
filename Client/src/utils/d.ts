@@ -95,6 +95,7 @@ export interface MySavesType {
   likes: number;
   saves: number;
 }
+
 export interface ArrayMyPostsType extends Array<MyPostsType> {}
 export interface ArrayMySavesType extends Array<MySavesType> {}
 

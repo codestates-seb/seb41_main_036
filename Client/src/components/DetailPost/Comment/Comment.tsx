@@ -9,6 +9,7 @@ import ReComment from "../Recomment/Recomment";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { handleCommentSubmit } from "../../../API/BlogDetail/Post/Post";
 import { CommentType, ReCommentType } from "../../../utils/d";
+import { isModalVisiable } from "../../../recoil/setOverlay";
 
 const Comment = ({
   comments,
@@ -27,6 +28,7 @@ const Comment = ({
   const { recommentContent, editcommentContent } = content;
   const [isMoreRecomment, setIsMoreReomment] = useState(false);
   const [memberId] = useRecoilState(MemberId);
+  const [_, setIsModal] = useRecoilState(isModalVisiable);
   const { id } = useParams();
 
   return (
@@ -35,10 +37,7 @@ const Comment = ({
         <poc.PostCommentWrapper key={comments.commentId}>
           <poc.PostCommentBox>
             <poc.PostCommentTitle>
-              <poc.PostCommentImg
-                alt="userImg"
-                src={comments.memberPicture}
-              />
+              <poc.PostCommentImg alt="userImg" src={comments.memberPicture} />
               <poc.PostCommentUserName
                 writer={postWriter === comments.memberId ? "writer" : ""}
               >
@@ -127,6 +126,14 @@ const Comment = ({
                         recommentContent: e.target.value,
                       })
                     }
+                    placeholder={
+                      memberId
+                        ? "답글을 작성하세요."
+                        : "로그인 후 사용해주세요."
+                    }
+                    onClick={() => {
+                      if (!memberId) setIsModal(true);
+                    }}
                   />
                   <button
                     onClick={(e) =>
@@ -153,7 +160,7 @@ const Comment = ({
                     <IoMdArrowDropup size={"20px"} />
                   ) : (
                     <IoMdArrowDropdown size={"20px"} />
-                  )}{" "}
+                  )}
                   답글 {comments.children.length}개
                 </poc.PostCommentisMoreRecommentContainer>
               ) : null}

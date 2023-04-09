@@ -37,12 +37,12 @@ function App() {
                 <Route path="search" element={<Place />} />
               </Route>
               <Route path="/posts" element={<Post />} />
-              <Route path="/write/:id" element={<WritePost />} />
+              <Route path="/write/:postId" element={<WritePost />} />
               <Route path="/map" element={<Map />} />
               <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
-              <Route path="/posts/detail/:id" element={<DetailPost />} />
+              <Route path="/posts/detail/:postId" element={<DetailPost />} />
               <Route path="/mypage" element={<MyPage />} />
-              <Route path="/edit/:id" element={<EditPost />} />
+              <Route path="/edit/:postId" element={<EditPost />} />
               <Route path="/oauth" element={<Oauth />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="*" element={<NoAddress />} />

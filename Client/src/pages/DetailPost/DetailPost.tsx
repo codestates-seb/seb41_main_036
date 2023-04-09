@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdModeEdit, MdDelete, MdPlace } from "react-icons/md";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { AiFillHeart, AiFillEye, AiOutlineShareAlt } from "react-icons/ai";
@@ -16,17 +16,18 @@ import AddComment from "../../components/DetailPost/AddComment";
 import { deletePostHandler } from "../../API/BlogDetail/Delete/Delete";
 import { getPost, getPostCommentList } from "../../API/BlogDetail/Get/Get";
 import { handleLikePost } from "../../API/BlogDetail/Post/Post";
+import { isModalVisiable } from "../../recoil/setOverlay";
 import { getCurrentCount } from "../../utils/utils";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
   const [commentList, setCommentList] = useState<ArrayCommentType>();
   const [isLogin] = useRecoilState(LoginState);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
   const { id } = useParams();
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
+  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
   const initialLikesRef = useRef(post?.isVoted); //로컬 좋아요 상태 저장
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const DetailPost = () => {
         <Header.HeaderBody />
       </Header>
       <dp.DetailPostWrapper>
-        {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+        {isModal && <Modal />}
         {(post && post.memberId === memberId) || memberId === 1 ? (
           <dp.PostMangeButtnContainer>
             <dp.PostManageButton onClick={() => navigate(`/edit/${id}`)}>
@@ -142,7 +143,11 @@ const DetailPost = () => {
               </div>
               <div>
                 <AiFillHeart
-                  onClick={() => handleLikePost(id, setIsVoted)}
+                  onClick={() =>
+                    !memberId
+                      ? setIsModal(true)
+                      : handleLikePost(id, setIsVoted)
+                  }
                   color={post && post.isVoted ? "red" : "grey"}
                 />
                 <span>
@@ -171,7 +176,7 @@ const DetailPost = () => {
             />
           ))
         )}
-        <AddComment setIsModalVisible={setIsModalVisible} />
+        <AddComment />
       </dp.DetailPostWrapper>
       <Footer />
     </>
