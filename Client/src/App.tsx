@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import "./App.css";
 import { RecoilRoot } from "recoil";
 import Oauth from "./pages/Oauth";
 import BeatLoader from "react-spinners/FadeLoader";
 import ScrollToTop from "./components/ScrollToTop";
 function App() {
+  useEffect(() => {
+    sessionStorage.setItem("pageData", "{}");
+  }, []);
   if (localStorage.getItem("loginStatus") === null) {
     localStorage.setItem("loginStatus", "false");
   }

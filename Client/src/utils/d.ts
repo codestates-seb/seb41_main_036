@@ -18,6 +18,12 @@ export interface PageInfoType {
   totalPages: number;
 }
 
+export interface PageSessionType {
+  curPage: number;
+  sort: number;
+  checkedList: string[];
+}
+
 export interface ArrayPlaceType extends Array<PlaceType> {}
 
 //Post

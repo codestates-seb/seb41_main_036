@@ -17,6 +17,7 @@ import { deletePostHandler } from "../../API/BlogDetail/Delete/Delete";
 import { getPost, getPostCommentList } from "../../API/BlogDetail/Get/Get";
 import { handleLikePost } from "../../API/BlogDetail/Post/Post";
 import { isModalVisiable } from "../../recoil/setOverlay";
+import { getCurrentCount } from "../../utils/utils";
 
 const DetailPost = () => {
   const [post, setPost] = useState<PostDetailType>();
@@ -27,6 +28,7 @@ const DetailPost = () => {
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
   const [isModal, setIsModal] = useRecoilState(isModalVisiable);
+  const initialLikesRef = useRef(post?.isVoted); //로컬 좋아요 상태 저장
 
   useEffect(() => {
     const get = async () => {
@@ -148,7 +150,13 @@ const DetailPost = () => {
                   }
                   color={post && post.isVoted ? "red" : "grey"}
                 />
-                <span>{post?.likes}</span>
+                <span>
+                  {getCurrentCount(
+                    post?.likes,
+                    initialLikesRef.current as boolean,
+                    isVoted as boolean
+                  )}
+                </span>
               </div>
             </div>
           </dp.PostContentBottom>

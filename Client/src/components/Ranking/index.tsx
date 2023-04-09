@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import axios from "../../utils/axiosinstance";
 import { getRandomInt } from "../../utils/utils";
 import {
@@ -9,6 +9,7 @@ import {
   RankingItemWrapper,
   RankingItemContent,
   CurrentTimeSpan,
+  PopOverWrapper,
 } from "./style";
 // import rankingData from "../../data/RankingData";
 import { RxDoubleArrowUp as DoubleUpIcon } from "react-icons/rx";
@@ -17,6 +18,10 @@ import {
   TiArrowSortedDown as DownIcon,
 } from "react-icons/ti";
 import { BsDash as DashIcon } from "react-icons/bs";
+import { BsChevronDown as DownArrow } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import PopOver from "./PopOver";
+import rankingData from "../../data/RankingData";
 interface optionsType {
   dateStyle: "medium";
   timeStyle: "short";
@@ -26,19 +31,23 @@ const options: optionsType = {
   timeStyle: "short",
 };
 const RANKING_URL = `attractions/main/rank`;
-interface RankingDataType {
+export interface RankingDataType {
   attractionName: string;
   attractionAddress: string;
   currentRank: number;
   rankOrder: number;
 }
 const Ranking = () => {
-  const [RankingData, setRankingData] = useState(Array<RankingDataType>);
+  const [rankingData, setRankingData] = useState(Array<RankingDataType>);
   const [currentAttraction, setCurrentAttraction] = useState(0);
   const [startAnimation, setStartAnimation] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
   const timerIdRef = useRef<NodeJS.Timeout | null>(null);
   // const newRankingData = [...rankingData, ...rankingData.slice(0, 1)];
-  const currentTime = new Intl.DateTimeFormat("ko", options).format(new Date());
+  const currentTime = useMemo(
+    () => new Intl.DateTimeFormat("ko", options).format(new Date()),
+    []
+  );
   useEffect(() => {
     axios.get(RANKING_URL).then((res) => {
       let newRankingData = res.data.data;
@@ -64,61 +73,83 @@ const Ranking = () => {
     return () => clearInterval(timerIdRef.current as NodeJS.Timeout);
   }, []);
   return (
-    <RankingWrapper>
-      <MainRankingWrapper>
-        <RankingTitle>
-          지금 뜨는 곳<DoubleUpIcon className="doubleup-icon" />
-        </RankingTitle>
-        <RankingItemWrapper startAnimation={startAnimation}>
-          {RankingData &&
-            RankingData.slice(
-              currentAttraction,
-              (currentAttraction + 2) % 12
-            ).map((el) => (
-              <RankingItem key={el.attractionName}>
-                <RankingItemContent currentRank>
-                  {el.currentRank + 1}
-                </RankingItemContent>
-                <RankingItemContent attractionName>
-                  {el.attractionName}
-                </RankingItemContent>
-                <RankingItemContent address>
-                  {el.attractionAddress}
-                </RankingItemContent>
-                <RankingItemContent rankOrder>
-                  <ArrowIconGenerator difference={el.rankOrder} />
-                </RankingItemContent>
-              </RankingItem>
-            ))}
-        </RankingItemWrapper>
-      </MainRankingWrapper>
-      <CurrentTimeSpan>{`${currentTime} 기준`}</CurrentTimeSpan>
-    </RankingWrapper>
+    <>
+      <RankingWrapper>
+        <MainRankingWrapper>
+          <RankingTitle>
+            지금 뜨는 곳<DoubleUpIcon className="doubleup-icon" />
+          </RankingTitle>
+          <RankingItemWrapper startAnimation={startAnimation}>
+            {rankingData &&
+              rankingData
+                .slice(currentAttraction, (currentAttraction + 2) % 12)
+                .map((el) => (
+                  <RankingItem key={el.attractionName}>
+                    <Link
+                      to={`/attractions/search?keyword=${el.attractionName}`}
+                    >
+                      <RankingItemContent currentRank>
+                        {el.currentRank + 1}
+                      </RankingItemContent>
+                      <RankingItemContent attractionName>
+                        {el.attractionName}
+                      </RankingItemContent>
+                      <RankingItemContent address>
+                        {el.attractionAddress}
+                      </RankingItemContent>
+                      <RankingItemContent rankOrder>
+                        <ArrowIconGenerator difference={el.rankOrder} />
+                      </RankingItemContent>
+                    </Link>
+                  </RankingItem>
+                ))}
+          </RankingItemWrapper>
+          <DownArrow
+            className="downArrow-icon"
+            onMouseOver={() => setShowPopover(true)}
+          />
+        </MainRankingWrapper>
+        <CurrentTimeSpan>{`${currentTime} 기준`}</CurrentTimeSpan>
+
+        {showPopover && (
+          <PopOverWrapper>
+            <PopOver
+              rankingData={rankingData}
+              handleShowPopover={setShowPopover}
+            />
+          </PopOverWrapper>
+        )}
+      </RankingWrapper>
+    </>
   );
 };
 
 interface ArrowIconGeneratorProps {
   difference: number;
+  numberOpt?: boolean;
 }
-const ArrowIconGenerator = ({ difference }: ArrowIconGeneratorProps) => {
+export const ArrowIconGenerator = ({
+  difference,
+  numberOpt = true,
+}: ArrowIconGeneratorProps) => {
   if (difference === 0)
     return (
       <>
-        <DashIcon />
+        <DashIcon className="dash-icon" />
       </>
     );
   if (difference > 0)
     return (
       <>
         <UpIcon className="up-icon" />
-        {difference}
+        {numberOpt && difference}
       </>
     );
   if (difference < 0)
     return (
       <>
         <DownIcon className="down-icon" />
-        {Math.abs(difference)}
+        {numberOpt && Math.abs(difference)}
       </>
     );
   return <></>;

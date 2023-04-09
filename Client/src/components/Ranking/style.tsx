@@ -5,7 +5,7 @@ const RankingWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 120px;
-  /* border: 1px solid black; */
+  position: relative;
   background-color: white;
 `;
 const MainRankingWrapper = styled.ul`
@@ -16,8 +16,14 @@ const MainRankingWrapper = styled.ul`
   background-color: white;
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 20px 0 20px 20px;
   overflow: hidden;
+  .downArrow-icon {
+    margin-left: 20px;
+    height: 16px;
+    width: 16px;
+    color: var(--black-600);
+  }
 `;
 const RankingTitle = styled.span`
   display: flex;
@@ -41,19 +47,44 @@ const RankingItemWrapper = styled.div<{ startAnimation: boolean }>`
   transform: ${(props) =>
     props.startAnimation ? "translateY(-62px)" : "none"};
 `;
-const RankingItem = styled.li`
-  transform: translateY(52px);
+const RankingItem = styled.li<{ popOver?: boolean }>`
+  transform: ${(props) => (props.popOver ? "none" : "translateY(52px)")};
   display: flex;
-  margin-bottom: 40px;
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: ${(props) => (props.popOver ? "50px" : "auto")};
+    margin-bottom: ${(props) => (props.popOver ? "0" : "40px")};
+    color: black;
+    padding: ${(props) => (props.popOver ? "10px 20px" : "0")};
+    transition: all ease 0.1s;
+    border-radius: ${(props) => (props.popOver ? "var(--br-s)" : "0")};
+  }
+  a:hover {
+    background-color: ${(props) =>
+      props.popOver ? "var(--black-200)" : "none"};
+  }
+  a:hover span:nth-child(2) {
+    color: ${(props) =>
+      props.popOver ? "var(--black-800)" : "var(--purple-300)"};
+  }
+  a:visited {
+    text-decoration: none;
+  }
 `;
 const RankingItemContent = styled.span<{
   currentRank?: boolean;
   attractionName?: boolean;
   address?: boolean;
   rankOrder?: boolean;
+  attractionNamePopover?: boolean;
+  currentRankPopover?: boolean;
 }>`
   display: flex;
   align-items: center;
+  transition: all ease 0.3s;
   ${(props) =>
     props.currentRank &&
     css`
@@ -82,6 +113,25 @@ const RankingItemContent = styled.span<{
       font-size: var(--font-sm);
       margin-left: auto;
     `}
+    ${(props) =>
+    props.attractionNamePopover &&
+    css`
+      margin-left: 15px;
+      font-size: var(--font-sm);
+      letter-spacing: 0.03rem;
+      color: var(--black-800);
+    `}
+    ${(props) =>
+    props.currentRankPopover &&
+    css`
+      margin-left: 5px;
+      font-size: var(--font-sm);
+      font-weight: var(--fw-bold);
+    `}
+  svg.dash-icon {
+    padding-right: 3px;
+    width: 17px;
+  }
   svg.up-icon {
     color: var(--pink-heart);
     padding-right: 3px;
@@ -96,7 +146,32 @@ const RankingItemContent = styled.span<{
 const CurrentTimeSpan = styled.span`
   font-size: var(--font-xs);
   color: var(--black-700);
-  margin: 1px 0 0 20px;
+  margin: 0 0 0 20px;
+`;
+const RankingPopover = styled.div`
+  display: flex;
+  justify-content: space-between;
+  max-width: 580px;
+  width: 80%;
+  background-color: white;
+  border-radius: var(--br-l);
+  overflow: hidden;
+  border: 0.5px solid var(--black-250);
+`;
+const RankingPopoverPart = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 17px 5px;
+`;
+const PopOverWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  left: -15px;
+  z-index: var(--zi-three);
 `;
 export {
   RankingWrapper,
@@ -106,4 +181,7 @@ export {
   RankingItem,
   RankingItemContent,
   CurrentTimeSpan,
+  RankingPopover,
+  RankingPopoverPart,
+  PopOverWrapper,
 };
