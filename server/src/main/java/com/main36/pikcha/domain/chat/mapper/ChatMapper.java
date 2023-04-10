@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.time.ZoneId;
+import java.util.List;
 
 
 @Mapper(componentModel = "spring")
@@ -29,5 +30,7 @@ public interface ChatMapper {
     ChatResponseDto chatMessageToResponseDto(ChatMessage chatMessage, ZoneId zoneId);*/
 
     ChatResponseDto chatMessageToResponseDto(ChatMessage chatMessage);
+
+    List<ChatResponseDto> chatMessagesToResponseDtos(List<ChatMessage> chatMessageList);
 
 }

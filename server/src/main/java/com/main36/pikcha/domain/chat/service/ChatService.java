@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -25,29 +26,27 @@ public class ChatService {
         return chatRepository.save(chatMessage);
     }
 
-/*    // 2. 채팅 수정하기 -> 알고보니 수정은 없었다!
-    public ChatMessage updateMessage(ChatMessage chatMessage) {
-        ChatMessage findMessage = findVerifiedChatMessage(chatMessage.getChatId());
+    // 2. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
+    public List<ChatMessage> getInitialMessages(){
+        return chatRepository.findTop3ByOrderByChatIdDesc();
+    }
 
-        if (chatMessage.getMemberId() != findMessage.getMemberId()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOW);
-        }
+    // 3. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
+    public List<ChatMessage> getMoreMessages(Long lastChatId){
+        return chatRepository.findTop3ByChatIdLessThanOrderByChatIdDesc(lastChatId);
+    }
 
-        // 메세지만 수정가능
-        Optional.ofNullable(chatMessage.getContent())
-                .ifPresent(findMessage::setContent);
-        return chatRepository.save(findMessage);
-    }*/
+    // 4. 채팅 날짜로 검색하기
+    public List<ChatMessage> getMessagesBetween(String createdYearAndMonth) {
 
-//    // 3. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
-//    public List<ChatMessage> getInitialChats(){
-//        return chatRepository.findTop10ByIdOrderByIdDesc();
-//    }
-//
-//    // 4. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
-//    public List<ChatMessage> getMoreChats(Long lastMessageId){
-//        return chatRepository.findTop10ByIdLessThanOrderByIdDesc(lastMessageId);
-//    }
+        // ex ) 202204 -> year = 2022 month = 04
+        int year = Integer.parseInt(createdYearAndMonth.substring(0, 4));
+        int month = Integer.parseInt(createdYearAndMonth.substring(4));
+
+        LocalDateTime startDateTime = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(year, month, 31, 23, 59, 59);
+        return chatRepository.findAllByCreatedAtBetweenOrderByCreatedAtAsc(startDateTime, endDateTime);
+    }
 
     // 5. 답장 -> 댓글 targetId = null -> targetId
 
