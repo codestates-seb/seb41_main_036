@@ -56,22 +56,6 @@ public class ChatService {
 
     // 5. 답장 -> 댓글 targetId = null -> targetId
 
-    // 5. 단일채팅 삭제하기( 삭제 모드 -> 여러개 삭제 )
-    public void deleteMessages(Long chatId){
-        try {
-            chatRepository.deleteById(chatId);
-
-        } catch (Exception e) {
-            throw new BusinessLogicException(ExceptionCode.CHAT_CANNOT_BE_DELETED);
-        }
-
-        // 프론트 삭제 요청 -> 서버에서 NO_CONTENT -> 삭제된 메시지로 변경?
-        // 프론트 삭제 요청 -> 서버에서 CHAT_CANNOT_BE_DELETED ->
-        // 새로운 사람은 줄 필요가 없음.
-        // 미리 채팅을 켜놨던사람들은 "삭제된 메시지입니다"라고 보임
-        // 통신 ws
-    }
-
     // 6. 채팅 삭제하기( 삭제 모드 -> 여러개 삭제 )
     public List<Long> deleteMessages(List<Long> ids){
         try {

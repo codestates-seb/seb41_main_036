@@ -2,19 +2,16 @@ package com.main36.pikcha.domain.chat.controller;
 
 import com.main36.pikcha.domain.chat.dto.ChatDeleteDto;
 import com.main36.pikcha.domain.chat.dto.ChatPostDto;
+import com.main36.pikcha.domain.chat.dto.ChatReplyDto;
 import com.main36.pikcha.domain.chat.dto.ChatResponseDto;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.entity.ChatMessage.MessageType;
-import com.main36.pikcha.domain.chat.mapper.ChatMapper;
+import com.main36.pikcha.domain.chat.mapper.ChatMapperSecond;
 import com.main36.pikcha.domain.chat.repository.ChatRepository;
 import com.main36.pikcha.domain.chat.service.ChatService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
-import com.main36.pikcha.domain.post.entity.Post;
-import com.main36.pikcha.global.exception.BusinessLogicException;
-import com.main36.pikcha.global.exception.ExceptionCode;
 import com.main36.pikcha.global.response.DataResponseDto;
-import com.main36.pikcha.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,10 +29,12 @@ public class ChatController {
     private final ChatRepository chatRepository;
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final ChatMapper mapper;
+    private final ChatMapperSecond mapper;
     private final ChatService chatService;
     private final MemberService memberService;
 
+
+    // 테스트용 채팅 생성 메서드
     @PostMapping("/chat/test")
     public ResponseEntity testChat(@RequestBody ChatPostDto chatPostDto) {
         log.info("content = {}", chatPostDto.getContent());
@@ -46,6 +45,7 @@ public class ChatController {
         return ResponseEntity.ok(new DataResponseDto<>(message));
     }
 
+    // 받은 채팅 저장 후 뿌리기
     @MessageMapping("/chat")
 //  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
     public void processMessage(ChatPostDto chatPostDto) {
@@ -65,6 +65,19 @@ public class ChatController {
         }
     }
 
+    // 채팅에 답장하기
+    @MessageMapping("/reply")
+    public void replyMessage(ChatReplyDto chatReplyDto) {
+        Member member = memberService.findMemberByMemberId(chatReplyDto.getMemberId());
+
+        if (MessageType.REPLY.equals(chatReplyDto.getType())) {
+            ChatResponseDto chatResponseDto = mapper.chatMessageToResponseDto(chatService.createMessage(mapper.replyDtoToChatMessage(chatReplyDto, member)));
+            messagingTemplate.convertAndSend("/topic/messages", chatResponseDto);
+        }
+
+    }
+
+    // 채팅 삭제하기
     @MessageMapping("/delete") // 클라이언트 저희 서버 브로커에게 요청하는 주소 데이터를 보내는 주소
 //  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
     public void deleteMessages(ChatDeleteDto chatDeleteDto) {
@@ -83,18 +96,21 @@ public class ChatController {
         }
     }
 
+    // 채팅방 입장했을 시 채팅목록 불러오기
     @GetMapping("/app/enter")
     public ResponseEntity getInitMessages(){
         List<ChatMessage> messageList = chatService.getInitialMessages();
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
+    // 마지막 채팅 id 이후로 채팅 더 불러오기
     @GetMapping("/app/load/{chat-id}")
     public ResponseEntity getMoreMessagesAfter(@PathVariable(value = "chat-id", required = false) Long lastChatId){
         List<ChatMessage> messageList = chatService.getMoreMessages(lastChatId);
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
+    // 연도&월을 기준 특정 검색어로 채팅 검색하기
     @GetMapping("/app/search/{content}/{year-month}")
     public ResponseEntity findMessagesBetween(@PathVariable(value = "content") String content,
                                               @PathVariable(value = "year-month") String yearAndMonth){

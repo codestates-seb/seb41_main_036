@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 public class ChatResponseDto {
     private Long chatId;
     private Long memberId;
+    private Long targetId;
+    private String targetContent;
+    private String targetPicture;
+    private String targetUsername;
     private String picture;
     private String username;
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "s", timezone = "Asia/Seoul")

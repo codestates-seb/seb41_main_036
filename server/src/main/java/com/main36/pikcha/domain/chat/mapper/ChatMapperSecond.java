@@ -1,26 +1,29 @@
-/*
 package com.main36.pikcha.domain.chat.mapper;
 
 import com.main36.pikcha.domain.chat.dto.ChatPostDto;
 import com.main36.pikcha.domain.chat.dto.ChatReplyDto;
-import com.main36.pikcha.domain.chat.dto.ChatReplyResponseDto;
 import com.main36.pikcha.domain.chat.dto.ChatResponseDto;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
+import com.main36.pikcha.domain.chat.service.ChatService;
 import com.main36.pikcha.domain.member.entity.Member;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Mapper(componentModel = "spring")
-public interface ChatMapper {
-
-    default ChatMessage postDtoToChatMessage(ChatPostDto postDto, Member member) {
+@Component
+@RequiredArgsConstructor
+public class ChatMapperSecond {
+    private final ChatService chatService;
+    public ChatMessage postDtoToChatMessage(ChatPostDto postDto, Member member) {
         return ChatMessage.builder()
                 .memberId(member.getMemberId())
                 .targetId(null)
+                .targetContent(null)
+                .targetPicture(null)
+                .targetUsername(null)
                 .picture(member.getPicture())
                 .username(member.getUsername())
                 .type(postDto.getType())
@@ -28,14 +31,14 @@ public interface ChatMapper {
                 .verifyKey(postDto.getVerifyKey())
                 .build();
     }
-
-    default ChatMessage replyDtoToChatMessage(ChatReplyDto replyDto, Member member) {
+    public ChatMessage replyDtoToChatMessage(ChatReplyDto replyDto, Member member) {
+        ChatMessage targetMessage = chatService.findVerifiedChatMessage(replyDto.getTargetId());
         return ChatMessage.builder()
                 .memberId(member.getMemberId())
-                .targetId(replyDto.getTargetId())
-                .targetContent()
-                .targetPicture()
-                .targetUsername()
+                .targetId(targetMessage.getChatId())
+                .targetContent(targetMessage.getContent())
+                .targetPicture(targetMessage.getPicture())
+                .targetUsername(targetMessage.getUsername())
                 .picture(member.getPicture())
                 .username(member.getUsername())
                 .type(replyDto.getType())
@@ -44,15 +47,14 @@ public interface ChatMapper {
                 .build();
     }
 
-
-    default ChatResponseDto chatMessageToResponseDto(ChatMessage chatMessage){
+    public ChatResponseDto chatMessageToResponseDto(ChatMessage chatMessage){
         return ChatResponseDto.builder()
                 .chatId(chatMessage.getChatId())
                 .memberId(chatMessage.getMemberId())
-                .targetId(chatMessage.getTargetId() == null? null : chatMessage.getTargetId())
+                .targetId(chatMessage.getTargetId())
                 .targetContent(chatMessage.getTargetContent())
-                .targetPicture()
-                .targetUsername()
+                .targetPicture(chatMessage.getTargetPicture())
+                .targetUsername(chatMessage.getTargetUsername())
                 .picture(chatMessage.getPicture())
                 .username(chatMessage.getUsername())
                 .createdAt(chatMessage.getCreatedAt())
@@ -60,9 +62,9 @@ public interface ChatMapper {
                 .verifyKey(chatMessage.getVerifyKey())
                 .type(chatMessage.getType())
                 .build();
+
     }
-
-    List<ChatResponseDto> chatMessagesToResponseDtos(List<ChatMessage> chatMessageList);
-
+    public List<ChatResponseDto> chatMessagesToResponseDtos(List<ChatMessage> chatMessageList){
+        return chatMessageList.stream().map(this::chatMessageToResponseDto).collect(Collectors.toList());
+    }
 }
-*/

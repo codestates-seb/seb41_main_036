@@ -21,12 +21,16 @@ public class ChatMessage extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatId;
     private Long memberId;
+    private Long targetId;
+    private String targetContent;
+    private String targetPicture;
+    private String targetUsername;
     private String picture;
     private String username;
     private MessageType type;
     private String content;
     private String verifyKey;
     public enum MessageType {
-        CHAT, JOIN, LEAVE
+        JOIN, LEAVE, CHAT, REPLY
     }
 }
