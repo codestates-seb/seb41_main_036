@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -37,15 +38,20 @@ public class ChatService {
     }
 
     // 4. 채팅 날짜로 검색하기
-    public List<ChatMessage> getMessagesBetween(String createdYearAndMonth) {
+    public List<ChatMessage> getMessagesBetween(String content, String createdYearAndMonth) {
 
         // ex ) 202204 -> year = 2022 month = 04
         int year = Integer.parseInt(createdYearAndMonth.substring(0, 4));
         int month = Integer.parseInt(createdYearAndMonth.substring(4));
 
+        // 원하는 달의 말일이 몇 일인지 구하기
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month-1, 1);
+        int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         LocalDateTime startDateTime = LocalDateTime.of(year, month, 1, 0, 0, 0);
-        LocalDateTime endDateTime = LocalDateTime.of(year, month, 31, 23, 59, 59);
-        return chatRepository.findAllByCreatedAtBetweenOrderByCreatedAtAsc(startDateTime, endDateTime);
+        LocalDateTime endDateTime = LocalDateTime.of(year, month, lastDay, 23, 59, 59);
+        return chatRepository.findChatMessagesByContentContainingIgnoreCaseAndAndCreatedAtBetweenOrderByCreatedAtAsc(content, startDateTime, endDateTime);
     }
 
     // 5. 답장 -> 댓글 targetId = null -> targetId

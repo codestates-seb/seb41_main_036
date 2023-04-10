@@ -6,6 +6,7 @@ import com.main36.pikcha.domain.chat.dto.ChatResponseDto;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.entity.ChatMessage.MessageType;
 import com.main36.pikcha.domain.chat.mapper.ChatMapper;
+import com.main36.pikcha.domain.chat.repository.ChatRepository;
 import com.main36.pikcha.domain.chat.service.ChatService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
@@ -20,10 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +29,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
+    private final ChatRepository chatRepository;
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMapper mapper;
@@ -38,10 +37,13 @@ public class ChatController {
     private final MemberService memberService;
 
     @PostMapping("/chat/test")
-    public ResponseEntity testChat(ChatPostDto chatPostDto) {
+    public ResponseEntity testChat(@RequestBody ChatPostDto chatPostDto) {
+        log.info("content = {}", chatPostDto.getContent());
+        log.info("verifyKey = {}", chatPostDto.getVerifyKey());
+        log.info("type = {}", chatPostDto.getType());
         Member member = memberService.findMemberByMemberId(1L);
-        chatService.createMessage(mapper.postDtoToChatMessage(chatPostDto, member));
-        return ResponseEntity.ok(new DataResponseDto<>(null));
+        ChatMessage message = chatService.createMessage(mapper.postDtoToChatMessage(chatPostDto, member));
+        return ResponseEntity.ok(new DataResponseDto<>(message));
     }
 
     @MessageMapping("/chat")
@@ -93,9 +95,10 @@ public class ChatController {
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
-    @GetMapping("/app/load/{year-month}")
-    public ResponseEntity findMessagesBetween(@PathVariable(value = "year-month", required = false) String yearAndMonth){
-        List<ChatMessage> messageList = chatService.getMessagesBetween(yearAndMonth);
+    @GetMapping("/app/search/{content}/{year-month}")
+    public ResponseEntity findMessagesBetween(@PathVariable(value = "content") String content,
+                                              @PathVariable(value = "year-month") String yearAndMonth){
+        List<ChatMessage> messageList = chatService.getMessagesBetween(content, yearAndMonth);
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
