@@ -32,19 +32,36 @@ public class ChatMapperSecond {
                 .build();
     }
     public ChatMessage replyDtoToChatMessage(ChatReplyDto replyDto, Member member) {
-        ChatMessage targetMessage = chatService.findVerifiedChatMessage(replyDto.getTargetId());
-        return ChatMessage.builder()
-                .memberId(member.getMemberId())
-                .targetId(targetMessage.getChatId())
-                .targetContent(targetMessage.getContent())
-                .targetPicture(targetMessage.getPicture())
-                .targetUsername(targetMessage.getUsername())
-                .picture(member.getPicture())
-                .username(member.getUsername())
-                .type(replyDto.getType())
-                .content(replyDto.getContent())
-                .verifyKey(replyDto.getVerifyKey())
-                .build();
+        if(replyDto.getTargetId() != null) {
+            ChatMessage targetMessage = chatService.findVerifiedChatMessage(replyDto.getTargetId());
+            return ChatMessage.builder()
+                    .memberId(member.getMemberId())
+                    .targetId(targetMessage.getChatId())
+                    .targetContent(targetMessage.getContent())
+                    .targetPicture(targetMessage.getPicture())
+                    .targetUsername(targetMessage.getUsername())
+                    .picture(member.getPicture())
+                    .username(member.getUsername())
+                    .type(replyDto.getType())
+                    .content(replyDto.getContent())
+                    .verifyKey(replyDto.getVerifyKey())
+                    .build();
+        }
+        else {
+            return ChatMessage.builder()
+                    .memberId(member.getMemberId())
+                    .targetId(null)
+                    .targetContent(null)
+                    .targetPicture(null)
+                    .targetUsername(null)
+                    .picture(member.getPicture())
+                    .username(member.getUsername())
+                    .type(replyDto.getType())
+                    .content(replyDto.getContent())
+                    .verifyKey(replyDto.getVerifyKey())
+                    .build();
+        }
+
     }
 
     public ChatResponseDto chatMessageToResponseDto(ChatMessage chatMessage){
