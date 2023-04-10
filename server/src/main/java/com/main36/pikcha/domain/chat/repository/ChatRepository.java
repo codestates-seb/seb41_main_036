@@ -10,5 +10,5 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 //    List<ChatMessage> findChatMessageByMessageContainingIgnoreCase(String content);
     List<ChatMessage> findTop3ByOrderByChatIdDesc();
     List<ChatMessage> findTop3ByChatIdLessThanOrderByChatIdDesc(Long Id);
-    List<ChatMessage> findChatMessagesByContentContainingIgnoreCaseAndAndCreatedAtBetweenOrderByCreatedAtAsc(String content, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<ChatMessage> findChatMessagesByContentContainingIgnoreCaseAndCreatedAtBetweenOrderByCreatedAtAsc(String content, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

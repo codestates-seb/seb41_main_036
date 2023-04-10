@@ -51,7 +51,7 @@ public class ChatService {
 
         LocalDateTime startDateTime = LocalDateTime.of(year, month, 1, 0, 0, 0);
         LocalDateTime endDateTime = LocalDateTime.of(year, month, lastDay, 23, 59, 59);
-        return chatRepository.findChatMessagesByContentContainingIgnoreCaseAndAndCreatedAtBetweenOrderByCreatedAtAsc(content, startDateTime, endDateTime);
+        return chatRepository.findChatMessagesByContentContainingIgnoreCaseAndCreatedAtBetweenOrderByCreatedAtAsc(content, startDateTime, endDateTime);
     }
 
     // 5. 답장 -> 댓글 targetId = null -> targetId
