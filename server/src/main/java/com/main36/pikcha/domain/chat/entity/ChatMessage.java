@@ -31,6 +31,6 @@ public class ChatMessage extends Auditable {
     private String content;
     private String verifyKey;
     public enum MessageType {
-        JOIN, LEAVE, CHAT, REPLY
-    }
+        JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR
+    } // 삭제 상태 추가
 }

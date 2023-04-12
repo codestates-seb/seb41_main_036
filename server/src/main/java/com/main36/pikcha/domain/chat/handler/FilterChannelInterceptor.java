@@ -10,8 +10,11 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
+
+import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEARER_PREFIX;
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Slf4j
@@ -23,11 +26,14 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
         log.info("full message: {}",  message);
-        String token = Objects.requireNonNull(headerAccessor.getNativeHeader("Authorization")).get(0);
         log.info("auth: {}", headerAccessor.getNativeHeader("Authorization"));
-//        log.info("class name: {}", headerAccessor.getHeader("nativeHeaders").getClass()); -> 작동방식 공부!
+//        log.info("class name: {}", headerAccessor.getHeader("nativeHeaders").getClass()); //-> 작동방식 공부!
         if (StompCommand.CONNECT.equals(headerAccessor.getCommand())) {
             log.info("msg: " + "connect!");
+            String token = headerAccessor.getNativeHeader("Authorization").get(0);
+            if (StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX)) {
+                token = token.substring(7);
+            }
             jwtParser.verifyAccessToken(token);
         }
         //throw new MessagingException("no permission! ");

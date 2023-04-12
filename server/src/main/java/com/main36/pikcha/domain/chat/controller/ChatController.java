@@ -1,13 +1,9 @@
 package com.main36.pikcha.domain.chat.controller;
 
-import com.main36.pikcha.domain.chat.dto.ChatDeleteDto;
-import com.main36.pikcha.domain.chat.dto.ChatPostDto;
-import com.main36.pikcha.domain.chat.dto.ChatReplyDto;
-import com.main36.pikcha.domain.chat.dto.ChatResponseDto;
+import com.main36.pikcha.domain.chat.dto.*;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.entity.ChatMessage.MessageType;
 import com.main36.pikcha.domain.chat.mapper.ChatMapperSecond;
-import com.main36.pikcha.domain.chat.repository.ChatRepository;
 import com.main36.pikcha.domain.chat.service.ChatService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
@@ -26,7 +22,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
-    private final ChatRepository chatRepository;
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMapperSecond mapper;
@@ -78,8 +73,7 @@ public class ChatController {
     }
 
     // 채팅 삭제하기
-    @MessageMapping("/delete") // 클라이언트 저희 서버 브로커에게 요청하는 주소 데이터를 보내는 주소
-//  @SendTo: 애노테이션으로 적용되며, 메서드 반환 값이 메시지로 자동 변환되어 대상에게 전송됩니다.
+    @MessageMapping("/delete")
     public void deleteMessages(ChatDeleteDto chatDeleteDto) {
 
         List<Long> ids = chatDeleteDto.getIds();
@@ -88,11 +82,12 @@ public class ChatController {
         // 모두 삭제할 수 있는 채팅이라면
         if (verifyId(ids, memberId)) {
             List<Long> longs = chatService.deleteMessages(ids);
-            messagingTemplate.convertAndSend("/topic/messages", longs);
+            messagingTemplate.convertAndSend("/topic/messages", new ChatDeleteResponseDto(longs));
         }
         // 하나라도 삭제가 불가능하다면
         else {
-            messagingTemplate.convertAndSend("/topic/messages", "CDF");
+            messagingTemplate.convertAndSend("/topic/messages", new ChatDeleteErrorResponseDto("채팅 삭제가 불가능합니다"));
+            log.info("Chat Deletion has failed => CDF");
         }
     }
 
@@ -155,7 +150,8 @@ public class ChatController {
             ChatMessage findChat = chatService.findVerifiedChatMessage(id);
             // 삭제가 불가능한 id인 경우 메세지를 뿌리고 false 반환
             if (!findChat.getMemberId().equals(memberId)) {
-                messagingTemplate.convertAndSend("/topic/messages", "MNA_" + id);
+//                messagingTemplate.convertAndSend("/topic/messages", "MNA_" + id);
+                log.info("chatId_{} cannot be deleted", id);
                 flag = false;
             }
         }
