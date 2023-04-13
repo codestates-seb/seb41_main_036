@@ -48,8 +48,10 @@ public class ChatController {
 
         Member member = memberService.findMemberByMemberId(chatPostDto.getMemberId());
         log.info("loginMember.getEmail() in ChatController ={}", member.getEmail());
-        handleJoinAndLeave(chatPostDto, member.getUsername());
-
+//        handleJoinAndLeave(chatPostDto, member.getUsername());
+        if (MessageType.JOIN.equals(chatPostDto.getType())) {
+            messagingTemplate.convertAndSend("/topic/messages", new ChatEntranceDto(member.getUsername(), member.getMemberId(), MessageType.JOIN));
+        }
         if (MessageType.CHAT.equals(chatPostDto.getType())) {
             ChatPostDto handleChatPostDto = handleException(chatPostDto);
             ChatMessage chatMessage = mapper.postDtoToChatMessage(handleChatPostDto, member);
@@ -132,7 +134,7 @@ public class ChatController {
     private void handleJoinAndLeave(ChatPostDto chatPostDto, String username) {
 
         if (MessageType.JOIN.equals(chatPostDto.getType())) {
-            messagingTemplate.convertAndSend("/topic/messages", username + " 님이 입장했습니다");
+            messagingTemplate.convertAndSend("/topic/messages", new ChatEntranceDto());
         }
 
         if (MessageType.LEAVE.equals(chatPostDto.getType())) {

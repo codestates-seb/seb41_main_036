@@ -1,7 +1,6 @@
 package com.main36.pikcha.domain.chat.config;
 
 import com.main36.pikcha.domain.chat.handler.FilterChannelInterceptor;
-import com.main36.pikcha.global.security.jwt.JwtParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -10,12 +9,12 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-    private final JwtParser jwtParser;
+    private final FilterChannelInterceptor interceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -33,7 +32,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new FilterChannelInterceptor(jwtParser));
+//        registration.interceptors(new FilterChannelInterceptor(jwtParser, repository, memberRepository, messagingTemplate));
+        registration.interceptors(interceptor);
     }
 
     @Override

@@ -119,7 +119,7 @@ public class JwtParser {
         }
     }
 
-    private Claims getBody(String token) {
+    public Claims getBody(String token) {
         // TODO: 예외 처리 필요 키값이 이상할때!
         return Jwts.
                 parserBuilder().

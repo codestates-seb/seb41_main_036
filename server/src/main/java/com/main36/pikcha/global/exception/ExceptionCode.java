@@ -42,8 +42,9 @@ public enum ExceptionCode {
     TOKEN_ILLEGAL_ARGUMENT(400, "Token Illegal Argument"),
 
     /* CHAT */
-    CHAT_NOT_FOUND(400, "Chat not found" ),
-    CHAT_CANNOT_BE_DELETED(400, "Chat cannot be deleted");
+    CHAT_NOT_FOUND(404, "Chat not found" ),
+    CHAT_CANNOT_BE_DELETED(400, "Chat cannot be deleted"),
+    CONNECTION_NOT_FOUND(404, "Connection not found");
 
     @Getter
     private int status;
