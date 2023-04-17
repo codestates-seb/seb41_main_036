@@ -28,6 +28,7 @@ public class ChatMapperSecond {
                 .username(member.getUsername())
                 .type(postDto.getType())
                 .content(postDto.getContent())
+                .likes(0L)
                 .verifyKey(postDto.getVerifyKey())
                 .build();
     }
@@ -44,6 +45,7 @@ public class ChatMapperSecond {
                     .username(member.getUsername())
                     .type(replyDto.getType())
                     .content(replyDto.getContent())
+                    .likes(0L)
                     .verifyKey(replyDto.getVerifyKey())
                     .build();
         }
@@ -58,6 +60,7 @@ public class ChatMapperSecond {
                     .username(member.getUsername())
                     .type(replyDto.getType())
                     .content(replyDto.getContent())
+                    .likes(0L)
                     .verifyKey(replyDto.getVerifyKey())
                     .build();
         }
@@ -76,6 +79,7 @@ public class ChatMapperSecond {
                 .username(chatMessage.getUsername())
                 .createdAt(chatMessage.getCreatedAt())
                 .content(chatMessage.getContent())
+                .likes(chatMessage.getLikes())
                 .verifyKey(chatMessage.getVerifyKey())
                 .type(chatMessage.getType())
                 .build();

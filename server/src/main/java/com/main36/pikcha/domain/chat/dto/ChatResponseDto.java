@@ -22,6 +22,7 @@ public class ChatResponseDto {
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "s", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
     private String content;
+    private long likes;
     private String verifyKey;
     private ChatMessage.MessageType type;
 }
