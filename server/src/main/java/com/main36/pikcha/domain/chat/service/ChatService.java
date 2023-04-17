@@ -1,17 +1,24 @@
 package com.main36.pikcha.domain.chat.service;
 
+import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.repository.ChatRepository;
+import com.main36.pikcha.domain.like.entity.AttractionLikes;
+import com.main36.pikcha.domain.like.entity.ChatLikes;
+import com.main36.pikcha.domain.like.repository.ChatLikesRepository;
+import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -21,6 +28,7 @@ import java.util.List;
 public class ChatService {
 
     private final ChatRepository chatRepository;
+    private final ChatLikesRepository chatLikesRepository;
 
     // 1. 채팅 저장하기
     public ChatMessage createMessage(ChatMessage chatMessage) {
@@ -29,12 +37,12 @@ public class ChatService {
 
     // 2. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
     public List<ChatMessage> getInitialMessages(){
-        return chatRepository.findTop3ByOrderByChatIdDesc();
+        return chatRepository.findTop10ByOrderByChatIdDesc();
     }
 
     // 3. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
     public List<ChatMessage> getMoreMessages(Long lastChatId){
-        return chatRepository.findTop3ByChatIdLessThanOrderByChatIdDesc(lastChatId);
+        return chatRepository.findTop10ByChatIdLessThanOrderByChatIdDesc(lastChatId);
     }
 
     // 4. 채팅 날짜로 검색하기
@@ -74,6 +82,36 @@ public class ChatService {
         }
         return ids;
     }
+
+    // 7. 채팅 좋아요
+    public boolean voteChat(Member member, ChatMessage chatMessage){
+        // 좋아요를 누른적이 있나?
+        Optional<ChatLikes> likes = chatLikesRepository.findByMemberAndChatMessage(member, chatMessage);
+
+        // 좋아요를 이미 눌렀다면
+        if(likes.isPresent()){
+            // 좋아요 데이터를 삭제하고
+            chatLikesRepository.delete(likes.get());
+            // 명소의 likes를 하나 감소시킨다
+            chatMessage.setLikes(chatMessage.getLikes()-1);
+            // 지금은 좋아요를 누르지 않은 상태라는것을 반환한다.
+            return false;
+        }
+        // 좋아요를 누르지 않았으면
+        else{
+            // 좋아요 데이터를 생성하고
+            chatLikesRepository.save(ChatLikes.builder().chatMessage(chatMessage).member(member).build());
+            // 명소의 likes를 하나 증가시킨다.
+            chatMessage.setLikes(chatMessage.getLikes()+1);
+            // 지금은 좋아요를 누른 상태라는것을 반환한다.
+            return true;
+        }
+    }
+
+    public boolean isVoted(long memberId, long chatId){
+        return chatLikesRepository.findByMemberIdAndChatId(memberId, chatId).isPresent();
+    }
+
 
     public ChatMessage findVerifiedChatMessage(Long messageId) {
 

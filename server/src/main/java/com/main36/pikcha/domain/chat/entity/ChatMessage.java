@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Setter
 @Builder
 @AllArgsConstructor
-public class ChatMessage extends Auditable {
+public class ChatMessage extends Auditable { // JPA 삭제 constraint
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatId;
@@ -29,8 +29,9 @@ public class ChatMessage extends Auditable {
     private String username;
     private MessageType type;
     private String content;
+    private long likes;
     private String verifyKey;
     public enum MessageType {
         JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR
-    } // 삭제 상태 추가
+    }
 }

@@ -3,6 +3,7 @@ package com.main36.pikcha.domain.post.entity;
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.comment.entity.Comment;
 import com.main36.pikcha.domain.hashtag.entity.HashTag;
+import com.main36.pikcha.domain.like.entity.PostLikes;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.image.entity.PostImage;
 import com.main36.pikcha.global.audit.Auditable;
@@ -51,6 +52,10 @@ public class Post extends Auditable {
     @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private List<HashTag> hashTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, orphanRemoval = true)
+//    @JoinColumn(name = "post_id")
+    private List<PostLikes> postLikes = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "contents", joinColumns = @JoinColumn(name= "post_id"))

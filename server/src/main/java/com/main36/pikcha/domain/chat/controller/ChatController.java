@@ -1,5 +1,7 @@
 package com.main36.pikcha.domain.chat.controller;
 
+import com.main36.pikcha.domain.attraction.dto.AttractionLikesResponseDto;
+import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.chat.dto.*;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.entity.ChatMessage.MessageType;
@@ -7,6 +9,7 @@ import com.main36.pikcha.domain.chat.mapper.ChatMapperSecond;
 import com.main36.pikcha.domain.chat.service.ChatService;
 import com.main36.pikcha.domain.member.entity.Member;
 import com.main36.pikcha.domain.member.service.MemberService;
+import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -97,6 +102,7 @@ public class ChatController {
     @GetMapping("/app/enter")
     public ResponseEntity getInitMessages(){
         List<ChatMessage> messageList = chatService.getInitialMessages();
+        Collections.reverse(messageList);
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
@@ -104,6 +110,7 @@ public class ChatController {
     @GetMapping("/app/load/{chat-id}")
     public ResponseEntity getMoreMessagesAfter(@PathVariable(value = "chat-id", required = false) Long lastChatId){
         List<ChatMessage> messageList = chatService.getMoreMessages(lastChatId);
+        Collections.reverse(messageList);
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
     }
 
@@ -113,6 +120,23 @@ public class ChatController {
                                               @PathVariable(value = "year-month") String yearAndMonth){
         List<ChatMessage> messageList = chatService.getMessagesBetween(content, yearAndMonth);
         return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
+    }
+
+    // 채팅 좋아요
+    @LoginUser
+    @PostMapping("/app/likes/{chat-id}")
+    public ResponseEntity<DataResponseDto<?>> voteAttraction(Member loginUser,
+                                                             @PathVariable("chat-id") @Positive long chatId) {
+
+        Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
+        ChatMessage chatMessage = chatService.findVerifiedChatMessage(chatId);
+        boolean status = chatService.voteChat(member, chatMessage);
+
+        ChatLikesResponseDto response = new ChatLikesResponseDto();
+        response.setIsVoted(status);
+        response.setLikes(chatMessage.getLikes());
+
+        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
     }
 
     private ChatPostDto handleException(ChatPostDto chatPostDto) {
