@@ -32,6 +32,6 @@ public class ChatMessage extends Auditable { // JPA 삭제 constraint
     private long likes;
     private String verifyKey;
     public enum MessageType {
-        JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR
+        JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR, LIKES
     }
 }

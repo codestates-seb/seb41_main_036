@@ -1,9 +1,16 @@
 package com.main36.pikcha.domain.chat.dto;
 
-import lombok.Data;
+import com.main36.pikcha.domain.chat.entity.ChatMessage;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChatLikesResponseDto {
     private Boolean isVoted;
     private long likes;
+    private long chatId;
+    private ChatMessage.MessageType type;
 }

@@ -37,12 +37,12 @@ public class ChatService {
 
     // 2. 처음 채팅방 들어왔을 때 채팅내역 불러오기 (마지막 id부터 **개 불러오기) -
     public List<ChatMessage> getInitialMessages(){
-        return chatRepository.findTop10ByOrderByChatIdDesc();
+        return chatRepository.findTop20ByOrderByChatIdDesc();
     }
 
     // 3. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
     public List<ChatMessage> getMoreMessages(Long lastChatId){
-        return chatRepository.findTop10ByChatIdLessThanOrderByChatIdDesc(lastChatId);
+        return chatRepository.findTop20ByChatIdLessThanOrderByChatIdDesc(lastChatId);
     }
 
     // 4. 채팅 날짜로 검색하기

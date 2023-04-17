@@ -1,7 +1,5 @@
 package com.main36.pikcha.domain.chat.controller;
 
-import com.main36.pikcha.domain.attraction.dto.AttractionLikesResponseDto;
-import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.chat.dto.*;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import com.main36.pikcha.domain.chat.entity.ChatMessage.MessageType;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -100,18 +99,42 @@ public class ChatController {
 
     // 채팅방 입장했을 시 채팅목록 불러오기
     @GetMapping("/app/enter")
-    public ResponseEntity getInitMessages(){
+    @LoginUser
+    public ResponseEntity getInitMessages(Member loginUser){
         List<ChatMessage> messageList = chatService.getInitialMessages();
         Collections.reverse(messageList);
-        return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
+        return new ResponseEntity(new DataResponseDto<>(loginMapping(messageList, loginUser.getMemberId())), HttpStatus.OK);
     }
 
     // 마지막 채팅 id 이후로 채팅 더 불러오기
     @GetMapping("/app/load/{chat-id}")
-    public ResponseEntity getMoreMessagesAfter(@PathVariable(value = "chat-id", required = false) Long lastChatId){
+    @LoginUser
+    public ResponseEntity getMoreMessagesAfter(Member loginUser,
+                                               @PathVariable(value = "chat-id", required = true) Long lastChatId){
         List<ChatMessage> messageList = chatService.getMoreMessages(lastChatId);
         Collections.reverse(messageList);
-        return new ResponseEntity(new DataResponseDto<>(messageList), HttpStatus.OK);
+        return new ResponseEntity(new DataResponseDto<>(loginMapping(messageList, loginUser.getMemberId())), HttpStatus.OK);
+    }
+
+    private List<ChatResponseDto> loginMapping(List<ChatMessage> chatMessageList, long memberId) {
+        return chatMessageList.stream()
+                .map(chatMessage -> ChatResponseDto.builder()
+                        .chatId(chatMessage.getChatId())
+                        .memberId(chatMessage.getMemberId())
+                        .targetId(chatMessage.getTargetId())
+                        .targetContent(chatMessage.getTargetContent())
+                        .targetPicture(chatMessage.getTargetPicture())
+                        .targetUsername(chatMessage.getTargetUsername())
+                        .picture(chatMessage.getPicture())
+                        .username(chatMessage.getUsername())
+                        .createdAt(chatMessage.getCreatedAt())
+                        .content(chatMessage.getContent())
+                        .likes(chatMessage.getLikes())
+                        .isVoted(chatService.isVoted(memberId, chatMessage.getChatId()))
+                        .verifyKey(chatMessage.getVerifyKey())
+                        .type(chatMessage.getType())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     // 연도&월을 기준 특정 검색어로 채팅 검색하기
@@ -125,18 +148,21 @@ public class ChatController {
     // 채팅 좋아요
     @LoginUser
     @PostMapping("/app/likes/{chat-id}")
-    public ResponseEntity<DataResponseDto<?>> voteAttraction(Member loginUser,
-                                                             @PathVariable("chat-id") @Positive long chatId) {
+    public void voteAttraction(Member loginUser,
+                               @PathVariable("chat-id") @Positive long chatId) {
 
         Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
         ChatMessage chatMessage = chatService.findVerifiedChatMessage(chatId);
         boolean status = chatService.voteChat(member, chatMessage);
 
-        ChatLikesResponseDto response = new ChatLikesResponseDto();
-        response.setIsVoted(status);
-        response.setLikes(chatMessage.getLikes());
+        ChatLikesResponseDto response = ChatLikesResponseDto.builder()
+                .isVoted(status)
+                .likes(chatService.findVerifiedChatMessage(chatId).getLikes())
+                .chatId(chatMessage.getChatId())
+                .type(MessageType.LIKES)
+                .build();
 
-        return new ResponseEntity<>(new DataResponseDto<>(response), HttpStatus.OK);
+        messagingTemplate.convertAndSend("/topic/messages", response);
     }
 
     private ChatPostDto handleException(ChatPostDto chatPostDto) {

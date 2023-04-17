@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
-    List<ChatMessage> findTop10ByOrderByChatIdDesc();
-    List<ChatMessage> findTop10ByChatIdLessThanOrderByChatIdDesc(Long Id);
+    List<ChatMessage> findTop20ByOrderByChatIdDesc();
+    List<ChatMessage> findTop20ByChatIdLessThanOrderByChatIdDesc(Long Id);
     List<ChatMessage> findChatMessagesByContentContainingIgnoreCaseAndCreatedAtBetweenOrderByCreatedAtAsc(String content, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

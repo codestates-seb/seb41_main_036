@@ -23,6 +23,7 @@ public class ChatResponseDto {
     private LocalDateTime createdAt;
     private String content;
     private long likes;
+    private Boolean isVoted;
     private String verifyKey;
     private ChatMessage.MessageType type;
 }
