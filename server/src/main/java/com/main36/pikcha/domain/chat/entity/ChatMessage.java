@@ -3,11 +3,7 @@ package com.main36.pikcha.domain.chat.entity;
 import com.main36.pikcha.global.audit.Auditable;
 import lombok.*;
 
-import javax.persistence.Entity;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @NoArgsConstructor
@@ -21,7 +17,8 @@ public class ChatMessage extends Auditable { // JPA 삭제 constraint
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatId;
     private Long memberId;
-    private Long targetId;
+    private Long targetChatId;
+    private Long targetMemberId;
     private String targetContent;
     private String targetPicture;
     private String targetUsername;
@@ -30,8 +27,9 @@ public class ChatMessage extends Auditable { // JPA 삭제 constraint
     private MessageType type;
     private String content;
     private long likes;
+    private long reported;
     private String verifyKey;
     public enum MessageType {
-        JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR, LIKES
+        JOIN, LEAVE, CHAT, REPLY, DELETE, ERROR, LIKES, REPORT
     }
 }

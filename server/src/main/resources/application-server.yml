@@ -9,6 +9,12 @@ spring:
     job:
       enabled: false # spring 실행시 배치 자동실행 끄기
 
+#  rabbitmq:
+#    username: guest
+#    password: guest
+#    host: localhost
+#    port: 5672
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${RDS_URL}

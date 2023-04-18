@@ -11,6 +11,7 @@ import com.main36.pikcha.global.aop.LoginUser;
 import com.main36.pikcha.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,9 +29,13 @@ import java.util.stream.Collectors;
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
+//    private final RabbitTemplate messagingTemplate;
     private final ChatMapperSecond mapper;
     private final ChatService chatService;
     private final MemberService memberService;
+
+//    private static final String CHAT_QUEUE_NAME = "chat.queue";
+//    private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
 
 
     // 테스트용 채팅 생성 메서드
@@ -121,7 +126,8 @@ public class ChatController {
                 .map(chatMessage -> ChatResponseDto.builder()
                         .chatId(chatMessage.getChatId())
                         .memberId(chatMessage.getMemberId())
-                        .targetId(chatMessage.getTargetId())
+                        .targetChatId(chatMessage.getTargetChatId())
+                        .targetMemberId(chatMessage.getTargetMemberId())
                         .targetContent(chatMessage.getTargetContent())
                         .targetPicture(chatMessage.getTargetPicture())
                         .targetUsername(chatMessage.getTargetUsername())
@@ -148,7 +154,7 @@ public class ChatController {
     // 채팅 좋아요
     @LoginUser
     @PostMapping("/app/likes/{chat-id}")
-    public void voteAttraction(Member loginUser,
+    public void likeMessage(Member loginUser,
                                @PathVariable("chat-id") @Positive long chatId) {
 
         Member member = memberService.findMemberByMemberId(loginUser.getMemberId());
@@ -156,6 +162,7 @@ public class ChatController {
         boolean status = chatService.voteChat(member, chatMessage);
 
         ChatLikesResponseDto response = ChatLikesResponseDto.builder()
+                .memberId(chatId)
                 .isVoted(status)
                 .likes(chatService.findVerifiedChatMessage(chatId).getLikes())
                 .chatId(chatMessage.getChatId())
@@ -163,6 +170,22 @@ public class ChatController {
                 .build();
 
         messagingTemplate.convertAndSend("/topic/messages", response);
+    }
+
+    // 채팅 신고
+    @LoginUser
+    @PostMapping("/app/report/{chat-id}")
+    public ResponseEntity reportMessage(Member loginUser,
+                              @PathVariable("chat-id") @Positive long chatId) {
+//        ChatMessage findChatMessage = chatService.findVerifiedChatMessage(chatId);
+        if(chatService.isReported(loginUser.getMemberId(), chatId)){
+            return ResponseEntity.badRequest().build();
+        }
+        ChatMessage chatMessage = chatService.reportMessage(loginUser, chatId);
+        if(MessageType.REPORT.equals(chatMessage.getType())) {
+            messagingTemplate.convertAndSend("/topic/messages", new ChatReportResponseDto(chatMessage.getChatId(), "3회 이상 신고된 메세지입니다", MessageType.REPORT));
+        }
+        return ResponseEntity.ok().build();
     }
 
     private ChatPostDto handleException(ChatPostDto chatPostDto) {

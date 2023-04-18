@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ChatLikesResponseDto {
+    private long memberId;
     private Boolean isVoted;
     private long likes;
     private long chatId;

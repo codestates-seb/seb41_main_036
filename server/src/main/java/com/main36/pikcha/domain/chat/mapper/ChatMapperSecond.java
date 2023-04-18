@@ -20,7 +20,8 @@ public class ChatMapperSecond {
     public ChatMessage postDtoToChatMessage(ChatPostDto postDto, Member member) {
         return ChatMessage.builder()
                 .memberId(member.getMemberId())
-                .targetId(null)
+                .targetChatId(null)
+                .targetMemberId(null)
                 .targetContent(null)
                 .targetPicture(null)
                 .targetUsername(null)
@@ -29,6 +30,7 @@ public class ChatMapperSecond {
                 .type(postDto.getType())
                 .content(postDto.getContent())
                 .likes(0L)
+                .reported(0L)
                 .verifyKey(postDto.getVerifyKey())
                 .build();
     }
@@ -37,7 +39,8 @@ public class ChatMapperSecond {
             ChatMessage targetMessage = chatService.findVerifiedChatMessage(replyDto.getTargetId());
             return ChatMessage.builder()
                     .memberId(member.getMemberId())
-                    .targetId(targetMessage.getChatId())
+                    .targetChatId(targetMessage.getChatId())
+                    .targetMemberId(targetMessage.getMemberId())
                     .targetContent(targetMessage.getContent())
                     .targetPicture(targetMessage.getPicture())
                     .targetUsername(targetMessage.getUsername())
@@ -46,13 +49,15 @@ public class ChatMapperSecond {
                     .type(replyDto.getType())
                     .content(replyDto.getContent())
                     .likes(0L)
+                    .reported(0L)
                     .verifyKey(replyDto.getVerifyKey())
                     .build();
         }
         else {
             return ChatMessage.builder()
                     .memberId(member.getMemberId())
-                    .targetId(null)
+                    .targetChatId(null)
+                    .targetMemberId(null)
                     .targetContent(null)
                     .targetPicture(null)
                     .targetUsername(null)
@@ -61,6 +66,7 @@ public class ChatMapperSecond {
                     .type(replyDto.getType())
                     .content(replyDto.getContent())
                     .likes(0L)
+                    .reported(0L)
                     .verifyKey(replyDto.getVerifyKey())
                     .build();
         }
@@ -71,7 +77,8 @@ public class ChatMapperSecond {
         return ChatResponseDto.builder()
                 .chatId(chatMessage.getChatId())
                 .memberId(chatMessage.getMemberId())
-                .targetId(chatMessage.getTargetId())
+                .targetChatId(chatMessage.getTargetChatId())
+                .targetMemberId(chatMessage.getTargetMemberId())
                 .targetContent(chatMessage.getTargetContent())
                 .targetPicture(chatMessage.getTargetPicture())
                 .targetUsername(chatMessage.getTargetUsername())
@@ -83,7 +90,6 @@ public class ChatMapperSecond {
                 .verifyKey(chatMessage.getVerifyKey())
                 .type(chatMessage.getType())
                 .build();
-
     }
     public List<ChatResponseDto> chatMessagesToResponseDtos(List<ChatMessage> chatMessageList){
         return chatMessageList.stream().map(this::chatMessageToResponseDto).collect(Collectors.toList());

@@ -7,6 +7,8 @@ import com.main36.pikcha.domain.like.entity.AttractionLikes;
 import com.main36.pikcha.domain.like.entity.ChatLikes;
 import com.main36.pikcha.domain.like.repository.ChatLikesRepository;
 import com.main36.pikcha.domain.member.entity.Member;
+import com.main36.pikcha.domain.report.entity.ChatReport;
+import com.main36.pikcha.domain.report.repository.ChatReportRepository;
 import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
     private final ChatLikesRepository chatLikesRepository;
+    private final ChatReportRepository reportRepository;
 
     // 1. 채팅 저장하기
     public ChatMessage createMessage(ChatMessage chatMessage) {
@@ -107,10 +110,32 @@ public class ChatService {
             return true;
         }
     }
-
     public boolean isVoted(long memberId, long chatId){
         return chatLikesRepository.findByMemberIdAndChatId(memberId, chatId).isPresent();
     }
+
+    // 채팅 신고하기
+    public ChatMessage reportMessage(Member reporter, long reportedChatId){
+        // 신고된 메세지 조회
+        ChatMessage verifiedChatMessage = findVerifiedChatMessage(reportedChatId);
+
+        // report 데이터 생성
+        reportRepository.save(new ChatReport(reporter, verifiedChatMessage));
+
+        long reported = verifiedChatMessage.getReported();
+        // 2회 신고 누적인 경우
+        if(verifiedChatMessage.getReported() == 2) {
+            verifiedChatMessage.setContent("3회 이상 신고된 메세지입니다");
+            verifiedChatMessage.setType(ChatMessage.MessageType.REPORT);
+        }
+        verifiedChatMessage.setReported(reported+1);
+        return chatRepository.save(verifiedChatMessage);
+    }
+    public boolean isReported(long memberId, long chatId){
+        return reportRepository.findByMemberIdAndChatId(memberId, chatId).isPresent();
+    }
+
+
 
 
     public ChatMessage findVerifiedChatMessage(Long messageId) {

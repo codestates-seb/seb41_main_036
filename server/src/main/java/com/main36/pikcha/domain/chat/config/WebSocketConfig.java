@@ -26,7 +26,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
 
         //메시지 브로커를 사용하려면, enableStompBrokerRelay 메서드를 사용하여 구성할 수 있습니다.
-//        registry.enableStompBrokerRelay()
+//        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
 
     }
 
