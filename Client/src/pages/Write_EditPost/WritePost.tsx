@@ -17,7 +17,7 @@ import { CgClose } from "react-icons/cg";
 import * as wp from "./Write_EditPostStyled";
 
 export default function WritePost() {
-  const [title, setTitle] = useState(""); // 제목
+  const [title, setTitle] = useState("");
   const [tags] = useRecoilState(PostTags);
   const [previewList, setPreviewList] = useRecoilState(PostPreviewList);
   const [content] = useRecoilState(PostContent);
@@ -126,13 +126,11 @@ export default function WritePost() {
                     <img src={previews[0]} />
                   </wp.PreviewImgContainer>
                   <wp.PreviewTextContainer>
-                    <div>
-                      {previews[1]}
-                      <CgClose
-                        cursor="pointer"
-                        onClick={(e) => handleRemovePreview(e, index)}
-                      />
-                    </div>
+                    {previews[1]}
+                    <CgClose
+                      cursor="pointer"
+                      onClick={(e) => handleRemovePreview(e, index)}
+                    />
                   </wp.PreviewTextContainer>
                 </wp.PreviewContentContainer>
               );
