@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.time.LocalDateTime;
+
 
 @Slf4j
 @Component
@@ -22,22 +24,16 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class ChatListener {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ConnectionRepository repository;
-
-    @EventListener
-    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        log.info("EventListener : Received a new web socket connection");
-    }
-
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = headerAccessor.getSessionId();
         if(sessionId != null) {
             Connection connection = repository.findTopBySessionId(sessionId).orElseThrow( ()-> new BusinessLogicException(ExceptionCode.CONNECTION_NOT_FOUND));
-            log.info("Disconnected User Id : " + connection.getMemberId());
             repository.delete(connection);
-            log.info("Connection data has been deleted");
-            messagingTemplate.convertAndSend("/topic/messages", new ChatEntranceDto(connection.getUsername(), connection.getMemberId(), ChatMessage.MessageType.LEAVE));
+            long currentNumberOfUsers= repository.count();
+            ChatEntranceDto response = new ChatEntranceDto(connection.getUsername(), connection.getMemberId(), currentNumberOfUsers, LocalDateTime.now(), ChatMessage.MessageType.LEAVE);
+            messagingTemplate.convertAndSend("/topic/messages", response);
         }
     }
 }

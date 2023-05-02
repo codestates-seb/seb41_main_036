@@ -2,6 +2,7 @@ package com.main36.pikcha.domain.chat.service;
 
 import com.main36.pikcha.domain.attraction.entity.Attraction;
 import com.main36.pikcha.domain.chat.entity.ChatMessage;
+import com.main36.pikcha.domain.chat.repository.ChatCustomRepositoryImpl;
 import com.main36.pikcha.domain.chat.repository.ChatRepository;
 import com.main36.pikcha.domain.like.entity.AttractionLikes;
 import com.main36.pikcha.domain.like.entity.ChatLikes;
@@ -13,6 +14,8 @@ import com.main36.pikcha.global.exception.BusinessLogicException;
 import com.main36.pikcha.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,8 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatLikesRepository chatLikesRepository;
     private final ChatReportRepository reportRepository;
+    private final ChatCustomRepositoryImpl chatCustomRepository;
+    private static final int PAGE_SIZE = 20;
 
     // 1. 채팅 저장하기
     public ChatMessage createMessage(ChatMessage chatMessage) {
@@ -43,11 +48,32 @@ public class ChatService {
         return chatRepository.findTop20ByOrderByChatIdDesc();
     }
 
-    // 3. 커서 위치 올리면 마지막 id 이후로로 채팅 내역 "더 **개" 불러오기
-    public List<ChatMessage> getMoreMessages(Long lastChatId){
-        return chatRepository.findTop20ByChatIdLessThanOrderByChatIdDesc(lastChatId);
+    // 3-1. id 이전 채팅내역 20개 불러오기
+    public List<ChatMessage> getMoreMessagesLessThanEqual(Long lte){
+        return chatRepository.findTop20ByChatIdLessThanOrderByChatIdDesc(lte);
     }
 
+    public List<ChatMessage> getMoreMessagesLessThan(Long lte){
+        return chatRepository.findTop20ByChatIdLessThanOrderByChatIdDesc(lte);
+    }
+
+    // 3-2.id 이후로 채팅내역 20개 불러오기
+    public List<ChatMessage> getMoreMessagesGreaterThanEqual(Long gte){
+        return chatRepository.findTop20ByChatIdGreaterThanEqualOrderByChatIdDesc(gte);
+    }
+
+    // 3-3. 두 id 사이의 채팅내역 20개 불러오기
+//    public List<ChatMessage> getMoreMessagesGreaterThanEqualLessThanEqual(Long gte, Long lte){
+//        return chatRepository.findTop20ByChatIdGreaterThanEqualAndChatIdLessThanEqualOrderByChatIdAsc(gte, lte);
+//    }
+
+    public Slice<ChatMessage> getMoreMessagesGreaterThanEqualLessThanEqual(Long gte, Long lte){
+        return chatCustomRepository.findMessageByRange(gte, lte, PageRequest.ofSize(PAGE_SIZE));
+    }
+
+    public Long numOfMessagesOfRange(Long gte, Long lte) {
+        return chatRepository.countTop20ByChatIdGreaterThanEqualAndChatIdLessThanEqual(gte, lte);
+    }
     // 4. 채팅 날짜로 검색하기
     public List<ChatMessage> getMessagesBetween(String content, String createdYearAndMonth) {
 
@@ -134,6 +160,8 @@ public class ChatService {
     public boolean isReported(long memberId, long chatId){
         return reportRepository.findByMemberIdAndChatId(memberId, chatId).isPresent();
     }
+
+
 
 
 

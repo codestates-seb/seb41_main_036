@@ -1,8 +1,6 @@
 package com.main36.pikcha.domain.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;

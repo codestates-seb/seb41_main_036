@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 // Server -> Client 메세지 전송 성공했을 때, 기본 메세지 데이터 응답 형식
 @Data
 @Builder
-public class ChatResponseDto {
+public class ChatResponseDto{
     private Long chatId;
     private Long memberId;
     private Long targetChatId;
@@ -25,6 +25,7 @@ public class ChatResponseDto {
     private String content;
     private long likes;
     private Boolean isVoted;
+    private Boolean isReported;
     private String verifyKey;
     private ChatMessage.MessageType type;
 }

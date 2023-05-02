@@ -19,6 +19,8 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 import static com.main36.pikcha.global.security.filter.JwtVerificationFilter.BEARER_PREFIX;
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
@@ -55,6 +57,9 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
         jwtParser.verifyAccessToken(token);
         // 검증이 완료되면 jwt 토큰 안 이메일로 회원 정보를 받아오고
         Member user = memberRepository.findByEmail(jwtParser.getBody(token).get("sub").toString()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        // 이미 연결이 있다면 데이터 삭제
+//        Optional<Connection> findConnection = repository.findByMemberId(user.getMemberId());
+//        findConnection.ifPresent(repository::delete);
         // 연결 테이블에 memberid와 sessionId를 묶은 데이터를 추가한다.
         repository.save(new Connection(user.getMemberId(), user.getUsername(), sessionId));
     }

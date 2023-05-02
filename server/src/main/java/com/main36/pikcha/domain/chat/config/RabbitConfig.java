@@ -46,8 +46,8 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding binding(Queue queue, TopicExchange topicExchange){
-        return BindingBuilder.bind(queue).to(exchange()).with(ROUTING_KEY);
+    public Binding binding(Queue queue, TopicExchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
     @Bean
@@ -66,6 +66,7 @@ public class RabbitConfig {
         container.setMessageListener(null);
         return container;
     }
+
 
     @Bean
     public ConnectionFactory connectionFactory(){

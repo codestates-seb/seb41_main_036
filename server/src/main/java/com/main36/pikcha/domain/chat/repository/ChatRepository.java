@@ -11,5 +11,8 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
     List<ChatMessage> findTop20ByOrderByChatIdDesc();
     List<ChatMessage> findTop20ByChatIdLessThanOrderByChatIdDesc(Long Id);
+    List<ChatMessage> findTop20ByChatIdGreaterThanEqualOrderByChatIdDesc(Long Id);
+    List<ChatMessage> findTop20ByChatIdGreaterThanEqualAndChatIdLessThanEqualOrderByChatIdAsc(Long gte, Long lte);
+    Long countTop20ByChatIdGreaterThanEqualAndChatIdLessThanEqual(Long gte, Long lte);
     List<ChatMessage> findChatMessagesByContentContainingIgnoreCaseAndCreatedAtBetweenOrderByCreatedAtAsc(String content, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

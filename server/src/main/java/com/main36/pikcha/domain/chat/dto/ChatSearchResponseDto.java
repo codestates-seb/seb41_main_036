@@ -1,20 +1,20 @@
 package com.main36.pikcha.domain.chat.dto;
 
-import com.main36.pikcha.domain.chat.entity.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ChatEntranceDto {
-    private String username;
+@Builder
+public class ChatSearchResponseDto {
+    private long chatId;
     private long memberId;
-    private long numberOfUsers;
+    private String picture;
+    private String username;
+    private String content;
     private LocalDateTime createdAt;
-    private ChatMessage.MessageType type;
 }
