@@ -27,6 +27,7 @@ import { IoClose as CloseIcon } from "react-icons/io5";
 import { TbArrowForward as ReplyIcon } from "react-icons/tb";
 import { chatDatatype, sendbarStyleType } from "../Chat";
 import NewMessageModal from "../Modal/NewMessageModal";
+import { scrollFlagRef } from "../ChatPanel";
 
 export const sendbarStyle: sendbarStyleType = {
   padding: 10,
@@ -110,7 +111,7 @@ const Sendbar = ({
 
   function handleOnInput(e: FormEvent<HTMLTextAreaElement>) {
     const target = e.target as HTMLTextAreaElement;
-
+    scrollFlagRef.current = false;
     if (target.scrollHeight > target.clientHeight && rowNum < 5) {
       setRowNum((p) => p + 1);
       return; //다음줄로 넘어가면 row늘리기
@@ -136,6 +137,7 @@ const Sendbar = ({
         (textareaRef.current as HTMLTextAreaElement).clientHeight &&
       rowNum < 5
     ) {
+      scrollFlagRef.current = false;
       setRowNum((p) => p + 1);
       return; //다음줄로 넘어가면 row늘리기
     }
@@ -157,6 +159,7 @@ const Sendbar = ({
     e.stopPropagation();
   };
   const handleCloseClick = () => {
+    scrollFlagRef.current = false;
     setIsReplyMessage(null);
   };
   return (
