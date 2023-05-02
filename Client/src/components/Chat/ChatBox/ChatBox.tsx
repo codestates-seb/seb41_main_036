@@ -72,7 +72,7 @@ const ChatBox = ({
       (chatBoxRef.current as HTMLDivElement).scrollHeight -
         (chatBoxRef.current as HTMLDivElement).scrollTop -
         (chatBoxRef.current as HTMLDivElement).clientHeight <
-      0
+      300
     ) {
       scrollFlagRef.current = false; //created by script
       chatDataMapRef.current
@@ -83,13 +83,12 @@ const ChatBox = ({
       newMessage(
         chatDataMapRef.current?.get(newMessageArrived.message.chatId)
           ?.node as HTMLDivElement
-      ); /////////////////////////////////////////확인하기
+      );
     }
-  }, [newMessageArrived]); //새 메시지 도착시 이동-수정해야함
+  }, [newMessageArrived]); //새 메시지 도착 시 이동
 
   function getMap() {
     if (!chatDataMapRef.current) {
-      // Initialize the Map on first usage.
       chatDataMapRef.current = new Map();
     }
     return chatDataMapRef.current;
