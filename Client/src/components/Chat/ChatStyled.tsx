@@ -17,7 +17,7 @@ const ChatBoxDiv = styled.div<{
   display: ${(props) => (props.chatStatus === "EXITED" ? "none" : "flex")};
   opacity: ${(props) => (props.chatStatus === "MINIMIZED" ? "0" : "1")};
   flex-direction: column;
-  justify-content: space-between;
+  transform-style: preserve-3d;
 `;
 
 const ChatBoxWrapper = styled.div`
@@ -25,7 +25,7 @@ const ChatBoxWrapper = styled.div`
   overflow-y: auto;
   scrollbar-gutter: stable;
   padding-bottom: 5px;
-
+  height: 100%;
   ::-webkit-scrollbar {
     width: 8px;
   }

@@ -122,14 +122,14 @@ const NewMessageBoxWrapper = styled.div<{ showNewMessageBox: boolean }>`
   top: -55px;
   left: 200px;
   border-radius: var(--br-m);
-  transition: all cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s;
-  transform: translate(-50%, 10%);
+  transition: all cubic-bezier(0.165, 0.84, 0.44, 1) 0.5s;
+  transform: translate3d(-50%, 15px, -10px);
   color: var(--black-900);
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 10px 15px;
-  opacity: 0;
+  pointer-events: none;
   transform-style: preserve-3d;
   backdrop-filter: blur(8px);
   background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), #ffffff88);
@@ -138,7 +138,8 @@ const NewMessageBoxWrapper = styled.div<{ showNewMessageBox: boolean }>`
     props.showNewMessageBox &&
     css`
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: translate3d(-50%, 0, 10px);
+      pointer-events: auto;
     `}
   :hover {
     cursor: pointer;

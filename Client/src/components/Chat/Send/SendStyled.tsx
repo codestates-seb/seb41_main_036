@@ -107,13 +107,11 @@ const SendBarFrameDiv = styled.div<{
   width: 100%;
   padding: 15px;
   background-color: white;
-  position: sticky;
-  bottom: 0;
+  position: relative;
   border-radius: ${(props) =>
     props.showSearchBox ? "0 0 15px 0" : "0 0 15px 15px"};
-  z-index: ${(props) => (props.showNewMessageBox ? "0" : "-1")};
-  transition: ${(props) =>
-    props.showNewMessageBox ? "none" : "all ease 0.5s"};
+  transition: all ease 0.5s;
+  transform-style: preserve-3d;
 `;
 
 const SendBarDiv = styled.div<{
