@@ -55,6 +55,10 @@ body {
   --fw-medium: 500;
   --fw-reg: 400;
   --grey-background: rgb(249, 249, 251);
+  --chatbox-background: hsl(240, 20%, 98%);
+  --chat-messagebox: hsl(227, 100%, 65.7%);
+  --delete-message: #aabdff;
+  --reply-borderline: hsl(227, 95%, 71%);
 }
 
 li {
