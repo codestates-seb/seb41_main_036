@@ -55,6 +55,7 @@ const PlaceCard = ({
       {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <plc.PlaceCardWrapper key={attractionId} width={width}>
         <img
+          referrerPolicy="no-referrer"
           alt={placeInfo.attractionName}
           src={placeInfo.fixedImage}
           onClick={() => navigate(`/attractions/detail/${attractionId}`)}
