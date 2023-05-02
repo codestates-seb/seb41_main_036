@@ -1,13 +1,25 @@
 spring:
   main:
     allow-circular-references: true
+
   servlet:
     multipart:
       max-file-size: 10MB  # 2MB 제한
       max-request-size: 10MB # 2MB 제한
+
   batch:
     job:
       enabled: false # spring 실행시 배치 자동실행 끄기
+
+  redis:
+    host: localhost
+    port: 6379
+
+#  rabbitmq:
+#    username: guest
+#    password: guest
+#    host: localhost
+#    port: 5672
 
   h2:
     console:
@@ -71,11 +83,11 @@ server:
   servlet:
     encoding:
       force-response: true
-  ssl:
+#  ssl:
 #    key-store: classpath:keystore.p12
-#    key-store: /Users/idong-u/Desktop/education/CodeStates/main-pjt/seb41_main_036/server/src/main/resources/keystore.p12
-    key-store-type: PKCS12
-    key-store-password: ${SSL_PASSWORD}
+##    key-store: /Users/idong-u/Desktop/education/CodeStates/main-pjt/seb41_main_036/server/src/main/resources/keystore.p12
+#    key-store-type: PKCS12
+#    key-store-password: ${SSL_PASSWORD}
   port: 8080
 
 mail:

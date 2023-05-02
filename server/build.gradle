@@ -27,12 +27,12 @@ repositories {
 dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	implementation 'com.google.code.gson:gson'
-
 
 	//AMAZON cloud service
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
@@ -43,13 +43,15 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-//	 security
+    // security(jwt, OAuth2)
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -71,6 +73,20 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+	// Websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//	implementation 'org.webjars:sockjs-client:1.1.2'
+//	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+	// RabbitMQ
+/*	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6' // 외부 브로커 사용을 위해
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4' //jackson2json에서 LocalDateTime을 handling 하기 위해
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'*/
+
+	// Reids
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 	// test
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testCompileOnly 'org.projectlombok:lombok'
@@ -78,8 +94,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+//	testImplementation "org.assertj:assertj-core:3.20.2"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// fixtureMonkey
+	testImplementation('com.navercorp.fixturemonkey:fixture-monkey-starter:0.5.2')
 }
 
 // QueryDsl
