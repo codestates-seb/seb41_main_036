@@ -119,13 +119,12 @@ const NewMessageBoxWrapper = styled.div<{ showNewMessageBox: boolean }>`
   position: absolute;
   width: 95%;
   height: 50px;
-  bottom: 75px;
+  top: -55px;
   left: 200px;
   border-radius: var(--br-m);
   transition: all cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s;
   transform: translate(-50%, 10%);
   color: var(--black-900);
-  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: flex-start;

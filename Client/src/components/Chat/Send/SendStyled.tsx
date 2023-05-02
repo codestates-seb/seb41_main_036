@@ -100,6 +100,7 @@ const SendbarButton = styled.div<{
 const SendBarFrameDiv = styled.div<{
   styleProps: sendbarStyleType;
   showSearchBox?: boolean;
+  showNewMessageBox?: boolean;
 }>`
   --sb-padding: ${(props) => `${props.styleProps.padding}px`};
   --sb-lineheight: ${(props) => `${props.styleProps.lineheight}px`};
@@ -110,6 +111,9 @@ const SendBarFrameDiv = styled.div<{
   bottom: 0;
   border-radius: ${(props) =>
     props.showSearchBox ? "0 0 15px 0" : "0 0 15px 15px"};
+  z-index: ${(props) => (props.showNewMessageBox ? "0" : "-1")};
+  transition: ${(props) =>
+    props.showNewMessageBox ? "none" : "all ease 0.5s"};
 `;
 
 const SendBarDiv = styled.div<{

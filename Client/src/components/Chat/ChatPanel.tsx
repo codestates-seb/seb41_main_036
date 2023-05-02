@@ -145,7 +145,6 @@ const ChatPanel = ({ chatStatus }: ChatPanelProps) => {
           chatDataMapRef={chatDataMapRef}
         />
       )}
-      <NewMessageModal chatDataMapRef={chatDataMapRef} />
       <ChatHeader />
       <ChatBoxWrapper ref={chatBoxRef}>
         <ChatBox
@@ -171,6 +170,7 @@ const ChatPanel = ({ chatStatus }: ChatPanelProps) => {
           sendMessage={sendMessage}
           replyMessage={replyMessage}
           scrollIntoBottom={scrollIntoBottom}
+          chatDataMapRef={chatDataMapRef}
         />
       )}
     </ChatBoxDiv>

@@ -1,7 +1,11 @@
 import { useState, ChangeEvent, KeyboardEvent, FormEvent, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { ShowSearchBox, isReplyMessageState } from "../../../recoil/ChatState";
+import {
+  ShowNewMesssageBoxState,
+  ShowSearchBox,
+  isReplyMessageState,
+} from "../../../recoil/ChatState";
 import EmojiPicker, {
   EmojiClickData,
   EmojiStyle,
@@ -22,6 +26,7 @@ import { RiSendPlaneFill as SendIcon } from "react-icons/ri";
 import { IoClose as CloseIcon } from "react-icons/io5";
 import { TbArrowForward as ReplyIcon } from "react-icons/tb";
 import { chatDatatype, sendbarStyleType } from "../Chat";
+import NewMessageModal from "../Modal/NewMessageModal";
 
 export const sendbarStyle: sendbarStyleType = {
   padding: 10,
@@ -32,11 +37,19 @@ interface SendbarProps {
   sendMessage: (text: string) => void;
   replyMessage: (text: string, targetInfo: chatDatatype) => void;
   scrollIntoBottom: () => void;
+  chatDataMapRef: React.MutableRefObject<Map<
+    number,
+    {
+      node: HTMLElement;
+      idx: number;
+    }
+  > | null>;
 }
 const Sendbar = ({
   sendMessage,
   replyMessage,
   scrollIntoBottom,
+  chatDataMapRef,
 }: SendbarProps) => {
   const {
     ref: emojiRef,
@@ -50,6 +63,7 @@ const Sendbar = ({
   const [emoji, setEmoji] = useState("🙂");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const showSearchBox = useRecoilValue(ShowSearchBox);
+  const showNewMessageBox = useRecoilValue(ShowNewMesssageBoxState);
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText((e.target as HTMLTextAreaElement).value);
   };
@@ -147,7 +161,12 @@ const Sendbar = ({
   };
   return (
     <>
-      <SendBarFrameDiv styleProps={sendbarStyle} showSearchBox={showSearchBox}>
+      <SendBarFrameDiv
+        styleProps={sendbarStyle}
+        showSearchBox={showSearchBox}
+        showNewMessageBox={showNewMessageBox}
+      >
+        <NewMessageModal chatDataMapRef={chatDataMapRef} />
         {isReplyMessage !== null && (
           <>
             <ReplyInfoDiv>
