@@ -28,7 +28,6 @@ const GoRight = keyframes`
 
 const Body = styled.div`
   height: 100%;
-  width: 100vw;
   padding: 20px 0 70px 0;
   background-color: hsl(222, 24%, 98%);
 `;
@@ -136,6 +135,7 @@ function Main() {
       {Mobile ? (
         <>
           <MainMobile />
+          <Chat key={"chatbox"} />
           <CardBox>
             <InfoBox>
               <h2>많이 다녀간 명소</h2>
@@ -185,7 +185,7 @@ function Main() {
           <FixedOnScrollUpHeader />
           <Carousel />
           <Ranking />
-          <Chat />
+          <Chat key={"chatbox"} />
           <Body>
             <BodyContent>
               <MainSubTitle>많이 다녀간 명소</MainSubTitle>
