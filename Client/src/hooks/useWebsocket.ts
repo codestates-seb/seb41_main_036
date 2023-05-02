@@ -12,6 +12,7 @@ import {
 } from "../recoil/ChatState";
 import { LoginState } from "../recoil/state";
 import { chatDatatype } from "../components/Chat/Chat";
+import { flushSync } from "react-dom";
 
 function useWebsocket(
   url: string,
@@ -142,11 +143,13 @@ function useWebsocket(
         if (
           parsedMessage.memberId === Number(localStorage.getItem("memberId"))
         ) {
-          setChatBuffer((p) =>
-            p.length
-              ? p.filter((el) => el.verifyKey !== parsedMessage.verifyKey)
-              : p
-          );
+          flushSync(() => {
+            setChatBuffer((p) =>
+              p.length
+                ? p.filter((el) => el.verifyKey !== parsedMessage.verifyKey)
+                : p
+            );
+          });
         } else {
           setNewMessageArrived((p) => ({
             message: parsedMessage,
