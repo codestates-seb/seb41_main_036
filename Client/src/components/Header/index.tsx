@@ -9,7 +9,7 @@ import {
   SearchBarWrapper,
   Profile,
 } from "./style";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   LoginState,
@@ -117,12 +117,12 @@ const HeaderBodyBar = ({
   return (
     <HeaderBodyWrapper backgroundOn={backgroundOn}>
       <HeaderBody>
-        <a
-          href="/"
+        <Link
+          to="/"
           style={{ height: "70px", display: "flex", alignItems: "center" }}
         >
           <Logo style={{ width: "80px", height: "50px" }} />
-        </a>
+        </Link>
         <HeaderBodyMenu>
           <HeaderBodyMenuItem
             onClick={() => navigate("/attractions")}
