@@ -22,7 +22,7 @@ import FloatingMenu from "../components/FloatingMenu";
 import { useMediaQuery } from "react-responsive";
 import MobileHeader from "../components/Header/MobileHeader";
 import { MenuSideBar, MenuButton } from "../pages/MainResponsive";
-import { isModalVisiable } from "../recoil/setOverlay";
+import { isModalVisible } from "../recoil/setOverlay";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -225,7 +225,7 @@ const PlaceDetail = (): JSX.Element => {
   const setBookmarkSaves = useSetRecoilState(BookmarkSavesState);
   const setLikes = useSetRecoilState(LikesState);
   const [curPage, setCurPage] = useState(1);
-  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
+  const [isModal, setIsModal] = useRecoilState(isModalVisible);
   const totalInfoRef = useRef<PageInfoType | null>(null);
   const memberId = localStorage.getItem("memberId");
   const { id } = useParams();

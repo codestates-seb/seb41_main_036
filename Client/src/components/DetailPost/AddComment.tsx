@@ -5,13 +5,13 @@ import { useRecoilState } from "recoil";
 import { LoginState } from "../../recoil/state";
 import { useParams } from "react-router-dom";
 import { handleCommentSubmit } from "../../API/BlogDetail/Post/Post";
-import { isModalVisiable } from "../../recoil/setOverlay";
+import { isModalVisible } from "../../recoil/setOverlay";
 
 const AddComment = () => {
   const [addComment, setAddComment] = useState("");
   const [isLogin] = useRecoilState(LoginState);
   const { id } = useParams();
-  const [_, setIsModal] = useRecoilState(isModalVisiable);
+  const [_, setIsModal] = useRecoilState(isModalVisible);
 
   return (
     <dp.AddComment isLogin={isLogin}>

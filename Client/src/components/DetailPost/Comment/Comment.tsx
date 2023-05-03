@@ -9,7 +9,7 @@ import ReComment from "../Recomment/Recomment";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { handleCommentSubmit } from "../../../API/BlogDetail/Post/Post";
 import { CommentType, ReCommentType } from "../../../utils/d";
-import { isModalVisiable } from "../../../recoil/setOverlay";
+import { isModalVisible } from "../../../recoil/setOverlay";
 
 const Comment = ({
   comments,
@@ -28,7 +28,7 @@ const Comment = ({
   const { recommentContent, editcommentContent } = content;
   const [isMoreRecomment, setIsMoreReomment] = useState(false);
   const [memberId] = useRecoilState(MemberId);
-  const [_, setIsModal] = useRecoilState(isModalVisiable);
+  const [_, setIsModal] = useRecoilState(isModalVisible);
   const { id } = useParams();
 
   return (

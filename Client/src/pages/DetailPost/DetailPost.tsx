@@ -16,7 +16,7 @@ import AddComment from "../../components/DetailPost/AddComment";
 import { deletePostHandler } from "../../API/BlogDetail/Delete/Delete";
 import { getPost, getPostCommentList } from "../../API/BlogDetail/Get/Get";
 import { handleLikePost } from "../../API/BlogDetail/Post/Post";
-import { isModalVisiable } from "../../recoil/setOverlay";
+import { isModalVisible } from "../../recoil/setOverlay";
 import { getCurrentCount } from "../../utils/utils";
 
 const DetailPost = () => {
@@ -27,7 +27,7 @@ const DetailPost = () => {
   const { postId } = useParams();
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
-  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
+  const [isModal, setIsModal] = useRecoilState(isModalVisible);
   const initialLikesRef = useRef(false); //로컬 좋아요 상태 저장
 
   useEffect(() => {
