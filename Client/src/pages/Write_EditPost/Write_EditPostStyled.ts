@@ -3,14 +3,20 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 92vh;
+  height: 100vh;
   background-color: #fcfcfc;
-  > form {
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    padding: 10px 40px;
-  }
+`;
+
+export const WritePostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+`;
+
+export const WritePostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 40px;
   input {
     padding-left: 10px;
     width: 80%;
@@ -18,6 +24,7 @@ export const Container = styled.div`
     outline: none;
     font-size: 25px;
     font-weight: var(--fw-bold);
+    background-color: transparent;
     &:focus {
       border-color: transparent;
     }
@@ -50,7 +57,6 @@ export const PreviewContainer = styled.div`
       margin-top: 5px;
       margin-bottom: 25px;
       height: 44px;
-      padding-left: 20px;
     }
     button {
       margin-right: 10px;
@@ -58,57 +64,25 @@ export const PreviewContainer = styled.div`
   }
 `;
 
-export const Preview = styled.div`
+export const PreviewContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  > div {
-    display: flex;
-    flex-direction: column;
-    > p {
-      width: 84%;
-      font-size: 15px;
-      margin-left: 38px;
-      margin-bottom: 100px;
-      text-align: start;
-      color: #2d2d2d;
-      line-height: 24px;
-    }
-    > button {
-      margin-top: 20px;
-      width: 94.5%;
-      height: 20px;
-      font-size: 14px;
-      border: none;
-      background-color: transparent;
-      font-weight: bold;
-      color: var(--purple-400);
-      cursor: pointer;
-      text-align: right;
-    }
-  }
 `;
 
 export const TagBox = styled.span`
+  display: flex;
+  align-items: center;
   padding: 5px 7px;
-  border: none;
-  background-color: transparent;
   background-color: var(--purple-tag);
   color: var(--purple-400);
   font-weight: var(--fw-bold);
   box-shadow: 0 0 5px var(--purple-200);
   border-radius: var(--br-l);
   margin: 0 10px;
-  font-size: var(--font-xs);
+  font-size: var(--font-sm);
   &:hover {
     background-color: var(--purple-300);
     color: var(--purple-tag);
-  }
-  button {
-    border: none;
-    background-color: transparent;
-  }
-  svg {
-    padding-top: 3px;
   }
 `;
 
@@ -141,23 +115,56 @@ export const Header = styled.div`
     width: 45%;
     height: 100%;
     padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   > div:nth-child(2) {
     width: 55%;
     background-color: #f0f0f0;
     padding: 20px;
-    text-align: right;
     font-size: 20px;
-    cursor: pointer;
+    font-weight: var(--fw-bold);
   }
 `;
 
-export const PreviewImgWrapper = styled.div`
+export const PreviewImgContainer = styled.div`
+  width: 100%;
+  height: 350px;
   overflow: scroll;
-  width: 90%;
-  height: 400px;
-  margin: 0 auto;
-  object-fit: cover;
+
+  > img {
+    width: 100%;
+  }
+`;
+
+export const PreviewTextContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 4rem;
+`;
+
+export const HandleBackAndSubmitContainer = styled.div`
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--black-200);
+  position: fixed;
+  bottom: 0;
+  width: 45%;
+  height: 60px;
+  box-shadow: 0 -5px 3px -5px #adadad;
+  svg {
+    font-size: var(--font-xxxl);
+    :hover {
+      cursor: pointer;
+      color: var(--black-600);
+    }
+  }
 `;
 
 export const ModalContainer = styled.div`
@@ -169,9 +176,7 @@ export const ModalContainer = styled.div`
   padding: 20px;
   width: 400px;
   height: 300px;
-  // background-color: aqua;
   border: 0.5px solid var(--purple-300);
-  /* From https://css.glass */
   background: rgba(255, 255, 255, 0.45);
   border-radius: 25px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -185,6 +190,7 @@ export const ModalContainer = styled.div`
     display: none;
   }
   textarea {
+    width: 300px;
     resize: none;
     height: 150px;
     padding: 10px;
@@ -239,5 +245,47 @@ export const SelectImageContainer = styled.div`
   > img {
     width: 200px;
     height: 200px;
+  }
+`;
+
+export const WriteGuideModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+`;
+
+export const WriteGuideModalWrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
+
+export const WriteGuideModalContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 35rem;
+  }
+`;
+
+export const WriteGuideModalGuideText = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  p {
+    font-size: var(--font-md);
+    font-weight: var(--fw-bold);
+    color: #585ac6;
   }
 `;

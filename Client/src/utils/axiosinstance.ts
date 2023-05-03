@@ -38,7 +38,6 @@ axios.interceptors.response.use(
         },
       }
       ) 
-      console.log("리프데이터 : ", data);
       const accessToken = data.data.accessToken;
       localStorage.setItem("Authorization", `${accessToken}`);
       originalRequest.headers.Authorization = accessToken;

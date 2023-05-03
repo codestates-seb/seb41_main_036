@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { FcInfo } from "react-icons/fc";
 import "../index.css";
-import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { isModalVisiable } from "../recoil/setOverlay";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -80,6 +81,7 @@ const ContainerButton = styled.div`
     }
   }
 `;
+
 interface ModalProps {
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
 }
@@ -87,8 +89,10 @@ const Modal = ({ setIsModalVisible }: ModalProps) => {
   const navigate = useNavigate();
   const HandleLoginModalViewer = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsModal(false);
     navigate(`/login`);
   };
+  const [_, setIsModal] = useRecoilState(isModalVisiable);
 
   return (
     <>
@@ -105,7 +109,7 @@ const Modal = ({ setIsModalVisible }: ModalProps) => {
           </ContainerInfo>
           <ContainerButton>
             <button onClick={HandleLoginModalViewer}>확인</button>
-            <button onClick={() => setIsModalVisible(false)}>취소</button>
+            <button onClick={() => setIsModal(false)}>취소</button>
           </ContainerButton>
         </Container>
       </ModalBackground>

@@ -17,12 +17,12 @@ function App() {
   const Place = lazy(() => import("./pages/Place/Place"));
   const Post = lazy(() => import("./pages/Post/Post"));
   const MyPage = lazy(() => import("./pages/MyPage/MyPage"));
-  const WritePost = lazy(() => import("./pages/WritePost/WritePost"));
+  const WritePost = lazy(() => import("./pages/Write_EditPost/WritePost"));
   const PlaceDetail = lazy(() => import("./pages/PlaceDetail"));
   const DetailPost = lazy(() => import("./pages/DetailPost/DetailPost"));
   const Map = lazy(() => import("./pages/Map"));
   const LoginSign = lazy(() => import("./pages/LoginSign"));
-  const EditPost = lazy(() => import("./pages/WritePost/EditPost "));
+  const EditPost = lazy(() => import("./pages/Write_EditPost/EditPost "));
   const NoAddress = lazy(() => import("./pages/NoAddress"));
   return (
     <div className="App">
@@ -37,12 +37,12 @@ function App() {
                 <Route path="search" element={<Place />} />
               </Route>
               <Route path="/posts" element={<Post />} />
-              <Route path="/write/:id" element={<WritePost />} />
+              <Route path="/write/:postId" element={<WritePost />} />
               <Route path="/map" element={<Map />} />
               <Route path="/attractions/detail/:id" element={<PlaceDetail />} />
-              <Route path="/posts/detail/:id" element={<DetailPost />} />
+              <Route path="/posts/detail/:postId" element={<DetailPost />} />
               <Route path="/mypage" element={<MyPage />} />
-              <Route path="/edit/:id" element={<EditPost />} />
+              <Route path="/edit/:postId" element={<EditPost />} />
               <Route path="/oauth" element={<Oauth />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="*" element={<NoAddress />} />

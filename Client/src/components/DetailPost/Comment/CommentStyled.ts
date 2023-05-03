@@ -13,11 +13,7 @@ export const PostCommentBox = styled.div`
 
 export const PostCommentTitle = styled.div`
   display: flex;
-
-  > div {
-    display: flex;
-    flex-direction: column;
-  }
+  align-items: center;
 `;
 
 export const PostCommentImg = styled.img`
@@ -27,10 +23,11 @@ export const PostCommentImg = styled.img`
   margin-right: 10px;
 `;
 
-export const PostCommentUserName = styled.span`
+export const PostCommentUserName = styled.span<{ writer: string }>`
   font-size: var(--font-sm);
   font-weight: var(--fw-bold);
-  margin-bottom: 3px;
+  margin-right: 5px;
+  color: ${(props) => (props.writer === "writer" ? "var(--purple-400)" : "")};
 `;
 
 export const PostCommentDate = styled.span`
@@ -41,6 +38,7 @@ export const PostCommentContentContainer = styled.div`
   padding-left: 2.5em;
   border-bottom: 1px solid var(--black-600);
   padding-bottom: 20px;
+  word-break: break-all;
 `;
 
 export const PostManageButtonContainer = styled.div`
@@ -49,15 +47,14 @@ export const PostManageButtonContainer = styled.div`
 
 export const PostManageButton = styled.button`
   min-width: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 30px;
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   margin-left: 10px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  &:hover {
+    color: var(--black-700);
+  }
 `;
 
 export const PostCommentInputContainer = styled.form<{
@@ -65,6 +62,8 @@ export const PostCommentInputContainer = styled.form<{
   width: string;
   height: string;
 }>`
+  display: flex;
+  align-items: center;
   padding: ${(props) => props.padding};
   > textarea {
     width: ${(props) => props.width};
@@ -79,5 +78,29 @@ export const PostCommentInputContainer = styled.form<{
       outline-color: var(--purple-400);
       box-shadow: 0 0 6px var(--purple-300);
     }
+  }
+
+  > button {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    &:hover {
+      color: var(--black-700);
+    }
+  }
+`;
+
+export const PostCommentisMoreRecommentContainer = styled.div`
+  width: 80px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: var(--font-sm);
+  margin-top: 10px;
+  &:hover {
+    color: var(--purple-300);
   }
 `;
