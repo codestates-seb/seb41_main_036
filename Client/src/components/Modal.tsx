@@ -3,7 +3,7 @@ import { FcInfo } from "react-icons/fc";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { isModalVisiable } from "../recoil/setOverlay";
+import { isModalVisible } from "../recoil/setOverlay";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -82,17 +82,14 @@ const ContainerButton = styled.div`
   }
 `;
 
-interface ModalProps {
-  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
-}
-const Modal = ({ setIsModalVisible }: ModalProps) => {
+const Modal = () => {
   const navigate = useNavigate();
   const HandleLoginModalViewer = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsModal(false);
     navigate(`/login`);
   };
-  const [_, setIsModal] = useRecoilState(isModalVisiable);
+  const [_, setIsModal] = useRecoilState(isModalVisible);
 
   return (
     <>
