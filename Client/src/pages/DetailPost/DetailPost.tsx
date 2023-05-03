@@ -34,18 +34,19 @@ const DetailPost = () => {
     const get = async () => {
       const response = await getPost(postId, memberId, isLogin);
       setPost(response);
-      initialLikesRef.current = response.isVoted;
+      setIsVoted(response?.isVoted);
+      initialLikesRef.current = response?.isVoted;
     };
     get();
   }, []);
-  type data = {
+  type postDataType = {
     imageURL: string | undefined;
     content: string | undefined;
     imageId: number | undefined;
   };
-  let data: Array<data> = [];
+  let postData: Array<postDataType> = [];
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
-    data.push({
+    postData.push({
       imageURL: post?.postImageUrls[i],
       content: post?.postContents[i],
       imageId: i + 1,
@@ -68,7 +69,7 @@ const DetailPost = () => {
       console.error(err);
     }
   };
-
+  console.log(postData);
   return (
     <>
       <Header>
@@ -111,7 +112,7 @@ const DetailPost = () => {
         </dp.DetailPostInfo>
         <dp.PostContentContainer>
           <dp.PostContentBox>
-            {data.map((post) => (
+            {postData.map((post) => (
               <div key={post.imageId}>
                 <div>
                   <img src={post.imageURL} alt="picture" />
@@ -122,8 +123,8 @@ const DetailPost = () => {
           </dp.PostContentBox>
           <div>
             {post &&
-              post.postHashTags.map((tag) => (
-                <dp.TagsButton key={post.postId}>{tag}</dp.TagsButton>
+              post.postHashTags.map((tag, idx) => (
+                <dp.TagsButton key={idx}>{tag}</dp.TagsButton>
               ))}
           </div>
           <dp.PostContentBottom>
