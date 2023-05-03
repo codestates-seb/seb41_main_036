@@ -69,7 +69,7 @@ const DetailPost = () => {
       console.error(err);
     }
   };
-  console.log(postData);
+
   return (
     <>
       <Header>

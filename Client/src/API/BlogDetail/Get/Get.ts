@@ -8,8 +8,8 @@ export const getPost = async (
 ) => {
   try {
     const url = isLogin
-      ? `/posts/details/${postId}/${memberId}`
-      : `/posts/details/${postId}`;
+      ? `https://pikcha36.o-r.kr:8080/posts/details/${postId}/${memberId}`
+      : `https://pikcha36.o-r.kr:8080/posts/details/${postId}`;
     const response = await axios.get(url);
     return response.data.data;
   } catch (error) {
@@ -39,7 +39,7 @@ export const getPost = async (
 export const getPostCommentList = async (id: string | undefined) => {
   let result: ArrayCommentType = [];
   await axios
-    .get(`/comments/listof/${id}`)
+    .get(`https://pikcha36.o-r.kr:8080/comments/listof/${id}`)
     .then((res) => {
       result = res.data.data;
     })
