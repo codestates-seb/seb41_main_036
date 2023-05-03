@@ -28,22 +28,27 @@ const DetailPost = () => {
   const [memberId] = useRecoilState(MemberId);
   const navigate = useNavigate();
   const [isModal, setIsModal] = useRecoilState(isModalVisiable);
-  const initialLikesRef = useRef(post?.isVoted); //로컬 좋아요 상태 저장
+  const initialLikesRef = useRef(false); //로컬 좋아요 상태 저장
 
   useEffect(() => {
     const get = async () => {
       const response = await getPost(postId, memberId, isLogin);
       setPost(response);
+      initialLikesRef.current = response.isVoted;
     };
     get();
-  }, [isVoted]);
-
-  let data: any[] = [];
+  }, []);
+  type data = {
+    imageURL: string | undefined;
+    content: string | undefined;
+    imageId: number | undefined;
+  };
+  let data: Array<data> = [];
   for (let i = 0; i < post?.postImageUrls.length!; i++) {
     data.push({
       imageURL: post?.postImageUrls[i],
       content: post?.postContents[i],
-      imgageId: i + 1,
+      imageId: i + 1,
     });
   }
 
@@ -106,10 +111,10 @@ const DetailPost = () => {
         </dp.DetailPostInfo>
         <dp.PostContentContainer>
           <dp.PostContentBox>
-            {data.map((post, idx) => (
-              <div key={idx}>
+            {data.map((post) => (
+              <div key={post.imageId}>
                 <div>
-                  <img src={post.imageURL} alt="picture" key={post.postId} />
+                  <img src={post.imageURL} alt="picture" />
                 </div>
                 <div>{post.content}</div>
               </div>
@@ -118,9 +123,7 @@ const DetailPost = () => {
           <div>
             {post &&
               post.postHashTags.map((tag) => (
-                <>
-                  <dp.TagsButton key={post.postId}>{tag}</dp.TagsButton>
-                </>
+                <dp.TagsButton key={post.postId}>{tag}</dp.TagsButton>
               ))}
           </div>
           <dp.PostContentBottom>
@@ -148,7 +151,7 @@ const DetailPost = () => {
                       ? setIsModal(true)
                       : handleLikePost(postId, setIsVoted)
                   }
-                  color={post && post.isVoted ? "red" : "grey"}
+                  color={isVoted ? "red" : "grey"}
                 />
                 <span>
                   {getCurrentCount(
