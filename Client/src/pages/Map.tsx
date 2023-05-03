@@ -20,7 +20,7 @@ import * as m from "./Map/Map";
 import MobileHeaderBack from "../components/Header/MobileHeaderBack";
 import { MenuSideBar, MenuButton } from "./MainResponsive";
 import { Link } from "react-router-dom";
-import { isModalVisiable } from "../recoil/setOverlay";
+import { isModalVisible } from "../recoil/setOverlay";
 
 interface RegionType {
   attractionAddress: string;
@@ -62,7 +62,7 @@ const Map = () => {
   const [isLogin] = useRecoilState(LoginState);
   const [isVoted, setIsVoted] = useState<boolean>();
   const [isLiked, setIsLiked] = useState<boolean>();
-  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
+  const [isModal, setIsModal] = useRecoilState(isModalVisible);
   const memberId = localStorage.getItem("memberId");
   const url = "/attractions/maps?page=1&size=104&sort=posts";
   const url2 = `/attractions/${modalDataId}`;

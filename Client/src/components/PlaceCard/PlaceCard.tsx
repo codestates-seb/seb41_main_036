@@ -10,7 +10,7 @@ import Modal from "../Modal";
 import { getCurrentCount } from "../../utils/utils";
 import * as plc from "./PlaceCardStyled";
 import { PlaceType } from "../../utils/d";
-import { isModalVisiable } from "../../recoil/setOverlay";
+import { isModalVisible } from "../../recoil/setOverlay";
 
 const PlaceCard = ({
   placeInfo,
@@ -22,7 +22,7 @@ const PlaceCard = ({
   const [currentBookmark, setCurrentBookmark] = useState(placeInfo.isSaved); //로컬 북마트 상태 저장
   const [currentLike, setCurrentLike] = useState(placeInfo.isVoted);
   const [isLogin] = useRecoilState(LoginState);
-  const [isModal, setIsModal] = useRecoilState(isModalVisiable);
+  const [isModal, setIsModal] = useRecoilState(isModalVisible);
   const navigate = useNavigate();
   const {
     attractionId,

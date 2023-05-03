@@ -5,7 +5,7 @@ export const setOverlay = atom({
   default: false,
 });
 
-export const isModalVisiable = atom({
-  key: "isModalVisiable",
+export const isModalVisible = atom({
+  key: "isModalVisible",
   default: false,
 });
