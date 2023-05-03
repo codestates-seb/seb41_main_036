@@ -38,7 +38,7 @@ const ContainerInfo = styled.div`
     margin: 20px 0 10px 20px;
   }
   > div:nth-child(2) {
-    >h3{
+    > h3 {
       margin-top: 5px;
       font-weight: 700;
     }
@@ -80,12 +80,10 @@ const ContainerButton = styled.div`
     }
   }
 `;
-
-const Modal = ({
-  setIsModalVisible,
-}: {
+interface ModalProps {
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
-}) => {
+}
+const Modal = ({ setIsModalVisible }: ModalProps) => {
   const navigate = useNavigate();
   const HandleLoginModalViewer = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
