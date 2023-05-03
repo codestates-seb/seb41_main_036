@@ -159,7 +159,9 @@ const ChatBox = ({
           el.createdAt.slice(0, 10) !== arr[i - 1]?.createdAt.slice(0, 10) ||
           el.chatId === 1;
         const memberIdFlag =
-          el.memberId !== arr[i - 1]?.memberId || timeStampFlagForDate; //앞의 메시지와 같지 않다면 무조건 true
+          el.memberId !== arr[i - 1]?.memberId ||
+          timeStampFlagForDate ||
+          arr[i - 1].type !== ("CHAT" || "REPLY"); //앞의 메시지와 같지 않다면 무조건 true
         const timeStampFlagForRadius =
           memberIdFlag ||
           arr[i - 1]?.createdAt.slice(0, 16) !== el.createdAt.slice(0, 16);
