@@ -22,7 +22,6 @@ import NotificationModal from "./Modal/NotificationModal";
 import { LoginState } from "../../recoil/state";
 
 import SearchBox from "./Search/SearchBox";
-import NewMessageModal from "./Modal/NewMessageModal";
 import { ChatPanelStatusType } from "./Chat";
 
 const URL = "https://pikcha36.o-r.kr:8080/stomp-websocket-sockjs";
