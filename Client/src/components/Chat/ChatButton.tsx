@@ -3,18 +3,18 @@ import { ChatStatus, NewMessageArrivedState } from "../../recoil/ChatState";
 import { ChatExpandableButton } from "./ChatStyled";
 import { BsFillChatLeftDotsFill as ChatIcon } from "react-icons/bs";
 import { LoginState } from "../../recoil/state";
-import { useState } from "react";
 import Modal from "../Modal";
+import { isModalVisible } from "../../recoil/setOverlay";
 
 const ChatButton = () => {
   const isLogin = useRecoilValue(LoginState);
   const [chatStatus, setChatStatus] = useRecoilState(ChatStatus);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModal, setIsModal] = useRecoilState(isModalVisible);
   const [newMessageArrived] = useRecoilState(NewMessageArrivedState);
 
   const handleButtonClick = () => {
     if (!isLogin) {
-      setIsModalVisible(true);
+      setIsModal(true);
       return;
     }
     setChatStatus("JOINED");
@@ -22,7 +22,7 @@ const ChatButton = () => {
 
   return (
     <>
-      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
+      {isModal && <Modal />}
       <ChatExpandableButton
         onClick={handleButtonClick}
         connected={false}
