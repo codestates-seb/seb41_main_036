@@ -9,12 +9,12 @@ import Modal from "../Modal";
 const ChatButton = () => {
   const isLogin = useRecoilValue(LoginState);
   const [chatStatus, setChatStatus] = useRecoilState(ChatStatus);
-  const [showModal, setShowModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [newMessageArrived] = useRecoilState(NewMessageArrivedState);
 
   const handleButtonClick = () => {
     if (!isLogin) {
-      setShowModal(true);
+      setIsModalVisible(true);
       return;
     }
     setChatStatus("JOINED");
@@ -22,7 +22,7 @@ const ChatButton = () => {
 
   return (
     <>
-      {showModal && <Modal setIsModalVisible={setShowModal} />}
+      {isModalVisible && <Modal setIsModalVisible={setIsModalVisible} />}
       <ChatExpandableButton
         onClick={handleButtonClick}
         connected={false}
