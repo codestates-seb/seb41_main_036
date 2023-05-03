@@ -82,7 +82,10 @@ const ContainerButton = styled.div`
   }
 `;
 
-const Modal = () => {
+interface ModalProps {
+  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
+}
+const Modal = ({ setIsModalVisible }: ModalProps) => {
   const navigate = useNavigate();
   const HandleLoginModalViewer = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
