@@ -83,10 +83,10 @@ server:
   servlet:
     encoding:
       force-response: true
-#  ssl:
-#    key-store: classpath:keystore.p12
-##    key-store: /Users/idong-u/Desktop/education/CodeStates/main-pjt/seb41_main_036/server/src/main/resources/keystore.p12
-#    key-store-type: PKCS12
+  ssl:
+    key-store: classpath:keystore.p12
+#    key-store: /Users/idong-u/Desktop/education/CodeStates/main-pjt/seb41_main_036/server/src/main/resources/keystore.p12
+    key-store-type: PKCS12
 #    key-store-password: ${SSL_PASSWORD}
   port: 8080
 
