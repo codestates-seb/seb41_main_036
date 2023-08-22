@@ -6,7 +6,7 @@
 - `도메인` : https://pikcha36.o-r.kr
 - `기술발표` : https://youtu.be/cl04jBYgSjI
 - `개발기간` : 2023. 1. 3. ~ 2023. 2. 3. (한달간)
-
+- `테스트 계정` : id - test&#64;pikcha123.com , password - a1234567!
 </br>
 
 # 🏠 About Pikcha
